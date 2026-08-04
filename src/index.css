@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-isaac-bg text-isaac-text font-sans antialiased;
+    margin: 0;
+    /* léger grain/texture discret — la lisibilité prime (cf. §6) */
+    background-image: radial-gradient(
+      circle at 50% 0%,
+      rgba(193, 39, 45, 0.06),
+      transparent 60%
+    );
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-isaac-blood/40 text-isaac-text;
+  }
+}
