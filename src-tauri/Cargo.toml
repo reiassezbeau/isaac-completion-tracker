@@ -30,3 +30,6 @@ thiserror = "2"
 dirs = "6"
 notify = "8"
 walkdir = "2"
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"

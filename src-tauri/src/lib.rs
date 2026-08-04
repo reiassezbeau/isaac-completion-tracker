@@ -1,16 +1,77 @@
+mod commands;
+mod engine;
+mod knowledge;
+mod overrides;
+mod save_locator;
 pub mod save_parser;
+mod watcher;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+use std::path::PathBuf;
+use std::sync::Mutex;
+
+use tauri::Manager;
+
+use commands::AppState;
+use knowledge::Knowledge;
+use overrides::Overrides;
+
+/// Résout le dossier `resources` (bundle en prod, `src-tauri/resources` en dev).
+fn resources_dir(app: &tauri::App) -> PathBuf {
+    if let Ok(res) = app.path().resource_dir() {
+        let nested = res.join("resources");
+        if nested.join("achievements.json").exists() {
+            return nested;
+        }
+        if res.join("achievements.json").exists() {
+            return res;
+        }
+    }
+    // Dev : chemin figé à la compilation.
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources")
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .plugin(tauri_plugin_dialog::init())
+        .setup(|app| {
+            let res_dir = resources_dir(app);
+            let knowledge = Knowledge::load(&res_dir)?;
+            let app_data_dir = app
+                .path()
+                .app_data_dir()
+                .unwrap_or_else(|_| std::env::temp_dir());
+            let overrides = Overrides::load(&app_data_dir);
+
+            app.manage(AppState {
+                knowledge,
+                app_data_dir,
+                current: Mutex::new(None),
+                overrides: Mutex::new(overrides),
+                watcher: Mutex::new(None),
+            });
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            commands::list_saves,
+            commands::scan_folder,
+            commands::load_slot,
+            commands::refresh,
+            commands::dashboard,
+            commands::get_characters,
+            commands::get_character,
+            commands::predict,
+            commands::next_targets,
+            commands::get_roadmap,
+            commands::get_achievements,
+            commands::get_endings,
+            commands::get_characters_static,
+            commands::get_overrides,
+            commands::set_override_achievement,
+            commands::set_override_mark,
+            commands::reset_overrides,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
