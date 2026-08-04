@@ -28,6 +28,7 @@
   "bundle": {
     "active": true,
     "targets": ["nsis", "msi"],
+    "resources": ["resources/*.json"],
     "publisher": "reiassezbeau",
     "copyright": "© 2026 reiassezbeau — https://github.com/reiassezbeau",
     "category": "Utility",

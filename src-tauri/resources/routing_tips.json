@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "note": "Conseils de routing curatés (édités à la main, pas générés). Affichés en Mode Personnage et Roadmap.",
+    "author": "reiassezbeau — https://github.com/reiassezbeau"
+  },
+  "tips": [
+    {
+      "id": "mother_beast_combo",
+      "applies_to": ["mother", "beast"],
+      "title": "Mother + The Beast : optimise tes runs de fin",
+      "text": "Prends le chemin alternatif (porte du Mausoleum/Gehenna après Mom's Heart, souvent via un défi de statue). Descends jusqu'au Corpse pour battre Mother (coche la marque Mother). Pour The Beast, prends la trappe de Home après avoir récupéré le morceau de clé. En Hard mode pour obtenir la marque DORÉE (indispensable pour Dead God)."
+    },
+    {
+      "id": "hard_mode_gold",
+      "applies_to": ["moms_heart", "isaac", "satan", "blue_baby", "lamb", "boss_rush", "mega_satan", "greed", "hush", "delirium", "mother", "beast"],
+      "title": "Toujours en Hard pour Dead God",
+      "text": "Une marque faite en Normal compte comme complétée mais reste ARGENT. Dead God exige la marque DORÉE (Hard) sur les 12 marks pour les 34 personnages. Refais en Hard toute marque encore en Normal."
+    },
+    {
+      "id": "boss_rush_timing",
+      "applies_to": ["boss_rush"],
+      "title": "Boss Rush : arrive avant 20:00",
+      "text": "Boss Rush s'ouvre en battant Mom avant la marque des 20 minutes, dans la salle de Mom (porte trouée). Utile pour débloquer plusieurs items et cocher la marque Boss Rush."
+    },
+    {
+      "id": "hush_timing",
+      "applies_to": ["hush"],
+      "title": "Hush : arrive au Womb avant 30:00",
+      "text": "La trappe béante vers ???/Blue Womb apparaît si tu bats Mom's Heart/It Lives! avant 30:00. Mène à Hush."
+    },
+    {
+      "id": "greed_marks",
+      "applies_to": ["greed"],
+      "title": "Ultra Greed / Greedier",
+      "text": "La marque « Greed » se coche en Greed Mode (Ultra Greed) ; la variante Hard/dorée demande Greedier Mode. Un mode à part, à ne pas oublier pour Dead God."
+    },
+    {
+      "id": "delirium_void",
+      "applies_to": ["delirium"],
+      "title": "Delirium : via The Void",
+      "text": "Delirium se trouve dans The Void, accessible par un portail après avoir battu Hush (Blue Womb). Boss long et aléatoire : arrive avec de bons dégâts."
+    },
+    {
+      "id": "late_characters",
+      "applies_to": ["bethany", "jacob_esau"],
+      "title": "Persos en retard : Bethany et Jacob & Esau",
+      "text": "Ces deux persos Repentance ont presque aucune marque. Enchaîne des runs dédiés : Mom's Heart → Isaac/Satan/??? /Lamb (chemins de base) puis Mother + Beast en Hard. Gros gain de progression vers Dead God."
+    }
+  ]
+}

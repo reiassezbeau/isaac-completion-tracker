@@ -1,0 +1,74 @@
+[
+  {
+    "id": "moms_heart",
+    "name": "Mom's Heart / It Lives",
+    "mark_index": 0,
+    "hard_matters": true
+  },
+  {
+    "id": "isaac",
+    "name": "Isaac",
+    "mark_index": 1,
+    "hard_matters": true
+  },
+  {
+    "id": "satan",
+    "name": "Satan",
+    "mark_index": 2,
+    "hard_matters": true
+  },
+  {
+    "id": "boss_rush",
+    "name": "Boss Rush",
+    "mark_index": 3,
+    "hard_matters": true
+  },
+  {
+    "id": "blue_baby",
+    "name": "??? (Blue Baby)",
+    "mark_index": 4,
+    "hard_matters": true
+  },
+  {
+    "id": "lamb",
+    "name": "The Lamb",
+    "mark_index": 5,
+    "hard_matters": true
+  },
+  {
+    "id": "mega_satan",
+    "name": "Mega Satan",
+    "mark_index": 6,
+    "hard_matters": true
+  },
+  {
+    "id": "greed",
+    "name": "Ultra Greed / Greedier",
+    "mark_index": 7,
+    "hard_matters": true
+  },
+  {
+    "id": "hush",
+    "name": "Hush",
+    "mark_index": 8,
+    "hard_matters": true
+  },
+  {
+    "id": "delirium",
+    "name": "Delirium (Void)",
+    "mark_index": 9,
+    "hard_matters": true
+  },
+  {
+    "id": "mother",
+    "name": "Mother (Corpse)",
+    "mark_index": 10,
+    "hard_matters": true
+  },
+  {
+    "id": "beast",
+    "name": "The Beast",
+    "mark_index": 11,
+    "hard_matters": true
+  }
+]
