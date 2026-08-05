@@ -156,6 +156,16 @@ mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isContinue)
     return
   end
 
+  -- Run précédent non clôturé (redémarrage / nouvelle partie sans mourir/gagner)
+  -- => on l'archive comme "abandoned" pour ne pas perdre ses données.
+  if data.current_run ~= nil and not data.current_run.ended then
+    data.current_run.ended = true
+    data.current_run.outcome = "abandoned"
+    data.current_run.ended_frame = frame()
+    data.history[#data.history + 1] = data.current_run
+    data.current_run = nil
+  end
+
   local idx = data.next_index or 1
   data.next_index = idx + 1
   math.randomseed(frame() + idx)
