@@ -1,0 +1,65 @@
+# Build l'installeur Windows et l'attache à une Release GitHub.
+# Le build tourne dans la CI (dev-time) — ça ne viole pas la contrainte « app
+# hors-ligne », qui ne concerne que le runtime de l'application.
+#
+# Créé par reiassezbeau — https://github.com/reiassezbeau
+#
+# Déclenchement :
+#   - push d'un tag `v*` (ex. `git tag v0.1.0 && git push --tags`) → Release (draft)
+#   - manuellement (workflow_dispatch) avec un tag optionnel
+
+name: Release (Windows installer)
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag de la release (ex. v0.1.0)"
+        required: false
+        default: "v0.0.0-dev"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Rust (stable, MSVC)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build + Release (Tauri)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          releaseName: "Isaac Completion Tracker ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}"
+          releaseBody: |
+            Installeur Windows (**.exe** NSIS + **.msi**) pour Isaac Completion Tracker.
+
+            > ⚠️ Non signé : Windows SmartScreen affichera « éditeur inconnu ».
+            > Clique sur **« Informations complémentaires » → « Exécuter quand même »**.
+
+            Créé par [reiassezbeau](https://github.com/reiassezbeau).
+          releaseDraft: true
+          prerelease: false
