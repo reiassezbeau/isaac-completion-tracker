@@ -53,7 +53,8 @@ pub fn load_slot(
     state: State<AppState>,
     path: String,
 ) -> Result<engine::Dashboard, String> {
-    let bytes = std::fs::read(&path).map_err(|e| format!("Lecture impossible : {e}"))?;
+    let bytes = save_locator::read_file_with_retry(std::path::Path::new(&path))
+        .map_err(|e| format!("Lecture impossible : {e}"))?;
     let save = save_parser::parse(&bytes).map_err(|e| e.to_string())?;
 
     // Watcher live sur ce fichier.
@@ -71,7 +72,8 @@ pub fn refresh(state: State<AppState>) -> Result<engine::Dashboard, String> {
         let cur = state.current.lock().unwrap();
         cur.as_ref().map(|(_, p)| p.clone()).ok_or("Aucune sauvegarde chargée.")?
     };
-    let bytes = std::fs::read(&path).map_err(|e| format!("Lecture impossible : {e}"))?;
+    let bytes = save_locator::read_file_with_retry(std::path::Path::new(&path))
+        .map_err(|e| format!("Lecture impossible : {e}"))?;
     let save = save_parser::parse(&bytes).map_err(|e| e.to_string())?;
     *state.current.lock().unwrap() = Some((save, path));
     dashboard(state)

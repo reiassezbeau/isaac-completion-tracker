@@ -421,6 +421,17 @@ mod tests {
         eprintln!("Mother: {mother:?}  Beast: {beast:?}");
         assert_eq!(mother, vec![9], "Mother attendu = {{Eden}}");
         assert_eq!(beast, vec![0, 3, 6, 7, 9], "Beast attendu = {{Isaac,Judas,Samson,Azazel,Eden}}");
+
+        // Cohérence marks<->succès (garde-fous §1) : Revelation (secret-ID 470 =
+        // « Defeat Mother as Bethany ») verrouillé <=> la mark Mother de Bethany
+        // (char_index 15, mark_index 10) doit être vide. Recoupe les deux décodages.
+        if !save.is_unlocked(470) {
+            assert_eq!(
+                save.marks[15][10].effective,
+                MarkDifficulty::None,
+                "incohérence : Revelation(470) verrouillé mais la mark Mother de Bethany n'est pas vide"
+            );
+        }
     }
 
     fn find_real_save() -> Option<String> {

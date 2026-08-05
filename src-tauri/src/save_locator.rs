@@ -17,6 +17,22 @@ use crate::save_parser::{self, Edition};
 
 const ISAAC_APPID: &str = "250900";
 
+/// Lecture avec petites tentatives : la save peut être momentanément verrouillée
+/// pendant que le jeu l'écrit (torn read). On réessaie brièvement au lieu de crasher.
+pub fn read_file_with_retry(path: &Path) -> std::io::Result<Vec<u8>> {
+    let mut last_err = None;
+    for attempt in 0u64..4 {
+        match std::fs::read(path) {
+            Ok(bytes) => return Ok(bytes),
+            Err(e) => {
+                last_err = Some(e);
+                std::thread::sleep(std::time::Duration::from_millis(60 * (attempt + 1)));
+            }
+        }
+    }
+    Err(last_err.unwrap_or_else(|| std::io::Error::other("lecture impossible")))
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct SaveSlot {
     pub path: String,
@@ -132,7 +148,7 @@ pub fn slot_from_file(path: &Path, source: String) -> SaveSlot {
         marks_reliable: false,
         parse_error: None,
     };
-    match std::fs::read(path) {
+    match read_file_with_retry(path) {
         Ok(bytes) => match save_parser::parse(&bytes) {
             Ok(save) => {
                 slot.edition = Some(save.edition);
