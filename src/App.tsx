@@ -1,41 +1,95 @@
 /**
- * Isaac Completion Tracker — fenêtre d'amorçage (étape 1 du plan de build).
- * L'UI complète (Dashboard, Personnage, Prédicteur, Succès, Roadmap, À propos)
- * arrive aux étapes suivantes. Ici : on prouve juste que la fenêtre se lance,
- * avec le thème sombre « Isaac » et Tailwind opérationnels.
- *
+ * Isaac Completion Tracker — coquille applicative.
  * Créé par reiassezbeau — https://github.com/reiassezbeau
  */
-function App() {
+import { useEffect } from "react";
+import { listen } from "@tauri-apps/api/event";
+import { AlertOctagon, Loader2 } from "lucide-react";
+import { useStore } from "./store";
+import { Shell } from "./components/Layout";
+import { SlotPicker } from "./views/SlotPicker";
+import { DashboardView } from "./views/Dashboard";
+import { CharacterView } from "./views/Character";
+import { PredictorView } from "./views/Predictor";
+import { AchievementsView } from "./views/Achievements";
+import { RoadmapView } from "./views/Roadmap";
+import { SettingsView } from "./views/Settings";
+import { AboutView } from "./views/About";
+
+function CurrentView() {
+  const view = useStore((s) => s.view);
+  switch (view) {
+    case "dashboard":
+      return <DashboardView />;
+    case "character":
+      return <CharacterView />;
+    case "predictor":
+      return <PredictorView />;
+    case "achievements":
+      return <AchievementsView />;
+    case "roadmap":
+      return <RoadmapView />;
+    case "settings":
+      return <SettingsView />;
+    case "about":
+      return <AboutView />;
+  }
+}
+
+function ParseErrorScreen() {
+  const { parseError, currentSlot } = useStore();
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-isaac-gold">
-          The Binding of Isaac · Repentance+
-        </p>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Isaac{" "}
-          <span className="text-isaac-blood">Completion</span> Tracker
-        </h1>
-        <p className="mt-4 max-w-md text-sm leading-relaxed text-isaac-muted">
-          Suivi de complétion 100 % hors-ligne — lecture de votre sauvegarde,
-          641 succès, completion marks par personnage, et la route vers{" "}
-          <span className="text-isaac-gold">Dead God</span>.
-        </p>
-
-        <div className="mt-8 inline-flex items-center gap-2 rounded-xl border border-isaac-border bg-isaac-surface px-4 py-2 text-xs text-isaac-muted">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-isaac-done" />
-          Fenêtre d'amorçage — étape 1/10 : scaffold opérationnel
-        </div>
-      </main>
-
-      <footer className="border-t border-isaac-border bg-isaac-surface/60 px-6 py-3 text-center text-xs text-isaac-muted">
-        Créé par{" "}
-        <span className="font-medium text-isaac-text">reiassezbeau</span> ·{" "}
-        <span className="text-isaac-gold">github.com/reiassezbeau</span>
-      </footer>
+    <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
+      <AlertOctagon className="h-12 w-12 text-isaac-blood" />
+      <h1 className="text-xl font-bold">Impossible de lire cette sauvegarde</h1>
+      <p className="text-sm text-isaac-muted">
+        {currentSlot?.filename} — {parseError}
+      </p>
+      <p className="text-sm text-isaac-muted">
+        Le format ne correspond pas à ce qui était attendu. Choisis un autre slot, ou localise le bon
+        dossier de sauvegarde.
+      </p>
+      <button
+        onClick={() =>
+          useStore.setState({ parseError: null, currentSlot: null, currentPath: null, dashboard: null })
+        }
+        className="rounded-lg border border-isaac-border bg-isaac-surface2 px-4 py-2 text-sm text-isaac-text hover:border-isaac-gold/50"
+      >
+        ← Choisir une autre sauvegarde
+      </button>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  const { dashboard, currentSlot, parseError, loading } = useStore();
+
+  useEffect(() => {
+    const unlisten = listen("save-changed", () => {
+      useStore.getState().refresh(true);
+    });
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, []);
+
+  if (parseError && !dashboard) return <ParseErrorScreen />;
+
+  if (!currentSlot && !dashboard) {
+    return <SlotPicker />;
+  }
+
+  if (loading && !dashboard) {
+    return (
+      <div className="flex min-h-screen items-center justify-center gap-2 text-isaac-muted">
+        <Loader2 className="h-6 w-6 animate-spin" /> Chargement de la sauvegarde…
+      </div>
+    );
+  }
+
+  return (
+    <Shell>
+      <CurrentView />
+    </Shell>
+  );
+}
