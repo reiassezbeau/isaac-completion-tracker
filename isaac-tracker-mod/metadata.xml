@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <name>Isaac Tracker — Stats (companion)</name>
+  <directory>isaac-tracker-mod</directory>
+  <description>Mod compagnon PUREMENT OBSERVATEUR pour Isaac Completion Tracker : compte les hits pris et les stats de run, écrit en JSON pour l'app. Aucun changement de gameplay, la console de debug n'est jamais utilisée. Créé par reiassezbeau — https://github.com/reiassezbeau</description>
+  <version>0.1.0</version>
+  <visibility>Private</visibility>
+  <tag id="Lua"/>
+</metadata>
