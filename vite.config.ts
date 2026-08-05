@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 

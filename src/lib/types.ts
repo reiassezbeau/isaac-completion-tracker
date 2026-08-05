@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 // Types partagés avec le backend Rust (miroir des structs `Serialize`).
 // UI en français, mais noms de succès / persos / bosses en anglais (comme en jeu).
 

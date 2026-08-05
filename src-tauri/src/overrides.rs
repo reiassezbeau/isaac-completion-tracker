@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 //! overrides — corrections manuelles (filet de sécurité, §5.7).
 //! Stockées dans l'appdata de l'app (`overrides.json`), JAMAIS dans la save du jeu.
 //! Appliquées PAR-DESSUS les données parsées.

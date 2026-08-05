@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 //! watcher — surveille le fichier de save (notify) et émet un event `save-changed`
 //! au front à chaque modification (live update, §5.1).
 

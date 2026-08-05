@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 mod commands;
 mod engine;
 mod knowledge;
@@ -14,6 +17,11 @@ use tauri::Manager;
 use commands::AppState;
 use knowledge::Knowledge;
 use overrides::Overrides;
+
+/// Attribution gravée dans le binaire (couche indépendante, cf. garde-fous §5).
+pub const AUTHOR: &str = "reiassezbeau";
+pub const REPO_URL: &str = "https://github.com/reiassezbeau/isaac-completion-tracker";
+pub const COPYRIGHT: &str = "© 2026 reiassezbeau — https://github.com/reiassezbeau";
 
 /// Résout le dossier `resources` (bundle en prod, `src-tauri/resources` en dev).
 fn resources_dir(app: &tauri::App) -> PathBuf {
@@ -36,6 +44,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
+            println!("Isaac Completion Tracker — {COPYRIGHT}");
             let res_dir = resources_dir(app);
             let knowledge = Knowledge::load(&res_dir)?;
             let app_data_dir = app

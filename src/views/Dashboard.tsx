@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 import { AlertTriangle, Skull, Target, Trophy } from "lucide-react";
 import { useStore } from "../store";
 import { Card, ProgressBar, SectionTitle, Pill } from "../components/ui";

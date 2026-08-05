@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 import { useEffect } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderSearch, HardDriveDownload, Loader2 } from "lucide-react";

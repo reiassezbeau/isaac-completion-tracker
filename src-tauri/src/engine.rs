@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 //! engine — croise la save × la base de connaissances : statut par succès, marks
 //! par personnage, % global, distance à Dead God, prédicteur et roadmap.
 //! Les overrides manuels sont appliqués PAR-DESSUS les données parsées.

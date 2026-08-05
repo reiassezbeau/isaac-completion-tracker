@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 //! knowledge — chargement de la base de connaissances bundlée (offline).
 //! Les JSON sont générés au dev-time par `tools/build-knowledge` et embarqués
 //! via `tauri.conf.json > bundle > resources`.

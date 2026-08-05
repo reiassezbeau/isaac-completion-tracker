@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 import { Github, Heart } from "lucide-react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Card } from "../components/ui";
@@ -45,7 +48,7 @@ export function AboutView() {
             tracer ta route vers Dead God. Aucun appel réseau, aucune API Steam requise.
           </p>
           <p>
-            Projet open-source (licence MIT). La base des 641 succès est compilée au dev-time depuis le wiki
+            Projet open-source (licence GPL-3.0). La base des 641 succès est compilée au dev-time depuis le wiki
             communautaire et embarquée dans l'app.
           </p>
           <p className="flex items-center gap-1.5 text-xs">

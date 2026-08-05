@@ -95,6 +95,7 @@ proprement (aucun code tiers copié) et **validé contre une vraie sauvegarde**.
 
 ## Licence
 
-[MIT](LICENSE) © 2026 reiassezbeau.
+[GPL-3.0](LICENSE) © 2026 reiassezbeau. Tout dérivé doit rester open-source et
+conserver l'attribution — tu ne peux pas repackager ce projet en le revendiquant.
 
 Outil **communautaire non affilié** à Nicalis / Edmund McMillen.

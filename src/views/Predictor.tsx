@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 import { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, Info, Skull, XCircle } from "lucide-react";
 import { api } from "../lib/api";

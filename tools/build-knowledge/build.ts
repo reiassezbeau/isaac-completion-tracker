@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
 /**
  * tools/build-knowledge/build.ts — Compilateur de la base de connaissances (DEV-TIME, internet OK).
  *
