@@ -413,14 +413,18 @@ mod tests {
         // Verrouillés : Dead God=637.
         assert!(!save.is_unlocked(637), "Dead God (637) attendu verrouillé");
 
-        // Completion marks : Mother (idx10) = {Eden(9)} ; Beast (idx11) =
-        // {Isaac(0),Judas(3),Samson(6),Azazel(7),Eden(9)}.
+        // Completion marks. La save ÉVOLUE quand l'utilisateur joue → on vérifie
+        // l'INCLUSION des complétions connues (elles ne peuvent que s'ajouter), pas
+        // l'égalité exacte. Connues à l'origine : Mother avec Eden(9) ; Beast avec
+        // Isaac(0),Judas(3),Samson(6),Azazel(7),Eden(9).
         let has_mark = |c: usize, m: usize| save.marks[c][m].effective != MarkDifficulty::None;
         let mother: Vec<usize> = (0..NUM_CHARACTERS).filter(|&c| has_mark(c, 10)).collect();
         let beast: Vec<usize> = (0..NUM_CHARACTERS).filter(|&c| has_mark(c, 11)).collect();
         eprintln!("Mother: {mother:?}  Beast: {beast:?}");
-        assert_eq!(mother, vec![9], "Mother attendu = {{Eden}}");
-        assert_eq!(beast, vec![0, 3, 6, 7, 9], "Beast attendu = {{Isaac,Judas,Samson,Azazel,Eden}}");
+        assert!(mother.contains(&9), "Mother doit inclure Eden(9) ; obtenu {mother:?}");
+        for c in [0, 3, 6, 7, 9] {
+            assert!(beast.contains(&c), "Beast doit inclure {{Isaac,Judas,Samson,Azazel,Eden}} ; obtenu {beast:?}");
+        }
 
         // Cohérence marks<->succès (garde-fous §1) : Revelation (secret-ID 470 =
         // « Defeat Mother as Bethany ») verrouillé <=> la mark Mother de Bethany

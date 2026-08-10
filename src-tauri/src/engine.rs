@@ -502,3 +502,206 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
         dead_god_total: DEAD_GOD_TOTAL,
     }
 }
+
+// ===========================================================================
+// Tests déterministes (états synthétiques → sorties attendues).
+// ===========================================================================
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::knowledge::{Achievement, Character, Ending, Unlock};
+    use crate::save_parser::Mark;
+
+    fn mark(d: MarkDifficulty) -> Mark {
+        Mark { solo: d, online: MarkDifficulty::None, effective: d }
+    }
+
+    /// Grille de marks 34×12 toutes vides.
+    fn empty_grid() -> Vec<Vec<Mark>> {
+        vec![vec![mark(MarkDifficulty::None); NUM_MARKS]; NUM_CHARACTERS]
+    }
+
+    fn save(unlocked: &[u32], marks: Vec<Vec<Mark>>) -> SaveData {
+        let mut ach = vec![false; NUM_ACHIEVEMENTS];
+        for &id in unlocked {
+            ach[(id - 1) as usize] = true;
+        }
+        SaveData {
+            edition: Edition::RepentancePlus,
+            version: 0x82,
+            checksum_ok: true,
+            achievements: ach,
+            marks_reliable: true,
+            marks,
+        }
+    }
+
+    fn char_completion(id: u32, name: &str, ch: &str, target: &str) -> Achievement {
+        Achievement {
+            id,
+            name: name.into(),
+            description: "Unlocked a new item.".into(),
+            category: "completion_mark".into(),
+            dlc: "repentance".into(),
+            hidden: false,
+            unlock: Unlock {
+                text: format!("Defeat {target} as {ch}"),
+                kind: "character_completion".into(),
+                character: Some(ch.into()),
+                target: Some(target.into()),
+                predictable: true,
+            },
+            reward: format!("{name} (objet)"),
+        }
+    }
+
+    fn boss_kill(id: u32, name: &str, target: &str) -> Achievement {
+        Achievement {
+            id,
+            name: name.into(),
+            description: "Unlocked a new item.".into(),
+            category: "boss".into(),
+            dlc: "afterbirth_plus".into(),
+            hidden: false,
+            unlock: Unlock {
+                text: format!("Defeat {target}"),
+                kind: "boss_first_kill".into(),
+                character: None,
+                target: Some(target.into()),
+                predictable: true,
+            },
+            reward: format!("{name} (familier)"),
+        }
+    }
+
+    fn cumulative(id: u32, name: &str) -> Achievement {
+        Achievement {
+            id,
+            name: name.into(),
+            description: "misc".into(),
+            category: "misc".into(),
+            dlc: "afterbirth".into(),
+            hidden: false,
+            unlock: Unlock {
+                text: "Blow up 30 tinted rocks".into(),
+                kind: "cumulative".into(),
+                character: None,
+                target: None,
+                predictable: false,
+            },
+            reward: "—".into(),
+        }
+    }
+
+    fn knowledge() -> Knowledge {
+        Knowledge {
+            characters: vec![
+                Character { id: "isaac".into(), name: "Isaac".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 0 },
+                Character { id: "bethany".into(), name: "Bethany".into(), kind: "regular".into(), dlc: "repentance".into(), save_index: 15 },
+            ],
+            endings: vec![
+                Ending { id: "hush".into(), name: "Hush".into(), mark_index: 8, hard_matters: true },
+                Ending { id: "mother".into(), name: "Mother".into(), mark_index: 10, hard_matters: true },
+                Ending { id: "beast".into(), name: "The Beast".into(), mark_index: 11, hard_matters: true },
+            ],
+            achievements: vec![
+                char_completion(470, "Revelation", "bethany", "mother"),
+                char_completion(441, "Options?", "isaac", "beast"),
+                boss_kill(502, "Hushy", "hush"),
+                cumulative(235, "1001%"),
+            ],
+            routing_tips: vec![],
+        }
+    }
+
+    #[test]
+    fn predict_unlocks_character_completion() {
+        let kn = knowledge();
+        let ov = Overrides::default();
+        let st = State::build(&save(&[], empty_grid()), &kn, &ov);
+
+        let p = predict(&st, &kn, "bethany", "mother").unwrap();
+        assert_eq!(p.new_unlocks.len(), 1);
+        assert_eq!(p.new_unlocks[0].id, 470);
+        assert!(p.already_unlocked.is_empty());
+        assert!(p.fills_mark);
+        assert!(p.advances_dead_god);
+    }
+
+    #[test]
+    fn predict_boss_first_kill_matches_any_character() {
+        let kn = knowledge();
+        let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
+        // Hushy (boss_first_kill hush) doit sortir quel que soit le perso.
+        let p = predict(&st, &kn, "isaac", "hush").unwrap();
+        assert!(p.new_unlocks.iter().any(|a| a.id == 502));
+    }
+
+    #[test]
+    fn predict_already_unlocked_gives_no_new() {
+        let kn = knowledge();
+        let st = State::build(&save(&[470], empty_grid()), &kn, &Overrides::default());
+        let p = predict(&st, &kn, "bethany", "mother").unwrap();
+        assert!(p.new_unlocks.is_empty());
+        assert_eq!(p.already_unlocked.len(), 1);
+        assert_eq!(p.already_unlocked[0].id, 470);
+    }
+
+    #[test]
+    fn dead_god_counts_hard_marks_over_full_grid() {
+        let kn = knowledge();
+        let mut grid = empty_grid();
+        grid[15][10] = mark(MarkDifficulty::Hard); // bethany mother
+        grid[0][11] = mark(MarkDifficulty::Hard); // isaac beast
+        let st = State::build(&save(&[], grid), &kn, &Overrides::default());
+        let d = dashboard(&st, &kn, &Overrides::default());
+        assert_eq!(d.dead_god_total, DEAD_GOD_TOTAL);
+        assert_eq!(d.dead_god_remaining, DEAD_GOD_TOTAL - 2);
+    }
+
+    #[test]
+    fn hard_mark_removes_dead_god_progress_but_still_predicts_new_unlock() {
+        let kn = knowledge();
+        let mut grid = empty_grid();
+        grid[15][10] = mark(MarkDifficulty::Hard); // bethany mother déjà Hard
+        let st = State::build(&save(&[], grid), &kn, &Overrides::default());
+        let p = predict(&st, &kn, "bethany", "mother").unwrap();
+        // La marque est déjà Hard → pas de gain Dead God, mais Revelation reste à débloquer.
+        assert!(!p.advances_dead_god);
+        assert_eq!(p.new_unlocks.len(), 1);
+    }
+
+    #[test]
+    fn override_forces_achievement_state() {
+        let kn = knowledge();
+        let mut ov = Overrides::default();
+        ov.achievements.insert(470, true); // force Revelation débloqué
+        let st = State::build(&save(&[], empty_grid()), &kn, &ov);
+        assert!(st.is_unlocked(470));
+        let p = predict(&st, &kn, "bethany", "mother").unwrap();
+        assert!(p.new_unlocks.is_empty());
+        assert_eq!(p.already_unlocked.len(), 1);
+    }
+
+    #[test]
+    fn next_targets_ranks_by_new_unlocks() {
+        let kn = knowledge();
+        let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
+        let t = next_targets(&st, &kn, 10);
+        assert!(!t.is_empty());
+        // Chaque suggestion en tête doit apporter au moins un déblocage ou une marque Hard.
+        assert!(t.iter().all(|s| s.new_unlocks > 0 || s.fills_hard_mark));
+        // Bethany→Mother (Revelation) doit figurer avec 1 déblocage.
+        assert!(t.iter().any(|s| s.character_id == "bethany" && s.target_id == "mother" && s.new_unlocks == 1));
+    }
+
+    #[test]
+    fn character_detail_lists_missing_mark_and_its_unlock() {
+        let kn = knowledge();
+        let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
+        let d = character_detail(&st, &kn, "bethany").unwrap();
+        // La mark Mother est à faire, et son todo référence Revelation.
+        let mother_todo = d.todo.iter().find(|t| t.ending_id == "mother").expect("todo mother");
+        assert!(mother_todo.unlocks.iter().any(|u| u.id == 470));
+    }
+}
