@@ -250,9 +250,14 @@ function reward(name: string, cat: string, description: string): string {
 function stripTags(s: string): string {
   return s
     .replace(/<[^>]+>/g, "")
-    .replace(/&#0*39;|&#x27;/gi, "'")
-    .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&nbsp;/g, " ")
+    // Entités numériques AVANT la normalisation d'espaces : &#160; (NBSP) doit
+    // devenir un espace, sinon "Tainted&#160;???" casse la détection de perso.
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)))
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&").replace(/&quot;/g, '"')
     .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/ /g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -360,6 +365,33 @@ async function main() {
   console.log("  Catégorie:", dist(achievements.map((a) => a.category)));
   console.log("  Type unlock:", dist(achievements.map((a) => a.unlock.type)));
   console.log("  Prédictibles:", achievements.filter((a) => a.unlock.predictable).length);
+
+  // --- Validation approfondie (garde-fous §3.2) : la classification qui pilote
+  // le prédicteur/EV DOIT être correcte. On échoue le build si un invariant casse.
+  const charIds = new Set(CHARACTERS.map((c) => c.id));
+  const endingIds = new Set(ENDINGS.map((e) => e.id));
+  for (const a of achievements) {
+    const u = a.unlock;
+    if (u.character && !charIds.has(u.character)) throw new Error(`char invalide #${a.id} ${a.name}: "${u.character}"`);
+    if (u.target && !endingIds.has(u.target) && !u.target.startsWith("challenge_"))
+      throw new Error(`target invalide #${a.id} ${a.name}: "${u.target}"`);
+    if (u.type === "character_completion" && (!u.character || !u.target))
+      throw new Error(`character_completion incomplet #${a.id} ${a.name}`);
+  }
+  // Couverture : chaque perso (34) doit avoir une complétion Mother ET Beast.
+  const cover = new Map<string, Set<string>>();
+  for (const a of achievements) {
+    if (a.unlock.type === "character_completion" && a.unlock.character) {
+      if (!cover.has(a.unlock.character)) cover.set(a.unlock.character, new Set());
+      cover.get(a.unlock.character)!.add(a.unlock.target!);
+    }
+  }
+  for (const c of CHARACTERS) {
+    const s = cover.get(c.id) ?? new Set<string>();
+    if (!s.has("mother") || !s.has("beast"))
+      throw new Error(`Couverture incomplète pour ${c.id} : Mother/Beast manquant (classification cassée ?)`);
+  }
+  console.log(`  ✓ Validation : ids valides, character_completion complets, couverture Mother+Beast ${CHARACTERS.length}/${CHARACTERS.length}`);
 
   mkdirSync(RES, { recursive: true });
   const meta = {

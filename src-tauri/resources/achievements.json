@@ -3,7 +3,7 @@
     "game": "The Binding of Isaac: Rebirth",
     "edition": "Repentance+",
     "total": 641,
-    "generated_at": "2026-08-04",
+    "generated_at": "2026-08-10",
     "source": "bindingofisaacrebirth.wiki.gg (page Achievements, order by id)",
     "note": "Compilé au dev-time ; runtime 100% offline. Les secret-IDs correspondent aux bits de la save."
   },
@@ -6507,7 +6507,7 @@
     {
       "id": 407,
       "name": "A Secret Exit",
-      "description": "Complete&#160;??? 3 times.",
+      "description": "Complete ??? 3 times.",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -6518,7 +6518,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Complete&#160;??? 3 times."
+      "reward": "Complete ??? 3 times."
     },
     {
       "id": 408,
@@ -6763,7 +6763,7 @@
     {
       "id": 423,
       "name": "Divine Intervention",
-      "description": "Complete&#160;??? with Bethany.",
+      "description": "Complete ??? with Bethany.",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -6774,7 +6774,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Complete&#160;??? with Bethany."
+      "reward": "Complete ??? with Bethany."
     },
     {
       "id": 424,
@@ -6955,7 +6955,7 @@
     {
       "id": 435,
       "name": "Vanishing Twin",
-      "description": "Complete&#160;??? with Jacob and Esau.",
+      "description": "Complete ??? with Jacob and Esau.",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -6966,7 +6966,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Complete&#160;??? with Jacob and Esau."
+      "reward": "Complete ??? with Jacob and Esau."
     },
     {
       "id": 436,
@@ -7163,7 +7163,7 @@
     {
       "id": 448,
       "name": "Eternal D6",
-      "description": "Complete the Corpse with&#160;???.",
+      "description": "Complete the Corpse with ???.",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7174,12 +7174,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "Complete the Corpse with&#160;???."
+      "reward": "Complete the Corpse with ???."
     },
     {
       "id": 449,
       "name": "Montezuma's Revenge",
-      "description": "Complete the final chapter with&#160;???.",
+      "description": "Complete the final chapter with ???.",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7190,7 +7190,7 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "Complete the final chapter with&#160;???."
+      "reward": "Complete the final chapter with ???."
     },
     {
       "id": 450,
@@ -7916,15 +7916,15 @@
       "id": 495,
       "name": "The Swarm",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat The Beast as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat The Beast as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "beast",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -8444,15 +8444,15 @@
       "id": 528,
       "name": "The Emperor",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Ultra Greedier as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Ultra Greedier as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "greed",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -8892,15 +8892,15 @@
       "id": 556,
       "name": "Dingle Berry",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Isaac, ???, Satan, and The Lamb as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Isaac, ???, Satan, and The Lamb as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "lamb",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -8908,15 +8908,15 @@
       "id": 557,
       "name": "Ring Cap",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Mother as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Mother as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "mother",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -9404,15 +9404,15 @@
       "id": 588,
       "name": "IBS",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Delirium as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Delirium as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "delirium",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -9676,15 +9676,15 @@
       "id": 605,
       "name": "Charming Poop",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Mega Satan as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Mega Satan as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "mega_satan",
+        "predictable": true
       },
       "reward": "???"
     },
@@ -9946,17 +9946,17 @@
     },
     {
       "id": 622,
-      "name": "Soul of&#160;???",
+      "name": "Soul of ???",
       "description": "???",
-      "category": "misc",
+      "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
       "unlock": {
-        "text": "Defeat Hush and Boss Rush as Tainted&#160;???",
-        "type": "cumulative",
-        "character": null,
-        "target": null,
-        "predictable": false
+        "text": "Defeat Hush and Boss Rush as Tainted ???",
+        "type": "character_completion",
+        "character": "tainted_blue_baby",
+        "target": "boss_rush",
+        "predictable": true
       },
       "reward": "???"
     },
