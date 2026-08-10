@@ -11,6 +11,7 @@ import type {
   CharacterListItem,
   Dashboard,
   Ending,
+  HealthReport,
   Overrides,
   Prediction,
   Roadmap,
@@ -35,6 +36,11 @@ export const api = {
   nextTargets: (limit: number) => invoke<TargetSuggestion[]>("next_targets", { limit }),
   getRoadmap: () => invoke<Roadmap>("get_roadmap"),
   getAchievements: () => invoke<AchievementView[]>("get_achievements"),
+
+  getHealth: () => invoke<HealthReport>("get_health"),
+  isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),
+  installTrackerMod: () => invoke<string>("install_tracker_mod"),
+  backupSave: (slotPath: string) => invoke<string>("backup_save", { slotPath }),
 
   getOverrides: () => invoke<Overrides>("get_overrides"),
   setOverrideAchievement: (secretId: number, value: boolean | null) =>

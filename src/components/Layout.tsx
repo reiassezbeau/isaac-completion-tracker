@@ -9,6 +9,7 @@ import {
   Map,
   RefreshCw,
   Settings,
+  Stethoscope,
   User,
   Wand2,
 } from "lucide-react";
@@ -22,6 +23,7 @@ const NAV: { id: ViewId; label: string; icon: typeof User }[] = [
   { id: "predictor", label: "Prédicteur", icon: Wand2 },
   { id: "achievements", label: "Succès", icon: ListChecks },
   { id: "roadmap", label: "Roadmap", icon: Map },
+  { id: "diagnostic", label: "Diagnostic", icon: Stethoscope },
   { id: "settings", label: "Corrections", icon: Settings },
   { id: "about", label: "À propos", icon: Info },
 ];

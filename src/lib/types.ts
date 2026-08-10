@@ -166,3 +166,27 @@ export interface Overrides {
   achievements: Record<number, boolean>;
   marks: Record<string, string>;
 }
+
+export interface PathStatus {
+  path: string | null;
+  exists: boolean;
+}
+
+export interface HealthReport {
+  game_root: PathStatus;
+  mods_dir: PathStatus;
+  data_dir: PathStatus;
+  steam_save_found: boolean;
+  save_loaded: boolean;
+  save_path: string | null;
+  edition: Edition | null;
+  unlocked: number | null;
+  total: number;
+  checksum_ok: boolean | null;
+  marks_reliable: boolean | null;
+  mod_installed: boolean;
+  mod_dir: string | null;
+  mod_data_file: string | null;
+  mom_beaten: boolean | null;
+  warnings: string[];
+}

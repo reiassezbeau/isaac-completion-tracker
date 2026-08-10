@@ -3,18 +3,19 @@
 
 //! commands — surface Tauri (#[tauri::command]) + état applicatif partagé.
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 
 use notify::RecommendedWatcher;
 use serde::Serialize;
-use tauri::{AppHandle, State};
+use tauri::{AppHandle, Manager, State};
 
 use crate::engine::{self, State as EngineState};
 use crate::knowledge::{Achievement, Character, Ending, Knowledge};
 use crate::overrides::Overrides;
+use crate::paths;
 use crate::save_locator::{self, SaveSlot};
-use crate::save_parser::{self, MarkDifficulty, SaveData, NUM_MARKS};
+use crate::save_parser::{self, Edition, MarkDifficulty, SaveData, NUM_MARKS};
 use crate::watcher;
 
 pub struct AppState {
@@ -252,4 +253,168 @@ pub fn reset_overrides(state: State<AppState>) -> Result<(), String> {
     *ov = Overrides::default();
     ov.save(&state.app_data_dir).map_err(|e| e.to_string())?;
     Ok(())
+}
+
+// -- Diagnostic / mod / backup ---------------------------------------------
+
+#[derive(Serialize)]
+pub struct PathStatus {
+    pub path: Option<String>,
+    pub exists: bool,
+}
+
+fn path_status(p: Option<PathBuf>) -> PathStatus {
+    match p {
+        Some(p) => PathStatus {
+            exists: p.exists(),
+            path: Some(p.to_string_lossy().into_owned()),
+        },
+        None => PathStatus { path: None, exists: false },
+    }
+}
+
+#[derive(Serialize)]
+pub struct HealthReport {
+    /// Racine de jeu RÉELLE résolue (gère le piège OneDrive).
+    pub game_root: PathStatus,
+    pub mods_dir: PathStatus,
+    pub data_dir: PathStatus,
+    pub steam_save_found: bool,
+    pub save_loaded: bool,
+    pub save_path: Option<String>,
+    pub edition: Option<Edition>,
+    pub unlocked: Option<usize>,
+    pub total: usize,
+    pub checksum_ok: Option<bool>,
+    pub marks_reliable: Option<bool>,
+    pub mod_installed: bool,
+    pub mod_dir: Option<String>,
+    pub mod_data_file: Option<String>,
+    /// Mom battue sur le slot chargé (proxy : secret 4 « The Womb ») — cf. caveat §2.
+    pub mom_beaten: Option<bool>,
+    pub warnings: Vec<String>,
+}
+
+#[tauri::command]
+pub fn get_health(state: State<AppState>) -> HealthReport {
+    let game_root = paths::resolve_game_root();
+    let mut warnings = Vec::new();
+
+    // Ambiguïté OneDrive : plusieurs "Documents" contiennent-ils un dossier de jeu ?
+    let roots_found: Vec<PathBuf> = paths::documents_candidates()
+        .into_iter()
+        .flat_map(|b| paths::game_roots_under(&b))
+        .filter(|p| paths::is_game_root(p))
+        .collect();
+    if roots_found.len() > 1 {
+        warnings.push(format!(
+            "Plusieurs dossiers de jeu détectés (OneDrive ?) : {}. L'app utilise le premier réel.",
+            roots_found.iter().map(|p| p.display().to_string()).collect::<Vec<_>>().join(" · ")
+        ));
+    }
+    if let Some(r) = &game_root {
+        if r.to_string_lossy().contains("OneDrive") {
+            warnings.push("Le dossier de jeu est sous OneDrive — la synchro peut déplacer les fichiers.".into());
+        }
+    } else {
+        warnings.push("Dossier de jeu introuvable. Lance le jeu au moins une fois, ou utilise « Localiser ma save… ».".into());
+    }
+
+    let mods_dir = paths::mods_dir();
+    let data_dir = paths::data_dir();
+    let tracker_dir = paths::tracker_mod_dir();
+    let mod_installed = tracker_dir.as_ref().map(|d| d.join("main.lua").exists()).unwrap_or(false);
+    let mod_data_file = paths::find_mod_data_file();
+
+    let slots = save_locator::list_saves();
+    let steam_save_found = slots.iter().any(|s| s.source == "Steam Cloud");
+
+    let cur = state.current.lock().unwrap();
+    let (save_loaded, save_path, edition, unlocked, checksum_ok, marks_reliable, mom_beaten) =
+        if let Some((save, path)) = cur.as_ref() {
+            (
+                true,
+                Some(path.clone()),
+                Some(save.edition),
+                Some(save.unlocked_count()),
+                Some(save.checksum_ok),
+                Some(save.marks_reliable),
+                Some(save.is_unlocked(4)), // secret 4 = "The Womb" (Defeat Mom)
+            )
+        } else {
+            (false, None, None, None, None, None, None)
+        };
+
+    HealthReport {
+        game_root: path_status(game_root),
+        mods_dir: path_status(mods_dir),
+        data_dir: path_status(data_dir),
+        steam_save_found,
+        save_loaded,
+        save_path,
+        edition,
+        unlocked,
+        total: save_parser::NUM_ACHIEVEMENTS,
+        checksum_ok,
+        marks_reliable,
+        mod_installed,
+        mod_dir: tracker_dir.map(|d| d.to_string_lossy().into_owned()),
+        mod_data_file: mod_data_file.map(|d| d.to_string_lossy().into_owned()),
+        mom_beaten,
+        warnings,
+    }
+}
+
+/// Source des fichiers du mod : bundle (resource_dir/isaac-tracker-mod) ou dev (repo).
+fn mod_source_dir(app: &AppHandle) -> Option<PathBuf> {
+    if let Ok(res) = app.path().resource_dir() {
+        let p = res.join(paths::MOD_FOLDER);
+        if p.join("main.lua").exists() {
+            return Some(p);
+        }
+    }
+    let dev = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent()?
+        .join(paths::MOD_FOLDER);
+    if dev.join("main.lua").exists() {
+        return Some(dev);
+    }
+    None
+}
+
+#[tauri::command]
+pub fn is_tracker_mod_installed() -> bool {
+    paths::tracker_mod_dir().map(|d| d.join("main.lua").exists()).unwrap_or(false)
+}
+
+#[tauri::command]
+pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
+    let src = mod_source_dir(&app).ok_or("Fichiers du mod introuvables dans les ressources de l'app.")?;
+    let dest = paths::tracker_mod_dir()
+        .ok_or("Dossier de jeu introuvable — lance le jeu au moins une fois, puis réessaie.")?;
+    std::fs::create_dir_all(&dest).map_err(|e| e.to_string())?;
+    for f in ["metadata.xml", "main.lua"] {
+        std::fs::copy(src.join(f), dest.join(f)).map_err(|e| format!("copie {f} : {e}"))?;
+    }
+    Ok(dest.to_string_lossy().into_owned())
+}
+
+/// Copie datée de la sauvegarde dans l'appdata (filet de sécurité avant install mod).
+#[tauri::command]
+pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, String> {
+    let src = Path::new(&slot_path);
+    let bytes = save_locator::read_file_with_retry(src).map_err(|e| e.to_string())?;
+    let backups = state.app_data_dir.join("save_backups");
+    std::fs::create_dir_all(&backups).map_err(|e| e.to_string())?;
+    let ts = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    let base = src
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_else(|| "save.dat".into());
+    let dest = backups.join(format!("{base}.{ts}.bak"));
+    std::fs::write(&dest, &bytes).map_err(|e| e.to_string())?;
+    Ok(dest.to_string_lossy().into_owned())
 }

@@ -5,6 +5,7 @@ mod commands;
 mod engine;
 mod knowledge;
 mod overrides;
+mod paths;
 mod save_locator;
 pub mod save_parser;
 mod watcher;
@@ -80,6 +81,10 @@ pub fn run() {
             commands::set_override_achievement,
             commands::set_override_mark,
             commands::reset_overrides,
+            commands::get_health,
+            commands::is_tracker_mod_installed,
+            commands::install_tracker_mod,
+            commands::backup_save,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

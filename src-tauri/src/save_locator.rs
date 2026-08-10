@@ -49,13 +49,14 @@ pub struct SaveSlot {
     pub parse_error: Option<String>,
 }
 
-/// Dossiers candidats côté « Documents » (gère la redirection OneDrive via l'API).
+/// Dossiers candidats côté « Documents » : on part de la racine de jeu RÉELLE
+/// (résolue en vérifiant les fichiers du jeu → gère le piège OneDrive), pas d'un
+/// chemin supposé.
 fn document_candidate_dirs() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
-    if let Some(docs) = dirs::document_dir() {
-        dirs.push(docs.join("My Games/Binding of Isaac Repentance+"));
-        dirs.push(docs.join("My Games/Binding of Isaac Repentance+/save_backups"));
-        dirs.push(docs.join("My Games/Binding of Isaac Repentance"));
+    if let Some(root) = crate::paths::resolve_game_root() {
+        dirs.push(root.clone());
+        dirs.push(root.join("save_backups"));
     }
     dirs
 }
