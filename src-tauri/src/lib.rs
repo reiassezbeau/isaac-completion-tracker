@@ -84,6 +84,7 @@ pub fn run() {
             commands::get_health,
             commands::is_tracker_mod_installed,
             commands::install_tracker_mod,
+            commands::launch_game,
             commands::backup_save,
         ])
         .run(tauri::generate_context!())

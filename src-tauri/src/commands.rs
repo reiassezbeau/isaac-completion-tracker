@@ -399,6 +399,15 @@ pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
     Ok(dest.to_string_lossy().into_owned())
 }
 
+/// Lance Isaac via Steam (le mod ne fonctionne qu'une fois le jeu (re)démarré).
+#[tauri::command]
+pub fn launch_game(app: AppHandle) -> Result<(), String> {
+    use tauri_plugin_opener::OpenerExt;
+    app.opener()
+        .open_url("steam://rungameid/250900", None::<&str>)
+        .map_err(|e| e.to_string())
+}
+
 /// Copie datée de la sauvegarde dans l'appdata (filet de sécurité avant install mod).
 #[tauri::command]
 pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, String> {

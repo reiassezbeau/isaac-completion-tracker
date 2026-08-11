@@ -4,6 +4,7 @@
 import { AlertTriangle, Skull, Target, Trophy } from "lucide-react";
 import { useStore } from "../store";
 import { Card, ProgressBar, SectionTitle, Pill } from "../components/ui";
+import { ModStatusCard } from "../components/ModStatus";
 import { categoryLabel } from "../lib/format";
 
 export function DashboardView() {
@@ -15,6 +16,7 @@ export function DashboardView() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <ModStatusCard />
       {!dashboard.marks_reliable && (
         <div className="flex items-start gap-3 rounded-xl border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-3 text-sm">
           <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-isaac-gold" />

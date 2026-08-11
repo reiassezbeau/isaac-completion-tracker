@@ -40,6 +40,7 @@ export const api = {
   getHealth: () => invoke<HealthReport>("get_health"),
   isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),
   installTrackerMod: () => invoke<string>("install_tracker_mod"),
+  launchGame: () => invoke<void>("launch_game"),
   backupSave: (slotPath: string) => invoke<string>("backup_save", { slotPath }),
 
   getOverrides: () => invoke<Overrides>("get_overrides"),

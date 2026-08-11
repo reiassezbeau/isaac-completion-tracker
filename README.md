@@ -42,6 +42,27 @@ Télécharge le dernier installeur `.exe` depuis les [Releases](https://github.c
 > « Exécuter quand même »**. C'est normal pour un logiciel open-source non signé ; le code est
 > ici et vérifiable.
 
+## Mod de stats en jeu (optionnel)
+
+Un mod Lua compagnon, **purement observateur**, compte tes hits et stats par run (croisés
+avec ta complétion). Installation **en 1 clic depuis l'app** — pas de fichier séparé :
+
+1. Ouvre l'app → encart du **Dashboard** (ou onglet **Diagnostic**) → **« Installer le mod de stats »**.
+   L'app détecte automatiquement le dossier mods de **Steam** (via le registre + `libraryfolders.vdf`,
+   même si le jeu est sur un autre disque).
+2. **Relance Isaac** (les mods se chargent au démarrage). Le mod apparaît dans *Options → Mods*
+   comme « **Isaac Tracker Stats** ». Un bouton **« Lancer Isaac »** est fourni.
+3. Joue : les stats remontent dans l'app.
+
+> Le mod **n'utilise jamais la console de debug** et **ne modifie pas le gameplay** → aucun impact
+> sur les succès une fois Mom battue sur le slot (règle du jeu, pas du tracker). Sur une **nouvelle**
+> save, bats Mom une fois avant de compter sur les déblocages.
+
+> **Droits d'écriture** : le dossier mods est sous `Program Files` ; il est presque toujours
+> inscriptible (Steam pose les droits). Si l'installation échoue (dossier verrouillé), lance l'app
+> en administrateur, ou copie `isaac-tracker-mod/` à la main dans
+> `…\steamapps\common\The Binding of Isaac Rebirth\mods\`.
+
 ## Build (développeur)
 
 Prérequis : **Node 18+**, **Rust stable** (toolchain MSVC sous Windows) et les
