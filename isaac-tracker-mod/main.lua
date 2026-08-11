@@ -167,8 +167,10 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
 end
 
 -- ── DEBUT DE RUN ──────────────────────────────────────────────────────────
+-- IMPORTANT : on NE recharge PAS le disque ici. Le jeu ne flush SaveData qu'au
+-- retour menu/sortie ; relire le disque a chaque run ecraserait l'historique en
+-- memoire (accumule pendant la session). Le chargement se fait UNE fois a l'init.
 local function onGameStarted(_, isContinue)
-  load()
   if isContinue and data.current_run ~= nil then
     lastHitFrame = {}
     log("continue -> reprise du run courant")
@@ -253,6 +255,12 @@ end
 
 local function onPreGameExit(_, shouldSave)
   save()
+end
+
+-- Chargement UNIQUE des donnees persistees (a l'init du mod, pas a chaque run).
+local okLoad = pcall(load)
+if not okLoad then
+  data = { schema = SCHEMA, current_run = nil, history = {}, next_index = 1 }
 end
 
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, safe("take_dmg", onTakeDmg), EntityType.ENTITY_PLAYER)
