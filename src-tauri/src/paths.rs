@@ -64,12 +64,75 @@ pub fn resolve_game_root() -> Option<PathBuf> {
     None
 }
 
-pub fn mods_dir() -> Option<PathBuf> {
-    resolve_game_root().map(|r| r.join("mods"))
+// --- Résolution du dossier d'INSTALLATION Steam ---------------------------
+// ⚠️ Découverte clé : Isaac charge les mods depuis le dossier d'installation
+// Steam (`steamapps/common/The Binding of Isaac Rebirth/mods/`), PAS depuis
+// `Documents/.../mods`. Documents ne sert que pour saves/backups/data.
+
+const ISAAC_STEAM_SUBDIR: &str = "steamapps/common/The Binding of Isaac Rebirth";
+
+fn steam_roots() -> Vec<PathBuf> {
+    let mut roots: Vec<PathBuf> = Vec::new();
+    #[cfg(windows)]
+    {
+        use winreg::enums::HKEY_CURRENT_USER;
+        use winreg::RegKey;
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        if let Ok(key) = hkcu.open_subkey("Software\\Valve\\Steam") {
+            if let Ok(path) = key.get_value::<String, _>("SteamPath") {
+                roots.push(PathBuf::from(path.replace('/', "\\")));
+            }
+        }
+    }
+    for p in ["C:/Program Files (x86)/Steam", "C:/Program Files/Steam"] {
+        roots.push(PathBuf::from(p));
+    }
+    if let Some(h) = dirs::home_dir() {
+        roots.push(h.join(".steam/steam"));
+        roots.push(h.join(".local/share/Steam"));
+    }
+    let mut seen = HashSet::new();
+    roots.into_iter().filter(|p| seen.insert(p.clone())).collect()
 }
 
-pub fn data_dir() -> Option<PathBuf> {
-    resolve_game_root().map(|r| r.join("data"))
+/// Bibliothèques Steam (le jeu peut être sur un autre disque) : les racines Steam
+/// + les chemins listés dans `steamapps/libraryfolders.vdf`.
+fn steam_libraries() -> Vec<PathBuf> {
+    let mut libs: Vec<PathBuf> = Vec::new();
+    for root in steam_roots() {
+        libs.push(root.clone());
+        let vdf = root.join("steamapps").join("libraryfolders.vdf");
+        if let Ok(txt) = std::fs::read_to_string(&vdf) {
+            for line in txt.lines() {
+                let line = line.trim();
+                if let Some(rest) = line.strip_prefix("\"path\"") {
+                    if let (Some(a), Some(b)) = (rest.find('"'), rest.rfind('"')) {
+                        if a < b {
+                            libs.push(PathBuf::from(rest[a + 1..b].replace("\\\\", "\\")));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let mut seen = HashSet::new();
+    libs.into_iter().filter(|p| seen.insert(p.clone())).collect()
+}
+
+/// Dossier d'installation du jeu (Steam) — celui qui contient `mods/`.
+pub fn steam_game_dir() -> Option<PathBuf> {
+    for lib in steam_libraries() {
+        let dir = lib.join(ISAAC_STEAM_SUBDIR);
+        if dir.is_dir() {
+            return Some(dir);
+        }
+    }
+    None
+}
+
+/// Dossier des mods = dossier d'INSTALLATION Steam / mods (pas Documents).
+pub fn mods_dir() -> Option<PathBuf> {
+    steam_game_dir().map(|g| g.join("mods"))
 }
 
 /// Dossier d'install du mod compagnon (déterministe).
@@ -77,24 +140,38 @@ pub fn tracker_mod_dir() -> Option<PathBuf> {
     mods_dir().map(|m| m.join(MOD_FOLDER))
 }
 
-/// Cherche un fichier de données du mod (`data/<dossier>/save<N>.dat`). Le nom du
-/// sous-dossier peut varier (nom de dossier du mod vs nom d'enregistrement) → on
-/// scanne. Retourne le premier fichier trouvé.
-pub fn find_mod_data_file() -> Option<PathBuf> {
-    let data = data_dir()?;
-    // Candidats prioritaires connus.
-    for name in [MOD_FOLDER, "IsaacTracker"] {
-        let dir = data.join(name);
-        if let Some(f) = first_save_file(&dir) {
-            return Some(f);
-        }
+/// Dossiers `data/` candidats où le mod écrit son JSON (SaveData) : selon les
+/// versions/installations, Documents et/ou le dossier d'install Steam.
+pub fn data_candidates() -> Vec<PathBuf> {
+    let mut v = Vec::new();
+    if let Some(r) = resolve_game_root() {
+        v.push(r.join("data"));
     }
-    // Sinon, scan de tous les sous-dossiers de data/.
-    if let Ok(entries) = std::fs::read_dir(&data) {
-        for e in entries.flatten() {
-            if e.path().is_dir() {
-                if let Some(f) = first_save_file(&e.path()) {
-                    return Some(f);
+    if let Some(g) = steam_game_dir() {
+        v.push(g.join("data"));
+    }
+    v
+}
+
+pub fn data_dir() -> Option<PathBuf> {
+    data_candidates().into_iter().find(|d| d.is_dir()).or_else(|| data_candidates().into_iter().next())
+}
+
+/// Cherche le fichier de données du mod (`data/<dossier>/save<N>.dat`), en
+/// scannant les deux emplacements possibles (Documents et Steam).
+pub fn find_mod_data_file() -> Option<PathBuf> {
+    for data in data_candidates() {
+        for name in [MOD_FOLDER, "IsaacTracker"] {
+            if let Some(f) = first_save_file(&data.join(name)) {
+                return Some(f);
+            }
+        }
+        if let Ok(entries) = std::fs::read_dir(&data) {
+            for e in entries.flatten() {
+                if e.path().is_dir() {
+                    if let Some(f) = first_save_file(&e.path()) {
+                        return Some(f);
+                    }
                 }
             }
         }
@@ -127,10 +204,13 @@ mod tests {
         }
         match resolve_game_root() {
             Some(r) => {
-                eprintln!("→ Racine de jeu résolue : {}", r.display());
+                eprintln!("→ Racine Documents (saves/data) : {}", r.display());
                 assert!(is_game_root(&r), "la racine résolue doit contenir un marqueur de jeu");
             }
-            None => eprintln!("→ (aucun dossier de jeu détecté sur cette machine)"),
+            None => eprintln!("→ (aucun dossier de jeu Documents détecté)"),
         }
+        eprintln!("→ Dossier jeu Steam : {:?}", steam_game_dir().map(|p| p.display().to_string()));
+        eprintln!("→ Dossier mods (Steam) : {:?}", mods_dir().map(|p| p.display().to_string()));
+        eprintln!("→ data candidates : {:?}", data_candidates());
     }
 }
