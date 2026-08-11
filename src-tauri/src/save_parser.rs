@@ -122,8 +122,7 @@ impl SaveData {
     }
     /// Succès débloqué par secret-ID in-game (1..=641).
     pub fn is_unlocked(&self, secret_id: usize) -> bool {
-        secret_id >= 1
-            && secret_id <= NUM_ACHIEVEMENTS
+        (1..=NUM_ACHIEVEMENTS).contains(&secret_id)
             && self.achievements.get(secret_id - 1).copied().unwrap_or(false)
     }
 }

@@ -70,7 +70,7 @@ impl State {
 
     pub fn is_unlocked(&self, secret_id: u32) -> bool {
         let i = secret_id as usize;
-        i >= 1 && i <= NUM_ACHIEVEMENTS && self.ach[i - 1]
+        (1..=NUM_ACHIEVEMENTS).contains(&i) && self.ach[i - 1]
     }
 
     pub fn unlocked_count(&self) -> usize {
@@ -388,11 +388,7 @@ pub fn next_targets(state: &State, kn: &Knowledge, limit: usize) -> Vec<TargetSu
             }
         }
     }
-    out.sort_by(|a, b| {
-        b.new_unlocks
-            .cmp(&a.new_unlocks)
-            .then(b.fills_hard_mark.cmp(&a.fills_hard_mark))
-    });
+    out.sort_by_key(|s| std::cmp::Reverse((s.new_unlocks, s.fills_hard_mark)));
     out.truncate(limit);
     out
 }
@@ -446,7 +442,7 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
         })
         .filter(|(_, m)| *m > 0)
         .collect();
-    late.sort_by(|a, b| b.1.cmp(&a.1));
+    late.sort_by_key(|c| std::cmp::Reverse(c.1));
     let late_names: Vec<String> = late.iter().take(3).map(|(n, m)| format!("{n} ({m} marks)")).collect();
     steps.push(RoadmapStep {
         title: "Compléter les personnages les plus en retard".into(),
