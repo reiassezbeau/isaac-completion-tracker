@@ -187,11 +187,20 @@ local function onGameStarted(_, isContinue)
 
   local idx = data.next_index or 1
   data.next_index = idx + 1
-  math.randomseed(frame() + idx)
   local pt = currentPlayerType()
+  -- ID de run unique SANS toucher au RNG global (math.random) pour ne PAS
+  -- perturber les autres mods : on combine un compteur persistant + la graine
+  -- de run du jeu + la frame de depart.
+  local startSeed = 0
+  do
+    local ok, s = pcall(function() return Game():GetSeeds():GetStartSeed() end)
+    if ok and type(s) == "number" then
+      startSeed = s
+    end
+  end
 
   data.current_run = {
-    run_id = string.format("%d-%d-%d", idx, frame(), math.random(100000, 999999)),
+    run_id = string.format("%d-%u-%d", idx, startSeed, frame()),
     character = characterIdFor(pt),
     player_type = pt,
     started_frame = frame(),
