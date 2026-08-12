@@ -10,12 +10,15 @@ use notify::RecommendedWatcher;
 use serde::Serialize;
 use tauri::{AppHandle, Manager, State};
 
+use crate::analytics;
 use crate::engine::{self, State as EngineState};
 use crate::knowledge::{Achievement, Character, Ending, Knowledge};
 use crate::overrides::Overrides;
 use crate::paths;
 use crate::save_locator::{self, SaveSlot};
 use crate::save_parser::{self, Edition, MarkDifficulty, SaveData, NUM_MARKS};
+use crate::stats_archive::Archive;
+use crate::stats_reader::Run;
 use crate::watcher;
 
 pub struct AppState {
@@ -24,6 +27,17 @@ pub struct AppState {
     pub current: Mutex<Option<(SaveData, String)>>,
     pub overrides: Mutex<Overrides>,
     pub watcher: Mutex<Option<RecommendedWatcher>>,
+    pub stats: Mutex<Archive>,
+}
+
+impl AppState {
+    /// Fusionne les runs du mod dans l'archive et persiste. Retourne le nb de nouveaux.
+    fn refresh_stats(&self) -> usize {
+        let mut a = self.stats.lock().unwrap();
+        let n = a.merge_from_mod();
+        let _ = a.save(&self.app_data_dir);
+        n
+    }
 }
 
 impl AppState {
@@ -426,4 +440,41 @@ pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, 
     let dest = backups.join(format!("{base}.{ts}.bak"));
     std::fs::write(&dest, &bytes).map_err(|e| e.to_string())?;
     Ok(dest.to_string_lossy().into_owned())
+}
+
+// -- Stats (mod) ------------------------------------------------------------
+
+/// Fusionne les nouveaux runs du mod dans l'archive. Retourne le nb de nouveaux runs.
+#[tauri::command]
+pub fn refresh_stats(state: State<AppState>) -> usize {
+    state.refresh_stats()
+}
+
+#[tauri::command]
+pub fn get_stats_overview(state: State<AppState>) -> analytics::StatsOverview {
+    state.refresh_stats();
+    let a = state.stats.lock().unwrap();
+    analytics::overview(&a.runs)
+}
+
+#[tauri::command]
+pub fn get_insights(state: State<AppState>) -> analytics::Insights {
+    state.refresh_stats();
+    let a = state.stats.lock().unwrap();
+    analytics::insights(&a.runs)
+}
+
+#[tauri::command]
+pub fn get_character_stats(state: State<AppState>, char_id: String) -> analytics::CharacterStats {
+    state.refresh_stats();
+    let a = state.stats.lock().unwrap();
+    analytics::character_stats(&a.runs, &char_id)
+}
+
+/// Historique des runs (les plus récents d'abord), limité.
+#[tauri::command]
+pub fn get_run_history(state: State<AppState>, limit: usize) -> Vec<Run> {
+    state.refresh_stats();
+    let a = state.stats.lock().unwrap();
+    a.runs.iter().rev().take(limit).cloned().collect()
 }

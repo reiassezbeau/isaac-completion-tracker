@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
+mod analytics;
 mod commands;
 mod engine;
 mod knowledge;
@@ -8,6 +9,8 @@ mod overrides;
 mod paths;
 mod save_locator;
 pub mod save_parser;
+mod stats_archive;
+mod stats_reader;
 mod watcher;
 
 use std::path::PathBuf;
@@ -53,6 +56,7 @@ pub fn run() {
                 .app_data_dir()
                 .unwrap_or_else(|_| std::env::temp_dir());
             let overrides = Overrides::load(&app_data_dir);
+            let stats = stats_archive::Archive::load(&app_data_dir);
 
             app.manage(AppState {
                 knowledge,
@@ -60,6 +64,7 @@ pub fn run() {
                 current: Mutex::new(None),
                 overrides: Mutex::new(overrides),
                 watcher: Mutex::new(None),
+                stats: Mutex::new(stats),
             });
             Ok(())
         })
@@ -86,6 +91,11 @@ pub fn run() {
             commands::install_tracker_mod,
             commands::launch_game,
             commands::backup_save,
+            commands::refresh_stats,
+            commands::get_stats_overview,
+            commands::get_insights,
+            commands::get_character_stats,
+            commands::get_run_history,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
