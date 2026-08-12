@@ -12,6 +12,7 @@ use tauri::{AppHandle, Manager, State};
 
 use crate::analytics;
 use crate::engine::{self, State as EngineState};
+use crate::ev_engine::{self, EvConfig, Route};
 use crate::knowledge::{Achievement, Character, Ending, Knowledge};
 use crate::overrides::Overrides;
 use crate::paths;
@@ -28,6 +29,8 @@ pub struct AppState {
     pub overrides: Mutex<Overrides>,
     pub watcher: Mutex<Option<RecommendedWatcher>>,
     pub stats: Mutex<Archive>,
+    pub routes: Vec<Route>,
+    pub ev_config: EvConfig,
 }
 
 impl AppState {
@@ -477,4 +480,23 @@ pub fn get_run_history(state: State<AppState>, limit: usize) -> Vec<Run> {
     state.refresh_stats();
     let a = state.stats.lock().unwrap();
     a.runs.iter().rev().take(limit).cloned().collect()
+}
+
+// -- Optimiseur (moteur EV) -------------------------------------------------
+
+/// Rapport de l'optimiseur : prochaines actions classées par espérance de gain
+/// vers Dead God (valeur × probabilité), goulots, persos presque finis, ETA.
+#[tauri::command]
+pub fn get_optimizer(state: State<AppState>, limit: usize) -> Result<ev_engine::OptimizerReport, String> {
+    state.refresh_stats();
+    let st = state.engine_state()?;
+    let a = state.stats.lock().unwrap();
+    Ok(ev_engine::optimizer(
+        &st,
+        &state.knowledge,
+        &a.runs,
+        &state.routes,
+        &state.ev_config,
+        limit,
+    ))
 }

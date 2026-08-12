@@ -11,6 +11,7 @@ export type ViewId =
   | "predictor"
   | "achievements"
   | "roadmap"
+  | "optimizer"
   | "stats"
   | "diagnostic"
   | "settings"

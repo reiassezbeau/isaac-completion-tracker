@@ -33,6 +33,7 @@
       "resources/characters.json": "resources/characters.json",
       "resources/endings.json": "resources/endings.json",
       "resources/routing_tips.json": "resources/routing_tips.json",
+      "resources/routes.json": "resources/routes.json",
       "../isaac-tracker-mod/metadata.xml": "isaac-tracker-mod/metadata.xml",
       "../isaac-tracker-mod/main.lua": "isaac-tracker-mod/main.lua"
     },

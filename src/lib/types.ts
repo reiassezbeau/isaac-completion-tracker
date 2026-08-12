@@ -244,6 +244,55 @@ export interface Insights {
   total_runs: number;
 }
 
+export interface EvAction {
+  character_id: string;
+  character_name: string;
+  route_id: string;
+  route_note: string;
+  fills: string[];
+  mark_gain: number;
+  ach_gain: number;
+  reward_gain: number;
+  value: number;
+  probability: number;
+  ev: number;
+  confidence: number;
+  based_on_runs: number;
+  why: string;
+}
+
+export interface Bottleneck {
+  ending_id: string;
+  ending_name: string;
+  chars_missing: number;
+  difficulty_default: number;
+}
+
+export interface AlmostThere {
+  character_id: string;
+  character_name: string;
+  missing_marks: number;
+  missing_names: string[];
+}
+
+export interface DeadGodEta {
+  remaining: number;
+  total: number;
+  winrate: number | null;
+  based_on_runs: number;
+  estimated_winning_runs: number | null;
+  estimated_attempts: number | null;
+  note: string;
+}
+
+export interface OptimizerReport {
+  actions: EvAction[];
+  bottlenecks: Bottleneck[];
+  almost_there: AlmostThere[];
+  eta: DeadGodEta;
+  based_on_runs: number;
+}
+
 export interface HealthReport {
   game_root: PathStatus;
   mods_dir: PathStatus;

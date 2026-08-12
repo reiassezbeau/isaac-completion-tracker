@@ -4,6 +4,7 @@
 mod analytics;
 mod commands;
 mod engine;
+mod ev_engine;
 mod knowledge;
 mod overrides;
 mod paths;
@@ -57,6 +58,8 @@ pub fn run() {
                 .unwrap_or_else(|_| std::env::temp_dir());
             let overrides = Overrides::load(&app_data_dir);
             let stats = stats_archive::Archive::load(&app_data_dir);
+            let routes = ev_engine::load_routes(&res_dir);
+            let ev_config = ev_engine::EvConfig::load(&app_data_dir);
 
             app.manage(AppState {
                 knowledge,
@@ -65,6 +68,8 @@ pub fn run() {
                 overrides: Mutex::new(overrides),
                 watcher: Mutex::new(None),
                 stats: Mutex::new(stats),
+                routes,
+                ev_config,
             });
             Ok(())
         })
@@ -96,6 +101,7 @@ pub fn run() {
             commands::get_insights,
             commands::get_character_stats,
             commands::get_run_history,
+            commands::get_optimizer,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

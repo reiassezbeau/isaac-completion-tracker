@@ -14,6 +14,7 @@ import type {
   Ending,
   HealthReport,
   Insights,
+  OptimizerReport,
   Overrides,
   Prediction,
   Roadmap,
@@ -46,6 +47,8 @@ export const api = {
   getInsights: () => invoke<Insights>("get_insights"),
   getCharacterStats: (charId: string) => invoke<CharacterStats>("get_character_stats", { charId }),
   getRunHistory: (limit: number) => invoke<Run[]>("get_run_history", { limit }),
+
+  getOptimizer: (limit: number) => invoke<OptimizerReport>("get_optimizer", { limit }),
 
   getHealth: () => invoke<HealthReport>("get_health"),
   isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),
