@@ -18,7 +18,7 @@ suit ses stats de jeu. Public : **complétionnistes hardcore** — ils veulent u
 lisible, et gratifiant**, pas mignon. Ambiance *Isaac* : sombre, viscéral, un soupçon sacré/doré.
 
 ## 1. Stack & contraintes techniques (IMPÉRATIVES)
-- **Tauri v2 + React 18 + TypeScript + Tailwind CSS + lucide-react.** Livrables attendus : tokens
+- **Tauri v2 + React 19 + TypeScript + Tailwind CSS v3 + lucide-react.** Livrables attendus : tokens
   Tailwind, composants React/TSX, et **SVG inline** (pas d'images externes).
 - **100 % hors-ligne, CSP stricte** : **aucune ressource externe** — pas de police Google Fonts, pas
   de CDN, pas d'image distante, pas d'icône téléchargée à l'exécution. **Tout doit être inline ou
@@ -50,20 +50,32 @@ Attendu de toi : **un système de couleurs complet et validé** (échelles, éta
 sémantique claire), light + dark, cohérent, un cran au-dessus de l'actuel.
 
 ## 3. Inventaire des écrans à habiller
-Tous existent déjà (barre latérale de navigation + zone de contenu + header + footer) :
+**Les 12 vues existent et fonctionnent** (barre latérale + zone de contenu + header + footer). Ordre de nav réel :
 1. **SlotPicker** (écran d'accueil) — choix de la sauvegarde (liste de slots + aperçu).
 2. **Dashboard** — compteur global X/641 + %, jauge « distance à Dead God », répartition par catégorie
    (barres), prochaines cibles recommandées, encart d'onboarding du mod.
 3. **Personnage** — **grille des 34 persos** (17 + 17 Tainted) + fiche : **grille de completion marks**
-   (12 marks × statut), liste « à faire », conseils de routing.
+   (12 marks × statut), liste « à faire », conseils de routing, **carte « stats de jeu »** (winrate/hits, si mod).
 4. **Prédicteur** — 2 sélecteurs (perso × cible) → résultat « ça débloque / rien », + « quoi faire ensuite ».
 5. **Succès** — **navigateur des 641** : recherche, filtres (catégorie/DLC/statut), lignes denses, révélation des cachés.
 6. **Roadmap** — plan ordonné vers Dead God (étapes + barres de progression).
-7. **Diagnostic** — chemins résolus, statut du mod, boutons (installer mod / lancer Isaac / backup).
-8. **Corrections** (override) — forcer le statut d'un succès / d'une mark.
-9. **À propos** — nom, version, crédit reiassezbeau (lien), disclaimer.
-- **À venir (prévois les patterns, pas besoin de tout dessiner)** : vues **Stats** (Run / Perso / Insights),
-  **Optimizer** (EV), **HUD in-game** (rendu Lua, hors de ton scope web), **carte de stats partageable (PNG)**.
+7. **Optimiseur** (`src/views/Optimizer.tsx`, NOUVEAU) — **la vue « que jouer ensuite »** : hero **jauge ETA
+   Dead God** (marques faites/408 + runs/tentatives estimés), liste d'**actions classées par espérance de gain**
+   (chaque ligne : perso + route + pills marques/succès/objets + barre EV + % réussite coloré), **goulots
+   d'étranglement** (barres) et **« presque fini »** (persos les plus proches). Bannière cold-start.
+8. **Assistant build** (`src/views/BuildAssistant.tsx`, NOUVEAU) — **simulateur** : sélecteur d'items (recherche),
+   build courant en chips, panneau « try synergy » avec **radar SVG stats avant/après**, verdict coloré,
+   notes de synergie, delta de stats, + panneau **composition & forces/faiblesses**.
+9. **Stats** (`src/views/Stats.tsx`, NOUVEAU) — 3 onglets : **Aperçu** (tuiles KPI, hits par source, **heatmap
+   hits/étage**, **tendance**, table par perso), **Runs** (historique), **Insights** (streaks, corrélation,
+   persos clean/saignants, records).
+10. **Carte** (`src/views/StatCard.tsx`, NOUVEAU) — générateur de **carte PNG partageable** (templates Profil +
+    Run), rendu sur `<canvas>` 1200×630, aperçu + export. **Le rendu canvas est dans le TSX** (couleurs en dur,
+    cf. §4.8) — à réharmoniser avec ton système.
+11. **Diagnostic** — chemins résolus, statut du mod, boutons (installer mod / lancer Isaac / backup).
+12. **Corrections** (override) — forcer le statut d'un succès / d'une mark.
+13. **À propos** — nom, version, crédit reiassezbeau (lien), disclaimer.
+- **Hors de ton scope web** : le **HUD in-game** (rendu Lua dans Isaac) — mentionné pour info, tu n'y touches pas.
 
 ## 4. Ce que je te demande de produire
 1. **Système de design** : tokens (couleurs, espacements, rayons, ombres, typo), light+dark, mappés sur
@@ -77,10 +89,13 @@ Tous existent déjà (barre latérale de navigation + zone de contenu + header +
      survol informatif, dense mais élégante. C'est LE tableau de bord du complétionniste.
    - **Jauge « Dead God »** : une pièce maîtresse (anneau/barre) qui donne envie d'y arriver.
    - **Badges de mark** (À faire / Normal / Hard) au design mémorable.
-4. **Data-viz ORIGINALE** (pour les vues Stats/Optimizer à venir) — spécifie le style, pas juste les composants :
-   - **barres par catégorie**, **anneaux de progression**, **heatmap hits/étage** (grille colorée),
-   - **radar de stats avant/après** (pour l'assistant de build : dégâts/cadence/portée…),
-   - **courbe de tendance / burndown** (ETA Dead God), **jauges de score** (propreté).
+4. **Data-viz ORIGINALE** — ces composants **existent déjà** (implémentation fonctionnelle basique) ; ta mission
+   est de les **élever et harmoniser**, pas de les inventer. Restyler concrètement :
+   - **barres par catégorie** (Dashboard) et **barres EV / goulots** (Optimiseur),
+   - **anneaux / jauges de progression** — surtout la **jauge ETA Dead God** (Optimiseur) et « distance à Dead God » (Dashboard),
+   - **heatmap hits/étage** + **barres de tendance** (Stats/Aperçu),
+   - **radar de stats avant/après** (Assistant build — `Radar` dans `BuildAssistant.tsx`, SVG 6 axes maison à sublimer),
+   - **jauges de score / propreté** (Stats/Insights).
    Palette de data-viz accessible (daltonisme), cohérente avec le thème sombre.
 5. **Iconographie / illustrations ORIGINALES** (SVG inline) :
    - un petit set de **glyphes pour les 12 endings/marks** (Mom's Heart, Mother, Beast, Hush…) — abstraits,
@@ -90,15 +105,17 @@ Tous existent déjà (barre latérale de navigation + zone de contenu + header +
 6. **Micro-interactions** : remplissage animé des barres/anneaux, transitions de vue douces, hover/press
    states, toast d'arrivée, pulsation discrète sur « nouveau déblocage ». Sobres, jamais gênantes.
 7. **Onboarding / premier lancement** : parcours clair (choisir save → installer mod → jouer), encart déjà présent à sublimer.
-8. **Template de la carte de stats partageable (PNG)** : maquette d'une « carte flex » (profil global +
-   récap de run) avec le watermark `github.com/reiassezbeau` — rendue plus tard sur `<canvas>`.
+8. **Template de la carte de stats partageable (PNG)** : la carte **existe déjà** (rendu `<canvas>` 1200×630,
+   templates Profil + Run, watermark `github.com/reiassezbeau`) dans `src/views/StatCard.tsx`. Les couleurs y sont
+   **codées en dur** (objet `C` en haut du fichier) car le canvas ne lit pas Tailwind — fournis-moi les **valeurs
+   hex finales** de ton système pour cet objet, et une maquette de mise en page à reproduire au pinceau canvas.
 
 ## 5. Livrables attendus (format)
 - Un **design system** documenté (tokens + rationale) prêt à intégrer dans Tailwind.
 - Des **maquettes** des écrans clés (au moins Dashboard, Personnage/marks, Succès, Roadmap) — en artifact HTML/React.
 - Une **bibliothèque de composants** (TSX + Tailwind) réutilisable, theme-aware.
 - Les **SVG originaux** (inline) : glyphes d'endings, avatars abstraits, jauge Dead God.
-- Des **specs data-viz** (types de graphes + palette + règles) pour les futures vues Stats/EV.
+- Des **specs data-viz** (types de graphes + palette + règles) appliquées aux vues **Stats / Optimiseur / Assistant build** déjà en place.
 - Tout **strictement offline** (aucune ressource externe), **sans aucun asset du jeu**.
 
 ## 6. Ton & anti-patterns
