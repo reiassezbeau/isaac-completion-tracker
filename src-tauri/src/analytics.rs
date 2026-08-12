@@ -107,7 +107,7 @@ fn char_stats(character: &str, runs: &[&Run]) -> CharacterStats {
     }
 }
 
-fn grouped_by_char<'a>(runs: &'a [Run]) -> BTreeMap<String, Vec<&'a Run>> {
+fn grouped_by_char(runs: &[Run]) -> BTreeMap<String, Vec<&Run>> {
     let mut m: BTreeMap<String, Vec<&Run>> = BTreeMap::new();
     for r in runs.iter().filter(|r| is_counted(r)) {
         m.entry(r.character.clone()).or_default().push(r);
@@ -133,7 +133,7 @@ pub fn overview(all: &[Run]) -> StatsOverview {
         }
     }
     let mut hits_by_source: Vec<(String, u32)> = by_source.into_iter().collect();
-    hits_by_source.sort_by(|a, b| b.1.cmp(&a.1));
+    hits_by_source.sort_by_key(|s| std::cmp::Reverse(s.1));
     let nemesis = hits_by_source.first().cloned();
     let hits_heatmap: Vec<(String, u32)> = heatmap.into_iter().collect();
 
@@ -141,7 +141,7 @@ pub fn overview(all: &[Run]) -> StatsOverview {
 
     let mut per_character: Vec<CharacterStats> =
         grouped_by_char(all).into_iter().map(|(c, rs)| char_stats(&c, &rs)).collect();
-    per_character.sort_by(|a, b| b.runs.cmp(&a.runs));
+    per_character.sort_by_key(|c| std::cmp::Reverse(c.runs));
 
     StatsOverview {
         total_runs: total,

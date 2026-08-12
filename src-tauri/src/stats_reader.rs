@@ -138,9 +138,8 @@ fn parse_run(v: &Value, slot: u8) -> Option<Run> {
     })
 }
 
-/// Contenu d'un fichier de save du mod (un slot).
+/// Contenu d'un fichier de save du mod (un slot). Le slot est porté par chaque `Run`.
 pub struct ModSlotData {
-    pub slot: u8,
     pub current_run: Option<Run>,
     pub history: Vec<Run>,
 }
@@ -170,7 +169,7 @@ pub fn read_mod_file(path: &Path) -> Option<ModSlotData> {
         Some(Value::Array(arr)) => arr.iter().filter_map(|r| parse_run(r, slot)).collect(),
         _ => Vec::new(),
     };
-    Some(ModSlotData { slot, current_run, history })
+    Some(ModSlotData { current_run, history })
 }
 
 /// Tous les runs du mod, tous slots confondus (history + current_run), depuis les
