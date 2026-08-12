@@ -22,7 +22,12 @@ local mod = RegisterMod("IsaacTracker", 1)
 local json = require("json")
 
 local SCHEMA = 1
-local MAX_HISTORY = 200
+-- Buffer glissant cote mod : petit (l'app garde l'historique permanent complet).
+-- Petit => json.encode + ecriture disque legers => aucun hitch en jeu.
+local MAX_HISTORY = 40
+-- Log par-hit dans log.txt : utile en debug, mais couteux si degats rapides
+-- (feu, pics, DoT) -> ecritures disque en rafale. Desactive par defaut (perf).
+local DEBUG_LOG = false
 
 -- Etat en memoire (persiste via mod:SaveData).
 local data = { schema = SCHEMA, current_run = nil, history = {}, next_index = 1 }
@@ -169,7 +174,9 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
   local sk = tostring(st) .. "-" .. tostring(stt)
   run.hits_by_stage[sk] = (run.hits_by_stage[sk] or 0) + 1
 
-  log(string.format("hit #%d (source=%s, stage=%d-%d)", run.hits_total, src, st, stt))
+  if DEBUG_LOG then
+    log(string.format("hit #%d (source=%s, stage=%d-%d)", run.hits_total, src, st, stt))
+  end
 end
 
 -- ── DEBUT DE RUN ──────────────────────────────────────────────────────────
@@ -254,6 +261,9 @@ local function onNewLevel(_)
 end
 
 local function onNewRoom(_)
+  -- Les entites de la salle precedente ont disparu -> on borne la table de dedup
+  -- (evite qu'elle grossisse sur un long run).
+  lastHitFrame = {}
   if data.current_run ~= nil then
     save()
   end
