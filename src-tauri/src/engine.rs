@@ -267,10 +267,15 @@ pub fn character_detail(state: &State, kn: &Knowledge, char_id: &str) -> Option<
         }
     }
 
+    // Tips pertinents : ceux qui s'appliquent à une fin encore à faire pour ce
+    // perso (applies_to = ids d'endings) OU au perso lui-même (id de perso).
+    let mut relevant: std::collections::HashSet<&str> =
+        todo.iter().map(|t| t.ending_id.as_str()).collect();
+    relevant.insert(ch.id.as_str());
     let routing_tips: Vec<_> = kn
         .routing_tips
         .iter()
-        .filter(|t| t.applies_to.iter().any(|a| a == char_id) || matches!(char_id, "bethany" | "jacob_esau") && t.applies_to.iter().any(|a| a == char_id))
+        .filter(|t| t.applies_to.iter().any(|a| relevant.contains(a.as_str())))
         .cloned()
         .collect();
 
