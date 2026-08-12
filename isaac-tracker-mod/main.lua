@@ -83,6 +83,40 @@ local function characterIdFor(playerType)
   return PLAYER_TYPE_TO_ID[playerType] or ("unknown_" .. tostring(playerType))
 end
 
+-- Borne haute des ids de collectibles (depuis l'ItemConfig ; repli prudent).
+-- Cache : calcule une seule fois (l'ItemConfig ne change pas en cours de partie).
+local maxCollectibleId = nil
+local function collectibleUpperBound()
+  if maxCollectibleId ~= nil then
+    return maxCollectibleId
+  end
+  local n = 800
+  local ok, size = pcall(function() return Isaac.GetItemConfig():GetCollectibles().Size end)
+  if ok and type(size) == "number" and size > 1 then
+    n = size
+  end
+  maxCollectibleId = n
+  return n
+end
+
+-- Snapshot du build : liste des ids de collectibles reellement tenus (§7).
+-- GetCollectibleNum(id) renvoie 0 pour un id invalide -> boucle sure.
+local function snapshotBuild(player)
+  local ids = {}
+  local bound = collectibleUpperBound()
+  for id = 1, bound - 1 do
+    local n = 0
+    local ok, r = pcall(function() return player:GetCollectibleNum(id) end)
+    if ok and type(r) == "number" then
+      n = r
+    end
+    if n > 0 then
+      ids[#ids + 1] = id
+    end
+  end
+  return ids
+end
+
 -- Persistance (buffer glissant : on ne garde que les N derniers runs ; l'app
 -- tient l'historique permanent complet).
 local function save()
@@ -142,6 +176,13 @@ end
 
 -- Deduplication : meme entite touchee deux fois sur la meme frame = 1 hit.
 local lastHitFrame = {}
+-- MC_PRE_SPAWN_CLEAN_AWARD peut se declencher plusieurs fois par salle -> on ne
+-- compte la salle nettoyee qu'une fois (flag remis a zero a chaque nouvelle salle).
+local roomAwardCounted = false
+-- Anti sur-comptage des boss : les boss segmentes (Larry Jr, Pin, Gemini...) tuent
+-- plusieurs entites qui renvoient toutes IsBoss()=true. On deduplique par
+-- (Type:Variant) DANS la salle courante -> un boss = 1, deux boss distincts = 2.
+local bossKilledInRoom = {}
 
 -- ── HIT (degat sur une entite joueur) ─────────────────────────────────────
 local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames)
@@ -173,6 +214,13 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
   run.hits_by_source[src] = (run.hits_by_source[src] or 0) + 1
   local sk = tostring(st) .. "-" .. tostring(stt)
   run.hits_by_stage[sk] = (run.hits_by_stage[sk] or 0) + 1
+
+  -- Dernier degat subi : sert de "cause de mort" si le run se termine par une mort.
+  local srcType = nil
+  if source ~= nil then
+    srcType = source.Type
+  end
+  run.last_damage = { source = src, entity_type = srcType, stage = st, frame = f }
 
   if DEBUG_LOG then
     log(string.format("hit #%d (source=%s, stage=%d-%d)", run.hits_total, src, st, stt))
@@ -225,6 +273,16 @@ local function onGameStarted(_, isContinue)
     death_source = nil,
     deepest_stage = level():GetStage(),
     hits_total = 0,
+    -- champs larges (§4.5) — remplis au fil du run
+    shielded_hits = 0,
+    rooms_cleared = 0,
+    kills = 0,
+    boss_kills = 0,
+    curses = 0,
+    devil_deals = 0,
+    final_stage = level():GetStage(),
+    final_stage_type = level():GetStageType(),
+    final_build = {},
     hits = {},
     hits_by_source = {},
     hits_by_stage = {},
@@ -243,10 +301,68 @@ local function onGameEnd(_, isGameOver)
   run.ended = true
   run.outcome = isGameOver and "death" or "win"
   run.ended_frame = frame()
+  run.duration_frames = run.ended_frame - (run.started_frame or run.ended_frame)
+
+  -- Instantane final : etage atteint, deals du diable, build tenu.
+  run.final_stage = level():GetStage()
+  run.final_stage_type = level():GetStageType()
+  local ok, deals = pcall(function() return Game():GetDevilRoomDeals() end)
+  if ok and type(deals) == "number" then
+    run.devil_deals = deals
+  end
+  local okB, build = pcall(function() return snapshotBuild(Isaac.GetPlayer(0)) end)
+  if okB and type(build) == "table" then
+    run.final_build = build
+  end
+  -- Cause de mort = derniere source de degat subie.
+  if run.outcome == "death" then
+    run.death_source = run.last_damage
+  end
+
   data.history[#data.history + 1] = run
   data.current_run = nil
   save()
-  log(string.format("fin de run: %s, %d hits", run.outcome, run.hits_total))
+  log(string.format("fin de run: %s, %d hits, %d kills, %d salles", run.outcome, run.hits_total, run.kills or 0, run.rooms_cleared or 0))
+end
+
+-- ── KILLS (ennemis + boss) ────────────────────────────────────────────────
+local function onEntityKill(_, entity)
+  local run = data.current_run
+  if run == nil or entity == nil then
+    return
+  end
+  local npc = entity:ToNPC()
+  if npc == nil then
+    return -- on ne compte que les NPC (pas les larmes/effets/joueur)
+  end
+  local isBoss = false
+  pcall(function() isBoss = npc:IsBoss() end)
+  if isBoss then
+    -- 1 boss par (Type:Variant) et par salle : ignore les segments repetes.
+    local key = tostring(entity.Type) .. ":" .. tostring(entity.Variant)
+    if not bossKilledInRoom[key] then
+      bossKilledInRoom[key] = true
+      run.boss_kills = (run.boss_kills or 0) + 1
+    end
+  end
+  -- Ennemi actif (ou boss) -> compte comme kill. IsActiveEnemy(true) inclut la
+  -- frame de mort. Les PNJ neutres/amis (marchand, familiers) sont exclus.
+  local counts = isBoss
+  pcall(function() counts = counts or npc:IsActiveEnemy(true) end)
+  if counts then
+    run.kills = (run.kills or 0) + 1
+  end
+end
+
+-- ── SALLE NETTOYEE ────────────────────────────────────────────────────────
+-- Observateur pur : on ne renvoie RIEN (l'award se genere normalement).
+local function onClearAward(_, _rng, _pos)
+  local run = data.current_run
+  if run == nil or roomAwardCounted then
+    return
+  end
+  roomAwardCounted = true
+  run.rooms_cleared = (run.rooms_cleared or 0) + 1
 end
 
 -- ── Etage le plus profond + sauvegardes regulieres (survie aux crashes) ────
@@ -257,6 +373,16 @@ local function onNewLevel(_)
     if st > (run.deepest_stage or 0) then
       run.deepest_stage = st
     end
+    -- Union des maledictions rencontrees sur le run (bitmask LevelCurse).
+    local ok, c = pcall(function() return level():GetCurses() end)
+    if ok and type(c) == "number" then
+      run.curses = (run.curses or 0) | c
+    end
+    -- Instantane du build a chaque etage (au cas ou le run ne se cloture pas).
+    local okB, build = pcall(function() return snapshotBuild(Isaac.GetPlayer(0)) end)
+    if okB and type(build) == "table" then
+      run.final_build = build
+    end
   end
 end
 
@@ -264,6 +390,8 @@ local function onNewRoom(_)
   -- Les entites de la salle precedente ont disparu -> on borne la table de dedup
   -- (evite qu'elle grossisse sur un long run).
   lastHitFrame = {}
+  roomAwardCounted = false
+  bossKilledInRoom = {}
   if data.current_run ~= nil then
     save()
   end
@@ -282,8 +410,10 @@ end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, safe("take_dmg", onTakeDmg), EntityType.ENTITY_PLAYER)
 mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, safe("game_started", onGameStarted))
 mod:AddCallback(ModCallbacks.MC_POST_GAME_END, safe("game_end", onGameEnd))
+mod:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, safe("entity_kill", onEntityKill))
+mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, safe("clean_award", onClearAward))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, safe("new_level", onNewLevel))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, safe("new_room", onNewRoom))
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, safe("pre_game_exit", onPreGameExit))
 
-log("charge (v0.1.0) -- mod observateur pret")
+log("charge (v0.2.0) -- observateur + champs larges (kills/salles/build) prets")
