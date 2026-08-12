@@ -10,6 +10,39 @@
 
 ---
 
+## ▶️ Mode d'emploi — lis ça en premier
+
+**Ce document est autosuffisant** : il contient tout le nécessaire. Marche à suivre :
+1. **Lis ce brief en entier.**
+2. **Explore le code** : `src/views/` (les 13 vues), `src/components/ui.tsx` (composants `Card`,
+   `Pill`, `ProgressBar`, `SectionTitle`, `EmptyState`, `StatTile`, `GitHubLink`),
+   `src/components/Layout.tsx` (barre latérale + header + footer), et surtout
+   **`tailwind.config.js`** — c'est **là** que vivent les tokens `isaac-*` à retravailler.
+3. **Livre d'abord** le *design system* (tokens + rationale), puis une **maquette du Dashboard +
+   de la grille de marks 34×12**. Ensuite on itère **vue par vue**.
+
+**Stack exacte** : Tauri v2 · **React 19** · TypeScript strict · **Tailwind CSS v3** (⚠️ pas v4) ·
+lucide-react · Zustand. Toute config ou pattern Tailwind v4 est à corriger.
+
+**Interfaces à préserver** : les vues consomment les composants de `ui.tsx` cités plus haut avec
+leurs props actuelles. Garde ces signatures (ou signale explicitement celles que tu changes) pour
+ne **rien casser** du fonctionnel.
+
+**Voir l'app tourner** (pour caler ton rendu réel) : `npm run tauri dev`, charge une sauvegarde,
+observe Dashboard / Personnage / Optimiseur / Assistant build / Stats / Carte. Des captures aident,
+mais tu peux aussi partir du code.
+
+**3 garde-fous NON négociables** (l'app est publique et 100 % hors-ligne) :
+1. **Zéro ressource externe** — pas de Google Fonts, CDN, image distante. La CSP les **bloque à
+   l'exécution** : tout doit être **inline ou bundlé** (SVG inline, police système ou embarquée base64).
+2. **Zéro asset du jeu** — pas de sprite/icône/portrait/son, pas de recopie de prose (type EID),
+   *même « juste pour la maquette »*. **Uniquement de l'art ORIGINAL** que tu crées.
+3. **Ne casse pas le fonctionnel** — tu re-styles l'existant, tu n'ajoutes pas de features.
+
+*(Le détail complet — contexte, palette, inventaire des 13 écrans, livrables, anti-patterns — suit ci-dessous.)*
+
+---
+
 ## 0. Contexte produit
 Application **desktop** (Windows) qui aide un joueur de *The Binding of Isaac: Repentance+* à
 **compléter les 641 succès** jusqu'à **Dead God** (100 %). Elle lit sa sauvegarde en lecture seule,
