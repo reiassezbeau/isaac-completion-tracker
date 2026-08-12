@@ -2,11 +2,11 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 import { useEffect, useState } from "react";
-import { Lock, Route } from "lucide-react";
+import { Crosshair, Lock, Route } from "lucide-react";
 import { api } from "../lib/api";
-import { markClasses, markLabel } from "../lib/format";
+import { markClasses, markLabel, pct } from "../lib/format";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
-import type { CharacterDetail, CharacterListItem } from "../lib/types";
+import type { CharacterDetail, CharacterListItem, CharacterStats } from "../lib/types";
 
 function CharGrid({
   chars,
@@ -67,6 +67,7 @@ export function CharacterView() {
   const [chars, setChars] = useState<CharacterListItem[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<CharacterDetail | null>(null);
+  const [stats, setStats] = useState<CharacterStats | null>(null);
 
   useEffect(() => {
     api.getCharacters().then((c) => {
@@ -77,7 +78,10 @@ export function CharacterView() {
   }, []);
 
   useEffect(() => {
-    if (selected) api.getCharacter(selected).then(setDetail);
+    if (selected) {
+      api.getCharacter(selected).then(setDetail);
+      api.getCharacterStats(selected).then(setStats).catch(() => setStats(null));
+    }
   }, [selected]);
 
   if (!chars) return null;
@@ -109,6 +113,34 @@ export function CharacterView() {
                 </div>
               </div>
             </div>
+
+            {stats && stats.runs > 0 && (
+              <Card>
+                <SectionTitle hint="depuis le mod de stats">
+                  <span className="inline-flex items-center gap-1">
+                    <Crosshair className="h-4 w-4 text-isaac-blood" /> Stats de jeu (ce perso)
+                  </span>
+                </SectionTitle>
+                <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+                  <div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Runs</div>
+                    <div className="text-lg font-bold">{stats.runs}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Winrate</div>
+                    <div className="text-lg font-bold text-isaac-done">{pct(stats.winrate)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Hits / run</div>
+                    <div className="text-lg font-bold text-isaac-blood">{stats.avg_hits.toFixed(1)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Record (min hits)</div>
+                    <div className="text-lg font-bold text-isaac-gold">{stats.min_hits ?? "—"}</div>
+                  </div>
+                </div>
+              </Card>
+            )}
 
             {!detail.marks_reliable && (
               <div className="rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-2 text-sm text-isaac-text">

@@ -172,6 +172,78 @@ export interface PathStatus {
   exists: boolean;
 }
 
+export interface HitEvent {
+  frame: number;
+  stage: number;
+  stage_type: number;
+  source: string;
+}
+
+export interface Run {
+  run_id: string;
+  slot: number;
+  character: string;
+  player_type: number;
+  started_frame: number;
+  ended_frame: number | null;
+  ended: boolean;
+  outcome: string | null;
+  ending: string | null;
+  deepest_stage: number;
+  hits_total: number;
+  shielded_hits: number;
+  hits_by_source: Record<string, number>;
+  hits_by_stage: Record<string, number>;
+  hits: HitEvent[];
+  rooms_cleared: number | null;
+  kills: number | null;
+  boss_kills: number | null;
+  duration_frames: number | null;
+}
+
+export interface CharacterStats {
+  character: string;
+  runs: number;
+  wins: number;
+  deaths: number;
+  winrate: number;
+  avg_hits: number;
+  min_hits: number | null;
+  avg_deepest_stage: number;
+  cleanliness: number;
+  first_hit_stage_avg: number | null;
+}
+
+export interface StatsOverview {
+  total_runs: number;
+  total_wins: number;
+  total_deaths: number;
+  overall_winrate: number;
+  avg_hits_per_run: number;
+  nemesis: [string, number] | null;
+  hits_by_source: [string, number][];
+  hits_heatmap: [string, number][];
+  hits_trend: number[];
+  per_character: CharacterStats[];
+}
+
+export interface CleanRecord {
+  character: string;
+  outcome: string;
+  hits: number;
+  deepest_stage: number;
+}
+
+export interface Insights {
+  cleanest_characters: CharacterStats[];
+  bloodiest_characters: CharacterStats[];
+  best_clean_runs: CleanRecord[];
+  hits_win_correlation: number | null;
+  current_win_streak: number;
+  best_win_streak: number;
+  total_runs: number;
+}
+
 export interface HealthReport {
   game_root: PathStatus;
   mods_dir: PathStatus;

@@ -58,6 +58,36 @@ export function markClasses(d: MarkDifficulty): string {
   }
 }
 
+const STAGE_NAMES: Record<number, string> = {
+  1: "Basement I",
+  2: "Basement II",
+  3: "Caves I",
+  4: "Caves II",
+  5: "Depths I",
+  6: "Depths II",
+  7: "Womb I",
+  8: "Womb II",
+  9: "Blue Womb",
+  10: "Sheol / Cathedral",
+  11: "Dark Room / Chest",
+  12: "The Void",
+  13: "Home",
+};
+
+export function stageLabel(stage: number): string {
+  return STAGE_NAMES[stage] ?? `Étage ${stage}`;
+}
+
+/** Clé "stage-type" (ex. "2-2") → nom lisible. */
+export function stageKeyLabel(key: string): string {
+  const n = parseInt(key.split("-")[0] ?? "", 10);
+  return Number.isFinite(n) ? stageLabel(n) : key;
+}
+
+export function pct(x: number): string {
+  return `${Math.round(x * 100)}%`;
+}
+
 export function editionLabel(e: string | null): string {
   if (e === "repentanceplus") return "Repentance+";
   if (e === "repentance") return "Repentance";

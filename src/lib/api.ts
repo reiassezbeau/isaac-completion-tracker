@@ -9,13 +9,17 @@ import type {
   Character,
   CharacterDetail,
   CharacterListItem,
+  CharacterStats,
   Dashboard,
   Ending,
   HealthReport,
+  Insights,
   Overrides,
   Prediction,
   Roadmap,
+  Run,
   SaveSlot,
+  StatsOverview,
   TargetSuggestion,
 } from "./types";
 
@@ -36,6 +40,12 @@ export const api = {
   nextTargets: (limit: number) => invoke<TargetSuggestion[]>("next_targets", { limit }),
   getRoadmap: () => invoke<Roadmap>("get_roadmap"),
   getAchievements: () => invoke<AchievementView[]>("get_achievements"),
+
+  refreshStats: () => invoke<number>("refresh_stats"),
+  getStatsOverview: () => invoke<StatsOverview>("get_stats_overview"),
+  getInsights: () => invoke<Insights>("get_insights"),
+  getCharacterStats: (charId: string) => invoke<CharacterStats>("get_character_stats", { charId }),
+  getRunHistory: (limit: number) => invoke<Run[]>("get_run_history", { limit }),
 
   getHealth: () => invoke<HealthReport>("get_health"),
   isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),

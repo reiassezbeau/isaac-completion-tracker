@@ -16,6 +16,7 @@ import { CharacterView } from "./views/Character";
 import { PredictorView } from "./views/Predictor";
 import { AchievementsView } from "./views/Achievements";
 import { RoadmapView } from "./views/Roadmap";
+import { StatsView } from "./views/Stats";
 import { DiagnosticView } from "./views/Diagnostic";
 import { SettingsView } from "./views/Settings";
 import { AboutView } from "./views/About";
@@ -33,6 +34,8 @@ function CurrentView() {
       return <AchievementsView />;
     case "roadmap":
       return <RoadmapView />;
+    case "stats":
+      return <StatsView />;
     case "diagnostic":
       return <DiagnosticView />;
     case "settings":

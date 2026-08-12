@@ -3,6 +3,7 @@
 
 import type { ReactNode } from "react";
 import {
+  BarChart3,
   Info,
   LayoutDashboard,
   ListChecks,
@@ -23,6 +24,7 @@ const NAV: { id: ViewId; label: string; icon: typeof User }[] = [
   { id: "predictor", label: "Prédicteur", icon: Wand2 },
   { id: "achievements", label: "Succès", icon: ListChecks },
   { id: "roadmap", label: "Roadmap", icon: Map },
+  { id: "stats", label: "Stats", icon: BarChart3 },
   { id: "diagnostic", label: "Diagnostic", icon: Stethoscope },
   { id: "settings", label: "Corrections", icon: Settings },
   { id: "about", label: "À propos", icon: Info },
