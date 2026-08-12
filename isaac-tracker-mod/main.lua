@@ -64,6 +64,12 @@ local function frame()
   return Game():GetFrameCount()
 end
 
+-- ⚠️ `Level()` global n'est PAS appelable dans cette API (c'est une table/classe).
+-- On passe par Game():GetLevel().
+local function level()
+  return Game():GetLevel()
+end
+
 local function currentPlayerType()
   return Isaac.GetPlayer(0):GetPlayerType()
 end
@@ -154,8 +160,8 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
   lastHitFrame[key] = f
 
   local src = classifySource(damageFlags, source)
-  local st = Level():GetStage()
-  local stt = Level():GetStageType()
+  local st = level():GetStage()
+  local stt = level():GetStageType()
 
   run.hits_total = (run.hits_total or 0) + 1
   run.hits[#run.hits + 1] = { frame = f, stage = st, stage_type = stt, source = src }
@@ -210,7 +216,7 @@ local function onGameStarted(_, isContinue)
     outcome = nil,
     ending = nil,
     death_source = nil,
-    deepest_stage = Level():GetStage(),
+    deepest_stage = level():GetStage(),
     hits_total = 0,
     hits = {},
     hits_by_source = {},
@@ -240,7 +246,7 @@ end
 local function onNewLevel(_)
   local run = data.current_run
   if run ~= nil then
-    local st = Level():GetStage()
+    local st = level():GetStage()
     if st > (run.deepest_stage or 0) then
       run.deepest_stage = st
     end
