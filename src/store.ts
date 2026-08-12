@@ -14,6 +14,7 @@ export type ViewId =
   | "optimizer"
   | "build"
   | "stats"
+  | "card"
   | "diagnostic"
   | "settings"
   | "about";

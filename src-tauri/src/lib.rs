@@ -110,6 +110,7 @@ pub fn run() {
             commands::get_item_kb,
             commands::analyze_build,
             commands::try_synergy,
+            commands::save_stat_card,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

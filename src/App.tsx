@@ -19,6 +19,7 @@ import { RoadmapView } from "./views/Roadmap";
 import { OptimizerView } from "./views/Optimizer";
 import { BuildAssistantView } from "./views/BuildAssistant";
 import { StatsView } from "./views/Stats";
+import { StatCardView } from "./views/StatCard";
 import { DiagnosticView } from "./views/Diagnostic";
 import { SettingsView } from "./views/Settings";
 import { AboutView } from "./views/About";
@@ -42,6 +43,8 @@ function CurrentView() {
       return <BuildAssistantView />;
     case "stats":
       return <StatsView />;
+    case "card":
+      return <StatCardView />;
     case "diagnostic":
       return <DiagnosticView />;
     case "settings":

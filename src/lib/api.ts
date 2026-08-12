@@ -58,6 +58,9 @@ export const api = {
   trySynergy: (buildIds: number[], candidateId: number) =>
     invoke<SynergyResult>("try_synergy", { buildIds, candidateId }),
 
+  saveStatCard: (path: string, bytes: number[]) =>
+    invoke<string>("save_stat_card", { path, bytes }),
+
   getHealth: () => invoke<HealthReport>("get_health"),
   isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),
   installTrackerMod: () => invoke<string>("install_tracker_mod"),

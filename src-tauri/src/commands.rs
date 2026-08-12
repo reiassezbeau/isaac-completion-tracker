@@ -509,6 +509,20 @@ pub fn get_optimizer(state: State<AppState>, limit: usize) -> Result<ev_engine::
     ))
 }
 
+// -- Carte de stats partageable (PNG) ---------------------------------------
+
+/// Écrit les octets PNG d'une carte de stats (rendue au canvas côté frontend)
+/// vers le chemin choisi par l'utilisateur. 100 % local, aucun réseau.
+#[tauri::command]
+pub fn save_stat_card(path: String, bytes: Vec<u8>) -> Result<String, String> {
+    let p = Path::new(&path);
+    if let Some(dir) = p.parent() {
+        std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
+    }
+    std::fs::write(p, &bytes).map_err(|e| format!("Écriture impossible : {e}"))?;
+    Ok(p.to_string_lossy().into_owned())
+}
+
 // -- Assistant de build -----------------------------------------------------
 
 /// Base de connaissances d'items (pour le sélecteur du simulateur).
