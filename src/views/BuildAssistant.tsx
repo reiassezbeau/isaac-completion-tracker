@@ -6,7 +6,7 @@ import { AlertTriangle, Feather, Heart, Plus, Search, Sparkles, Wand2, X } from 
 import { api } from "../lib/api";
 import { roleLabel, statDimLabel, tearFlagLabel, VERDICT_META } from "../lib/format";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
-import type { BuildAnalysis, ItemKb, SynergyResult } from "../lib/types";
+import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
 
 const DIMS = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"] as const;
 
@@ -187,6 +187,12 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
         ))}
       </div>
 
+      {analysis.unknown_ids.length > 0 && (
+        <p className="mb-3 text-xs text-isaac-muted">
+          {analysis.unknown_ids.length} item(s) hors base de connaissances (comptés dans le total, non détaillés).
+        </p>
+      )}
+
       {analysis.archetypes.map((a) => (
         <div key={a} className="mb-2 rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-3 py-1.5 text-sm text-isaac-text">
           {a}
@@ -234,9 +240,12 @@ export function BuildAssistantView() {
   const [query, setQuery] = useState("");
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null);
   const [synergy, setSynergy] = useState<SynergyResult | null>(null);
+  const [runs, setRuns] = useState<Run[]>([]);
 
   useEffect(() => {
     api.getItemKb().then(setKb);
+    // Runs recents ayant un snapshot de build (§7) -> chargeables dans le simulateur.
+    api.getRunHistory(40).then((rs) => setRuns(rs.filter((r) => r.final_build.length > 0))).catch(() => setRuns([]));
   }, []);
 
   useEffect(() => {
@@ -330,11 +339,47 @@ export function BuildAssistantView() {
         {/* Build courant + analyses */}
         <div className="space-y-5">
           <Card>
-            <SectionTitle hint={build.length ? undefined : "vide"}>Ton build</SectionTitle>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-isaac-muted">Ton build</h2>
+              <div className="flex items-center gap-2">
+                {runs.length > 0 && (
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      const r = runs[Number(e.target.value)];
+                      if (r) {
+                        setBuild(r.final_build);
+                        setCandidate(null);
+                      }
+                    }}
+                    className="rounded-lg border border-isaac-border bg-isaac-surface2 px-2.5 py-1 text-xs text-isaac-text outline-none focus:border-isaac-gold/60"
+                    title="Charger le build d'un run récent (mod)"
+                  >
+                    <option value="">Charger un run…</option>
+                    {runs.map((r, i) => (
+                      <option key={r.run_id} value={i}>
+                        {r.character} · {r.final_build.length} items · {r.outcome ?? "en cours"}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {build.length > 0 && (
+                  <button
+                    onClick={() => {
+                      setBuild([]);
+                      setCandidate(null);
+                    }}
+                    className="rounded-lg border border-isaac-border px-2.5 py-1 text-xs text-isaac-muted transition-colors hover:text-isaac-blood"
+                  >
+                    Vider
+                  </button>
+                )}
+              </div>
+            </div>
             {build.length === 0 ? (
               <p className="text-sm text-isaac-muted">
-                Ajoute des items depuis la liste (bouton <Plus className="inline h-3 w-3" />), puis « Test » un
-                candidat.
+                Ajoute des items depuis la liste (bouton <Plus className="inline h-3 w-3" />), charge le build d'un
+                run récent, puis « Test » un candidat.
               </p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
@@ -343,7 +388,7 @@ export function BuildAssistantView() {
                     key={id}
                     className="inline-flex items-center gap-1 rounded-lg border border-isaac-border bg-isaac-surface2 px-2 py-1 text-sm"
                   >
-                    {byId[id]?.name ?? id}
+                    {byId[id]?.name ?? `#${id}`}
                     <button onClick={() => removeFromBuild(id)} className="text-isaac-muted hover:text-isaac-blood">
                       <X className="h-3 w-3" />
                     </button>

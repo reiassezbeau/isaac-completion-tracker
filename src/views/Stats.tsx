@@ -141,6 +141,13 @@ export function StatsView() {
             <StatTile label="Nemesis" value={ov.nemesis ? ov.nemesis[0] : "—"} hint={ov.nemesis ? `${ov.nemesis[1]} hits` : undefined} tone="gold" />
           </div>
 
+          <div className="grid gap-3 sm:grid-cols-4">
+            <StatTile label="Ennemis tués" value={ov.total_kills.toLocaleString("fr")} tone="blood" />
+            <StatTile label="Boss battus" value={String(ov.total_boss_kills)} tone="gold" />
+            <StatTile label="Salles nettoyées" value={ov.total_rooms_cleared.toLocaleString("fr")} />
+            <StatTile label="Deals du diable" value={String(ov.total_devil_deals)} tone="blood" />
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <SectionTitle>Hits par source</SectionTitle>
@@ -211,9 +218,12 @@ export function StatsView() {
                     {outcomePill(r.outcome)}
                     <span className="text-xs text-isaac-muted">slot {r.slot}</span>
                   </span>
-                  <span className="flex items-center gap-3 text-xs text-isaac-muted">
+                  <span className="flex flex-wrap items-center justify-end gap-x-3 gap-y-0.5 text-xs text-isaac-muted">
                     <span className="inline-flex items-center gap-1"><Crosshair className="h-3 w-3 text-isaac-blood" />{r.hits_total} hits</span>
                     <span>étage {r.deepest_stage}</span>
+                    {r.kills != null && <span>{r.kills} kills</span>}
+                    {r.rooms_cleared != null && <span>{r.rooms_cleared} salles</span>}
+                    {r.final_build.length > 0 && <span className="text-isaac-gold/80">{r.final_build.length} items</span>}
                     {r.shielded_hits > 0 && <span>🛡 {r.shielded_hits}</span>}
                   </span>
                 </div>

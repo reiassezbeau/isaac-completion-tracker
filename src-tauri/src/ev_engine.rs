@@ -568,6 +568,12 @@ mod tests {
             kills: None,
             boss_kills: None,
             duration_frames: Some(1),
+            curses: None,
+            devil_deals: None,
+            final_stage: None,
+            final_stage_type: None,
+            final_build: vec![],
+            death_source: None,
         }
     }
     fn rand_id() -> u64 {

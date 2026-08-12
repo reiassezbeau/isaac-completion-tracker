@@ -50,6 +50,11 @@ pub struct StatsOverview {
     /// hits_total des N derniers runs comptes (tendance).
     pub hits_trend: Vec<u32>,
     pub per_character: Vec<CharacterStats>,
+    /// Agrégats « champs larges » (mod v0.2.0+) sur les runs comptés.
+    pub total_kills: u64,
+    pub total_boss_kills: u64,
+    pub total_rooms_cleared: u64,
+    pub total_devil_deals: u64,
 }
 
 #[derive(Serialize)]
@@ -123,8 +128,13 @@ pub fn overview(all: &[Run]) -> StatsOverview {
     let mut by_source: BTreeMap<String, u32> = BTreeMap::new();
     let mut heatmap: BTreeMap<String, u32> = BTreeMap::new();
     let mut sum_hits = 0u32;
+    let (mut total_kills, mut total_boss_kills, mut total_rooms, mut total_deals) = (0u64, 0u64, 0u64, 0u64);
     for r in &counted {
         sum_hits += r.hits_total;
+        total_kills += r.kills.unwrap_or(0) as u64;
+        total_boss_kills += r.boss_kills.unwrap_or(0) as u64;
+        total_rooms += r.rooms_cleared.unwrap_or(0) as u64;
+        total_deals += r.devil_deals.unwrap_or(0) as u64;
         for (k, v) in &r.hits_by_source {
             *by_source.entry(k.clone()).or_default() += v;
         }
@@ -154,6 +164,10 @@ pub fn overview(all: &[Run]) -> StatsOverview {
         hits_heatmap,
         hits_trend,
         per_character,
+        total_kills,
+        total_boss_kills,
+        total_rooms_cleared: total_rooms,
+        total_devil_deals: total_deals,
     }
 }
 
@@ -273,6 +287,12 @@ mod tests {
             kills: None,
             boss_kills: None,
             duration_frames: Some(100),
+            curses: None,
+            devil_deals: None,
+            final_stage: None,
+            final_stage_type: None,
+            final_build: vec![],
+            death_source: None,
         }
     }
 

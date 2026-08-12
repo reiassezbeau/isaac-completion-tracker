@@ -25,6 +25,19 @@ pub struct HitEvent {
     pub source: String,
 }
 
+/// Derniere source de degat subie (= cause de mort si le run se termine en mort).
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct DeathSource {
+    #[serde(default)]
+    pub source: String,
+    #[serde(default)]
+    pub entity_type: Option<i64>,
+    #[serde(default)]
+    pub stage: Option<i64>,
+    #[serde(default)]
+    pub frame: Option<i64>,
+}
+
 /// Un run tel que reconstruit depuis le JSON du mod (champs manquants tolerés).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Run {
@@ -67,6 +80,19 @@ pub struct Run {
     pub boss_kills: Option<u32>,
     #[serde(default)]
     pub duration_frames: Option<i64>,
+    #[serde(default)]
+    pub curses: Option<u32>,
+    #[serde(default)]
+    pub devil_deals: Option<u32>,
+    #[serde(default)]
+    pub final_stage: Option<i64>,
+    #[serde(default)]
+    pub final_stage_type: Option<i64>,
+    /// Snapshot de build (§7) : ids de collectibles tenus en fin de run.
+    #[serde(default)]
+    pub final_build: Vec<i64>,
+    #[serde(default)]
+    pub death_source: Option<DeathSource>,
 }
 
 // --- extraction defensive depuis serde_json::Value -------------------------
@@ -93,6 +119,26 @@ fn as_u32_map(v: &Value, k: &str) -> HashMap<String, u32> {
             .collect(),
         _ => HashMap::new(),
     }
+}
+
+fn parse_id_list(v: &Value, k: &str) -> Vec<i64> {
+    match v.get(k) {
+        Some(Value::Array(arr)) => arr.iter().filter_map(|x| x.as_i64()).collect(),
+        _ => Vec::new(),
+    }
+}
+
+fn parse_death_source(v: &Value) -> Option<DeathSource> {
+    let d = v.get("death_source")?;
+    if !d.is_object() {
+        return None;
+    }
+    Some(DeathSource {
+        source: d.get("source").and_then(|x| x.as_str()).unwrap_or("").to_string(),
+        entity_type: d.get("entity_type").and_then(|x| x.as_i64()),
+        stage: d.get("stage").and_then(|x| x.as_i64()),
+        frame: d.get("frame").and_then(|x| x.as_i64()),
+    })
 }
 
 fn parse_hits(v: &Value) -> Vec<HitEvent> {
@@ -135,6 +181,12 @@ fn parse_run(v: &Value, slot: u8) -> Option<Run> {
         kills: v.get("kills").and_then(|x| x.as_u64()).map(|n| n as u32),
         boss_kills: v.get("boss_kills").and_then(|x| x.as_u64()).map(|n| n as u32),
         duration_frames,
+        curses: v.get("curses").and_then(|x| x.as_u64()).map(|n| n as u32),
+        devil_deals: v.get("devil_deals").and_then(|x| x.as_u64()).map(|n| n as u32),
+        final_stage: as_i64(v, "final_stage"),
+        final_stage_type: as_i64(v, "final_stage_type"),
+        final_build: parse_id_list(v, "final_build"),
+        death_source: parse_death_source(v),
     })
 }
 

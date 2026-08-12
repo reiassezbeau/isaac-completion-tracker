@@ -179,6 +179,13 @@ export interface HitEvent {
   source: string;
 }
 
+export interface DeathSource {
+  source: string;
+  entity_type: number | null;
+  stage: number | null;
+  frame: number | null;
+}
+
 export interface Run {
   run_id: string;
   slot: number;
@@ -199,6 +206,12 @@ export interface Run {
   kills: number | null;
   boss_kills: number | null;
   duration_frames: number | null;
+  curses: number | null;
+  devil_deals: number | null;
+  final_stage: number | null;
+  final_stage_type: number | null;
+  final_build: number[];
+  death_source: DeathSource | null;
 }
 
 export interface CharacterStats {
@@ -225,6 +238,10 @@ export interface StatsOverview {
   hits_heatmap: [string, number][];
   hits_trend: number[];
   per_character: CharacterStats[];
+  total_kills: number;
+  total_boss_kills: number;
+  total_rooms_cleared: number;
+  total_devil_deals: number;
 }
 
 export interface CleanRecord {
