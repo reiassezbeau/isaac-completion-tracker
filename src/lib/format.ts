@@ -93,3 +93,54 @@ export function editionLabel(e: string | null): string {
   if (e === "repentance") return "Repentance";
   return "—";
 }
+
+// -- Assistant de build -----------------------------------------------------
+
+export const ROLE_LABELS: Record<string, string> = {
+  offensive: "Offensif",
+  defensive: "Défensif",
+  mobility: "Mobilité",
+  tear_mod: "Modif. de tirs",
+  utility: "Utilitaire",
+  familiar: "Familier",
+};
+
+export const TEAR_FLAG_LABELS: Record<string, string> = {
+  homing: "homing",
+  piercing: "perçant",
+  spectral: "spectral",
+  explosive: "explosif",
+};
+
+export const STAT_DIM_LABELS: Record<string, string> = {
+  damage: "Dégâts",
+  fire_rate: "Cadence",
+  range: "Portée",
+  shot_speed: "Vél. tir",
+  speed: "Vitesse",
+  luck: "Chance",
+};
+
+export function roleLabel(r: string): string {
+  return ROLE_LABELS[r] ?? r;
+}
+export function tearFlagLabel(f: string): string {
+  return TEAR_FLAG_LABELS[f] ?? f;
+}
+export function statDimLabel(d: string): string {
+  return STAT_DIM_LABELS[d] ?? d;
+}
+
+export function complexityLabel(c: string): string {
+  if (c === "flat") return "delta fiable";
+  if (c === "proc") return "à proc";
+  if (c === "conditional") return "conditionnel";
+  return c;
+}
+
+export const VERDICT_META: Record<string, { label: string; tone: "done" | "gold" | "blood" | "muted" }> = {
+  strong_pickup: { label: "Bon pick", tone: "done" },
+  fills_gap: { label: "Comble un trou", tone: "gold" },
+  situational: { label: "Situationnel", tone: "muted" },
+  redundant_or_conflict: { label: "Conflit / redondant", tone: "blood" },
+};

@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "tear_flag_redundancy_threshold": 3,
+  "tears_replacement_conflict_threshold": 2,
+  "damage_mult_glass_cannon": 1.8,
+  "warn_no_flight": true,
+  "warn_no_crowd_control": true
+}

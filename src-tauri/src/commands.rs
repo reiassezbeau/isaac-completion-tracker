@@ -11,6 +11,7 @@ use serde::Serialize;
 use tauri::{AppHandle, Manager, State};
 
 use crate::analytics;
+use crate::build_assistant::{self, BuildRules, ItemDb, ItemKb};
 use crate::engine::{self, State as EngineState};
 use crate::ev_engine::{self, EvConfig, Route};
 use crate::knowledge::{Achievement, Character, Ending, Knowledge};
@@ -31,6 +32,8 @@ pub struct AppState {
     pub stats: Mutex<Archive>,
     pub routes: Vec<Route>,
     pub ev_config: EvConfig,
+    pub item_db: ItemDb,
+    pub build_rules: BuildRules,
 }
 
 impl AppState {
@@ -413,6 +416,11 @@ pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
     for f in ["metadata.xml", "main.lua"] {
         std::fs::copy(src.join(f), dest.join(f)).map_err(|e| format!("copie {f} : {e}"))?;
     }
+    // La KB d'items (générée) accompagne le mod si présente ; pas bloquant sinon.
+    let kb = src.join("item_kb.lua");
+    if kb.exists() {
+        let _ = std::fs::copy(kb, dest.join("item_kb.lua"));
+    }
     Ok(dest.to_string_lossy().into_owned())
 }
 
@@ -499,4 +507,29 @@ pub fn get_optimizer(state: State<AppState>, limit: usize) -> Result<ev_engine::
         &state.ev_config,
         limit,
     ))
+}
+
+// -- Assistant de build -----------------------------------------------------
+
+/// Base de connaissances d'items (pour le sélecteur du simulateur).
+#[tauri::command]
+pub fn get_item_kb(state: State<AppState>) -> Vec<ItemKb> {
+    state.item_db.items.clone()
+}
+
+/// Feature A + B : composition + forces/faiblesses d'un build (liste d'ids d'items).
+#[tauri::command]
+pub fn analyze_build(state: State<AppState>, item_ids: Vec<i64>) -> build_assistant::BuildAnalysis {
+    build_assistant::analyze(&state.item_db, &item_ids, &state.build_rules)
+}
+
+/// Feature C : « try synergy » — delta + notes + verdict + radar avant/après.
+#[tauri::command]
+pub fn try_synergy(
+    state: State<AppState>,
+    build_ids: Vec<i64>,
+    candidate_id: i64,
+) -> Result<build_assistant::SynergyResult, String> {
+    build_assistant::try_synergy(&state.item_db, &build_ids, candidate_id)
+        .ok_or_else(|| format!("Item candidat inconnu : {candidate_id}"))
 }

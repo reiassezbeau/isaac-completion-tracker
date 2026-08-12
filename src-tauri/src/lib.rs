@@ -2,6 +2,7 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 mod analytics;
+mod build_assistant;
 mod commands;
 mod engine;
 mod ev_engine;
@@ -60,6 +61,8 @@ pub fn run() {
             let stats = stats_archive::Archive::load(&app_data_dir);
             let routes = ev_engine::load_routes(&res_dir);
             let ev_config = ev_engine::EvConfig::load(&app_data_dir);
+            let item_db = build_assistant::ItemDb::load(&res_dir);
+            let build_rules = build_assistant::BuildRules::load(&res_dir);
 
             app.manage(AppState {
                 knowledge,
@@ -70,6 +73,8 @@ pub fn run() {
                 stats: Mutex::new(stats),
                 routes,
                 ev_config,
+                item_db,
+                build_rules,
             });
             Ok(())
         })
@@ -102,6 +107,9 @@ pub fn run() {
             commands::get_character_stats,
             commands::get_run_history,
             commands::get_optimizer,
+            commands::get_item_kb,
+            commands::analyze_build,
+            commands::try_synergy,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

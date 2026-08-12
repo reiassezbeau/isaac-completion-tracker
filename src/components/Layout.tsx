@@ -26,6 +26,7 @@ const NAV: { id: ViewId; label: string; icon: typeof User }[] = [
   { id: "achievements", label: "Succès", icon: ListChecks },
   { id: "roadmap", label: "Roadmap", icon: Map },
   { id: "optimizer", label: "Optimiseur", icon: Target },
+  { id: "build", label: "Assistant build", icon: Wand2 },
   { id: "stats", label: "Stats", icon: BarChart3 },
   { id: "diagnostic", label: "Diagnostic", icon: Stethoscope },
   { id: "settings", label: "Corrections", icon: Settings },

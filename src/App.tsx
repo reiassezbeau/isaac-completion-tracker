@@ -17,6 +17,7 @@ import { PredictorView } from "./views/Predictor";
 import { AchievementsView } from "./views/Achievements";
 import { RoadmapView } from "./views/Roadmap";
 import { OptimizerView } from "./views/Optimizer";
+import { BuildAssistantView } from "./views/BuildAssistant";
 import { StatsView } from "./views/Stats";
 import { DiagnosticView } from "./views/Diagnostic";
 import { SettingsView } from "./views/Settings";
@@ -37,6 +38,8 @@ function CurrentView() {
       return <RoadmapView />;
     case "optimizer":
       return <OptimizerView />;
+    case "build":
+      return <BuildAssistantView />;
     case "stats":
       return <StatsView />;
     case "diagnostic":

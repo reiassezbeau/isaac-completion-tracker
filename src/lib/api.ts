@@ -13,9 +13,12 @@ import type {
   Dashboard,
   Ending,
   HealthReport,
+  BuildAnalysis,
   Insights,
+  ItemKb,
   OptimizerReport,
   Overrides,
+  SynergyResult,
   Prediction,
   Roadmap,
   Run,
@@ -49,6 +52,11 @@ export const api = {
   getRunHistory: (limit: number) => invoke<Run[]>("get_run_history", { limit }),
 
   getOptimizer: (limit: number) => invoke<OptimizerReport>("get_optimizer", { limit }),
+
+  getItemKb: () => invoke<ItemKb[]>("get_item_kb"),
+  analyzeBuild: (itemIds: number[]) => invoke<BuildAnalysis>("analyze_build", { itemIds }),
+  trySynergy: (buildIds: number[], candidateId: number) =>
+    invoke<SynergyResult>("try_synergy", { buildIds, candidateId }),
 
   getHealth: () => invoke<HealthReport>("get_health"),
   isTrackerModInstalled: () => invoke<boolean>("is_tracker_mod_installed"),

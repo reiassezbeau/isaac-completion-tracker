@@ -293,6 +293,69 @@ export interface OptimizerReport {
   based_on_runs: number;
 }
 
+export interface StatEffect {
+  op: "flat" | "mult";
+  value: number;
+}
+
+export interface ItemKb {
+  id: number;
+  name: string;
+  roles: string[];
+  stat_effects: Record<string, StatEffect>;
+  grants_tear_flags: string[];
+  grants_flight: boolean;
+  is_tears_replacement: boolean;
+  is_familiar: boolean;
+  hearts: number;
+  complexity: "flat" | "proc" | "conditional";
+  note: string;
+}
+
+export interface Composition {
+  total: number;
+  by_role: [string, number][];
+  familiars: number;
+  tears_replacements: number;
+  tear_flags: [string, number][];
+  has_flight: boolean;
+}
+
+export interface BuildAnalysis {
+  composition: Composition;
+  archetypes: string[];
+  strengths: string[];
+  weaknesses: string[];
+  unknown_ids: number[];
+}
+
+export interface StatDelta {
+  dim: string;
+  before: number;
+  after: number;
+  direction: number;
+}
+
+export interface SynergyNote {
+  kind: "strong" | "weak" | "dangerous";
+  text: string;
+}
+
+export interface SynergyResult {
+  candidate_id: number;
+  candidate_name: string;
+  adds_tear_flags: string[];
+  adds_flight: boolean;
+  hearts_delta: number;
+  stat_deltas: StatDelta[];
+  radar_before: [string, number][];
+  radar_after: [string, number][];
+  estimate_approximate: boolean;
+  synergy_notes: SynergyNote[];
+  verdict: "fills_gap" | "redundant_or_conflict" | "strong_pickup" | "situational";
+  verdict_text: string;
+}
+
 export interface HealthReport {
   game_root: PathStatus;
   mods_dir: PathStatus;
