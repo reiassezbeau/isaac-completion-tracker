@@ -106,6 +106,16 @@ pub struct CategoryStat {
     pub total: usize,
 }
 
+/// Comptes Hard/Normal d'une marque (ending) sur les 34 persos — alimente la
+/// jauge Dead God (12 anneaux).
+#[derive(Serialize)]
+pub struct EndingMarkCount {
+    pub ending_id: String,
+    pub ending_name: String,
+    pub hard: usize,
+    pub normal: usize,
+}
+
 #[derive(Serialize)]
 pub struct TargetSuggestion {
     pub character_id: String,
@@ -125,6 +135,8 @@ pub struct Dashboard {
     pub dead_god_total: usize,
     pub categories: Vec<CategoryStat>,
     pub next_targets: Vec<TargetSuggestion>,
+    pub dead_god_by_ending: Vec<EndingMarkCount>,
+    pub full_characters: usize,
     pub marks_reliable: bool,
     pub checksum_ok: bool,
     pub edition: Edition,
@@ -150,6 +162,24 @@ pub fn dashboard(state: &State, kn: &Knowledge, ov: &Overrides) -> Dashboard {
         .map(|(category, (unlocked, total))| CategoryStat { category, unlocked, total })
         .collect();
 
+    // Comptes par ending (mark_index) sur les 34 persos, pour la jauge Dead God.
+    let dead_god_by_ending = kn
+        .endings
+        .iter()
+        .map(|e| {
+            let mut hard = 0;
+            let mut normal = 0;
+            for c in &kn.characters {
+                match state.mark_for(c.save_index, e.mark_index) {
+                    MarkDifficulty::Hard => hard += 1,
+                    MarkDifficulty::Normal => normal += 1,
+                    _ => {}
+                }
+            }
+            EndingMarkCount { ending_id: e.id.clone(), ending_name: e.name.clone(), hard, normal }
+        })
+        .collect();
+
     Dashboard {
         total_unlocked,
         total: NUM_ACHIEVEMENTS,
@@ -158,6 +188,12 @@ pub fn dashboard(state: &State, kn: &Knowledge, ov: &Overrides) -> Dashboard {
         dead_god_total: DEAD_GOD_TOTAL,
         categories,
         next_targets: next_targets(state, kn, 5),
+        dead_god_by_ending,
+        full_characters: kn
+            .characters
+            .iter()
+            .filter(|c| (0..NUM_MARKS).all(|m| state.mark_for(c.save_index, m) == MarkDifficulty::Hard))
+            .count(),
         marks_reliable: state.marks_reliable,
         checksum_ok: state.checksum_ok,
         edition: state.edition,

@@ -34,6 +34,13 @@ export interface TargetSuggestion {
   fills_hard_mark: boolean;
 }
 
+export interface EndingMarkCount {
+  ending_id: string;
+  ending_name: string;
+  hard: number;
+  normal: number;
+}
+
 export interface Dashboard {
   total_unlocked: number;
   total: number;
@@ -42,6 +49,8 @@ export interface Dashboard {
   dead_god_total: number;
   categories: CategoryStat[];
   next_targets: TargetSuggestion[];
+  dead_god_by_ending: EndingMarkCount[];
+  full_characters: number;
   marks_reliable: boolean;
   checksum_ok: boolean;
   edition: Edition;

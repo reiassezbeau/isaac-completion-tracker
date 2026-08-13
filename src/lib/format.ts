@@ -46,15 +46,16 @@ export function markLabel(d: MarkDifficulty): string {
   }
 }
 
-/** Classes Tailwind pour un badge de mark. */
+/** Classes Tailwind pour un badge de mark (or = Hard, jade = Normal, creux = à faire). */
 export function markClasses(d: MarkDifficulty): string {
   switch (d) {
     case "hard":
-      return "bg-isaac-gold/15 text-isaac-gold border-isaac-gold/40";
+      return "bg-isaac-gold/10 text-isaac-gold border-isaac-gold/40";
     case "normal":
-      return "bg-isaac-done/15 text-isaac-done border-isaac-done/40";
+      return "bg-jade-500/10 text-isaac-done border-jade-600/50";
     default:
-      return "bg-isaac-blood/10 text-isaac-blood/90 border-isaac-blood/30";
+      // « à faire » = creux et discret (jamais un mur de rouge), cf. DA v2
+      return "bg-isaac-surface2 text-isaac-faint border-isaac-border";
   }
 }
 

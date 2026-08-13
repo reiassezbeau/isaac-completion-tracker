@@ -1,0 +1,275 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
+
+/**
+ * art — iconographie ORIGINALE de la DA v2 (grimoire maudit).
+ * Glyphes d'endings (occulte), sigils de perso (tête + attribut), emblème,
+ * icônes de nav dessinées-main, jauge Dead God, éclaboussures de sang.
+ * Tout est du SVG maison au trait tremblé (filtres de `Defs`). AUCUN sprite du
+ * jeu. Les couleurs viennent de `currentColor` (pilotées par la classe texte).
+ */
+import type { CSSProperties, ReactNode } from "react";
+
+type Shape = {
+  p?: string[];
+  c?: [number, number, number][];
+  cd?: [number, number, number, string][];
+  e?: [number, number, number, number][];
+  r?: [number, number, number, number, number][];
+  d?: [number, number, number][];
+  t?: [number, number][];
+  dash?: string;
+};
+
+function svgKids(s: Shape, prefix: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  (s.p || []).forEach((d, i) => out.push(<path key={`${prefix}p${i}`} d={d} strokeDasharray={s.dash} />));
+  (s.c || []).forEach((v, i) => out.push(<circle key={`${prefix}c${i}`} cx={v[0]} cy={v[1]} r={v[2]} />));
+  (s.cd || []).forEach((v, i) => out.push(<circle key={`${prefix}q${i}`} cx={v[0]} cy={v[1]} r={v[2]} strokeDasharray={v[3]} />));
+  (s.e || []).forEach((v, i) => out.push(<ellipse key={`${prefix}e${i}`} cx={v[0]} cy={v[1]} rx={v[2]} ry={v[3]} />));
+  (s.r || []).forEach((v, i) => out.push(<rect key={`${prefix}r${i}`} x={v[0]} y={v[1]} width={v[2]} height={v[3]} rx={v[4]} fill="currentColor" stroke="none" />));
+  (s.d || []).forEach((v, i) => out.push(<circle key={`${prefix}d${i}`} cx={v[0]} cy={v[1]} r={v[2]} fill="currentColor" stroke="none" />));
+  (s.t || []).forEach((v, i) =>
+    out.push(
+      <path
+        key={`${prefix}t${i}`}
+        d={`M${v[0]} ${v[1]}c0 0 2 2.6 2 4 0 1.2-.9 2.1-2 2.1s-2-.9-2-2.1c0-1.4 2-4 2-4Z`}
+        fill="currentColor"
+        stroke="none"
+      />,
+    ),
+  );
+  return out;
+}
+
+function Drawn({ shape, size, sw = 1.7, filter = "wob1", prefix = "g" }: { shape: Shape; size: number; sw?: number; filter?: string | false; prefix?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={sw}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ display: "block", overflow: "visible" }}
+    >
+      <g filter={filter === false ? undefined : `url(#${filter})`}>{svgKids(shape, prefix)}</g>
+    </svg>
+  );
+}
+
+// ── Les 12 signes (iconographie occulte redessinée) ────────────────────────
+export const ENDINGS: Record<string, Shape> = {
+  moms_heart: { p: ["M12 20.4C6.1 15.3 3.7 11.7 3.7 8.8 3.7 6.2 5.7 4.3 8.1 4.3 9.9 4.3 11.3 5.3 12 6.8 12.7 5.3 14.1 4.3 15.9 4.3 18.3 4.3 20.3 6.2 20.3 8.8 20.3 11.7 17.9 15.3 12 20.4Z", "M12 1.6V9.2", "M9.7 2.4h4.6"] },
+  isaac: { p: ["M12 13.2a4.9 4.9 0 100-9.8 4.9 4.9 0 000 9.8Z"], e: [[12, 4.1, 6.2, 2.1]], t: [[13.2, 15.4]] },
+  satan: { p: ["M12 5.6v15.2", "M7.2 16.4h9.6", "M12 5.6C9.4 4.4 8.2 2.4 9.4 1.8", "M12 5.6c2.6-1.2 3.8-3.2 2.6-3.8"] },
+  boss_rush: { p: ["M5.2 4.2C7.2 8.8 8.6 14.4 8 19.6", "M11.6 3.2C13.7 8.2 15.1 14.2 14.5 19.9", "M18.1 4.6c1.8 4.6 2.8 9.8 2.2 14.6"] },
+  blue_baby: { p: ["M5.4 20.6V10.2a6.6 6.6 0 0113.2 0v10.4l-2.2-1.8-2.2 1.8-2.2-1.8-2.2 1.8-2.2-1.8-2.2 1.8Z"], d: [[9.7, 10.8, 1.35], [14.3, 10.8, 1.35]] },
+  lamb: { p: ["M7.5 12.6a4.5 4.5 0 019 0v2.6c0 2.4-2 4.4-4.5 4.4s-4.5-2-4.5-4.4Z", "M7.5 12.6C4.7 11.4 4.6 8.2 6.9 8.8", "M16.5 12.6c2.8-1.2 2.9-4.4.6-3.8"], e: [[12, 4.4, 5.3, 1.8]], d: [[10, 15, 1.15], [14, 15, 1.15]] },
+  mega_satan: { p: ["M12 19.4 7.65 6.01 19.04 14.29 4.96 14.29 16.35 6.01Z"], c: [[12, 12, 8.5]] },
+  greed: { p: ["M12 3.7l-2.4 4.5 2.7 3.3-1.9 3.5 2 5.2"], c: [[12, 12, 8.4], [12, 12, 5.4]] },
+  hush: { p: ["M3.5 12.4S7.1 7.6 12 7.6s8.5 4.8 8.5 4.8", "M3.5 12.4h17", "M7.6 10.6 6.4 8.4", "M12 9.2V6.7", "M16.4 10.6l1.2-2.2"] },
+  delirium: { p: ["M6.6 12.2s2.4-3.2 5.4-3.2 5.4 3.2 5.4 3.2-2.4 3.2-5.4 3.2-5.4-3.2-5.4-3.2Z"], cd: [[12, 12, 8.6, "3.2 3.4"]], d: [[12, 12.2, 1.5]] },
+  mother: { p: ["M4.7 20.5v-7.3a7.3 7.3 0 0114.6 0v7.3", "M8.6 20.5v-7.2", "M15.4 20.5v-7.2"], e: [[12, 12.6, 3.3, 2.3]], d: [[12, 12.6, 1.05]] },
+  beast: { p: ["M2.9 12.6C7.1 7 17 7 21.1 12.6 17 18.1 7.1 18.1 2.9 12.6Z", "M12 9.4v6.4", "M4.9 8.6C3.3 5.9 4.8 4.5 6.2 6.3", "M19.1 8.6c1.6-2.7.1-4.1-1.3-2.3"] },
+};
+
+/** Glyphe d'un ending (id = ceux d'endings.json). currentColor = couleur. */
+export function Glyph({ id, size = 18, sw = 1.7, filter = "wob1" }: { id: string; size?: number; sw?: number; filter?: string | false }) {
+  const shape = ENDINGS[id];
+  if (!shape) return null;
+  return <Drawn shape={shape} size={size} sw={sw} filter={filter} prefix={`e_${id}`} />;
+}
+
+// ── Les 17 sigils de base (tête + attribut, 3 traits max) ───────────────────
+const SIGILS: Record<string, Shape> = {
+  isaac: { p: ["M12 13.4a5 5 0 100-10 5 5 0 000 10Z"], e: [[12, 4.2, 6.3, 2.1]], t: [[13.4, 15.8]] },
+  magdalene: { p: ["M12 21a5.4 5.4 0 100-10.8A5.4 5.4 0 0012 21Z", "M12 8.4C9.1 6 7.9 4.6 7.9 3.4 7.9 2.2 8.8 1.4 9.9 1.4c.9 0 1.7.5 2.1 1.3.4-.8 1.2-1.3 2.1-1.3 1.1 0 2 .8 2 2 0 1.2-1.2 2.6-4.1 5Z"] },
+  cain: { p: ["M12 19.4a6 6 0 100-12 6 6 0 000 12Z", "M5.4 8.4 18.4 14.2"] },
+  judas: { p: ["M12 11.6a4.6 4.6 0 100-9.2 4.6 4.6 0 000 9.2Z", "M12 12.4v9.2", "M8.4 18.6h7.2"] },
+  blue_baby: { p: ["M5.8 20.8V10.6a6.2 6.2 0 0112.4 0v10.2l-2.1-1.7-2.1 1.7-2.1-1.7-2 1.7-2.1-1.7Z"], r: [[9, 10.4, 2.2, 3, 0.6], [12.8, 10.4, 2.2, 3, 0.6]] },
+  eve: { p: ["M12 20.4a5.6 5.6 0 100-11.2 5.6 5.6 0 000 11.2Z", "M11 8.2C8.4 6.8 6.6 4.4 6.4 2 8.8 3 10.6 5.2 11 8.2Z", "M13 8.2c2.6-1.4 4.4-3.8 4.6-6.2-2.4 1-4.2 3.2-4.6 6.2Z"] },
+  samson: { p: ["M12 19.8a5.8 5.8 0 100-11.6 5.8 5.8 0 000 11.6Z", "M8 7.2C6 5.6 6.4 2.6 8.8 3.4", "M16 7.2c2-1.6 1.6-4.6-.8-3.8"] },
+  azazel: { p: ["M12 18.8a4.6 4.6 0 100-9.2 4.6 4.6 0 000 9.2Z", "M7.6 12C4.4 11 2.2 8.2 1.8 4.8 4.8 6 7 8.6 7.6 12Z", "M16.4 12c3.2-1 5.4-3.8 5.8-7.2-3 1.2-5.2 3.8-5.8 7.2Z"] },
+  lazarus: { p: ["M12 19.6a6 6 0 100-12 6 6 0 000 12Z", "M6.6 10.4 17.2 15.6", "M7.4 15.8 16.6 10.2"] },
+  eden: { p: ["M12 19.6a6.2 6.2 0 100-12.4 6.2 6.2 0 000 12.4Z"], d: [[9.6, 11, 1.15], [14.4, 11, 1.15], [9.6, 15.8, 1.15], [14.4, 15.8, 1.15], [12, 13.4, 1.15]] },
+  the_lost: { p: ["M6.4 20.8V11a5.6 5.6 0 0111.2 0v9.8l-1.9-1.6-1.9 1.6-1.8-1.6-1.9 1.6-1.8-1.6Z"], dash: "2.6 2.4", e: [[12, 3.4, 5.4, 1.8]] },
+  lilith: { p: ["M12 12.6a4.8 4.8 0 100-9.6 4.8 4.8 0 000 9.6Z", "M6.4 13.6C7.8 18 9.6 20.6 12 21.6c2.4-1 4.2-3.6 5.6-8Z"] },
+  keeper: { p: ["M12 20.4a8.2 8.2 0 100-16.4 8.2 8.2 0 000 16.4Z"], r: [[8.6, 10.6, 2, 2.6, 0.5], [13.4, 10.6, 2, 2.6, 0.5]], c: [[12, 12.2, 5.2]] },
+  apollyon: { p: ["M12 20.4a8.2 8.2 0 100-16.4 8.2 8.2 0 000 16.4Z", "M16.4 12.2a4.4 4.4 0 11-4.4-4.4c2.4 0 3.2 1.8 3.2 3s-1.2 2.2-2.6 2"] },
+  the_forgotten: { p: ["M7.2 14.6a4.8 4.8 0 019.6 0v2.2H7.2Z", "M8.4 17.4v3.4", "M12 17.4v3.4", "M15.6 17.4v3.4"], d: [[9.9, 13.4, 1.3], [14.1, 13.4, 1.3]] },
+  bethany: { p: ["M12 20.6a5.4 5.4 0 100-10.8 5.4 5.4 0 000 10.8Z", "M12 8.6c1.9-1.6 2.8-3.1 2.8-4.4C14.8 2.7 13.5 1.4 12 1.4c-1.5 0-2.8 1.3-2.8 2.8 0 1.3.9 2.8 2.8 4.4Z"] },
+  jacob_esau: { p: ["M8.6 18.8a5 5 0 100-10 5 5 0 000 10Z", "M15.4 18.8a5 5 0 100-10 5 5 0 000 10Z"] },
+};
+
+/**
+ * Sigil de personnage sur plaque : régulier = os sur pierre gravée ; Tainted =
+ * même sigil encré de sang + barre oblique. `id` = id de perso (les formes
+ * Tainted/formes alternatives retombent sur leur base via `baseSigilId`).
+ */
+export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: number; tainted?: boolean }) {
+  const shape = SIGILS[baseSigilId(id)] ?? SIGILS.isaac;
+  const inner = Math.round(size * 0.74);
+  const radius = Math.round(size * 0.28);
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: radius,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        position: "relative",
+        background: tainted ? "linear-gradient(165deg,#1a0d0d,#100908)" : "linear-gradient(165deg,#241d15,#16110c)",
+        boxShadow: tainted
+          ? "inset 0 0 0 1px rgba(140,26,26,.55), inset 0 1px 0 rgba(255,255,255,.05)"
+          : "inset 0 0 0 1px #3a2f22, inset 0 1px 0 rgba(255,255,255,.055)",
+      }}
+    >
+      <div style={{ display: "flex", position: "relative", color: tainted ? "#c4565c" : "#cfc3ad" }}>
+        <Drawn shape={shape} size={inner} sw={1.7} filter={tainted ? "wob2" : "wob1"} prefix={`sig_${id}`} />
+      </div>
+      {tainted && (
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: "block" }}>
+            <path d="M4.4 19.6 19.6 4.4" stroke="#8c1a1a" strokeWidth={2.2} strokeLinecap="round" filter="url(#wob2)" opacity={0.92} />
+          </svg>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Ramène un id de perso (forme/alt/Tainted) vers son sigil de base. */
+export function baseSigilId(id: string): string {
+  let base = id.startsWith("tainted_") ? id.slice("tainted_".length) : id;
+  const alias: Record<string, string> = {
+    forgotten: "the_forgotten",
+    lost: "the_lost",
+    jacob: "jacob_esau",
+    esau: "jacob_esau",
+  };
+  base = alias[base] ?? base;
+  return SIGILS[base] ? base : "isaac";
+}
+
+// ── Emblème (croix + cœur + larme) ─────────────────────────────────────────
+export function Emblem({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", overflow: "visible" }}>
+      <g filter="url(#wob1)">
+        <path d="M12 2.4v19.2" />
+        <path d="M6.4 7.6h11.2" />
+        <path d="M12 17.8c-2.6-2.2-3.7-3.8-3.7-5.1 0-1.2.9-2.1 2-2.1.7 0 1.3.4 1.7 1 .4-.6 1-1 1.7-1 1.1 0 2 .9 2 2.1 0 1.3-1.1 2.9-3.7 5.1Z" fill="currentColor" stroke="none" opacity={0.9} />
+      </g>
+    </svg>
+  );
+}
+
+// ── Icônes de nav dessinées-main ───────────────────────────────────────────
+const NAV: Record<string, Shape> = {
+  dash: { p: ["M4.2 5.2h6.2v6.2H4.2Z", "M13.6 5.2h6.2v3.6h-6.2Z", "M13.6 11h6.2v7.8h-6.2Z", "M4.2 14h6.2v4.8H4.2Z"] },
+  user: { p: ["M12 11.6a4 4 0 100-8 4 4 0 000 8Z", "M5.4 20.4c0-3.4 3-5.4 6.6-5.4s6.6 2 6.6 5.4"] },
+  wand: { p: ["M5 19.4 15.6 8.6", "M13.8 3.4l1.2 2.6 2.6 1.2-2.6 1.2-1.2 2.6-1.2-2.6L10 7.6l2.6-1.2Z"] },
+  list: { p: ["M4.4 7h3.4", "M4.4 12h3.4", "M4.4 17h3.4", "M10.6 7h9", "M10.6 12h9", "M10.6 17h9"] },
+  map: { p: ["M3.4 6.4 9 4l6 2.6L20.6 4v13.6L15 20l-6-2.6L3.4 20Z", "M9 4v13.4", "M15 6.6V20"] },
+  target: { p: ["M12 3.4v3", "M12 17.6v3"], c: [[12, 12, 7.8], [12, 12, 3.2]] },
+  flask: { p: ["M9.4 3.2v6L5 18.4c-.6 1.4.4 2.6 1.8 2.6h10.4c1.4 0 2.4-1.2 1.8-2.6L14.6 9.2v-6", "M8.4 3.2h7.2", "M7.4 15h9.2"] },
+  chart: { p: ["M4.4 20.4V10", "M10 20.4V4.2", "M15.6 20.4v-7", "M20.4 20.4h-17"] },
+  image: { p: ["M4 5.4h16v13.2H4Z", "M4.6 17 9.6 12.4l3.4 2.8 3-2.4 3.4 3.2"], d: [[9, 10, 1.6]] },
+  steth: { p: ["M12 20.2C7.4 16.6 5.6 14 5.6 11.6c0-2 1.6-3.6 3.4-3.6 1.3 0 2.4.7 3 1.8.6-1.1 1.7-1.8 3-1.8 1.8 0 3.4 1.6 3.4 3.6 0 2.4-1.8 5-6.4 8.6Z", "M12 3.4v3.2", "M9.8 5h4.4"] },
+  gear: { p: ["M12 3.4v2.4M12 18.2v2.4M4 12H1.8M22.2 12H20M6.4 6.4 4.8 4.8M19.2 19.2l-1.6-1.6M17.6 6.4l1.6-1.6M4.8 19.2l1.6-1.6"], c: [[12, 12, 3.2]] },
+  info: { p: ["M6 3.4h9.4l3.6 3.6v13.6H6Z", "M12 10.6v6", "M15.4 3.6v3.8h3.4"], d: [[12, 8.6, 0.85]] },
+};
+
+export function NavGlyph({ kind, size = 15 }: { kind: string; size?: number }) {
+  const shape = NAV[kind] ?? NAV.info;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", overflow: "visible" }}>
+      <g filter="url(#wob2)">{svgKids(shape, `nav_${kind}`)}</g>
+    </svg>
+  );
+}
+
+// ── Jauge Dead God : 12 anneaux gravés (un par ending) ─────────────────────
+function arc(cx: number, cy: number, r: number, a0: number, a1: number): string {
+  const p = (a: number): [number, number] => {
+    const t = ((a - 90) * Math.PI) / 180;
+    return [cx + r * Math.cos(t), cy + r * Math.sin(t)];
+  };
+  const [x0, y0] = p(a0);
+  const [x1, y1] = p(a1);
+  return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+}
+
+/** `perEnding` = 12 entrées {hard, normal} (compte sur les 34 persos). */
+export function DeadGodGauge({ perEnding, size = 246, total = 34 }: { perEnding: { hard: number; normal: number }[]; size?: number; total?: number }) {
+  const cx = 200;
+  const cy = 200;
+  const a0 = 215;
+  const sweep = 290;
+  const arcs: ReactNode[] = [];
+  perEnding.forEach((p, i) => {
+    const r = 86 + i * 8.6;
+    const fh = total > 0 ? p.hard / total : 0;
+    const fn = total > 0 ? (p.hard + p.normal) / total : 0;
+    arcs.push(<path key={`sh${i}`} d={arc(cx, cy + 1.4, r, a0, a0 + sweep)} stroke="#000" strokeWidth={5.6} fill="none" strokeLinecap="round" opacity={0.55} filter="url(#etch)" />);
+    arcs.push(<path key={`tr${i}`} d={arc(cx, cy, r, a0, a0 + sweep)} stroke="#211a12" strokeWidth={5.2} fill="none" strokeLinecap="round" filter="url(#etch)" />);
+    if (fn > 0.004) arcs.push(<path key={`n${i}`} d={arc(cx, cy, r, a0, a0 + sweep * fn)} stroke="#2a7a56" strokeWidth={5.2} fill="none" strokeLinecap="round" filter="url(#etch)" />);
+    if (fh > 0.004)
+      arcs.push(
+        <path key={`h${i}`} d={arc(cx, cy, r, a0, a0 + sweep * fh)} stroke="#c9a94a" strokeWidth={5.2} fill="none" strokeLinecap="round" filter="url(#etch)">
+          <title>{`${p.hard}/${total} Hard`}</title>
+        </path>,
+      );
+  });
+  arcs.push(<path key="in" d={arc(cx, cy, 78, a0, a0 + sweep)} stroke="#3a2f22" strokeWidth={1} fill="none" filter="url(#etch)" />);
+  return (
+    <svg width={size} height={size} viewBox="0 0 400 400" style={{ display: "block" }}>
+      {arcs}
+    </svg>
+  );
+}
+
+// ── Éclaboussure de sang (décor, jamais sous la data) ──────────────────────
+function rngFn(seed: number): () => number {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+
+export function Splatter({ w, h, seed, n = 22, style }: { w: number; h: number; seed: number; n?: number; style?: CSSProperties }) {
+  const rnd = rngFn(seed);
+  const kids: ReactNode[] = [];
+  for (let i = 0; i < n; i++) {
+    const cx = rnd() * w;
+    const cy = rnd() * h;
+    const r = 2 + rnd() * rnd() * 26;
+    kids.push(<ellipse key={`e${i}`} cx={cx} cy={cy} rx={r} ry={r * (0.7 + rnd() * 0.6)} fill="currentColor" opacity={0.25 + rnd() * 0.6} />);
+  }
+  for (let i = 0; i < Math.round(n / 3); i++) {
+    const x = rnd() * w;
+    const y = rnd() * h;
+    const l = 8 + rnd() * 30;
+    const r = 2 + rnd() * 4;
+    kids.push(
+      <path
+        key={`t${i}`}
+        d={`M${x.toFixed(1)} ${y.toFixed(1)}c${-r} ${l * 0.5} ${-r * 0.4} ${l} ${r} ${l}s${r * 1.4} ${-l * 0.4} ${r} ${-l}Z`}
+        fill="currentColor"
+        opacity={0.3 + rnd() * 0.4}
+      />,
+    );
+  }
+  return (
+    <svg width="100%" height="100%" viewBox={`0 0 ${w} ${h}`} style={{ display: "block", overflow: "visible", ...style }} aria-hidden="true">
+      <g filter="url(#splat)">{kids}</g>
+    </svg>
+  );
+}

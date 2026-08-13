@@ -14,7 +14,9 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div className={`rounded-xl border border-isaac-border bg-isaac-surface p-5 ${className}`}>
+    <div
+      className={`rounded-xl border border-isaac-border bg-isaac-surface p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] ${className}`}
+    >
       {children}
     </div>
   );
@@ -23,8 +25,8 @@ export function Card({
 export function SectionTitle({ children, hint }: { children: ReactNode; hint?: string }) {
   return (
     <div className="mb-3 flex items-baseline justify-between gap-3">
-      <h2 className="text-sm font-semibold uppercase tracking-widest text-isaac-muted">{children}</h2>
-      {hint && <span className="text-xs text-isaac-muted">{hint}</span>}
+      <h2 className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-isaac-faint">{children}</h2>
+      {hint && <span className="text-xs text-isaac-faint">{hint}</span>}
     </div>
   );
 }
@@ -40,9 +42,13 @@ export function ProgressBar({
 }) {
   const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0;
   const bar =
-    tone === "gold" ? "bg-isaac-gold" : tone === "done" ? "bg-isaac-done" : "bg-isaac-blood";
+    tone === "gold"
+      ? "bg-gold-500 shadow-[0_0_12px_-2px_rgba(201,169,74,0.6)]"
+      : tone === "done"
+        ? "bg-jade-600"
+        : "bg-blood-700";
   return (
-    <div className="h-2.5 w-full overflow-hidden rounded-full bg-isaac-surface2">
+    <div className="h-2.5 w-full overflow-hidden rounded-full bg-isaac-surface2 shadow-[inset_0_0_0_1px_rgb(var(--i-surface3))]">
       <div
         className={`h-full rounded-full ${bar} transition-[width] duration-500`}
         style={{ width: `${pct}%` }}
@@ -80,7 +86,7 @@ export function GitHubLink({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={() => openUrl(GITHUB_URL)}
-      className={`inline-flex items-center gap-1 text-isaac-gold transition-colors hover:text-isaac-gold/80 ${className}`}
+      className={`inline-flex items-center gap-1 text-isaac-gold transition-colors hover:text-gold-300 ${className}`}
       title={GITHUB_URL}
     >
       github.com/reiassezbeau

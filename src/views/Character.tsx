@@ -6,6 +6,7 @@ import { Crosshair, Lock, Route } from "lucide-react";
 import { api } from "../lib/api";
 import { markClasses, markLabel, pct } from "../lib/format";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
+import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { CharacterDetail, CharacterListItem, CharacterStats } from "../lib/types";
 
 function CharGrid({
@@ -35,13 +36,14 @@ function CharGrid({
                 onClick={() => onSelect(c.id)}
                 className={`rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
                   selected === c.id
-                    ? "border-isaac-blood/60 bg-isaac-blood/10"
-                    : "border-isaac-border bg-isaac-surface hover:border-isaac-border/80"
+                    ? "border-isaac-dried/60 bg-isaac-dried/10"
+                    : "border-isaac-border bg-isaac-surface hover:border-isaac-border-strong"
                 }`}
               >
-                <div className="flex items-center justify-between gap-1">
+                <div className="flex items-center gap-2">
+                  <Sigil id={baseSigilId(c.id)} size={22} tainted={c.kind === "tainted"} />
                   <span className="truncate font-medium">{c.name}</span>
-                  {!c.unlocked && <Lock className="h-3 w-3 flex-shrink-0 text-isaac-muted" />}
+                  {!c.unlocked && <Lock className="ml-auto h-3 w-3 flex-shrink-0 text-isaac-faint" />}
                 </div>
                 <div className="mt-1 flex items-center gap-1">
                   <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-isaac-surface2">
@@ -158,7 +160,12 @@ export function CharacterView() {
                       m.status,
                     )}`}
                   >
-                    <span className="truncate">{m.ending_name}</span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="flex flex-shrink-0">
+                        <Glyph id={m.ending_id} size={16} />
+                      </span>
+                      <span className="truncate">{m.ending_name}</span>
+                    </span>
                     <span className="ml-2 flex-shrink-0 text-xs font-semibold">
                       {markLabel(m.status)}
                       {m.overridden && " *"}
