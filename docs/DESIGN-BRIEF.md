@@ -43,12 +43,55 @@ mais tu peux aussi partir du code.
 
 ---
 
+## 🩸 Identité visuelle — l'univers d'Isaac (LE CŒUR DE LA MISSION)
+
+> **Le piège n°1 (déjà tombé dedans à la Livraison 1).** Le premier design system était
+> techniquement excellent mais **sans âme** : un dashboard sombre « premium » générique rouge/or,
+> qui pourrait être une app de finance. **Ce n'est PAS ce qu'on veut.**
+
+**« Aucun asset rippé » ≠ « aucun thème ».** Ça veut dire : tu **dessines toi-même, de zéro**, un art
+qui **ÉVOQUE** l'univers de *The Binding of Isaac*. Va **à fond** dans cette direction, en 100 %
+original (SVG/CSS, offline).
+
+**La référence mentale : un GRIMOIRE MAUDIT / le journal d'Isaac** — pas un dashboard SaaS. L'univers
+d'Isaac = sous-sol et grenier crasseux, horreur religieuse chrétienne (culpabilité, sacrifice,
+démons), sang / larmes / corps, **trait dessiné-main volontairement imparfait**, symbolisme occulte
+(croix, pentagramme, cœur, larme, auréole, ver).
+
+**À injecter — tout ORIGINAL :**
+- **Matière** : parchemin taché, grain, éclaboussures de sang, bords usés — via filtres SVG / noise
+  **originaux et subtils** (jamais de photos ni de textures téléchargées).
+- **Trait dessiné-main** : les glyphes et icônes ne doivent PAS être des line-icons propres façon
+  lucide → donne-leur un trait légèrement tremblé / gravé, organique.
+- **Iconographie occulte / religieuse redessinée** (croix, pentagramme, larme, cœur, auréole, ver) —
+  symboles universels que tu recrées, **jamais les sprites du jeu**.
+- **Sigils de perso** au lieu de monogrammes « IS / MG / CA » : 34 petits sigils / silhouettes
+  abstraits originaux, reconnaissables à 20 px.
+- **Police display embarquée** (licence **libre / OFL**, base64) avec du caractère (gravé / gothique
+  léger) pour les titres et gros chiffres — pas Segoe.
+- **Cadre diégétique** : le chrome, les en-têtes, la jauge Dead God traités comme un **artefact du
+  monde d'Isaac**.
+
+**Équilibre NON négociable — peau atmosphérique, cœur de données LISIBLE.** C'est un **outil dense**
+(408 marks, 641 succès) : tableaux, chiffres et grille de marks restent **nets et lisibles**.
+L'atmosphère vit dans le **chrome, les textures, l'iconographie et les accents** — jamais dans une
+soupe illisible. **Ne sur-corrige pas** en full grunge.
+
+**Déjà ACQUIS (Livraison 1) — garde-le, n'y reviens pas, tu l'HABILLES :** les rampes de couleurs
+(blood / gold + jade `#3ec07f` + neutres charbon chaud), les **tokens en variables CSS** (thème
+clair/sombre sans toucher au JSX), le **namespace `isaac-*` préservé**, `tabular-nums`, l'**encodage
+double couleur + forme** (plein / anneau / vide), la **grille 34×12 en 2 blocs de 17** avec totaux de
+colonne, l'intégration Tailwind. Tu ne refais pas ce squelette — tu lui donnes son âme.
+
+---
+
 ## 0. Contexte produit
 Application **desktop** (Windows) qui aide un joueur de *The Binding of Isaac: Repentance+* à
 **compléter les 641 succès** jusqu'à **Dead God** (100 %). Elle lit sa sauvegarde en lecture seule,
 affiche sa progression, prédit ce que débloque tel run, trace une roadmap, et (via un mod compagnon)
 suit ses stats de jeu. Public : **complétionnistes hardcore** — ils veulent un outil **dense en info,
-lisible, et gratifiant**, pas mignon. Ambiance *Isaac* : sombre, viscéral, un soupçon sacré/doré.
+lisible, et gratifiant**, pas mignon. Ambiance *Isaac* : sombre, viscéral, sacré/occulte — voir la
+section **🩸 Identité visuelle** ci-dessus, qui est le cœur de la mission.
 
 ## 1. Stack & contraintes techniques (IMPÉRATIVES)
 - **Tauri v2 + React 19 + TypeScript + Tailwind CSS v3 + lucide-react.** Livrables attendus : tokens
@@ -130,11 +173,13 @@ sémantique claire), light + dark, cohérent, un cran au-dessus de l'actuel.
    - **radar de stats avant/après** (Assistant build — `Radar` dans `BuildAssistant.tsx`, SVG 6 axes maison à sublimer),
    - **jauges de score / propreté** (Stats/Insights).
    Palette de data-viz accessible (daltonisme), cohérente avec le thème sombre.
-5. **Iconographie / illustrations ORIGINALES** (SVG inline) :
-   - un petit set de **glyphes pour les 12 endings/marks** (Mom's Heart, Mother, Beast, Hush…) — abstraits,
-     PAS les sprites du jeu ; juste des pictos évocateurs et cohérents entre eux,
-   - **avatars de perso** abstraits/monogrammes (PAS les sprites) pour la grille des 34,
-   - icônes de statut/catégorie (au-delà de lucide-react si besoin).
+5. **Iconographie / illustrations ORIGINALES** (SVG inline) — **au trait dessiné-main, pas des line-icons
+   propres** (cf. § 🩸 Identité visuelle) :
+   - un set de **glyphes pour les 12 endings/marks** (Mom's Heart, Mother, Beast, Hush…) — évocateurs,
+     occultes, cohérents entre eux, PAS les sprites du jeu,
+   - **34 sigils de perso originaux** (silhouettes/symboles abstraits, PAS de monogrammes « IS/MG/CA »,
+     PAS les sprites) — reconnaissables à 20 px,
+   - icônes de statut/catégorie avec du caractère (au-delà de lucide-react).
 6. **Micro-interactions** : remplissage animé des barres/anneaux, transitions de vue douces, hover/press
    states, toast d'arrivée, pulsation discrète sur « nouveau déblocage ». Sobres, jamais gênantes.
 7. **Onboarding / premier lancement** : parcours clair (choisir save → installer mod → jouer), encart déjà présent à sublimer.
@@ -152,10 +197,12 @@ sémantique claire), light + dark, cohérent, un cran au-dessus de l'actuel.
 - Tout **strictement offline** (aucune ressource externe), **sans aucun asset du jeu**.
 
 ## 6. Ton & anti-patterns
-- **Oui** : sombre, dense, premium, viscéral, lisibilité d'abord, accents rouge/or parcimonieux, chiffres
-  qui claquent, sensation de progression gratifiante.
-- **Non** : mignon/cartoon, néon criard, dégradés arc-en-ciel, surcharge d'effets, illisibilité au profit du style,
-  et surtout **aucun visuel repris du jeu**.
+- **Oui** : sombre, dense, viscéral, occulte/sacré, matière et trait dessiné-main, lisibilité d'abord,
+  accents rouge/or parcimonieux, chiffres qui claquent, sensation de progression gratifiante — **un
+  grimoire maudit qui reste un outil**.
+- **Non** : le **« dashboard SaaS » générique et sans âme** (le piège n°1) ; mignon/cartoon, néon criard,
+  dégradés arc-en-ciel, surcharge d'effets, illisibilité au profit du style ; et surtout **aucun visuel
+  repris du jeu**.
 
 > Réfère-toi au dépôt pour l'existant (`src/`, `tailwind.config.js`). L'app tourne déjà ; tu peux demander
 > des captures des écrans actuels pour partir de la base et la sublimer.
