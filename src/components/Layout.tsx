@@ -6,6 +6,8 @@ import { RefreshCw } from "lucide-react";
 import { useStore, type ViewId } from "../store";
 import { GitHubLink } from "./ui";
 import { Defs } from "./Defs";
+import { ThemeBackdrop } from "./ThemeBackdrop";
+import { ThemePicker } from "./ThemePicker";
 import { Emblem, NavGlyph } from "../lib/art";
 import { editionLabel } from "../lib/format";
 
@@ -66,8 +68,8 @@ function Sidebar() {
                   className="absolute inset-0"
                   aria-hidden="true"
                   style={{
-                    background: "linear-gradient(90deg,rgba(140,26,26,.42),rgba(140,26,26,.1))",
-                    boxShadow: "inset 2px 0 0 #8c1a1a",
+                    background: "linear-gradient(90deg,rgb(var(--i-accent)/.42),rgb(var(--i-accent)/.1))",
+                    boxShadow: "inset 2px 0 0 rgb(var(--i-accent))",
                     filter: "url(#etch)",
                   }}
                 />
@@ -121,18 +123,22 @@ function Header() {
         </button>
       </div>
 
-      {dashboard && (
-        <div className="relative flex items-center gap-4 text-sm">
-          <span className="text-isaac-muted">{editionLabel(dashboard.edition)}</span>
-          <span className="font-display text-base">
-            <span className="text-isaac-gold">{dashboard.total_unlocked}</span>
-            <span className="text-isaac-muted"> / {dashboard.total}</span>
-          </span>
-          <span className="rounded-md border border-isaac-border bg-isaac-surface2 px-2 py-0.5 text-xs text-isaac-muted">
-            {dashboard.percent.toFixed(1)}%
-          </span>
-        </div>
-      )}
+      <div className="relative flex items-center gap-4 text-sm">
+        {dashboard && (
+          <>
+            <span className="hidden text-isaac-muted sm:inline">{editionLabel(dashboard.edition)}</span>
+            <span className="font-display text-base">
+              <span className="text-isaac-gold">{dashboard.total_unlocked}</span>
+              <span className="text-isaac-muted"> / {dashboard.total}</span>
+            </span>
+            <span className="rounded-md border border-isaac-border bg-isaac-surface2 px-2 py-0.5 text-xs text-isaac-muted">
+              {dashboard.percent.toFixed(1)}%
+            </span>
+          </>
+        )}
+        <span className="h-5 w-px bg-isaac-border" />
+        <ThemePicker />
+      </div>
     </header>
   );
 }
@@ -154,17 +160,24 @@ function Toasts() {
 }
 
 export function Shell({ children }: { children: ReactNode }) {
+  const view = useStore((s) => s.view);
+  const theme = useStore((s) => s.theme);
   return (
-    <div className="flex h-screen flex-col">
+    <div className="relative flex h-screen flex-col">
       <Defs />
-      <div className="flex min-h-0 flex-1">
+      <ThemeBackdrop theme={theme} />
+      <div className="relative z-10 flex min-h-0 flex-1">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col">
           <Header />
-          <main className="flex-1 overflow-y-auto px-6 py-6">{children}</main>
+          <main className="flex-1 overflow-y-auto px-6 py-6">
+            <div key={view} className="view-enter">
+              {children}
+            </div>
+          </main>
         </div>
       </div>
-      <footer className="relative flex items-center justify-between border-t border-isaac-border bg-isaac-surface px-6 py-2 text-xs text-isaac-faint">
+      <footer className="relative z-10 flex items-center justify-between border-t border-isaac-border bg-isaac-surface px-6 py-2 text-xs text-isaac-faint">
         <span>Isaac Completion Tracker · outil communautaire, non affilié à Nicalis / Edmund McMillen</span>
         <GitHubLink />
       </footer>

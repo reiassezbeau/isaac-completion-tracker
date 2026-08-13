@@ -50,7 +50,7 @@ export function ProgressBar({
   return (
     <div className="h-2.5 w-full overflow-hidden rounded-full bg-isaac-surface2 shadow-[inset_0_0_0_1px_rgb(var(--i-surface3))]">
       <div
-        className={`h-full rounded-full ${bar} transition-[width] duration-500`}
+        className={`h-full origin-left rounded-full ${bar} animate-barGrow transition-[width] duration-500`}
         style={{ width: `${pct}%` }}
       />
     </div>

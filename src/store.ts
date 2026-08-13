@@ -5,6 +5,31 @@ import { create } from "zustand";
 import { api } from "./lib/api";
 import type { Dashboard, SaveSlot } from "./lib/types";
 
+export type ThemeId = "basement" | "sheol" | "void" | "corpse" | "cathedral";
+
+const THEME_IDS: ThemeId[] = ["basement", "sheol", "void", "corpse", "cathedral"];
+
+function readInitialTheme(): ThemeId {
+  try {
+    const t = localStorage.getItem("isaac-theme") as ThemeId | null;
+    if (t && THEME_IDS.includes(t)) return t;
+  } catch {
+    /* localStorage indisponible */
+  }
+  return "basement";
+}
+
+function applyTheme(t: ThemeId) {
+  const el = document.documentElement;
+  if (t === "basement") el.removeAttribute("data-theme");
+  else el.setAttribute("data-theme", t);
+  try {
+    localStorage.setItem("isaac-theme", t);
+  } catch {
+    /* ignore */
+  }
+}
+
 export type ViewId =
   | "dashboard"
   | "character"
@@ -29,6 +54,10 @@ interface AppStore {
   view: ViewId;
   setView: (v: ViewId) => void;
 
+  // thème (lieu de l'univers d'Isaac)
+  theme: ThemeId;
+  setTheme: (t: ThemeId) => void;
+
   // save selection
   slots: SaveSlot[] | null;
   currentPath: string | null;
@@ -52,9 +81,18 @@ interface AppStore {
 
 let toastSeq = 0;
 
+const initialTheme = readInitialTheme();
+applyTheme(initialTheme);
+
 export const useStore = create<AppStore>((set, get) => ({
   view: "dashboard",
   setView: (view) => set({ view }),
+
+  theme: initialTheme,
+  setTheme: (theme) => {
+    applyTheme(theme);
+    set({ theme });
+  },
 
   slots: null,
   currentPath: null,

@@ -67,7 +67,7 @@ export function DashboardView() {
           style={{ background: "radial-gradient(80% 70% at 50% 42%, rgba(201,169,74,.07), transparent 70%)" }}
         >
           <div className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-isaac-faint">Distance à Dead God</div>
-          <div className="relative mt-2">
+          <div className="relative mt-2 animate-gaugeReveal">
             <DeadGodGauge perEnding={perEnding} size={238} />
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
               <div className="font-display text-5xl leading-none text-isaac-text" style={{ letterSpacing: "-.03em" }}>

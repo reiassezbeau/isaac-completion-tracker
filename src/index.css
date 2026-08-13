@@ -3,7 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  /* ── Thème sombre (défaut) : suie chaude, contrastes vérifiés AA ── */
+  /* ═══ THÈMES — chaque thème = un lieu de l'univers d'Isaac ═══
+     Neutres + accent de chrome (--i-accent) + voile ambiant (--i-veil).
+     Les sémantiques (--i-gold/jade/blood) restent stables en sombre (lisibilité
+     de la data) et ne s'ajustent qu'en Cathédrale (clair). */
+
+  /* ── Le Sous-sol (défaut) : suie chaude, sang séché ── */
   :root {
     color-scheme: dark;
     --i-bg: 10 8 7;
@@ -15,20 +20,87 @@
     --i-text: 239 232 220;
     --i-muted: 164 154 139;
     --i-faint: 138 127 111;
+    --i-accent: 140 26 26;
+    --i-veil: 140 26 26;
+    --i-gold: 201 169 74;
+    --i-jade: 62 192 127;
+    --i-blood: 193 39 45;
   }
 
-  /* ── Thème clair : vélin (le thème bascule, les classes ne bougent pas) ── */
-  html[data-theme="light"] {
+  /* ── Sheol : noir infernal, brimstone ── */
+  :root[data-theme="sheol"] {
+    color-scheme: dark;
+    --i-bg: 9 5 5;
+    --i-surface: 18 9 9;
+    --i-surface2: 27 13 13;
+    --i-surface3: 39 18 17;
+    --i-border: 47 21 20;
+    --i-border2: 74 32 28;
+    --i-text: 241 224 218;
+    --i-muted: 178 140 132;
+    --i-faint: 146 106 100;
+    --i-accent: 193 39 45;
+    --i-veil: 200 40 30;
+    --i-gold: 214 176 71;
+    --i-jade: 62 192 127;
+    --i-blood: 221 64 73;
+  }
+
+  /* ── Le Vide (Delirium) : cosmos violet ── */
+  :root[data-theme="void"] {
+    color-scheme: dark;
+    --i-bg: 9 7 15;
+    --i-surface: 17 13 27;
+    --i-surface2: 25 19 38;
+    --i-surface3: 35 27 52;
+    --i-border: 42 33 60;
+    --i-border2: 64 51 88;
+    --i-text: 233 228 246;
+    --i-muted: 165 156 190;
+    --i-faint: 132 123 160;
+    --i-accent: 157 127 214;
+    --i-veil: 130 90 210;
+    --i-gold: 214 184 96;
+    --i-jade: 74 208 160;
+    --i-blood: 205 84 120;
+  }
+
+  /* ── Corpse / Mother : chair verdâtre ── */
+  :root[data-theme="corpse"] {
+    color-scheme: dark;
+    --i-bg: 8 11 8;
+    --i-surface: 14 19 13;
+    --i-surface2: 20 28 18;
+    --i-surface3: 30 41 26;
+    --i-border: 34 47 30;
+    --i-border2: 54 74 46;
+    --i-text: 232 238 222;
+    --i-muted: 152 170 140;
+    --i-faint: 120 138 108;
+    --i-accent: 138 158 66;
+    --i-veil: 96 138 58;
+    --i-gold: 208 182 84;
+    --i-jade: 96 214 132;
+    --i-blood: 196 78 70;
+  }
+
+  /* ── La Cathédrale : lumière sacrée (thème clair, vélin) ── */
+  :root[data-theme="cathedral"] {
     color-scheme: light;
-    --i-bg: 242 238 230;
-    --i-surface: 255 255 255;
-    --i-surface2: 244 240 232;
-    --i-surface3: 235 230 220;
-    --i-border: 221 214 202;
-    --i-border2: 198 190 176;
-    --i-text: 23 22 26;
-    --i-muted: 93 87 79;
-    --i-faint: 138 131 120;
+    --i-bg: 240 236 228;
+    --i-surface: 255 253 248;
+    --i-surface2: 244 240 231;
+    --i-surface3: 234 229 217;
+    --i-border: 220 213 200;
+    --i-border2: 198 190 174;
+    --i-text: 28 24 20;
+    --i-muted: 96 88 76;
+    --i-faint: 138 128 112;
+    --i-accent: 168 134 43;
+    --i-veil: 212 175 55;
+    --i-gold: 125 100 27;
+    --i-jade: 33 109 72;
+    --i-blood: 155 28 34;
   }
 
   html,
@@ -40,18 +112,13 @@
   body {
     @apply bg-isaac-bg text-isaac-text font-sans antialiased;
     margin: 0;
-    /* chiffres tabulaires partout : les colonnes s'alignent */
     font-variant-numeric: tabular-nums;
-    /* voile de sang séché en haut de la fenêtre */
-    background-image: radial-gradient(
-      130% 90% at 50% -15%,
-      rgba(140, 26, 26, 0.09),
-      transparent 62%
-    );
+    /* voile ambiant du thème, en haut de la fenêtre */
+    background-image: radial-gradient(130% 90% at 50% -15%, rgb(var(--i-veil) / 0.1), transparent 62%);
     background-attachment: fixed;
   }
 
-  /* grain de suie global — filtre SVG original, subtil, jamais sous la data */
+  /* grain de suie global — filtre SVG original, subtil */
   body::before {
     content: "";
     position: fixed;
@@ -63,9 +130,9 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
     background-size: 200px 200px;
   }
-  html[data-theme="light"] body::before {
+  :root[data-theme="cathedral"] body::before {
     mix-blend-mode: multiply;
-    opacity: 0.04;
+    opacity: 0.045;
   }
 
   #root {
@@ -73,13 +140,34 @@
     z-index: 1;
   }
 
-  /* anneau de focus doré, jamais confondu avec la sélection (rouge) */
   :focus-visible {
-    outline: 2px solid #c9a94a;
+    outline: 2px solid rgb(var(--i-gold));
     outline-offset: 2px;
   }
 
   ::selection {
     @apply bg-isaac-blood/40 text-isaac-text;
   }
+
+  /* transition douce des couleurs quand on change de thème */
+  body,
+  .theme-tween {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+}
+
+/* ── Utilitaires d'animation (respectent prefers-reduced-motion) ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* rejoue l'animation d'entrée à chaque changement de vue (clé React) */
+.view-enter {
+  animation: fadeSlide 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
