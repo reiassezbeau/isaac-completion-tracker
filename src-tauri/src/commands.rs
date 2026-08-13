@@ -179,6 +179,13 @@ pub fn get_roadmap(state: State<AppState>) -> Result<engine::Roadmap, String> {
     Ok(engine::roadmap(&st, &state.knowledge))
 }
 
+/// Grille signature 34 × 12 (tous les persos × toutes les marques).
+#[tauri::command]
+pub fn get_marks_matrix(state: State<AppState>) -> Result<engine::MarksMatrix, String> {
+    let st = state.engine_state()?;
+    Ok(engine::marks_matrix(&st, &state.knowledge))
+}
+
 #[derive(Serialize)]
 pub struct AchievementView {
     #[serde(flatten)]

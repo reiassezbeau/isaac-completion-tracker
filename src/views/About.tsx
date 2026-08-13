@@ -4,6 +4,7 @@
 import { Github, Heart } from "lucide-react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Card } from "../components/ui";
+import { Emblem } from "../lib/art";
 import { GITHUB_URL } from "../lib/format";
 
 const VERSION = "0.1.0";
@@ -12,13 +13,14 @@ export function AboutView() {
   return (
     <div className="mx-auto max-w-2xl space-y-6 py-4">
       <div className="text-center">
+        <div className="mb-3 flex justify-center text-isaac-dried">
+          <Emblem size={48} />
+        </div>
         <p className="mb-1 text-xs font-semibold uppercase tracking-[0.35em] text-isaac-gold">
           The Binding of Isaac · Repentance+
         </p>
-        <h1 className="text-3xl font-bold">
-          Isaac <span className="text-isaac-blood">Completion</span> Tracker
-        </h1>
-        <p className="mt-1 text-sm text-isaac-muted">Version {VERSION}</p>
+        <h1 className="font-display text-4xl text-isaac-text">Isaac Completion Tracker</h1>
+        <p className="mt-2 text-sm text-isaac-muted">Version {VERSION}</p>
       </div>
 
       <Card className="text-center">

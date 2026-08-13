@@ -13,6 +13,7 @@ import { Shell } from "./components/Layout";
 import { SlotPicker } from "./views/SlotPicker";
 import { DashboardView } from "./views/Dashboard";
 import { CharacterView } from "./views/Character";
+import { MarksGridView } from "./views/MarksGrid";
 import { PredictorView } from "./views/Predictor";
 import { AchievementsView } from "./views/Achievements";
 import { RoadmapView } from "./views/Roadmap";
@@ -31,6 +32,8 @@ function CurrentView() {
       return <DashboardView />;
     case "character":
       return <CharacterView />;
+    case "grid":
+      return <MarksGridView />;
     case "predictor":
       return <PredictorView />;
     case "achievements":

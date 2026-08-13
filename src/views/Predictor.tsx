@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, Info, Skull, XCircle } from "lucide-react";
 import { api } from "../lib/api";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
+import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { Character, Ending, Prediction, TargetSuggestion } from "../lib/types";
 
 export function PredictorView() {
@@ -30,10 +31,11 @@ export function PredictorView() {
       <Card>
         <SectionTitle>« Si je fais X avec Y »</SectionTitle>
         <div className="flex flex-wrap items-center gap-3">
+          <Sigil id={baseSigilId(charId)} size={30} tainted={charId.startsWith("tainted_")} />
           <select
             value={charId}
             onChange={(e) => setCharId(e.target.value)}
-            className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm outline-none focus:border-isaac-blood/60"
+            className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm outline-none focus:border-isaac-dried/60"
           >
             {chars.map((c) => (
               <option key={c.id} value={c.id}>
@@ -41,11 +43,11 @@ export function PredictorView() {
               </option>
             ))}
           </select>
-          <ArrowRight className="h-4 w-4 text-isaac-muted" />
+          <ArrowRight className="h-4 w-4 text-isaac-faint" />
           <select
             value={targetId}
             onChange={(e) => setTargetId(e.target.value)}
-            className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm outline-none focus:border-isaac-blood/60"
+            className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm outline-none focus:border-isaac-dried/60"
           >
             {endings.map((e) => (
               <option key={e.id} value={e.id}>
@@ -53,6 +55,9 @@ export function PredictorView() {
               </option>
             ))}
           </select>
+          <span className="flex text-isaac-gold">
+            <Glyph id={targetId} size={24} />
+          </span>
         </div>
 
         {result && (
@@ -129,10 +134,16 @@ export function PredictorView() {
                   setCharId(t.character_id);
                   setTargetId(t.target_id);
                 }}
-                className="flex w-full items-center justify-between rounded-lg border border-isaac-border bg-isaac-surface2/40 px-4 py-2 text-left text-sm transition-colors hover:border-isaac-blood/40"
+                className="flex w-full items-center justify-between gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2 text-left text-sm transition-colors hover:border-isaac-dried/50"
               >
-                <span>
-                  <strong>{t.character_name}</strong> → {t.target_name}
+                <span className="flex items-center gap-2.5">
+                  <Sigil id={baseSigilId(t.character_id)} size={24} tainted={t.character_id.startsWith("tainted_")} />
+                  <span>
+                    <strong>{t.character_name}</strong> → {t.target_name}
+                  </span>
+                  <span className="flex text-isaac-faint">
+                    <Glyph id={t.target_id} size={16} />
+                  </span>
                 </span>
                 <span className="flex items-center gap-2">
                   {t.new_unlocks > 0 && (

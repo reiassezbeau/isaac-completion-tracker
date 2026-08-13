@@ -135,6 +135,26 @@ export interface Roadmap {
   dead_god_total: number;
 }
 
+export interface MatrixChar {
+  id: string;
+  name: string;
+  kind: "regular" | "tainted";
+  unlocked: boolean;
+  hard: number;
+}
+
+export interface MatrixEnding {
+  id: string;
+  name: string;
+}
+
+export interface MarksMatrix {
+  characters: MatrixChar[];
+  endings: MatrixEnding[];
+  cells: MarkDifficulty[][];
+  column_hard: number[];
+}
+
 export interface Unlock {
   text: string;
   type: string;

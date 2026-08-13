@@ -8,6 +8,10 @@ import { useStore } from "../store";
 import { api } from "../lib/api";
 import { editionLabel } from "../lib/format";
 import { EmptyState } from "../components/ui";
+import { Defs } from "../components/Defs";
+import { ThemeBackdrop } from "../components/ThemeBackdrop";
+import { ThemePicker } from "../components/ThemePicker";
+import { Emblem } from "../lib/art";
 import type { SaveSlot } from "../lib/types";
 
 function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => void }) {
@@ -15,7 +19,7 @@ function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => vo
   return (
     <button
       onClick={() => onPick(slot)}
-      className="flex w-full items-center justify-between gap-4 rounded-xl border border-isaac-border bg-isaac-surface px-5 py-4 text-left transition-colors hover:border-isaac-blood/50"
+      className="flex w-full items-center justify-between gap-4 rounded-xl border border-isaac-border bg-isaac-surface px-5 py-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] transition-colors hover:border-isaac-dried/60"
     >
       <div>
         <div className="font-semibold">
@@ -43,6 +47,7 @@ function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => vo
 
 export function SlotPicker() {
   const { slots, loadingSlots, loadSlots, selectSlot, toast } = useStore();
+  const theme = useStore((s) => s.theme);
 
   useEffect(() => {
     if (slots == null) loadSlots();
@@ -65,16 +70,26 @@ export function SlotPicker() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl py-6">
-      <div className="mb-6 text-center">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-[0.35em] text-isaac-gold">
-          The Binding of Isaac · Repentance+
-        </p>
-        <h1 className="text-3xl font-bold">Choisis ta sauvegarde</h1>
-        <p className="mt-2 text-sm text-isaac-muted">
-          Détection automatique dans Steam Cloud et Documents. Lecture seule — ta save n'est jamais modifiée.
-        </p>
+    <div className="relative min-h-screen">
+      <Defs />
+      <ThemeBackdrop theme={theme} />
+      <div className="absolute right-5 top-5 z-10">
+        <ThemePicker />
       </div>
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-10">
+        <div className="mb-8 text-center">
+          <div className="mb-4 flex justify-center text-isaac-dried">
+            <Emblem size={56} />
+          </div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.35em] text-isaac-gold">
+            The Binding of Isaac · Repentance+
+          </p>
+          <h1 className="font-display text-4xl text-isaac-text">Isaac Completion Tracker</h1>
+          <p className="mx-auto mt-3 max-w-md text-sm text-isaac-muted">
+            Choisis ta sauvegarde. Détection auto dans Steam Cloud et Documents. Lecture seule — ta save
+            n'est jamais modifiée.
+          </p>
+        </div>
 
       {loadingSlots && (
         <div className="flex items-center justify-center gap-2 py-8 text-isaac-muted">
@@ -109,6 +124,7 @@ export function SlotPicker() {
         >
           <HardDriveDownload className="h-4 w-4" /> Re-scanner
         </button>
+        </div>
       </div>
     </div>
   );

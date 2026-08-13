@@ -102,7 +102,10 @@ export function CharacterView() {
           <div className="space-y-5">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold">{detail.name}</h1>
+                <h1 className="flex items-center gap-3 font-display text-3xl text-isaac-text">
+                  <Sigil id={baseSigilId(detail.id)} size={38} tainted={detail.kind === "tainted"} />
+                  {detail.name}
+                </h1>
                 <div className="mt-1 flex items-center gap-2">
                   <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">
                     {detail.kind === "tainted" ? "Tainted" : "Régulier"}

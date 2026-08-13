@@ -434,6 +434,70 @@ pub fn next_targets(state: &State, kn: &Knowledge, limit: usize) -> Vec<TargetSu
     out
 }
 
+// --------------------------------------------------------------------------
+// Grille signature 34 × 12 (le tableau du complétionniste)
+// --------------------------------------------------------------------------
+
+#[derive(Serialize)]
+pub struct MatrixChar {
+    pub id: String,
+    pub name: String,
+    pub kind: String,
+    pub unlocked: bool,
+    pub hard: usize,
+}
+
+#[derive(Serialize)]
+pub struct MatrixEnding {
+    pub id: String,
+    pub name: String,
+}
+
+#[derive(Serialize)]
+pub struct MarksMatrix {
+    pub characters: Vec<MatrixChar>,
+    pub endings: Vec<MatrixEnding>,
+    /// cells[char_index][ending_index] = statut de la marque.
+    pub cells: Vec<Vec<MarkDifficulty>>,
+    /// nb de Hard par ending (colonne) — le goulot d'un coup d'œil.
+    pub column_hard: Vec<usize>,
+}
+
+pub fn marks_matrix(state: &State, kn: &Knowledge) -> MarksMatrix {
+    let endings: Vec<MatrixEnding> = kn
+        .endings
+        .iter()
+        .map(|e| MatrixEnding { id: e.id.clone(), name: e.name.clone() })
+        .collect();
+    let mut column_hard = vec![0usize; kn.endings.len()];
+    let mut characters = Vec::new();
+    let mut cells = Vec::new();
+    for c in &kn.characters {
+        let row: Vec<MarkDifficulty> = kn
+            .endings
+            .iter()
+            .enumerate()
+            .map(|(j, e)| {
+                let d = state.mark_for(c.save_index, e.mark_index);
+                if d == MarkDifficulty::Hard {
+                    column_hard[j] += 1;
+                }
+                d
+            })
+            .collect();
+        let hard = row.iter().filter(|&&d| d == MarkDifficulty::Hard).count();
+        characters.push(MatrixChar {
+            id: c.id.clone(),
+            name: c.name.clone(),
+            kind: c.kind.clone(),
+            unlocked: character_unlocked(state, kn, &c.name),
+            hard,
+        });
+        cells.push(row);
+    }
+    MarksMatrix { characters, endings, cells, column_hard }
+}
+
 #[derive(Serialize)]
 pub struct RoadmapStep {
     pub title: String,

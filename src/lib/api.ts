@@ -16,6 +16,7 @@ import type {
   BuildAnalysis,
   Insights,
   ItemKb,
+  MarksMatrix,
   OptimizerReport,
   Overrides,
   SynergyResult,
@@ -43,6 +44,7 @@ export const api = {
     invoke<Prediction>("predict", { characterId, targetId }),
   nextTargets: (limit: number) => invoke<TargetSuggestion[]>("next_targets", { limit }),
   getRoadmap: () => invoke<Roadmap>("get_roadmap"),
+  getMarksMatrix: () => invoke<MarksMatrix>("get_marks_matrix"),
   getAchievements: () => invoke<AchievementView[]>("get_achievements"),
 
   refreshStats: () => invoke<number>("refresh_stats"),

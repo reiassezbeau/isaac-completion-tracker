@@ -89,6 +89,7 @@ pub fn run() {
             commands::predict,
             commands::next_targets,
             commands::get_roadmap,
+            commands::get_marks_matrix,
             commands::get_achievements,
             commands::get_endings,
             commands::get_characters_static,

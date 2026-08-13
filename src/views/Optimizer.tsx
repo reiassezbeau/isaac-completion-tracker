@@ -188,8 +188,8 @@ export function OptimizerView() {
   return (
     <div className="mx-auto max-w-5xl space-y-5">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-bold">
-          <Target className="h-6 w-6 text-isaac-blood" /> Optimiseur
+        <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+          <Target className="h-6 w-6 text-isaac-dried" /> Optimiseur
         </h1>
         <p className="mt-1 text-sm text-isaac-muted">
           Que jouer ensuite pour avancer le plus vite vers Dead God — classé par espérance de gain

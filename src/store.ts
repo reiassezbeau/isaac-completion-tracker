@@ -33,6 +33,7 @@ function applyTheme(t: ThemeId) {
 export type ViewId =
   | "dashboard"
   | "character"
+  | "grid"
   | "predictor"
   | "achievements"
   | "roadmap"

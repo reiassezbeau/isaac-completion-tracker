@@ -14,6 +14,7 @@ import { editionLabel } from "../lib/format";
 const NAV: { id: ViewId; label: string; glyph: string }[] = [
   { id: "dashboard", label: "Dashboard", glyph: "dash" },
   { id: "character", label: "Personnage", glyph: "user" },
+  { id: "grid", label: "La Grille", glyph: "grid" },
   { id: "predictor", label: "Prédicteur", glyph: "wand" },
   { id: "achievements", label: "Succès", glyph: "list" },
   { id: "roadmap", label: "Roadmap", glyph: "map" },

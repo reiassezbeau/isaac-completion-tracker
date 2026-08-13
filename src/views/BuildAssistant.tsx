@@ -277,7 +277,7 @@ export function BuildAssistantView() {
   return (
     <div className="mx-auto max-w-6xl space-y-5">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-bold">
+        <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
           <Wand2 className="h-6 w-6 text-isaac-gold" /> Assistant de build
         </h1>
         <p className="mt-1 text-sm text-isaac-muted">
