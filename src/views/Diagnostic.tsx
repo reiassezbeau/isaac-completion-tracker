@@ -7,6 +7,7 @@ import { api } from "../lib/api";
 import { useStore } from "../store";
 import { editionLabel } from "../lib/format";
 import { Card, SectionTitle } from "../components/ui";
+import { Modal, ModalButton } from "../components/Modal";
 import type { HealthReport, PathStatus } from "../lib/types";
 
 function StatusRow({ ok, label, children }: { ok: boolean | null; label: string; children?: ReactNode }) {
@@ -42,6 +43,7 @@ function PathLine({ p }: { p: PathStatus }) {
 export function DiagnosticView() {
   const [health, setHealth] = useState<HealthReport | null>(null);
   const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState<{ title: string; body: ReactNode } | null>(null);
   const { currentPath, toast } = useStore();
 
   async function refresh() {
@@ -57,7 +59,15 @@ export function DiagnosticView() {
     try {
       const dest = await api.backupSave(currentPath);
       toast("Backup créé ✓");
-      alert("Sauvegarde copiée ici :\n" + dest);
+      setInfo({
+        title: "Sauvegarde copiée",
+        body: (
+          <>
+            Une copie datée a été écrite ici :
+            <code className="mt-2 block break-all rounded-lg bg-isaac-surface2 px-3 py-2 font-mono text-xs text-isaac-gold">{dest}</code>
+          </>
+        ),
+      });
     } catch (e) {
       toast("Échec du backup : " + String(e));
     } finally {
@@ -70,13 +80,25 @@ export function DiagnosticView() {
     try {
       const dest = await api.installTrackerMod();
       await refresh();
-      alert(
-        "Mod installé dans :\n" +
-          dest +
-          "\n\n➊ Ferme et RELANCE le jeu (les mods se chargent au lancement).\n" +
-          "➋ Le watermark « modded » apparaîtra — inoffensif une fois Mom battue sur ce slot.\n" +
-          "➌ Sur une NOUVELLE sauvegarde : bats Mom une fois avant de compter sur les déblocages (règle du jeu, pas du tracker).",
-      );
+      setInfo({
+        title: "Mod installé",
+        body: (
+          <>
+            <code className="mb-3 block break-all rounded-lg bg-isaac-surface2 px-3 py-2 font-mono text-xs text-isaac-gold">{dest}</code>
+            <ol className="space-y-1.5">
+              <li>
+                <strong className="text-isaac-text">➊</strong> Ferme et <strong className="text-isaac-text">relance</strong> le jeu (les mods se chargent au lancement).
+              </li>
+              <li>
+                <strong className="text-isaac-text">➋</strong> Le watermark « modded » apparaîtra — inoffensif une fois Mom battue sur ce slot.
+              </li>
+              <li>
+                <strong className="text-isaac-text">➌</strong> Sur une <strong className="text-isaac-text">nouvelle</strong> sauvegarde : bats Mom une fois avant de compter sur les déblocages (règle du jeu, pas du tracker).
+              </li>
+            </ol>
+          </>
+        ),
+      });
     } catch (e) {
       toast("Échec de l'installation : " + String(e));
     } finally {
@@ -89,8 +111,8 @@ export function DiagnosticView() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="flex items-center gap-2 text-xl font-bold">
-          <FolderCog className="h-5 w-5 text-isaac-gold" /> Diagnostic
+        <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+          <FolderCog className="h-6 w-6 text-isaac-gold" /> Diagnostic
         </h1>
         <button
           onClick={refresh}
@@ -177,6 +199,19 @@ export function DiagnosticView() {
           </button>
         </div>
       </Card>
+
+      <Modal
+        open={!!info}
+        onClose={() => setInfo(null)}
+        title={info?.title ?? ""}
+        actions={
+          <ModalButton onClick={() => setInfo(null)} tone="primary">
+            Compris
+          </ModalButton>
+        }
+      >
+        {info?.body}
+      </Modal>
     </div>
   );
 }

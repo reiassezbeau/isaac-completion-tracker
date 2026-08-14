@@ -120,6 +120,9 @@ export function StatsView() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-5">
+      <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+        <Activity className="h-6 w-6 text-isaac-dried" /> Stats de jeu
+      </h1>
       <div className="flex gap-1 rounded-lg border border-isaac-border bg-isaac-surface p-1 text-sm">
         {tabs.map(([id, label]) => (
           <button

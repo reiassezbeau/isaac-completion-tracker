@@ -18,6 +18,9 @@ export function RoadmapView() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+        <Skull className="h-6 w-6 text-isaac-dried" /> Roadmap
+      </h1>
       <Card>
         <div className="flex items-center gap-2 text-isaac-muted">
           <Skull className="h-5 w-5 text-isaac-blood" />

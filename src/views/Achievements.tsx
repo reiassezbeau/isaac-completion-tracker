@@ -2,7 +2,7 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 import { useEffect, useMemo, useState } from "react";
-import { Eye, EyeOff, Lock, Search, Unlock } from "lucide-react";
+import { Eye, EyeOff, ListChecks, Lock, Search, Unlock } from "lucide-react";
 import { api } from "../lib/api";
 import { categoryLabel, dlcLabel } from "../lib/format";
 import { Card, Pill } from "../components/ui";
@@ -49,6 +49,9 @@ export function AchievementsView() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-4">
+      <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+        <ListChecks className="h-6 w-6 text-isaac-gold" /> Les 641 succès
+      </h1>
       <Card className="!p-4">
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative flex-1 min-w-[220px]">

@@ -7,6 +7,8 @@ import { api } from "../lib/api";
 import { useStore } from "../store";
 import { markLabel } from "../lib/format";
 import { Card, Pill, SectionTitle } from "../components/ui";
+import { Modal, ModalButton } from "../components/Modal";
+import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { AchievementView, Character, Ending, MarkDifficulty, Overrides } from "../lib/types";
 
 const DIFFS: MarkDifficulty[] = ["none", "normal", "hard"];
@@ -21,6 +23,7 @@ export function SettingsView() {
   const [ov, setOv] = useState<Overrides>({ achievements: {}, marks: {} });
   const [q, setQ] = useState("");
   const [charId, setCharId] = useState("bethany");
+  const [confirmReset, setConfirmReset] = useState(false);
 
   async function refreshAll() {
     const [a, o] = await Promise.all([api.getAchievements(), api.getOverrides()]);
@@ -55,6 +58,7 @@ export function SettingsView() {
     await api.resetOverrides();
     await refreshAll();
     await reload();
+    setConfirmReset(false);
     toast("Corrections réinitialisées");
   }
 
@@ -62,6 +66,10 @@ export function SettingsView() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
+        <ShieldAlert className="h-6 w-6 text-isaac-gold" /> Corrections
+      </h1>
+
       <div className="flex items-start gap-3 rounded-xl border border-isaac-border bg-isaac-surface px-4 py-3 text-sm">
         <ShieldAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-isaac-gold" />
         <div className="text-isaac-muted">
@@ -76,9 +84,9 @@ export function SettingsView() {
           {overrideCount} correction{overrideCount > 1 ? "s" : ""} active{overrideCount > 1 ? "s" : ""}
         </span>
         <button
-          onClick={reset}
+          onClick={() => setConfirmReset(true)}
           disabled={overrideCount === 0}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-1.5 text-sm text-isaac-muted transition-colors hover:text-isaac-text disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-1.5 text-sm text-isaac-muted transition-colors hover:text-isaac-blood-light disabled:opacity-40"
         >
           <RotateCcw className="h-4 w-4" /> Réinitialiser les corrections
         </button>
@@ -119,23 +127,31 @@ export function SettingsView() {
 
       <Card>
         <SectionTitle>Corriger les completion marks</SectionTitle>
-        <select
-          value={charId}
-          onChange={(e) => setCharId(e.target.value)}
-          className="mb-3 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm"
-        >
-          {chars.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+        <div className="mb-3 flex items-center gap-2">
+          <Sigil id={baseSigilId(charId)} size={28} tainted={charId.startsWith("tainted_")} />
+          <select
+            value={charId}
+            onChange={(e) => setCharId(e.target.value)}
+            className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm"
+          >
+            {chars.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="space-y-1.5">
           {endings.map((e) => {
             const forced = ov.marks[`${charId}:${e.mark_index}`];
             return (
               <div key={e.id} className="flex items-center justify-between gap-2 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2 text-sm">
-                <span>{e.name}</span>
+                <span className="flex items-center gap-2">
+                  <span className="flex text-isaac-faint">
+                    <Glyph id={e.id} size={15} />
+                  </span>
+                  {e.name}
+                </span>
                 <div className="flex gap-1">
                   {DIFFS.map((d) => (
                     <button
@@ -153,6 +169,24 @@ export function SettingsView() {
           })}
         </div>
       </Card>
+
+      <Modal
+        open={confirmReset}
+        onClose={() => setConfirmReset(false)}
+        title="Réinitialiser les corrections ?"
+        actions={
+          <>
+            <ModalButton onClick={() => setConfirmReset(false)}>Annuler</ModalButton>
+            <ModalButton onClick={reset} tone="danger">
+              Tout réinitialiser
+            </ModalButton>
+          </>
+        }
+      >
+        Les <strong className="text-isaac-text">{overrideCount}</strong> correction
+        {overrideCount > 1 ? "s" : ""} manuelle{overrideCount > 1 ? "s" : ""} seront effacées. Les données
+        lues de la save ne sont pas touchées.
+      </Modal>
     </div>
   );
 }

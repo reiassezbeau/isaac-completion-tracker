@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { ExternalLink } from "lucide-react";
 import { GITHUB_URL } from "../lib/format";
+import { Emblem } from "../lib/art";
 
 export function Card({
   children,
@@ -76,6 +77,9 @@ export function Pill({
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
     <div className="rounded-xl border border-dashed border-isaac-border bg-isaac-surface/40 p-8 text-center">
+      <div className="mb-3 flex justify-center text-isaac-faint/40">
+        <Emblem size={30} />
+      </div>
       <p className="text-sm font-medium text-isaac-text">{title}</p>
       {children && <div className="mt-2 text-sm text-isaac-muted">{children}</div>}
     </div>

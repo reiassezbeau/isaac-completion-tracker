@@ -13,16 +13,38 @@ type Template = "profile" | "run";
 
 const W = 1200;
 const H = 630;
-const C = {
-  bg: "#0a0a0c",
-  panel: "#16161b",
-  border: "#2a2a31",
+
+// Palette lue depuis les variables CSS du thème actif → la carte exportée épouse
+// le thème courant (Sous-sol / Sheol / Vide / Corpse / Cathédrale).
+function cssVar(name: string, fallback: string): string {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const p = v.split(/\s+/).map(Number);
+  return p.length === 3 && p.every((n) => !Number.isNaN(n)) ? `rgb(${p[0]}, ${p[1]}, ${p[2]})` : v || fallback;
+}
+let C = {
+  bg: "#0a0807",
+  panel: "#100c09",
+  border: "#241d16",
   blood: "#c1272d",
-  gold: "#d4af37",
-  done: "#4caf50",
-  text: "#e8e8ea",
-  muted: "#8f8f98",
+  accent: "#8c1a1a",
+  gold: "#c9a94a",
+  done: "#3ec07f",
+  text: "#efe8dc",
+  muted: "#a49a8b",
 };
+function readPalette() {
+  C = {
+    bg: cssVar("--i-bg", "#0a0807"),
+    panel: cssVar("--i-surface", "#100c09"),
+    border: cssVar("--i-border", "#241d16"),
+    blood: cssVar("--i-blood", "#c1272d"),
+    accent: cssVar("--i-accent", "#8c1a1a"),
+    gold: cssVar("--i-gold", "#c9a94a"),
+    done: cssVar("--i-jade", "#3ec07f"),
+    text: cssVar("--i-text", "#efe8dc"),
+    muted: cssVar("--i-muted", "#a49a8b"),
+  };
+}
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -59,9 +81,9 @@ function tile(
 function paintFrame(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
-  // vignette discrète
+  // vignette discrète, teintée par l'accent du thème
   const g = ctx.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, W * 0.7);
-  g.addColorStop(0, "rgba(193,39,45,0.06)");
+  g.addColorStop(0, C.accent.replace("rgb(", "rgba(").replace(")", ", 0.09)"));
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
@@ -74,7 +96,7 @@ function paintHeader(ctx: CanvasRenderingContext2D, subtitle: string) {
   ctx.save();
   ctx.letterSpacing = "4px";
   ctx.fillStyle = C.gold;
-  ctx.font = "700 22px system-ui, sans-serif";
+  ctx.font = "700 24px 'Cinzel', Georgia, serif";
   ctx.fillText("ISAAC COMPLETION TRACKER", 48, 62);
   ctx.restore();
   ctx.fillStyle = C.muted;
@@ -105,7 +127,7 @@ function drawProfile(
 
   // Héros : % Dead God
   ctx.fillStyle = C.gold;
-  ctx.font = "800 116px system-ui, sans-serif";
+  ctx.font = "700 112px 'Cinzel', Georgia, serif";
   ctx.fillText(pctStr(dgPct), 48, 236);
   ctx.fillStyle = C.text;
   ctx.font = "600 26px system-ui, sans-serif";
@@ -170,7 +192,7 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string) {
 
   // Perso
   ctx.fillStyle = C.text;
-  ctx.font = "800 72px system-ui, sans-serif";
+  ctx.font = "700 70px 'Cinzel', Georgia, serif";
   ctx.fillText(charName, 48, 214);
 
   // Issue
@@ -220,6 +242,7 @@ function canvasToBytes(canvas: HTMLCanvasElement): Promise<number[]> {
 export function StatCardView() {
   const dashboard = useStore((s) => s.dashboard);
   const toast = useStore((s) => s.toast);
+  const theme = useStore((s) => s.theme);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [template, setTemplate] = useState<Template>("profile");
@@ -230,6 +253,11 @@ export function StatCardView() {
   const [runIdx, setRunIdx] = useState(0);
   const [names, setNames] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
+
+  useEffect(() => {
+    document.fonts?.ready.then(() => setFontsReady(true));
+  }, []);
 
   useEffect(() => {
     api.getCharactersStatic().then((cs) => setNames(Object.fromEntries(cs.map((c) => [c.id, c.name]))));
@@ -241,12 +269,13 @@ export function StatCardView() {
 
   const name = useCallback((id: string) => names[id] ?? id, [names]);
 
-  // rendu du canvas à chaque changement de données/template
+  // rendu du canvas à chaque changement de données/template/thème
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !dashboard) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    readPalette(); // épouse le thème actif
     if (template === "profile") {
       drawProfile(ctx, { dash: dashboard, ov, ins, attempts, name });
     } else if (runs.length > 0) {
@@ -260,7 +289,7 @@ export function StatCardView() {
       ctx.fillText("Aucun run enregistré (installe le mod et joue).", 48, 200);
       paintWatermark(ctx);
     }
-  }, [template, dashboard, ov, ins, attempts, runs, runIdx, name]);
+  }, [template, dashboard, ov, ins, attempts, runs, runIdx, name, theme, fontsReady]);
 
   const onExport = useCallback(async () => {
     const canvas = canvasRef.current;

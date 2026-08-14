@@ -56,7 +56,7 @@ export default {
       },
       fontFamily: {
         sans: ["Segoe UI Variable Text", "Segoe UI", "system-ui", "-apple-system", "sans-serif"],
-        display: ["Georgia", "Book Antiqua", "Palatino Linotype", "Palatino", "serif"],
+        display: ["Cinzel", "Georgia", "Book Antiqua", "Palatino Linotype", "Palatino", "serif"],
         mono: ["ui-monospace", "Cascadia Mono", "Segoe UI Mono", "Consolas", "monospace"],
       },
       borderRadius: { lg: "0.625rem", xl: "0.875rem" },
