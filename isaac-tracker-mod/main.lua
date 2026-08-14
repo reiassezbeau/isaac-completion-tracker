@@ -232,10 +232,22 @@ end
 -- retour menu/sortie ; relire le disque a chaque run ecraserait l'historique en
 -- memoire (accumule pendant la session). Le chargement se fait UNE fois a l'init.
 local function onGameStarted(_, isContinue)
-  if isContinue and data.current_run ~= nil then
-    lastHitFrame = {}
-    log("continue -> reprise du run courant")
-    return
+  -- ── Reprise d'un run (CAPITAL : ne JAMAIS perdre le run en cours) ─────────
+  -- Desactiver le mod puis relancer : pour atteindre le menu Mods il faut sortir
+  -- vers le menu -> le jeu FLUSHE SaveData sur disque (MC_PRE_GAME_EXIT a deja
+  -- appele save()). A la relance, load() (init) restaure current_run, et ici on
+  -- reprend. FILET : si l'init a lu un slot vide/incorrect (current_run == nil)
+  -- ET qu'aucun historique de session n'est encore accumule (#history == 0, donc
+  -- rien a ecraser), on RELIT le disque -- le bon slot est actif maintenant.
+  if isContinue then
+    if data.current_run == nil and #data.history == 0 then
+      pcall(load)
+    end
+    if data.current_run ~= nil then
+      lastHitFrame = {}
+      log("continue -> reprise du run courant")
+      return
+    end
   end
 
   -- Run precedent non cloture (redemarrage / nouvelle partie sans mourir/gagner)
@@ -416,4 +428,4 @@ mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, safe("new_level", onNewLevel))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, safe("new_room", onNewRoom))
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, safe("pre_game_exit", onPreGameExit))
 
-log("charge (v0.2.0) -- observateur + champs larges (kills/salles/build) prets")
+log("charge (v0.2.1) -- observateur + champs larges + reprise de run durcie")
