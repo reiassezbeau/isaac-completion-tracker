@@ -6,6 +6,7 @@ import { Crosshair, Flame, Gauge, Info, Sparkles, Target, TrendingUp } from "luc
 import { api } from "../lib/api";
 import { pct } from "../lib/format";
 import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components/ui";
+import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { AlmostThere, Bottleneck, DeadGodEta, EvAction, OptimizerReport } from "../lib/types";
 
 /** Couleur de la probabilité : rouge (dur) → or → vert (sûr). */
@@ -63,7 +64,8 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
   return (
     <div className="rounded-lg border border-isaac-border bg-isaac-surface2/40 p-3">
       <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-baseline gap-2">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Sigil id={baseSigilId(action.character_id)} size={30} tainted={action.character_id.startsWith("tainted_")} />
           <span className="text-sm font-bold text-isaac-gold">#{rank}</span>
           <div className="min-w-0">
             <div className="truncate font-semibold">{action.character_name}</div>
@@ -123,7 +125,12 @@ function BottleneckList({ items }: { items: Bottleneck[] }) {
       {items.map((b) => (
         <div key={b.ending_id} className="text-sm">
           <div className="mb-1 flex items-center justify-between">
-            <span className="font-medium">{b.ending_name}</span>
+            <span className="flex items-center gap-2 font-medium">
+              <span className="flex text-isaac-faint">
+                <Glyph id={b.ending_id} size={15} />
+              </span>
+              {b.ending_name}
+            </span>
             <span className="text-xs text-isaac-muted">
               {b.chars_missing} perso{b.chars_missing > 1 ? "s" : ""} · ~{pct(b.difficulty_default)} réussite
             </span>
@@ -150,9 +157,12 @@ function AlmostList({ items }: { items: AlmostThere[] }) {
           key={a.character_id}
           className="flex items-center justify-between gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2"
         >
-          <div className="min-w-0">
-            <div className="truncate text-sm font-medium">{a.character_name}</div>
-            <div className="truncate text-xs text-isaac-muted">{a.missing_names.join(", ")}</div>
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Sigil id={baseSigilId(a.character_id)} size={26} tainted={a.character_id.startsWith("tainted_")} />
+            <div className="min-w-0">
+              <div className="truncate text-sm font-medium">{a.character_name}</div>
+              <div className="truncate text-xs text-isaac-muted">{a.missing_names.join(", ")}</div>
+            </div>
           </div>
           <Pill className="flex-shrink-0 border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">
             {a.missing_marks} restante{a.missing_marks > 1 ? "s" : ""}

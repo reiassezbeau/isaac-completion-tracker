@@ -10,6 +10,8 @@ import { listen } from "@tauri-apps/api/event";
 import { AlertOctagon, Loader2 } from "lucide-react";
 import { useStore } from "./store";
 import { Shell } from "./components/Layout";
+import { Defs } from "./components/Defs";
+import { Emblem } from "./lib/art";
 import { SlotPicker } from "./views/SlotPicker";
 import { DashboardView } from "./views/Dashboard";
 import { CharacterView } from "./views/Character";
@@ -62,7 +64,7 @@ function ParseErrorScreen() {
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
       <AlertOctagon className="h-12 w-12 text-isaac-blood" />
-      <h1 className="text-xl font-bold">Impossible de lire cette sauvegarde</h1>
+      <h1 className="font-display text-2xl text-isaac-text">Impossible de lire cette sauvegarde</h1>
       <p className="text-sm text-isaac-muted">
         {currentSlot?.filename} — {parseError}
       </p>
@@ -102,8 +104,14 @@ export default function App() {
 
   if (loading && !dashboard) {
     return (
-      <div className="flex min-h-screen items-center justify-center gap-2 text-isaac-muted">
-        <Loader2 className="h-6 w-6 animate-spin" /> Chargement de la sauvegarde…
+      <div className="relative flex min-h-screen flex-col items-center justify-center gap-3">
+        <Defs />
+        <div className="animate-glowPulse text-isaac-dried">
+          <Emblem size={44} />
+        </div>
+        <div className="flex items-center gap-2 text-sm text-isaac-muted">
+          <Loader2 className="h-4 w-4 animate-spin" /> Ouverture du grimoire…
+        </div>
       </div>
     );
   }
