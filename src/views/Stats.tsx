@@ -2,11 +2,12 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 import { useEffect, useMemo, useState } from "react";
-import { Activity, Crosshair, Skull, Swords, Trophy } from "lucide-react";
+import { Activity, Skull, Swords, Trophy } from "lucide-react";
 import { api } from "../lib/api";
 import { useStore } from "../store";
 import { pct, stageKeyLabel } from "../lib/format";
 import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components/ui";
+import { Icon } from "../lib/art";
 import type { CharacterStats, Insights, Run, StatsOverview } from "../lib/types";
 
 type Tab = "overview" | "runs" | "insights";
@@ -29,12 +30,19 @@ function outcomePill(outcome: string | null) {
   return <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">{outcome ?? "en cours"}</Pill>;
 }
 
-function StatTile({ label, value, hint, tone }: { label: string; value: string; hint?: string; tone?: "gold" | "blood" | "done" }) {
+function StatTile({ label, value, hint, tone, icon }: { label: string; value: string; hint?: string; tone?: "gold" | "blood" | "done"; icon?: string }) {
   const color = tone === "gold" ? "text-isaac-gold" : tone === "blood" ? "text-isaac-blood" : tone === "done" ? "text-isaac-done" : "text-isaac-text";
   return (
     <Card className="!p-4">
-      <div className="text-xs uppercase tracking-widest text-isaac-muted">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color}`}>{value}</div>
+      <div className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-isaac-faint">
+        {icon && (
+          <span className="flex text-isaac-faint">
+            <Icon name={icon} size={13} />
+          </span>
+        )}
+        {label}
+      </div>
+      <div className={`mt-1 font-display text-2xl ${color}`}>{value}</div>
       {hint && <div className="mt-0.5 text-xs text-isaac-muted">{hint}</div>}
     </Card>
   );
@@ -138,17 +146,17 @@ export function StatsView() {
       {tab === "overview" && (
         <>
           <div className="grid gap-3 sm:grid-cols-4">
-            <StatTile label="Runs comptés" value={String(ov.total_runs)} hint={`${ov.total_wins}W / ${ov.total_deaths}D`} />
-            <StatTile label="Winrate" value={pct(ov.overall_winrate)} tone="done" />
-            <StatTile label="Hits / run" value={ov.avg_hits_per_run.toFixed(1)} tone="blood" />
-            <StatTile label="Nemesis" value={ov.nemesis ? ov.nemesis[0] : "—"} hint={ov.nemesis ? `${ov.nemesis[1]} hits` : undefined} tone="gold" />
+            <StatTile label="Runs comptés" value={String(ov.total_runs)} hint={`${ov.total_wins}W / ${ov.total_deaths}D`} icon="dice" />
+            <StatTile label="Winrate" value={pct(ov.overall_winrate)} tone="done" icon="star" />
+            <StatTile label="Hits / run" value={ov.avg_hits_per_run.toFixed(1)} tone="blood" icon="tear" />
+            <StatTile label="Nemesis" value={ov.nemesis ? ov.nemesis[0] : "—"} hint={ov.nemesis ? `${ov.nemesis[1]} hits` : undefined} tone="gold" icon="skull" />
           </div>
 
           <div className="grid gap-3 sm:grid-cols-4">
-            <StatTile label="Ennemis tués" value={ov.total_kills.toLocaleString("fr")} tone="blood" />
-            <StatTile label="Boss battus" value={String(ov.total_boss_kills)} tone="gold" />
-            <StatTile label="Salles nettoyées" value={ov.total_rooms_cleared.toLocaleString("fr")} />
-            <StatTile label="Deals du diable" value={String(ov.total_devil_deals)} tone="blood" />
+            <StatTile label="Ennemis tués" value={ov.total_kills.toLocaleString("fr")} tone="blood" icon="fly" />
+            <StatTile label="Boss battus" value={String(ov.total_boss_kills)} tone="gold" icon="skull" />
+            <StatTile label="Salles nettoyées" value={ov.total_rooms_cleared.toLocaleString("fr")} icon="chest" />
+            <StatTile label="Deals du diable" value={String(ov.total_devil_deals)} tone="blood" icon="horns" />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -222,11 +230,24 @@ export function StatsView() {
                     <span className="text-xs text-isaac-muted">slot {r.slot}</span>
                   </span>
                   <span className="flex flex-wrap items-center justify-end gap-x-3 gap-y-0.5 text-xs text-isaac-muted">
-                    <span className="inline-flex items-center gap-1"><Crosshair className="h-3 w-3 text-isaac-blood" />{r.hits_total} hits</span>
+                    <span className="inline-flex items-center gap-1 text-isaac-blood-light">
+                      <Icon name="tear" size={12} />
+                      {r.hits_total}
+                    </span>
                     <span>étage {r.deepest_stage}</span>
-                    {r.kills != null && <span>{r.kills} kills</span>}
+                    {r.kills != null && (
+                      <span className="inline-flex items-center gap-1">
+                        <Icon name="skull" size={12} />
+                        {r.kills}
+                      </span>
+                    )}
                     {r.rooms_cleared != null && <span>{r.rooms_cleared} salles</span>}
-                    {r.final_build.length > 0 && <span className="text-isaac-gold/80">{r.final_build.length} items</span>}
+                    {r.final_build.length > 0 && (
+                      <span className="inline-flex items-center gap-1 text-isaac-gold/80">
+                        <Icon name="pedestal" size={12} />
+                        {r.final_build.length}
+                      </span>
+                    )}
                     {r.shielded_hits > 0 && <span>🛡 {r.shielded_hits}</span>}
                   </span>
                 </div>
