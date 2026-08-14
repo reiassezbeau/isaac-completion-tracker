@@ -7,7 +7,20 @@ import { useStore } from "../store";
 import { Card, ProgressBar, SectionTitle, Pill } from "../components/ui";
 import { ModStatusCard } from "../components/ModStatus";
 import { categoryLabel } from "../lib/format";
-import { DeadGodGauge, Glyph, Sigil, baseSigilId } from "../lib/art";
+import { DeadGodGauge, Glyph, Icon, Sigil, baseSigilId } from "../lib/art";
+
+const CATEGORY_ICON: Record<string, string> = {
+  item: "pedestal",
+  character: "heart",
+  trinket: "star",
+  pill: "pill",
+  card: "card",
+  coop_baby: "fly",
+  challenge: "spikes",
+  completion_mark: "chest",
+  boss: "skull",
+  misc: "coin",
+};
 
 function HeroTile({ label, value, sub, tone }: { label: string; value: string; sub: string; tone: "gold" | "done" | "text" }) {
   const color = tone === "gold" ? "text-isaac-gold" : tone === "done" ? "text-isaac-done" : "text-isaac-text";
@@ -121,7 +134,12 @@ export function DashboardView() {
             {dashboard.categories.map((c) => (
               <div key={c.category}>
                 <div className="mb-1 flex justify-between text-sm">
-                  <span>{categoryLabel(c.category)}</span>
+                  <span className="flex items-center gap-2">
+                    <span className="flex text-isaac-faint">
+                      <Icon name={CATEGORY_ICON[c.category] ?? "coin"} size={15} />
+                    </span>
+                    {categoryLabel(c.category)}
+                  </span>
                   <span className="font-mono text-xs text-isaac-faint">
                     {c.unlocked}/{c.total}
                   </span>

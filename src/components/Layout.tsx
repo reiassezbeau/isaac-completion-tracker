@@ -7,6 +7,7 @@ import { useStore, type ViewId } from "../store";
 import { GitHubLink } from "./ui";
 import { Defs } from "./Defs";
 import { ThemeBackdrop } from "./ThemeBackdrop";
+import { PageBackdrop } from "./PageBackdrop";
 import { ThemePicker } from "./ThemePicker";
 import { Emblem, NavGlyph } from "../lib/art";
 import { editionLabel } from "../lib/format";
@@ -169,13 +170,16 @@ export function Shell({ children }: { children: ReactNode }) {
       <ThemeBackdrop theme={theme} />
       <div className="relative z-10 flex min-h-0 flex-1">
         <Sidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <Header />
-          <main className="flex-1 overflow-y-auto px-6 py-6">
-            <div key={view} className="view-enter">
-              {children}
-            </div>
-          </main>
+        <div className="relative flex min-w-0 flex-1 flex-col">
+          <PageBackdrop />
+          <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+            <Header />
+            <main className="flex-1 overflow-y-auto px-6 py-6">
+              <div key={view} className="view-enter">
+                {children}
+              </div>
+            </main>
+          </div>
         </div>
       </div>
       <footer className="relative z-10 flex items-center justify-between border-t border-isaac-border bg-isaac-surface px-6 py-2 text-xs text-isaac-faint">
