@@ -135,6 +135,25 @@
     opacity: 0.045;
   }
 
+  /* vieux parchemin (texture CC0 / domaine public, bundlée offline) — le monde
+     de l'app repose sur du vélin. Tinté par le thème via mix-blend. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("/textures/parchment.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.06;
+    mix-blend-mode: soft-light;
+  }
+  :root[data-theme="cathedral"] body::after {
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+  }
+
   #root {
     position: relative;
     z-index: 1;

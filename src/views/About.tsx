@@ -57,6 +57,10 @@ export function AboutView() {
             <Heart className="h-3 w-3 text-isaac-blood" />
             Outil communautaire non affilié à Nicalis ni à Edmund McMillen.
           </p>
+          <p className="text-xs text-isaac-faint">
+            Esthétique 100 % originale (SVG maison) — aucun asset du jeu. Texture de parchemin :
+            domaine public (CC0, OpenGameArt).
+          </p>
         </div>
       </Card>
     </div>
