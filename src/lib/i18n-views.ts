@@ -39,6 +39,8 @@ export const VIEW_STRINGS: Record<string, Entry> = {
   "grid.hoverHint": { en: "· hover a cell = character · ending · status", fr: "· survol d'une cellule = perso · ending · statut", es: "· pasa el ratón = personaje · final · estado", pt: "· passe o mouse = personagem · final · status", de: "· Zelle überfahren = Charakter · Ending · Status", ru: "· наведение = персонаж · концовка · статус", pl: "· najedź = postać · zakończenie · status", zh: "· 悬停单元格 = 角色 · 结局 · 状态", ja: "· セルにホバー = キャラ · エンディング · 状態", hi: "· सेल पर होवर = पात्र · एंडिंग · स्थिति", ar: "· مرِّر فوق خلية = شخصية · نهاية · حالة", bn: "· সেলে হোভার = চরিত্র · এন্ডিং · অবস্থা", ur: "· سیل پر ہوور = کردار · اینڈنگ · حالت" },
   "grid.characters": { en: "Characters", fr: "Personnages", es: "Personajes", pt: "Personagens", de: "Charaktere", ru: "Персонажи", pl: "Postacie", zh: "角色", ja: "キャラクター", hi: "पात्र", ar: "الشخصيات", bn: "চরিত্র", ur: "کردار" },
   "grid.perCol": { en: "Hard / col", fr: "Hard / col", es: "Hard / col", pt: "Hard / col", de: "Hard / Sp.", ru: "Hard / стлб", pl: "Hard / kol.", zh: "Hard / 列", ja: "Hard / 列", hi: "Hard / कॉलम", ar: "Hard / عمود", bn: "Hard / কলাম", ur: "Hard / کالم" },
+  // « Hard » et « Normal » sont les termes DU JEU : volontairement non traduits
+  // (fidelite a Isaac — les joueurs les utilisent tels quels dans toutes les langues).
   "mark.hard": { en: "Hard", fr: "Hard" },
   "mark.normal": { en: "Normal", fr: "Normal" },
   "mark.todo": { en: "To do", fr: "À faire", es: "Pendiente", pt: "A fazer", de: "Offen", ru: "Не сделано", pl: "Do zrobienia", zh: "待完成", ja: "未完了", hi: "बाकी", ar: "متبقٍ", bn: "বাকি", ur: "باقی" },
