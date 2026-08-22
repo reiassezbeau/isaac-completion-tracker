@@ -5,12 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, ListChecks, Lock, Search, Unlock } from "lucide-react";
 import { api } from "../lib/api";
 import { categoryLabel, dlcLabel } from "../lib/format";
+import { useT } from "../lib/useT";
 import { Card, Pill } from "../components/ui";
 import type { AchievementView } from "../lib/types";
 
 type StatusFilter = "all" | "unlocked" | "locked";
 
 export function AchievementsView() {
+  const t = useT();
   const [all, setAll] = useState<AchievementView[] | null>(null);
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("all");
@@ -50,7 +52,7 @@ export function AchievementsView() {
   return (
     <div className="mx-auto max-w-5xl space-y-4">
       <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-        <ListChecks className="h-6 w-6 text-isaac-gold" /> Les 641 succès
+        <ListChecks className="h-6 w-6 text-isaac-gold" /> {t("ach.title")}
       </h1>
       <Card className="!p-4">
         <div className="flex flex-wrap items-center gap-2">
@@ -59,12 +61,12 @@ export function AchievementsView() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Rechercher un succès, une condition…"
+              placeholder={t("ach.searchPh")}
               className="w-full rounded-lg border border-isaac-border bg-isaac-surface2 py-2 pl-9 pr-3 text-sm outline-none focus:border-isaac-blood/60"
             />
           </div>
           <select value={cat} onChange={(e) => setCat(e.target.value)} className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm">
-            <option value="all">Toutes catégories</option>
+            <option value="all">{t("ach.allCats")}</option>
             {categories.map((c) => (
               <option key={c} value={c}>
                 {categoryLabel(c)}
@@ -72,7 +74,7 @@ export function AchievementsView() {
             ))}
           </select>
           <select value={dlc} onChange={(e) => setDlc(e.target.value)} className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm">
-            <option value="all">Tous DLC</option>
+            <option value="all">{t("ach.allDlc")}</option>
             {dlcs.map((d) => (
               <option key={d} value={d}>
                 {dlcLabel(d)}
@@ -80,9 +82,9 @@ export function AchievementsView() {
             ))}
           </select>
           <select value={status} onChange={(e) => setStatus(e.target.value as StatusFilter)} className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm">
-            <option value="all">Tous statuts</option>
-            <option value="unlocked">Débloqués</option>
-            <option value="locked">Verrouillés</option>
+            <option value="all">{t("ach.allStatus")}</option>
+            <option value="unlocked">{t("ach.unlockedPl")}</option>
+            <option value="locked">{t("ach.lockedPl")}</option>
           </select>
           <button
             onClick={() => setReveal((r) => !r)}
@@ -125,11 +127,11 @@ export function AchievementsView() {
                 <div className="flex items-center gap-2">
                   <span className={`font-medium ${a.unlocked ? "" : "text-isaac-muted"}`}>{a.name}</span>
                   {a.overridden && (
-                    <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">corrigé</Pill>
+                    <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">{t("set.fixed")}</Pill>
                   )}
                 </div>
                 <div className="text-xs text-isaac-muted">
-                  {showText ? a.unlock.text : <span className="italic">condition masquée (verrouillé)</span>}
+                  {showText ? a.unlock.text : <span className="italic">{t("ach.hiddenCond")}</span>}
                 </div>
               </div>
               <div className="flex flex-shrink-0 flex-col items-end gap-1 text-right text-xs">

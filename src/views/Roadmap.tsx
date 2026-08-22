@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { Skull } from "lucide-react";
 import { api } from "../lib/api";
 import { Card, ProgressBar, SectionTitle } from "../components/ui";
+import { useT } from "../lib/useT";
 import type { Roadmap } from "../lib/types";
 
 export function RoadmapView() {
+  const t = useT();
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   useEffect(() => {
     api.getRoadmap().then(setRoadmap);
@@ -19,17 +21,17 @@ export function RoadmapView() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-        <Skull className="h-6 w-6 text-isaac-dried" /> Roadmap
+        <Skull className="h-6 w-6 text-isaac-dried" /> {t("nav.roadmap")}
       </h1>
       <Card>
         <div className="flex items-center gap-2 text-isaac-muted">
           <Skull className="h-5 w-5 text-isaac-blood" />
-          <span className="text-sm font-medium">Route vers Dead God</span>
+          <span className="text-sm font-medium">{t("road.route")}</span>
         </div>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-3xl font-bold text-isaac-gold">{dgDone}</span>
-          <span className="text-isaac-muted">/ {roadmap.dead_god_total} marks dorées</span>
-          <span className="ml-auto text-sm text-isaac-blood">{roadmap.dead_god_remaining} restantes</span>
+          <span className="text-isaac-muted">/ {roadmap.dead_god_total} {t("road.goldMarks")}</span>
+          <span className="ml-auto text-sm text-isaac-blood">{roadmap.dead_god_remaining} {t("dash.remaining")}</span>
         </div>
         <div className="mt-3">
           <ProgressBar value={dgDone} max={roadmap.dead_god_total} tone="gold" />
@@ -37,7 +39,7 @@ export function RoadmapView() {
       </Card>
 
       <div>
-        <SectionTitle hint="recalculé à chaque refresh">Plan personnalisé</SectionTitle>
+        <SectionTitle hint={t("road.recalc")}>{t("road.plan")}</SectionTitle>
         <ol className="space-y-3">
           {roadmap.steps.map((step, i) => {
             const done = step.total > 0 && step.done >= step.total;

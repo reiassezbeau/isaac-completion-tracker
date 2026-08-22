@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Gamepad2, Loader2, PackagePlus, Settings2 } from "lucide-react";
 import { api } from "../lib/api";
 import { useStore } from "../store";
+import { useT } from "../lib/useT";
 import { Card } from "./ui";
 import type { HealthReport } from "../lib/types";
 
@@ -14,6 +15,7 @@ import type { HealthReport } from "../lib/types";
  * le mod installé ET des données détectées.
  */
 export function ModStatusCard() {
+  const t = useT();
   const [h, setH] = useState<HealthReport | null>(null);
   const [busy, setBusy] = useState(false);
   const setView = useStore((s) => s.setView);
@@ -37,7 +39,7 @@ export function ModStatusCard() {
     return (
       <div className="flex items-center gap-2 rounded-xl border border-isaac-done/30 bg-isaac-done/5 px-4 py-2 text-sm text-isaac-muted">
         <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-isaac-done" />
-        Mod de stats actif — données de run détectées.
+        {t("mod.active")}
       </div>
     );
   }
@@ -69,7 +71,7 @@ export function ModStatusCard() {
       <div className="flex items-start gap-3">
         <PackagePlus className="mt-0.5 h-5 w-5 flex-shrink-0 text-isaac-gold" />
         <div className="min-w-0 flex-1">
-          <div className="font-semibold">Suivi de stats en jeu (optionnel)</div>
+          <div className="font-semibold">{t("mod.title")}</div>
           <p className="mt-0.5 text-sm text-isaac-muted">
             {step === "notfound" &&
               "Jeu introuvable pour l'instant — vois l'onglet Diagnostic pour localiser Isaac."}

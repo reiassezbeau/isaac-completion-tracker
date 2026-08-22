@@ -35,6 +35,7 @@ export function isRtl(lang: Lang): boolean {
 }
 
 import { VIEW_STRINGS } from "./i18n-views";
+import { VIEW_STRINGS_2 } from "./i18n-views2";
 
 type Entry = Partial<Record<Lang, string>>;
 
@@ -72,7 +73,7 @@ const T: Record<string, Entry> = {
 
 /** Traduit une clé pour une langue (repli langue -> anglais -> clé). */
 export function translate(key: string, lang: Lang): string {
-  const e = T[key] ?? VIEW_STRINGS[key];
+  const e = T[key] ?? VIEW_STRINGS[key] ?? VIEW_STRINGS_2[key];
   if (!e) return key;
   return e[lang] ?? e.en ?? key;
 }
