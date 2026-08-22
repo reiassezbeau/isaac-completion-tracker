@@ -79,6 +79,11 @@ with your completion).
    (enabled by default). The app's **Diagnostic** tab also confirms the installation.
 4. **Play**: stats flow automatically into the app's **Stats** tab.
 
+> **Do I need to "launch" the mod?** No — the mod isn't a separate program: it's Lua loaded by
+> Isaac **at game startup**. So the ideal order is: **game closed → install the mod from the app →
+> launch Isaac**. The mod is active from your very first run, nothing else to do. The only case to
+> avoid is installing **while** Isaac is running: you then have to close and restart it.
+
 > **Your run is never lost.** You can enable/disable the mod and restart the game: the mod saves
 > the current run when you return to the menu, and resumes it on **Continue**. An unfinished run
 > is archived, never deleted.

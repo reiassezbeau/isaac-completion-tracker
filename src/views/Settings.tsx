@@ -161,7 +161,7 @@ export function SettingsView() {
                       onClick={() => setMarkOverride(e.mark_index, d)}
                       className={`rounded px-2 py-1 text-xs ${forced === d ? "bg-isaac-gold/20 text-isaac-gold" : "bg-isaac-surface text-isaac-muted hover:text-isaac-text"}`}
                     >
-                      {markLabel(d)}
+                      {markLabel(d, t)}
                     </button>
                   ))}
                   <button onClick={() => setMarkOverride(e.mark_index, null)} className="rounded px-2 py-1 text-xs text-isaac-muted hover:text-isaac-text">Auto</button>

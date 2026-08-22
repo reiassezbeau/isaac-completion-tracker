@@ -34,6 +34,8 @@ export function isRtl(lang: Lang): boolean {
   return !!LANGS.find((l) => l.code === lang)?.rtl;
 }
 
+import { VIEW_STRINGS } from "./i18n-views";
+
 type Entry = Partial<Record<Lang, string>>;
 
 // Chaque clé porte ses 13 traductions. en = repli universel.
@@ -70,7 +72,7 @@ const T: Record<string, Entry> = {
 
 /** Traduit une clé pour une langue (repli langue -> anglais -> clé). */
 export function translate(key: string, lang: Lang): string {
-  const e = T[key];
+  const e = T[key] ?? VIEW_STRINGS[key];
   if (!e) return key;
   return e[lang] ?? e.en ?? key;
 }

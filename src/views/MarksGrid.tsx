@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { Card } from "../components/ui";
 import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import { markLabel } from "../lib/format";
+import { useT } from "../lib/useT";
 import type { MarkDifficulty, MarksMatrix, MatrixChar, MatrixEnding } from "../lib/types";
 
 const SIZE = 22;
@@ -39,6 +40,7 @@ function Block({
   rows: MarkDifficulty[][];
   endings: MatrixEnding[];
 }) {
+  const t = useT();
   const totalHard = chars.reduce((a, c) => a + c.hard, 0);
   const colHard = endings.map((_, j) => rows.reduce((a, r) => a + (r[j] === "hard" ? 1 : 0), 0));
   const cols = `150px repeat(${endings.length}, ${SIZE}px) 30px`;
@@ -67,7 +69,7 @@ function Block({
         ))}
 
         {/* totaux de colonne */}
-        <div className="pt-1 text-right font-mono text-[0.6rem] uppercase tracking-wider text-isaac-faint">Hard / col</div>
+        <div className="pt-1 text-right font-mono text-[0.6rem] uppercase tracking-wider text-isaac-faint">{t("grid.perCol")}</div>
         {colHard.map((n, j) => {
           const full = n === chars.length;
           const color = full ? "text-isaac-gold" : n >= chars.length * 0.6 ? "text-isaac-muted" : "text-isaac-blood-light";
@@ -84,6 +86,7 @@ function Block({
 }
 
 function MatrixRow({ char, statuses, endings }: { char: MatrixChar; statuses: MarkDifficulty[]; endings: MatrixEnding[] }) {
+  const t = useT();
   const full = char.hard === endings.length;
   return (
     <>
@@ -92,7 +95,7 @@ function MatrixRow({ char, statuses, endings }: { char: MatrixChar; statuses: Ma
         <span className={`truncate text-xs ${full ? "text-isaac-gold" : char.unlocked ? "text-isaac-muted" : "text-isaac-faint/70"}`}>{char.name}</span>
       </div>
       {statuses.map((s, j) => (
-        <div key={j} style={cellStyle(s, !char.unlocked)} title={`${char.name} · ${endings[j].name} — ${markLabel(s)}`} />
+        <div key={j} style={cellStyle(s, !char.unlocked)} title={`${char.name} · ${endings[j].name} — ${markLabel(s, t)}`} />
       ))}
       <div className={`text-right font-mono text-[0.62rem] tabular-nums ${full ? "text-isaac-gold" : "text-isaac-faint"}`}>
         {String(char.hard).padStart(2, "0")}
@@ -102,6 +105,7 @@ function MatrixRow({ char, statuses, endings }: { char: MatrixChar; statuses: Ma
 }
 
 export function MarksGridView() {
+  const t = useT();
   const [matrix, setMatrix] = useState<MarksMatrix | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -130,29 +134,28 @@ export function MarksGridView() {
   return (
     <div className="mx-auto max-w-6xl space-y-5">
       <div>
-        <h1 className="font-display text-3xl text-isaac-text">La Grille</h1>
+        <h1 className="font-display text-3xl text-isaac-text">{t("nav.grid")}</h1>
         <p className="mt-1 text-sm text-isaac-muted">
-          Les 34 personnages × 12 marques — {done} / {total} en Hard. Or = Hard, anneau vert = Normal (à
-          refaire), creux = à faire. Les totaux de colonne montrent le goulot d'un coup d'œil.
+          {t("grid.subtitle")} — {done} / {total} Hard. {t("grid.legendHint")}
         </p>
       </div>
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-isaac-muted">
         <span className="inline-flex items-center gap-2">
-          <span className="h-3.5 w-3.5 rounded" style={cellStyle("hard", false)} /> Hard
+          <span className="h-3.5 w-3.5 rounded" style={cellStyle("hard", false)} /> {t("mark.hard")}
         </span>
         <span className="inline-flex items-center gap-2">
-          <span className="h-3.5 w-3.5 rounded" style={cellStyle("normal", false)} /> Normal
+          <span className="h-3.5 w-3.5 rounded" style={cellStyle("normal", false)} /> {t("mark.normal")}
         </span>
         <span className="inline-flex items-center gap-2">
-          <span className="h-3.5 w-3.5 rounded" style={cellStyle("none", false)} /> À faire
+          <span className="h-3.5 w-3.5 rounded" style={cellStyle("none", false)} /> {t("mark.todo")}
         </span>
-        <span className="text-isaac-faint">· survol d'une cellule = perso · ending · statut</span>
+        <span className="text-isaac-faint">{t("grid.hoverHint")}</span>
       </div>
 
       <div className="grid gap-5 2xl:grid-cols-2">
         <Card>
-          <Block title="Personnages" accent="text-isaac-muted" endings={matrix.endings} {...split.regular} />
+          <Block title={t("grid.characters")} accent="text-isaac-muted" endings={matrix.endings} {...split.regular} />
         </Card>
         <Card>
           <Block title="Tainted" accent="text-isaac-blood-light" endings={matrix.endings} {...split.tainted} />

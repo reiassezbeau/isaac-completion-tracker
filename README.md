@@ -80,6 +80,11 @@ Installation **en 1 clic depuis l'app** — pas de fichier à télécharger sép
    (activé par défaut). L'onglet **Diagnostic** de l'app confirme aussi son installation.
 4. **Joue** : les stats remontent automatiquement dans l'onglet **Stats** de l'app.
 
+> **Faut-il « lancer » le mod ?** Non — le mod n'est pas un programme séparé : c'est du Lua chargé
+> par Isaac **au démarrage du jeu**. L'ordre idéal est donc : **jeu fermé → installe le mod depuis
+> l'app → lance Isaac**. Le mod est actif dès la première partie, rien d'autre à faire. Le seul cas
+> à éviter est d'installer **pendant** qu'Isaac tourne : il faut alors le fermer et le relancer.
+
 > **Ton run n'est jamais perdu.** Tu peux activer/désactiver le mod et relancer le jeu :
 > le mod sauvegarde le run en cours quand tu retournes au menu, et le reprend au **Continue**.
 > Un run non terminé est archivé, jamais supprimé.

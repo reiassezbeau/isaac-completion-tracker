@@ -7,6 +7,7 @@ import { useStore } from "../store";
 import { Card, ProgressBar, SectionTitle, Pill } from "../components/ui";
 import { ModStatusCard } from "../components/ModStatus";
 import { categoryLabel } from "../lib/format";
+import { useT } from "../lib/useT";
 import { DeadGodGauge, Glyph, Icon, Sigil, baseSigilId } from "../lib/art";
 
 const CATEGORY_ICON: Record<string, string> = {
@@ -36,6 +37,7 @@ function HeroTile({ label, value, sub, tone }: { label: string; value: string; s
 }
 
 export function DashboardView() {
+  const t = useT();
   const dashboard = useStore((s) => s.dashboard);
   const setView = useStore((s) => s.setView);
 
@@ -57,10 +59,9 @@ export function DashboardView() {
         <div className="flex items-start gap-3 rounded-xl border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-3 text-sm">
           <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-isaac-gold" />
           <div>
-            <strong>Completion marks non fiables</strong> pour cette sauvegarde (format inattendu). Le
-            décodage a été désactivé pour éviter d'afficher des données fausses — utilise les{" "}
+            <strong>{t("dash.marksUnreliable")}</strong> {t("dash.marksUnreliableBody")}{" "}
             <button className="text-isaac-gold underline" onClick={() => setView("settings")}>
-              corrections manuelles
+              {t("dash.manualOverrides")}
             </button>
             .
           </div>
@@ -68,8 +69,7 @@ export function DashboardView() {
       )}
       {!dashboard.checksum_ok && (
         <div className="rounded-xl border border-isaac-blood/40 bg-isaac-blood/10 px-4 py-3 text-sm text-isaac-text">
-          ⚠ Le checksum de la sauvegarde ne correspond pas (fichier peut-être en cours d'écriture). Les
-          données restent lisibles ; rafraîchis si besoin.
+          {t("dash.checksumWarn")}
         </div>
       )}
 
@@ -79,28 +79,28 @@ export function DashboardView() {
           className="flex flex-col items-center border-b border-isaac-border px-5 py-5 md:border-b-0 md:border-r"
           style={{ background: "radial-gradient(80% 70% at 50% 42%, rgba(201,169,74,.07), transparent 70%)" }}
         >
-          <div className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-isaac-faint">Distance à Dead God</div>
+          <div className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-isaac-faint">{t("dash.distanceDeadGod")}</div>
           <div className="relative mt-2 animate-gaugeReveal">
             <DeadGodGauge perEnding={perEnding} size={238} />
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
               <div className="font-display text-5xl leading-none text-isaac-text" style={{ letterSpacing: "-.03em" }}>
                 {dashboard.dead_god_remaining}
               </div>
-              <div className="mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-isaac-faint">restantes</div>
+              <div className="mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-isaac-faint">{t("dash.remaining")}</div>
             </div>
           </div>
           <div className="mt-1 font-mono text-xs text-isaac-gold">
-            {done} / {dashboard.dead_god_total} <span className="text-isaac-faint">marks Hard</span>
+            {done} / {dashboard.dead_god_total} <span className="text-isaac-faint">{t("dash.hardMarks")}</span>
           </div>
           <div className="mt-1.5 text-center text-[0.65rem] leading-snug text-isaac-faint">
-            12 anneaux = les 12 endings · centre → extérieur = Mom's Heart → The Beast
+            {t("dash.ringsHint")}
           </div>
         </div>
 
         <div className="flex flex-col justify-center px-6 py-5">
           <div className="flex items-start justify-between gap-5">
             <div>
-              <div className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-isaac-faint">Succès débloqués</div>
+              <div className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-isaac-faint">{t("dash.unlockedAch")}</div>
               <div className="mt-1.5 flex items-baseline gap-2">
                 <span className="font-display text-5xl text-isaac-gold" style={{ letterSpacing: "-.03em" }}>
                   {dashboard.total_unlocked}
@@ -113,23 +113,23 @@ export function DashboardView() {
                 {dashboard.percent.toFixed(1)}
                 <span className="text-base text-isaac-faint"> %</span>
               </div>
-              <div className="mt-0.5 text-xs text-isaac-faint">{achLeft} restants</div>
+              <div className="mt-0.5 text-xs text-isaac-faint">{achLeft} {t("dash.left")}</div>
             </div>
           </div>
           <div className="mt-4">
             <ProgressBar value={dashboard.total_unlocked} max={dashboard.total} tone="gold" />
           </div>
           <div className="mt-5 grid grid-cols-3 gap-3">
-            <HeroTile label="Marks Hard" value={String(done)} sub={`/ ${dashboard.dead_god_total}`} tone="gold" />
-            <HeroTile label="Marks Normal" value={String(normalTotal)} sub="à refaire" tone="done" />
-            <HeroTile label="Persos bouclés" value={String(dashboard.full_characters)} sub="/ 34" tone="text" />
+            <HeroTile label={t("dash.hardMarks")} value={String(done)} sub={`/ ${dashboard.dead_god_total}`} tone="gold" />
+            <HeroTile label={t("dash.normalMarks")} value={String(normalTotal)} sub={t("dash.toRedo")} tone="done" />
+            <HeroTile label={t("dash.fullChars")} value={String(dashboard.full_characters)} sub="/ 34" tone="text" />
           </div>
         </div>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <SectionTitle hint="débloqués / total">Répartition par catégorie</SectionTitle>
+          <SectionTitle hint={t("dash.unlockedTotal")}>{t("dash.byCategory")}</SectionTitle>
           <div className="space-y-2.5">
             {dashboard.categories.map((c) => (
               <div key={c.category}>
@@ -151,32 +151,32 @@ export function DashboardView() {
         </Card>
 
         <Card>
-          <SectionTitle hint="calculé depuis ta save">Prochaines cibles recommandées</SectionTitle>
+          <SectionTitle hint={t("dash.fromSave")}>{t("dash.nextTargets")}</SectionTitle>
           {dashboard.next_targets.length === 0 ? (
-            <p className="text-sm text-isaac-done">Tout est bouclé de ce côté 🎉</p>
+            <p className="text-sm text-isaac-done">{t("dash.allDone")}</p>
           ) : (
             <div className="space-y-2">
-              {dashboard.next_targets.map((t, i) => (
+              {dashboard.next_targets.map((tg, i) => (
                 <button
                   key={i}
                   onClick={() => setView("predictor")}
                   className="flex w-full items-center gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/60 px-3 py-2.5 text-left text-sm transition-colors hover:border-isaac-dried/50"
                 >
-                  <Sigil id={baseSigilId(t.character_id)} size={28} tainted={t.character_id.startsWith("tainted_")} />
+                  <Sigil id={baseSigilId(tg.character_id)} size={28} tainted={tg.character_id.startsWith("tainted_")} />
                   <span className="min-w-0 flex-1 leading-tight">
-                    <span className="font-semibold text-isaac-text">{t.character_name}</span>
+                    <span className="font-semibold text-isaac-text">{tg.character_name}</span>
                     <br />
-                    <span className="text-isaac-muted">{t.target_name}</span>
+                    <span className="text-isaac-muted">{tg.target_name}</span>
                   </span>
                   <span className="flex flex-shrink-0 text-isaac-faint">
-                    <Glyph id={t.target_id} size={18} />
+                    <Glyph id={tg.target_id} size={18} />
                   </span>
                   <span className="flex flex-shrink-0 flex-col items-end gap-1">
-                    {t.new_unlocks > 0 && (
-                      <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">+{t.new_unlocks} succès</Pill>
+                    {tg.new_unlocks > 0 && (
+                      <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">+{tg.new_unlocks} {t("dash.newAch")}</Pill>
                     )}
-                    {t.fills_hard_mark && (
-                      <Pill className="border-isaac-dried/40 bg-isaac-dried/10 text-isaac-blood-light">mark Hard</Pill>
+                    {tg.fills_hard_mark && (
+                      <Pill className="border-isaac-dried/40 bg-isaac-dried/10 text-isaac-blood-light">{t("dash.hardMark")}</Pill>
                     )}
                   </span>
                 </button>

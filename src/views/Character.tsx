@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Crosshair, Lock, Route } from "lucide-react";
 import { api } from "../lib/api";
 import { markClasses, markLabel, pct } from "../lib/format";
+import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
 import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { CharacterDetail, CharacterListItem, CharacterStats } from "../lib/types";
@@ -18,8 +19,9 @@ function CharGrid({
   selected: string | null;
   onSelect: (id: string) => void;
 }) {
+  const t = useT();
   const groups: [string, CharacterListItem[]][] = [
-    ["Personnages", chars.filter((c) => c.kind === "regular")],
+    [t("grid.characters"), chars.filter((c) => c.kind === "regular")],
     ["Tainted", chars.filter((c) => c.kind === "tainted")],
   ];
   return (
@@ -66,6 +68,7 @@ function CharGrid({
 }
 
 export function CharacterView() {
+  const t = useT();
   const [chars, setChars] = useState<CharacterListItem[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<CharacterDetail | null>(null);
@@ -91,13 +94,13 @@ export function CharacterView() {
   return (
     <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[320px_1fr]">
       <div>
-        <SectionTitle>Personnages</SectionTitle>
+        <SectionTitle>{t("grid.characters")}</SectionTitle>
         <CharGrid chars={chars} selected={selected} onSelect={setSelected} />
       </div>
 
       <div>
         {!detail ? (
-          <EmptyState title="Sélectionne un personnage." />
+          <EmptyState title={t("char.select")} />
         ) : (
           <div className="space-y-5">
             <div className="flex items-center justify-between">
@@ -108,11 +111,11 @@ export function CharacterView() {
                 </h1>
                 <div className="mt-1 flex items-center gap-2">
                   <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">
-                    {detail.kind === "tainted" ? "Tainted" : "Régulier"}
+                    {detail.kind === "tainted" ? "Tainted" : t("char.regular")}
                   </Pill>
                   {!detail.character_unlocked && (
                     <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">
-                      <Lock className="h-3 w-3" /> Perso verrouillé
+                      <Lock className="h-3 w-3" /> {t("char.locked")}
                     </Pill>
                   )}
                 </div>
@@ -121,26 +124,26 @@ export function CharacterView() {
 
             {stats && stats.runs > 0 && (
               <Card>
-                <SectionTitle hint="depuis le mod de stats">
+                <SectionTitle hint={t("char.fromMod")}>
                   <span className="inline-flex items-center gap-1">
-                    <Crosshair className="h-4 w-4 text-isaac-blood" /> Stats de jeu (ce perso)
+                    <Crosshair className="h-4 w-4 text-isaac-blood" /> {t("char.gameStats")}
                   </span>
                 </SectionTitle>
                 <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                   <div>
-                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Runs</div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("char.runs")}</div>
                     <div className="text-lg font-bold">{stats.runs}</div>
                   </div>
                   <div>
-                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Winrate</div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("char.winrate")}</div>
                     <div className="text-lg font-bold text-isaac-done">{pct(stats.winrate)}</div>
                   </div>
                   <div>
-                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Hits / run</div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("char.hitsPerRun")}</div>
                     <div className="text-lg font-bold text-isaac-blood">{stats.avg_hits.toFixed(1)}</div>
                   </div>
                   <div>
-                    <div className="text-xs uppercase tracking-widest text-isaac-muted">Record (min hits)</div>
+                    <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("char.record")}</div>
                     <div className="text-lg font-bold text-isaac-gold">{stats.min_hits ?? "—"}</div>
                   </div>
                 </div>
@@ -149,12 +152,12 @@ export function CharacterView() {
 
             {!detail.marks_reliable && (
               <div className="rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-2 text-sm text-isaac-text">
-                Marks non fiables pour cette save — corrige-les manuellement dans ⚙️ Corrections.
+                {t("char.marksUnreliable")}
               </div>
             )}
 
             <Card>
-              <SectionTitle hint="vert = Normal · or = Hard">Completion marks</SectionTitle>
+              <SectionTitle hint={t("char.marksLegend")}>{t("char.completionMarks")}</SectionTitle>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {detail.marks.map((m) => (
                   <div
@@ -170,7 +173,7 @@ export function CharacterView() {
                       <span className="truncate">{m.ending_name}</span>
                     </span>
                     <span className="ml-2 flex-shrink-0 text-xs font-semibold">
-                      {markLabel(m.status)}
+                      {markLabel(m.status, t)}
                       {m.overridden && " *"}
                     </span>
                   </div>
@@ -179,25 +182,25 @@ export function CharacterView() {
             </Card>
 
             <Card>
-              <SectionTitle>Ce qu'il te reste à faire</SectionTitle>
+              <SectionTitle>{t("char.todoTitle")}</SectionTitle>
               {detail.todo.length === 0 ? (
-                <p className="text-sm text-isaac-done">Tout est en Hard pour ce perso 🎉</p>
+                <p className="text-sm text-isaac-done">{t("char.allHard")}</p>
               ) : (
                 <div className="space-y-3">
-                  {detail.todo.map((t) => (
+                  {detail.todo.map((td) => (
                     <div
-                      key={t.ending_id}
+                      key={td.ending_id}
                       className="rounded-lg border border-isaac-border bg-isaac-surface2/40 p-3"
                     >
                       <div className="flex items-center justify-between text-sm">
-                        <strong>{t.ending_name}</strong>
+                        <strong>{td.ending_name}</strong>
                         <span className="text-xs text-isaac-muted">
-                          {t.needs_hard ? "Refaire en Hard (marque dorée)" : "Marque à obtenir"}
+                          {td.needs_hard ? t("char.redoHard") : t("char.markToGet")}
                         </span>
                       </div>
-                      {t.unlocks.length > 0 && (
+                      {td.unlocks.length > 0 && (
                         <ul className="mt-2 space-y-1 text-sm text-isaac-muted">
-                          {t.unlocks.map((u) => (
+                          {td.unlocks.map((u) => (
                             <li key={u.id} className="flex items-baseline gap-2">
                               <span className="text-isaac-gold">→</span>
                               <span>
@@ -217,14 +220,14 @@ export function CharacterView() {
               <Card>
                 <SectionTitle>
                   <span className="inline-flex items-center gap-1">
-                    <Route className="h-4 w-4" /> Conseils de routing
+                    <Route className="h-4 w-4" /> {t("char.routingTips")}
                   </span>
                 </SectionTitle>
                 <div className="space-y-2">
-                  {detail.routing_tips.map((t) => (
-                    <div key={t.id} className="text-sm">
-                      <div className="font-medium text-isaac-text">{t.title}</div>
-                      <div className="text-isaac-muted">{t.text}</div>
+                  {detail.routing_tips.map((rt) => (
+                    <div key={rt.id} className="text-sm">
+                      <div className="font-medium text-isaac-text">{rt.title}</div>
+                      <div className="text-isaac-muted">{rt.text}</div>
                     </div>
                   ))}
                 </div>

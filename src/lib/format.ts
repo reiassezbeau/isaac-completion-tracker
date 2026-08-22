@@ -35,15 +35,10 @@ export function categoryLabel(cat: string): string {
   return CATEGORY_LABELS[cat] ?? cat;
 }
 
-export function markLabel(d: MarkDifficulty): string {
-  switch (d) {
-    case "hard":
-      return "Hard";
-    case "normal":
-      return "Normal";
-    default:
-      return "À faire";
-  }
+export function markLabel(d: MarkDifficulty, t?: (k: string) => string): string {
+  const key = d === "hard" ? "mark.hard" : d === "normal" ? "mark.normal" : "mark.todo";
+  if (t) return t(key);
+  return d === "hard" ? "Hard" : d === "normal" ? "Normal" : "To do";
 }
 
 /** Classes Tailwind pour un badge de mark (or = Hard, jade = Normal, creux = à faire). */
