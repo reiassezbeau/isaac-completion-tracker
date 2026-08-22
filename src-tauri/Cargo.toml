@@ -33,3 +33,14 @@ walkdir = "2"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"
+
+# Profil de release : binaire compact et rapide pour la distribution.
+#   opt-level "s" + LTO + codegen-units=1 -> code optimise et compact
+#   panic="abort" -> pas de tables de deroulement (binaire plus petit)
+#   strip -> retire les symboles de debug
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

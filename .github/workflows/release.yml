@@ -4,16 +4,16 @@
 #
 # Créé par reiassezbeau — https://github.com/reiassezbeau
 #
-# Déclenchement :
-#   - push d'un tag `v*` (ex. `git tag v0.1.0 && git push --tags`) → Release (draft)
-#   - manuellement (workflow_dispatch) avec un tag optionnel
+# Déclenchement : MANUEL uniquement (workflow_dispatch).
+# Le déclenchement automatique sur tag a été retiré volontairement : les releases
+# sont publiées avec un installeur construit et vérifié localement, et une CI qui
+# se déclencherait sur le même tag créerait une release/des assets en double.
+# Pour publier depuis la CI : onglet Actions → « Release (Windows installer) »
+# → Run workflow → indiquer le tag.
 
 name: Release (Windows installer)
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
     inputs:
       tag:
@@ -52,8 +52,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-          releaseName: "Isaac Completion Tracker ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}"
+          tagName: ${{ inputs.tag }}
+          releaseName: "Isaac Completion Tracker ${{ inputs.tag }}"
           releaseBody: |
             Installeur Windows (**.exe** NSIS + **.msi**) pour Isaac Completion Tracker.
 
