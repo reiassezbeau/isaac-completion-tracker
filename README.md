@@ -1,5 +1,7 @@
 # Isaac Completion Tracker
 
+**🇫🇷 Français** · [🇬🇧 English](README.en.md)
+
 > Suivi de complétion **local et 100 % hors-ligne** pour *The Binding of Isaac: Repentance+*
 > (641 succès Steam). Lit ta sauvegarde en **lecture seule** et te dit précisément quoi
 > faire pour avancer — jusqu'à **Dead God**.
@@ -10,17 +12,31 @@
 
 ## Ce que ça fait
 
-- **Dashboard** — compteur global `X / 641`, %, distance à Dead God (marks Hard restantes),
-  répartition par catégorie, prochaines cibles recommandées.
-- **Mode Personnage** — pour chacun des 34 persos (17 + 17 Tainted) : ses completion marks
+- **Dashboard** — compteur global `X / 641`, %, jauge « distance à Dead God » (12 anneaux, un par
+  ending), répartition par catégorie, prochaines cibles recommandées.
+- **La Grille** — le tableau du complétionniste : **34 personnages × 12 marques** d'un seul coup
+  d'œil, avec les totaux par colonne pour repérer le goulot d'étranglement.
+- **Personnage** — pour chacun des 34 persos (17 + 17 Tainted) : ses completion marks
   (À faire / Normal / Hard), ce qu'il te reste à faire et ce que ça débloque, conseils de routing.
-- **Mode Prédicteur** — « si je fais **[boss]** avec **[perso]** », il te dit ce que ça débloque
+- **Prédicteur** — « si je fais **[boss]** avec **[perso]** », il te dit ce que ça débloque
   (succès, items) et si ça rapproche de Dead God. Plus une vue inverse « quoi faire ensuite ».
+- **Optimiseur** — classe tes prochaines actions par **espérance de gain** (valeur × probabilité) :
+  ETA vers Dead God, goulots d'étranglement, persos les plus proches du 100 %.
+- **Assistant de build** — simulateur : compose ton build, teste un item candidat → delta de stats,
+  **radar avant/après**, conflits de remplacement de larmes, verdict.
+- **Stats de jeu** (avec le mod) — winrate, hits par étage, tendances, records, insights.
+- **Carte partageable** — génère une image PNG de ta progression ou d'un run marquant.
 - **Navigateur des 641 succès** — recherche, filtres (catégorie / DLC / statut), révélation
   des conditions des succès verrouillés.
 - **Roadmap** vers Dead God, recalculée à chaque lecture de save.
-- **Override manuel** — filet de sécurité si le parsing se trompe (stocké hors de la save).
+- **Corrections manuelles** — filet de sécurité si le parsing se trompe (stocké hors de la save).
 - **Live update** — dès que tu joues, l'app se met à jour toute seule.
+
+### Personnalisation
+
+- **5 thèmes** inspirés des lieux du jeu : Sous-sol, Sheol, Le Vide, Corpse, Cathédrale (clair).
+- **13 langues** (navigation et interface ; textes des vues en cours de traduction) : English, Français, Español, Português, Deutsch, Русский, Polski, 中文, 日本語,
+  हिन्दी, العربية, বাংলা, اردو (avec support RTL).
 
 **Zéro réseau au runtime.** Toute la connaissance (les 641 succès + conditions) est embarquée.
 Le CSP de l'app bloque tout accès externe (`connect-src 'self'`).
@@ -45,14 +61,28 @@ Télécharge le dernier installeur `.exe` depuis les [Releases](https://github.c
 ## Mod de stats en jeu (optionnel)
 
 Un mod Lua compagnon, **purement observateur**, compte tes hits et stats par run (croisés
-avec ta complétion). Installation **en 1 clic depuis l'app** — pas de fichier séparé :
+avec ta complétion).
 
-1. Ouvre l'app → encart du **Dashboard** (ou onglet **Diagnostic**) → **« Installer le mod de stats »**.
+### Installer le mod
+
+Installation **en 1 clic depuis l'app** — pas de fichier à télécharger séparément :
+
+1. Ouvre l'app → encart du **Dashboard** (ou onglet **Diagnostic**) → bouton
+   **« Installer le mod de stats »**.
    L'app détecte automatiquement le dossier mods de **Steam** (via le registre + `libraryfolders.vdf`,
-   même si le jeu est sur un autre disque).
-2. **Relance Isaac** (les mods se chargent au démarrage). Le mod apparaît dans *Options → Mods*
-   comme « **Isaac Tracker Stats** ». Un bouton **« Lancer Isaac »** est fourni.
-3. Joue : les stats remontent dans l'app.
+   même si le jeu est sur un autre disque) et y copie le mod.
+
+### Lancer le mod
+
+2. **Relance Isaac** — ⚠️ les mods ne se chargent **qu'au démarrage du jeu**. Si Isaac tournait
+   déjà, ferme-le complètement d'abord. Un bouton **« Lancer Isaac »** est fourni dans l'app.
+3. **Vérifie** : le mod apparaît dans *Options → Mods* comme « **Isaac Tracker Stats** »
+   (activé par défaut). L'onglet **Diagnostic** de l'app confirme aussi son installation.
+4. **Joue** : les stats remontent automatiquement dans l'onglet **Stats** de l'app.
+
+> **Ton run n'est jamais perdu.** Tu peux activer/désactiver le mod et relancer le jeu :
+> le mod sauvegarde le run en cours quand tu retournes au menu, et le reprend au **Continue**.
+> Un run non terminé est archivé, jamais supprimé.
 
 > Le mod **n'utilise jamais la console de debug** et **ne modifie pas le gameplay** → aucun impact
 > sur les succès une fois Mom battue sur le slot (règle du jeu, pas du tracker). Sur une **nouvelle**
@@ -74,12 +104,13 @@ npm run tauri dev      # lance l'app en dev
 npm run tauri build    # produit l'installeur .exe (NSIS) + .msi dans src-tauri/target/release/bundle
 ```
 
-### Régénérer la base de connaissances
+### Régénérer les bases de connaissances
 
-La liste des 641 succès est compilée au **dev-time** (internet autorisé) puis committée :
+Compilées au **dev-time** (internet autorisé) puis committées :
 
 ```bash
-npm run build:knowledge
+npm run build:knowledge   # les 641 succès
+npm run build:item-kb     # la base d'items (2 formats : app + mod)
 ```
 
 Détails et sources dans [`tools/build-knowledge/README.md`](tools/build-knowledge/README.md).
@@ -105,7 +136,7 @@ npm run tauri icon path/vers/ton-icone.png
 
 ## Stack
 
-Tauri v2 (Rust) · React 18 + TypeScript (strict) · Vite · Tailwind CSS · Zustand · lucide-react.
+Tauri v2 (Rust) · React 19 + TypeScript (strict) · Vite · Tailwind CSS v3 · Zustand · lucide-react.
 
 ## Crédits
 
@@ -113,6 +144,9 @@ Créé par **[reiassezbeau](https://github.com/reiassezbeau)**.
 Base des succès compilée depuis le wiki communautaire *Binding of Isaac: Rebirth*.
 Le format de sauvegarde a été rétro-ingénieré par la communauté ; le parsing est réimplémenté
 proprement (aucun code tiers copié) et **validé contre une vraie sauvegarde**.
+
+Esthétique **100 % originale** (SVG maison, aucun asset du jeu). Police *Cinzel* (OFL).
+Texture de parchemin : domaine public (CC0, OpenGameArt).
 
 ## Licence
 
