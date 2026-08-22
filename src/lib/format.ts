@@ -6,6 +6,9 @@ import type { MarkDifficulty } from "./types";
 /** The translation function returned by `useT()` (optional on every label helper). */
 type Tr = (k: string) => string;
 
+/** App version shown in the UI. Keep in sync with package.json, Cargo.toml and tauri.conf.json. */
+export const APP_VERSION = "0.2.0";
+
 export const GITHUB_URL = "https://github.com/reiassezbeau";
 export const GITHUB_HANDLE = "reiassezbeau";
 

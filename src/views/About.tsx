@@ -6,9 +6,8 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { Card } from "../components/ui";
 import { useT } from "../lib/useT";
 import { Emblem } from "../lib/art";
-import { GITHUB_URL } from "../lib/format";
+import { APP_VERSION, GITHUB_URL } from "../lib/format";
 
-const VERSION = "0.1.0";
 
 export function AboutView() {
   const t = useT();
@@ -22,7 +21,7 @@ export function AboutView() {
           The Binding of Isaac · Repentance+
         </p>
         <h1 className="font-display text-4xl text-isaac-text">Isaac Completion Tracker</h1>
-        <p className="mt-2 text-sm text-isaac-muted">{t("about.version")} {VERSION}</p>
+        <p className="mt-2 text-sm text-isaac-muted">{t("about.version")} {APP_VERSION}</p>
       </div>
 
       <Card className="text-center">

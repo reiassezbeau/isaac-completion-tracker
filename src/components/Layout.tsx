@@ -11,7 +11,7 @@ import { PageBackdrop } from "./PageBackdrop";
 import { ThemePicker } from "./ThemePicker";
 import { LanguagePicker } from "./LanguagePicker";
 import { Emblem, NavGlyph } from "../lib/art";
-import { editionLabel } from "../lib/format";
+import { APP_VERSION, editionLabel } from "../lib/format";
 import { useT } from "../lib/useT";
 
 const NAV: { id: ViewId; tkey: string; glyph: string }[] = [
@@ -88,7 +88,7 @@ function Sidebar() {
         })}
       </div>
       <div className="relative border-t border-isaac-border px-4 py-3 font-mono text-[10px] tracking-wider text-isaac-faint">
-        v0.1.0 · hors-ligne
+        v{APP_VERSION} · {t("common.offline")}
       </div>
     </nav>
   );

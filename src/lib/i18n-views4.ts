@@ -25,6 +25,7 @@ export const VIEW_STRINGS_4: Record<string, Entry> = {
   // ═══ Chrome / toasts ═══
   "common.progressUpdated": { en: "Progress updated ✓", fr: "Progression mise à jour ✓", es: "Progreso actualizado ✓", pt: "Progresso atualizado ✓", de: "Fortschritt aktualisiert ✓", ru: "Прогресс обновлён ✓", pl: "Postęp zaktualizowany ✓", zh: "进度已更新 ✓", ja: "進捗を更新しました ✓", hi: "प्रगति अपडेट हुई ✓", ar: "تم تحديث التقدّم ✓", bn: "অগ্রগতি হালনাগাদ হয়েছে ✓", ur: "پیش رفت اپ ڈیٹ ہو گئی ✓" },
   "common.progressUpdatedLive": { en: "Progress updated ✓ (live)", fr: "Progression mise à jour ✓ (live)", es: "Progreso actualizado ✓ (en vivo)", pt: "Progresso atualizado ✓ (ao vivo)", de: "Fortschritt aktualisiert ✓ (live)", ru: "Прогресс обновлён ✓ (в реальном времени)", pl: "Postęp zaktualizowany ✓ (na żywo)", zh: "进度已更新 ✓（实时）", ja: "進捗を更新しました ✓（ライブ）", hi: "प्रगति अपडेट हुई ✓ (लाइव)", ar: "تم تحديث التقدّم ✓ (مباشر)", bn: "অগ্রগতি হালনাগাদ হয়েছে ✓ (লাইভ)", ur: "پیش رفت اپ ڈیٹ ہو گئی ✓ (لائیو)" },
+  "common.offline": { en: "offline", fr: "hors-ligne", es: "sin conexión", pt: "offline", de: "offline", ru: "офлайн", pl: "offline", zh: "离线", ja: "オフライン", hi: "ऑफ़लाइन", ar: "دون اتصال", bn: "অফলাইন", ur: "آف لائن" },
   "theme.label": { en: "Theme", fr: "Thème", es: "Tema", pt: "Tema", de: "Design", ru: "Тема", pl: "Motyw", zh: "主题", ja: "テーマ", hi: "थीम", ar: "السمة", bn: "থিম", ur: "تھیم" },
 
   // ═══ Stats mod onboarding ═══
