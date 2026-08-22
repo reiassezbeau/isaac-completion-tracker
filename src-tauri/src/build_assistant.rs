@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! build_assistant — analyse de build (hors temps-réel, côté app).
+//! build_assistant - build analysis (non-real-time, app side).
 //!
-//! - Feature A : composition (compteur d'items par rôle).
-//! - Feature B : forces / faiblesses (archétypes, trous, redondances) via des
+//! - Feature A: composition (item counts per role).
+//! - Feature B: strengths and weaknesses (archetypes, gaps, redundancies) through
 //!   heuristiques configurables (`build_rules.json`).
-//! - Feature C : « try synergy » — delta de stats estimé + notes de synergie
-//!   (KB factuelle) + verdict + radar avant/après (data-viz ORIGINALE).
+//! - Feature C: "try synergy" - an estimated stat delta plus synergy notes
+//!   (from the factual KB), a verdict, and a before/after radar (ORIGINAL data viz).
 //!
-//! DÉTERMINISTE, 100 % offline, aucun LLM. Le delta de stats est une ESTIMATION
-//! (formule de dégâts d'Isaac non triviale) — marquée comme telle dès qu'un item
-//! est multiplicatif / proc / conditionnel. Aucun asset rippé : que des faits.
+//! DETERMINISTIC, 100% offline, no LLM. The stat delta is an ESTIMATE
+//! (Isaac's damage formula is non-trivial) and is flagged as such whenever an item
+//! is multiplicative, proc-based, or conditional. No ripped assets: facts only.
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -19,7 +19,7 @@ use std::path::Path;
 use serde::{Deserialize, Serialize};
 
 // --------------------------------------------------------------------------
-// Base de connaissances (miroir de item_kb.json, généré au dev-time)
+// Knowledge base (mirrors item_kb.json, generated at dev time)
 // --------------------------------------------------------------------------
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -98,7 +98,7 @@ impl ItemDb {
 }
 
 // --------------------------------------------------------------------------
-// Règles configurables (build_rules.json)
+// Configurable rules (build_rules.json)
 // --------------------------------------------------------------------------
 
 #[derive(Debug, Clone, Deserialize)]
@@ -151,7 +151,7 @@ pub struct BuildAnalysis {
     pub archetypes: Vec<String>,
     pub strengths: Vec<String>,
     pub weaknesses: Vec<String>,
-    /// items du build inconnus de la KB (ids non couverts).
+    /// build items unknown to the KB (uncovered IDs).
     pub unknown_ids: Vec<i64>,
 }
 
@@ -160,7 +160,7 @@ pub struct StatDelta {
     pub dim: String,
     pub before: f32,
     pub after: f32,
-    pub direction: i8, // -1 baisse, 0 égal, +1 hausse
+    pub direction: i8, // -1 down, 0 unchanged, +1 up
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -186,12 +186,12 @@ pub struct SynergyResult {
 }
 
 // --------------------------------------------------------------------------
-// Profil de stats (relatif, approximatif — pour le radar)
+// Stat profile (relative and approximate - for the radar)
 // --------------------------------------------------------------------------
 
 const DIMS: [&str; 6] = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"];
 
-/// Stats de base approximatives d'Isaac (relatives, pour la data-viz).
+/// Approximate base stats for Isaac (relative, for the data viz).
 fn base_profile() -> BTreeMap<String, f32> {
     BTreeMap::from([
         ("damage".into(), 3.5),
@@ -203,7 +203,7 @@ fn base_profile() -> BTreeMap<String, f32> {
     ])
 }
 
-/// Applique les items : d'abord les additifs (flat), puis les multiplicateurs (mult).
+/// Applies the items: additive effects (flat) first, then multipliers (mult).
 fn profile_of(items: &[&ItemKb]) -> BTreeMap<String, f32> {
     let mut p = base_profile();
     for it in items {
@@ -223,7 +223,7 @@ fn profile_of(items: &[&ItemKb]) -> BTreeMap<String, f32> {
     p
 }
 
-/// Normalise une valeur brute d'une dimension en 0..1 (cap doux, affichage only).
+/// Normalizes a raw value for one dimension into 0..1 (soft cap, display only).
 fn normalize(dim: &str, v: f32) -> f32 {
     let soft = |x: f32, k: f32| (x.max(0.0)) / (x.max(0.0) + k);
     let n = match dim {
@@ -320,34 +320,34 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
     let mut strengths = Vec::new();
     let mut weaknesses = Vec::new();
 
-    // Archétype glass cannon : gros multiplicateur de dégâts + cadence pénalisée.
+    // Glass cannon archetype: a big damage multiplier plus a fire-rate penalty.
     let big_dmg = has_big_damage_mult(&items, rules.damage_mult_glass_cannon);
     let fr_penalty = has_fire_rate_penalty(&items);
     if big_dmg && fr_penalty {
-        archetypes.push("Glass cannon : gros dégâts mais cadence faible.".into());
+        archetypes.push("Glass cannon: big damage but low fire rate.".into());
     }
     if big_dmg {
-        strengths.push("Dégâts par tir très élevés.".into());
+        strengths.push("Very high damage per shot.".into());
     }
 
     // Tear flags — forces.
-    let flags_fr: &[(&str, &str)] = &[
-        ("homing", "auto-visée (homing)"),
-        ("piercing", "larmes perçantes"),
-        ("spectral", "larmes spectrales"),
-        ("explosive", "larmes explosives"),
+    let flag_labels: &[(&str, &str)] = &[
+        ("homing", "homing"),
+        ("piercing", "piercing tears"),
+        ("spectral", "spectral tears"),
+        ("explosive", "explosive tears"),
     ];
-    for (flag, label) in flags_fr {
+    for (flag, label) in flag_labels {
         let n = tear_flag_count(&items, flag);
         if n >= 1 {
-            strengths.push(format!("Tu as {label}."));
+            strengths.push(format!("You have {label}."));
         }
         if n >= rules.tear_flag_redundancy_threshold {
-            weaknesses.push(format!("Redondance : {n} sources de {label} (rendement décroissant)."));
+            weaknesses.push(format!("Redundant: {n} sources of {label} (diminishing returns)."));
         }
     }
 
-    // Conflit de remplacement de larmes (haute valeur, très fiable).
+    // Tear-replacement conflict (high value, very reliable).
     if comp.tears_replacements >= rules.tears_replacement_conflict_threshold {
         let names: Vec<&str> = items
             .iter()
@@ -355,29 +355,29 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
             .map(|it| it.name.as_str())
             .collect();
         weaknesses.push(format!(
-            "⚠️ Conflit de remplacement de larmes : {} — un seul prend le dessus.",
+            "Tear-replacement conflict: {} - only one wins out.",
             names.join(", ")
         ));
     }
 
     // Vol.
     if comp.has_flight {
-        strengths.push("Tu as le vol.".into());
+        strengths.push("You have flight.".into());
     } else if rules.warn_no_flight && !items.is_empty() {
-        weaknesses.push("Pas de vol (trou de mobilité).".into());
+        weaknesses.push("No flight (mobility gap).".into());
     }
 
-    // Gestion de foule : au moins un flag perçant/homing/explosif OU un familier offensif.
+    // Crowd control: at least one piercing/homing/explosive flag OR an offensive familiar.
     let crowd = tear_flag_count(&items, "piercing") > 0
         || tear_flag_count(&items, "homing") > 0
         || tear_flag_count(&items, "explosive") > 0
         || items.iter().any(|it| it.is_familiar && it.roles.iter().any(|r| r == "offensive"));
     if !crowd && rules.warn_no_crowd_control && !items.is_empty() {
-        weaknesses.push("Aucune gestion de foule (ni perçant/homing/explosif, ni familier offensif).".into());
+        weaknesses.push("No crowd control (no piercing/homing/explosive tears, no offensive familiar).".into());
     }
 
     if comp.familiars >= 1 {
-        strengths.push(format!("{} familier(s) pour du DPS additionnel.", comp.familiars));
+        strengths.push(format!("{} familiar(s) adding extra DPS.", comp.familiars));
     }
 
     BuildAnalysis { composition: comp, archetypes, strengths, weaknesses, unknown_ids }
@@ -391,7 +391,7 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
     let cand = db.get(candidate_id)?.clone();
     let build = db.resolve(build_ids);
 
-    // Profils avant / après.
+    // Before and after profiles.
     let before = profile_of(&build);
     let mut with_cand = build.clone();
     with_cand.push(&cand);
@@ -413,7 +413,7 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         })
         .collect();
 
-    // Tear flags / vol / cœurs ajoutés.
+    // Tear flags, flight, and hearts added.
     let existing_flags: std::collections::HashSet<&str> =
         build.iter().flat_map(|it| it.grants_tear_flags.iter().map(|s| s.as_str())).collect();
     let adds_tear_flags: Vec<String> = cand
@@ -424,7 +424,7 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         .collect();
     let adds_flight = cand.grants_flight && !build.iter().any(|it| it.grants_flight);
 
-    // Notes de synergie : conflit générique de remplacement + paires curées.
+    // Synergy notes: the generic replacement conflict plus curated pairs.
     let mut notes = Vec::new();
     let build_has_replacement = build.iter().any(|it| it.is_tears_replacement);
     if cand.is_tears_replacement && build_has_replacement {
@@ -433,7 +433,7 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         notes.push(SynergyNote {
             kind: "dangerous".into(),
             text: format!(
-                "Remplace tes larmes → entre en conflit avec {} (un seul l'emporte).",
+                "Replaces your tears, conflicting with {} (only one wins out).",
                 conflicting.join(", ")
             ),
         });
@@ -444,14 +444,14 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         }
     }
 
-    // Redondance : le candidat n'apporte que des flags déjà présents en nombre.
+    // Redundancy: the candidate only brings flags that are already present in numbers.
     let redundant_flags = !cand.grants_tear_flags.is_empty() && adds_tear_flags.is_empty();
 
     let estimate_approximate = cand.complexity != "flat"
         || build.iter().any(|it| it.complexity != "flat")
         || has_big_damage_mult(&with_cand, 1.0);
 
-    // Verdict (ordre de priorité).
+    // Verdict (in priority order).
     let has_dangerous = notes.iter().any(|n| n.kind == "dangerous");
     let has_strong = notes.iter().any(|n| n.kind == "strong");
     let fills_gap = adds_flight
@@ -461,25 +461,25 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
     let (verdict, verdict_text) = if has_dangerous {
         (
             "redundant_or_conflict",
-            "Conflit avec ton build actuel — à réfléchir avant de prendre.".to_string(),
+            "Conflicts with your current build - think twice before taking it.".to_string(),
         )
     } else if has_strong {
         (
             "strong_pickup",
-            "Forte synergie avec ce que tu as déjà — bon pick.".to_string(),
+            "Strong synergy with what you already have - good pick.".to_string(),
         )
     } else if fills_gap {
-        let what = if adds_flight { "le vol".to_string() } else { adds_tear_flags.join(", ") };
-        ("fills_gap", format!("Comble un trou : ajoute {what}."))
+        let what = if adds_flight { "flight".to_string() } else { adds_tear_flags.join(", ") };
+        ("fills_gap", format!("Fills a gap: adds {what}."))
     } else if redundant_flags {
         (
             "redundant_or_conflict",
-            "Redondant : tu as déjà ces modificateurs de larmes.".to_string(),
+            "Redundant: you already have these tear modifiers.".to_string(),
         )
     } else {
         (
             "situational",
-            "Pick situationnel : gain de stats, sans synergie nommée forte.".to_string(),
+            "Situational pick: stat gains, but no strong named synergy.".to_string(),
         )
     };
 
@@ -500,7 +500,7 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
 }
 
 // ===========================================================================
-// Tests déterministes
+// Deterministic tests
 // ===========================================================================
 #[cfg(test)]
 mod tests {
@@ -567,7 +567,7 @@ mod tests {
         let c = composition(&items);
         assert_eq!(c.total, 3);
         assert_eq!(c.tears_replacements, 1);
-        // homing + spectral présents.
+        // homing and spectral are both present.
         assert!(c.tear_flags.iter().any(|(f, n)| f == "homing" && *n == 1));
         assert!(c.tear_flags.iter().any(|(f, n)| f == "spectral" && *n == 1));
     }
@@ -576,34 +576,34 @@ mod tests {
     fn analyze_flags_tears_replacement_conflict() {
         let db = db();
         let a = analyze(&db, &[118, 114], &BuildRules::default());
-        assert!(a.weaknesses.iter().any(|w| w.contains("Conflit de remplacement")));
+        assert!(a.weaknesses.iter().any(|w| w.contains("Tear-replacement conflict")));
     }
 
     #[test]
     fn analyze_warns_no_flight_and_credits_flight() {
         let db = db();
         let no_fly = analyze(&db, &[1], &BuildRules::default());
-        assert!(no_fly.weaknesses.iter().any(|w| w.contains("Pas de vol")));
+        assert!(no_fly.weaknesses.iter().any(|w| w.contains("No flight")));
         let with_fly = analyze(&db, &[179], &BuildRules::default());
-        assert!(with_fly.strengths.iter().any(|s| s.contains("vol")));
-        assert!(!with_fly.weaknesses.iter().any(|w| w.contains("Pas de vol")));
+        assert!(with_fly.strengths.iter().any(|s| s.contains("flight")));
+        assert!(!with_fly.weaknesses.iter().any(|w| w.contains("No flight")));
     }
 
     #[test]
     fn analyze_detects_homing_redundancy() {
         let db = db();
-        // 3 sources de homing (seuil par défaut = 3) : Spoon Bender, Lord of the Pit + on
-        // ajoute un 3e via la KB ? Ici on n'a que 2 -> pas de redondance ; testons le seuil.
+        // 3 homing sources (default threshold is 3): Spoon Bender, Lord of the Pit, and
+        // a third from the KB? Here we only have 2, so no redundancy; let us test the threshold.
         let rules = BuildRules { tear_flag_redundancy_threshold: 2, ..Default::default() };
         let a = analyze(&db, &[3, 82], &rules);
-        assert!(a.weaknesses.iter().any(|w| w.contains("Redondance") && w.contains("homing")));
+        assert!(a.weaknesses.iter().any(|w| w.contains("Redundant") && w.contains("homing")));
     }
 
     #[test]
     fn glass_cannon_archetype() {
         let db = db();
-        // Polyphemus (mult 2.0) + Mom's Knife n'a pas de pénalité de cadence encodée...
-        // On fabrique un item pénalité de cadence.
+        // Polyphemus (mult 2.0) plus Mom's Knife has no encoded fire-rate penalty...
+        // so we build a fire-rate-penalty item.
         let mut db2 = db;
         let mut slow = item(999, "Slow", &["offensive"]);
         slow.stat_effects.insert("fire_rate".into(), StatEffect { op: "flat".into(), value: -1.0 });
@@ -615,7 +615,7 @@ mod tests {
     #[test]
     fn try_synergy_conflict_verdict() {
         let db = db();
-        // build a déjà Brimstone (remplacement), candidat Mom's Knife (remplacement) -> conflit.
+        // the build already has Brimstone (a replacement) and the candidate Mom's Knife is one too, so: conflict.
         let r = try_synergy(&db, &[118], 114).unwrap();
         assert_eq!(r.verdict, "redundant_or_conflict");
         assert!(r.synergy_notes.iter().any(|n| n.kind == "dangerous"));
@@ -632,8 +632,8 @@ mod tests {
     #[test]
     fn try_synergy_redundant_flag() {
         let db = db();
-        // build a déjà homing (Spoon Bender), candidat Lord of the Pit ajoute homing (déjà présent)
-        // MAIS Lord of the Pit ajoute le vol -> fills_gap prime. Testons un candidat homing pur.
+        // the build already has homing (Spoon Bender), and Lord of the Pit adds homing (already present)
+        // BUT Lord of the Pit also adds flight, so fills_gap wins. Let us test a pure homing candidate.
         let mut db2 = db;
         db2.items.push(flag(item(500, "Homing2", &["tear_mod"]), "homing"));
         let r = try_synergy(&db2, &[3], 500).unwrap();
@@ -646,7 +646,7 @@ mod tests {
         let db = db();
         let r = try_synergy(&db, &[], 169).unwrap(); // Polyphemus = mult damage
         assert!(r.estimate_approximate);
-        // radar après : dégâts plus haut qu'avant.
+        // radar after: damage is higher than before.
         let dmg = r.stat_deltas.iter().find(|d| d.dim == "damage").unwrap();
         assert_eq!(dmg.direction, 1);
     }
@@ -654,7 +654,7 @@ mod tests {
     #[test]
     fn try_synergy_named_strong_pair() {
         let db = db();
-        // Ajoutons Tiny Planet (233) à la KB pour la paire strong 118+233.
+        // Add Tiny Planet (233) to the KB for the strong 118+233 pair.
         let mut db2 = db;
         db2.items.push(item(233, "Tiny Planet", &["tear_mod"]));
         let r = try_synergy(&db2, &[118], 233).unwrap();

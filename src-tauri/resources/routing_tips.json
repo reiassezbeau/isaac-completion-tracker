@@ -1,50 +1,50 @@
 {
   "meta": {
-    "note": "Conseils de routing curatés (édités à la main, pas générés). Affichés en Mode Personnage et Roadmap.",
+    "note": "Curated routing tips (hand-written, not generated). Shown in the Character view and the Roadmap.",
     "author": "reiassezbeau — https://github.com/reiassezbeau"
   },
   "tips": [
     {
       "id": "mother_beast_combo",
       "applies_to": ["mother", "beast"],
-      "title": "Mother + The Beast : optimise tes runs de fin",
-      "text": "Prends le chemin alternatif (porte du Mausoleum/Gehenna après Mom's Heart, souvent via un défi de statue). Descends jusqu'au Corpse pour battre Mother (coche la marque Mother). Pour The Beast, prends la trappe de Home après avoir récupéré le morceau de clé. En Hard mode pour obtenir la marque DORÉE (indispensable pour Dead God)."
+      "title": "Mother + The Beast: get the most out of your ending runs",
+      "text": "Take the alternate path (the Mausoleum/Gehenna door after Mom's Heart, usually behind a statue challenge). Go down to the Corpse to beat Mother, which fills the Mother mark. For The Beast, take the Home trapdoor after picking up the key piece. Do it on Hard mode to earn the GOLD mark, which is what Dead God requires."
     },
     {
       "id": "hard_mode_gold",
       "applies_to": ["moms_heart", "isaac", "satan", "blue_baby", "lamb", "boss_rush", "mega_satan", "greed", "hush", "delirium", "mother", "beast"],
-      "title": "Toujours en Hard pour Dead God",
-      "text": "Une marque faite en Normal compte comme complétée mais reste ARGENT. Dead God exige la marque DORÉE (Hard) sur les 12 marks pour les 34 personnages. Refais en Hard toute marque encore en Normal."
+      "title": "Always on Hard for Dead God",
+      "text": "A mark earned on Normal counts as completed but stays SILVER. Dead God requires the GOLD mark (Hard) on all 12 marks for all 34 characters. Redo on Hard any mark that is still Normal."
     },
     {
       "id": "boss_rush_timing",
       "applies_to": ["boss_rush"],
-      "title": "Boss Rush : arrive avant 20:00",
-      "text": "Boss Rush s'ouvre en battant Mom avant la marque des 20 minutes, dans la salle de Mom (porte trouée). Utile pour débloquer plusieurs items et cocher la marque Boss Rush."
+      "title": "Boss Rush: get there before 20:00",
+      "text": "Boss Rush opens by beating Mom before the 20-minute mark, in Mom's room (the hole-riddled door). Handy for unlocking several items and filling the Boss Rush mark."
     },
     {
       "id": "hush_timing",
       "applies_to": ["hush"],
-      "title": "Hush : arrive au Womb avant 30:00",
-      "text": "La trappe béante vers ???/Blue Womb apparaît si tu bats Mom's Heart/It Lives! avant 30:00. Mène à Hush."
+      "title": "Hush: reach the Womb before 30:00",
+      "text": "The gaping trapdoor to ???/Blue Womb appears if you beat Mom's Heart / It Lives! before 30:00. It leads to Hush."
     },
     {
       "id": "greed_marks",
       "applies_to": ["greed"],
       "title": "Ultra Greed / Greedier",
-      "text": "La marque « Greed » se coche en Greed Mode (Ultra Greed) ; la variante Hard/dorée demande Greedier Mode. Un mode à part, à ne pas oublier pour Dead God."
+      "text": "The \"Greed\" mark is filled in Greed Mode (Ultra Greed); the Hard/gold variant requires Greedier Mode. It is a separate mode, and an easy one to forget on the way to Dead God."
     },
     {
       "id": "delirium_void",
       "applies_to": ["delirium"],
-      "title": "Delirium : via The Void",
-      "text": "Delirium se trouve dans The Void, accessible par un portail après avoir battu Hush (Blue Womb). Boss long et aléatoire : arrive avec de bons dégâts."
+      "title": "Delirium: through The Void",
+      "text": "Delirium lives in The Void, reachable through a portal after beating Hush (Blue Womb). It is a long, random fight: show up with solid damage."
     },
     {
       "id": "late_characters",
       "applies_to": ["bethany", "jacob_esau"],
-      "title": "Persos en retard : Bethany et Jacob & Esau",
-      "text": "Ces deux persos Repentance ont presque aucune marque. Enchaîne des runs dédiés : Mom's Heart → Isaac/Satan/??? /Lamb (chemins de base) puis Mother + Beast en Hard. Gros gain de progression vers Dead God."
+      "title": "Characters that lag behind: Bethany and Jacob & Esau",
+      "text": "These two Repentance characters have almost no marks. Chain dedicated runs: Mom's Heart, then Isaac / Satan / ??? / Lamb (the base paths), then Mother and Beast on Hard. A big jump in progress toward Dead God."
     }
   ]
 }

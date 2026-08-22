@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! engine — croise la save × la base de connaissances : statut par succès, marks
-//! par personnage, % global, distance à Dead God, prédicteur et roadmap.
-//! Les overrides manuels sont appliqués PAR-DESSUS les données parsées.
+//! engine - cross-references the save with the knowledge base: per-achievement status,
+//! per-character marks, overall %, distance to Dead God, predictor, and roadmap.
+//! Manual overrides are applied ON TOP OF the parsed data.
 
 use serde::Serialize;
 
@@ -13,12 +13,12 @@ use crate::save_parser::{Edition, MarkDifficulty, SaveData, NUM_ACHIEVEMENTS, NU
 
 pub const DEAD_GOD_TOTAL: usize = NUM_CHARACTERS * NUM_MARKS; // 34 × 12 = 408
 
-/// État effectif après application des overrides.
+/// The effective state after overrides have been applied.
 pub struct State {
-    /// index = secret_id - 1 ; débloqué ?
+    /// index = secret_id - 1; is it unlocked?
     pub ach: Vec<bool>,
     pub ach_overridden: Vec<bool>,
-    /// [char_save_index][mark_index] -> difficulté effective
+    /// [char_save_index][mark_index] -> effective difficulty
     pub marks: Vec<Vec<MarkDifficulty>>,
     pub marks_overridden: Vec<Vec<bool>>,
     pub marks_reliable: bool,
@@ -77,7 +77,7 @@ impl State {
         self.ach.iter().filter(|&&b| b).count()
     }
 
-    /// Marks Hard manquantes (34 × 12) = distance à Dead God.
+    /// Missing Hard marks (34 x 12) = the distance to Dead God.
     pub fn dead_god_remaining(&self) -> usize {
         self.marks
             .iter()
@@ -96,7 +96,7 @@ impl State {
 }
 
 // --------------------------------------------------------------------------
-// Sorties de commandes
+// Command outputs
 // --------------------------------------------------------------------------
 
 #[derive(Serialize)]
@@ -106,7 +106,7 @@ pub struct CategoryStat {
     pub total: usize,
 }
 
-/// Comptes Hard/Normal d'une marque (ending) sur les 34 persos — alimente la
+/// Hard/Normal counts for one mark (ending) across the 34 characters - feeds the
 /// jauge Dead God (12 anneaux).
 #[derive(Serialize)]
 pub struct EndingMarkCount {
@@ -147,7 +147,7 @@ pub fn dashboard(state: &State, kn: &Knowledge, ov: &Overrides) -> Dashboard {
     let total_unlocked = state.unlocked_count();
     let percent = (total_unlocked as f32) / (NUM_ACHIEVEMENTS as f32) * 100.0;
 
-    // Répartition par catégorie.
+    // Breakdown by category.
     use std::collections::BTreeMap;
     let mut cats: BTreeMap<String, (usize, usize)> = BTreeMap::new();
     for a in &kn.achievements {
@@ -162,7 +162,7 @@ pub fn dashboard(state: &State, kn: &Knowledge, ov: &Overrides) -> Dashboard {
         .map(|(category, (unlocked, total))| CategoryStat { category, unlocked, total })
         .collect();
 
-    // Comptes par ending (mark_index) sur les 34 persos, pour la jauge Dead God.
+    // Counts per ending (mark_index) across the 34 characters, for the Dead God gauge.
     let dead_god_by_ending = kn
         .endings
         .iter()
@@ -240,8 +240,8 @@ pub struct CharacterDetail {
     pub marks_reliable: bool,
 }
 
-/// Un personnage est « débloqué » si le succès de même nom (catégorie character)
-/// est débloqué ; sinon considéré débloqué par défaut (persos de base).
+/// A character is "unlocked" when the achievement of the same name (character category)
+/// is unlocked; otherwise it is assumed unlocked (the base characters).
 fn character_unlocked(state: &State, kn: &Knowledge, char_name: &str) -> bool {
     let base = char_name.trim_start_matches("Tainted ").split(" (").next().unwrap_or(char_name);
     match kn
@@ -254,9 +254,9 @@ fn character_unlocked(state: &State, kn: &Knowledge, char_name: &str) -> bool {
     }
 }
 
-/// Résumé LÉGER d'un personnage : (débloqué, nb de marks Hard).
-/// Utilisé par les listes (34 persos) : évite de construire un `CharacterDetail`
-/// complet — qui scanne les 641 succès pour chaque ending — juste pour compter.
+/// LIGHTWEIGHT summary of a character: (unlocked, number of Hard marks).
+/// Used by the lists (34 characters): avoids building a full `CharacterDetail`,
+/// which scans all 641 achievements for every ending, just to produce two counters.
 pub fn character_summary(state: &State, kn: &Knowledge, ch: &crate::knowledge::Character) -> (bool, usize) {
     let hard = kn
         .endings
@@ -288,7 +288,7 @@ pub fn character_detail(state: &State, kn: &Knowledge, char_id: &str) -> Option<
         });
 
         if status != MarkDifficulty::Hard {
-            // Succès character_completion associés à (ce perso, cet ending), encore verrouillés.
+            // character_completion achievements tied to (this character, this ending) that are still locked.
             let unlocks: Vec<AchievementRef> = kn
                 .achievements
                 .iter()
@@ -315,8 +315,8 @@ pub fn character_detail(state: &State, kn: &Knowledge, char_id: &str) -> Option<
         }
     }
 
-    // Tips pertinents : ceux qui s'appliquent à une fin encore à faire pour ce
-    // perso (applies_to = ids d'endings) OU au perso lui-même (id de perso).
+    // Relevant tips: those that apply to an ending this character still has to do
+    // (applies_to = ending IDs) OR to the character itself (a character ID).
     let mut relevant: std::collections::HashSet<&str> =
         todo.iter().map(|t| t.ending_id.as_str()).collect();
     relevant.insert(ch.id.as_str());
@@ -354,9 +354,9 @@ pub struct Prediction {
     pub note: String,
 }
 
-/// Un succès est déclenché par (char, target) si :
-/// - character_completion dont character==char && target==target, OU
-/// - boss_first_kill dont target==target (indépendant du perso).
+/// An achievement is triggered by (char, target) when:
+/// - it is a character_completion with character==char && target==target, OR
+/// - it is a boss_first_kill with target==target (character-independent).
 fn triggered_by(a: &crate::knowledge::Achievement, char_id: &str, target_id: &str) -> bool {
     if !a.unlock.predictable {
         return false;
@@ -396,11 +396,11 @@ pub fn predict(state: &State, kn: &Knowledge, char_id: &str, target_id: &str) ->
     let advances_dead_god = current_mark != MarkDifficulty::Hard;
 
     let note = if !new_unlocks.is_empty() {
-        format!("Ce run débloquerait {} succès + coche la marque « {} ».", new_unlocks.len(), ending.name)
+        format!("This run would unlock {} achievement(s) and fill the \"{}\" mark.", new_unlocks.len(), ending.name)
     } else if advances_dead_god {
-        format!("Rien de nouveau à débloquer, mais coche/renforce la marque « {} » (utile pour Dead God).", ending.name)
+        format!("Nothing new to unlock, but it fills or upgrades the \"{}\" mark (useful for Dead God).", ending.name)
     } else {
-        "Rien de neuf : tout ce que ce combo peut donner est déjà débloqué, marque déjà en Hard.".to_string()
+        "Nothing new: everything this combo can give is already unlocked, and the mark is already Hard.".to_string()
     };
 
     Some(Prediction {
@@ -417,8 +417,8 @@ pub fn predict(state: &State, kn: &Knowledge, char_id: &str, target_id: &str) ->
     })
 }
 
-/// Vue inverse : couples (perso, cible) classés par nb de nouveaux déblocages,
-/// en tenant compte des marks Hard manquantes.
+/// Reverse view: (character, target) pairs ranked by how many new unlocks they give,
+/// taking missing Hard marks into account.
 pub fn next_targets(state: &State, kn: &Knowledge, limit: usize) -> Vec<TargetSuggestion> {
     let mut out: Vec<TargetSuggestion> = Vec::new();
     for ch in &kn.characters {
@@ -447,7 +447,7 @@ pub fn next_targets(state: &State, kn: &Knowledge, limit: usize) -> Vec<TargetSu
 }
 
 // --------------------------------------------------------------------------
-// Grille signature 34 × 12 (le tableau du complétionniste)
+// The signature 34 x 12 grid (the completionist's board)
 // --------------------------------------------------------------------------
 
 #[derive(Serialize)]
@@ -469,9 +469,9 @@ pub struct MatrixEnding {
 pub struct MarksMatrix {
     pub characters: Vec<MatrixChar>,
     pub endings: Vec<MatrixEnding>,
-    /// cells[char_index][ending_index] = statut de la marque.
+    /// cells[char_index][ending_index] = the mark's status.
     pub cells: Vec<Vec<MarkDifficulty>>,
-    /// nb de Hard par ending (colonne) — le goulot d'un coup d'œil.
+    /// number of Hard marks per ending (column) - the bottleneck at a glance.
     pub column_hard: Vec<usize>,
 }
 
@@ -528,7 +528,7 @@ pub struct Roadmap {
 pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
     let mut steps = Vec::new();
 
-    // 1) Mother + Beast sur les persos réguliers restants.
+    // 1) Mother + Beast on the remaining regular characters.
     let mother = kn.ending("mother").map(|e| e.mark_index).unwrap_or(10);
     let beast = kn.ending("beast").map(|e| e.mark_index).unwrap_or(11);
     let regulars: Vec<_> = kn.characters.iter().filter(|c| c.kind == "regular").collect();
@@ -541,13 +541,13 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
         })
         .sum();
     steps.push(RoadmapStep {
-        title: "Boucler Mother + The Beast (persos réguliers, Hard)".into(),
-        detail: "Chemin alternatif (Mausoleum → Corpse → Mother, puis Home → Beast). En Hard pour la marque dorée.".into(),
+        title: "Finish Mother + The Beast (regular characters, Hard)".into(),
+        detail: "Alternate path (Mausoleum, Corpse, Mother, then Home and Beast). On Hard, for the gold mark.".into(),
         done: mb_done,
         total: mb_total,
     });
 
-    // 2) Personnages les plus en retard (marks Hard manquantes).
+    // 2) The characters that lag behind the most (missing Hard marks).
     let mut late: Vec<(String, usize)> = kn
         .characters
         .iter()
@@ -562,17 +562,17 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
     late.sort_by_key(|c| std::cmp::Reverse(c.1));
     let late_names: Vec<String> = late.iter().take(3).map(|(n, m)| format!("{n} ({m} marks)")).collect();
     steps.push(RoadmapStep {
-        title: "Compléter les personnages les plus en retard".into(),
+        title: "Complete the characters that lag behind".into(),
         detail: if late_names.is_empty() {
-            "Tous les persos sont complets en Hard 🎉".into()
+            "Every character is fully done on Hard 🎉".into()
         } else {
-            format!("En priorité : {}.", late_names.join(", "))
+            format!("Start with: {}.", late_names.join(", "))
         },
         done: DEAD_GOD_TOTAL - state.dead_god_remaining(),
         total: DEAD_GOD_TOTAL,
     });
 
-    // 3) Débloquer/compléter les Tainted restants.
+    // 3) Unlock and complete the remaining Tainted characters.
     let tainted: Vec<_> = kn.characters.iter().filter(|c| c.kind == "tainted").collect();
     let tainted_total = tainted.len() * NUM_MARKS;
     let tainted_done: usize = tainted
@@ -580,13 +580,13 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
         .map(|c| (0..NUM_MARKS).filter(|&m| state.mark_for(c.save_index, m) == MarkDifficulty::Hard).count())
         .sum();
     steps.push(RoadmapStep {
-        title: "Compléter les personnages Tainted".into(),
-        detail: "Les 17 Tainted comptent aussi pour Dead God (marks Hard).".into(),
+        title: "Complete the Tainted characters".into(),
+        detail: "The 17 Tainted characters also count toward Dead God (Hard marks).".into(),
         done: tainted_done,
         total: tainted_total,
     });
 
-    // 4) Nettoyer Boss Rush / Hush / Greed pour les items restants (succès predictibles).
+    // 4) Clean up Boss Rush / Hush / Greed for the remaining items (predictable achievements).
     let cleanup_targets = ["boss_rush", "hush", "greed", "mega_satan", "delirium"];
     let cleanup_locked = kn
         .achievements
@@ -603,8 +603,8 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
         .filter(|a| a.unlock.predictable && a.unlock.target.as_deref().map(|t| cleanup_targets.contains(&t)).unwrap_or(false))
         .count();
     steps.push(RoadmapStep {
-        title: "Nettoyer Boss Rush / Hush / Greed / Mega Satan / Delirium".into(),
-        detail: "Items et familiers restants derrière ces boss.".into(),
+        title: "Clean up Boss Rush / Hush / Greed / Mega Satan / Delirium".into(),
+        detail: "Remaining items and familiars locked behind these bosses.".into(),
         done: cleanup_total - cleanup_locked,
         total: cleanup_total,
     });
@@ -617,7 +617,7 @@ pub fn roadmap(state: &State, kn: &Knowledge) -> Roadmap {
 }
 
 // ===========================================================================
-// Tests déterministes (états synthétiques → sorties attendues).
+// Deterministic tests (synthetic states mapped to expected outputs).
 // ===========================================================================
 #[cfg(test)]
 mod tests {
@@ -629,7 +629,7 @@ mod tests {
         Mark { solo: d, online: MarkDifficulty::None, effective: d }
     }
 
-    /// Grille de marks 34×12 toutes vides.
+    /// A 34x12 marks grid with everything empty.
     fn empty_grid() -> Vec<Vec<Mark>> {
         vec![vec![mark(MarkDifficulty::None); NUM_MARKS]; NUM_CHARACTERS]
     }
@@ -745,7 +745,7 @@ mod tests {
     fn predict_boss_first_kill_matches_any_character() {
         let kn = knowledge();
         let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
-        // Hushy (boss_first_kill hush) doit sortir quel que soit le perso.
+        // Hushy (boss_first_kill hush) must show up regardless of the character.
         let p = predict(&st, &kn, "isaac", "hush").unwrap();
         assert!(p.new_unlocks.iter().any(|a| a.id == 502));
     }
@@ -776,10 +776,10 @@ mod tests {
     fn hard_mark_removes_dead_god_progress_but_still_predicts_new_unlock() {
         let kn = knowledge();
         let mut grid = empty_grid();
-        grid[15][10] = mark(MarkDifficulty::Hard); // bethany mother déjà Hard
+        grid[15][10] = mark(MarkDifficulty::Hard); // bethany mother already Hard
         let st = State::build(&save(&[], grid), &kn, &Overrides::default());
         let p = predict(&st, &kn, "bethany", "mother").unwrap();
-        // La marque est déjà Hard → pas de gain Dead God, mais Revelation reste à débloquer.
+        // The mark is already Hard, so no Dead God gain, but Revelation is still to unlock.
         assert!(!p.advances_dead_god);
         assert_eq!(p.new_unlocks.len(), 1);
     }
@@ -788,7 +788,7 @@ mod tests {
     fn override_forces_achievement_state() {
         let kn = knowledge();
         let mut ov = Overrides::default();
-        ov.achievements.insert(470, true); // force Revelation débloqué
+        ov.achievements.insert(470, true); // force Revelation to unlocked
         let st = State::build(&save(&[], empty_grid()), &kn, &ov);
         assert!(st.is_unlocked(470));
         let p = predict(&st, &kn, "bethany", "mother").unwrap();
@@ -802,9 +802,9 @@ mod tests {
         let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
         let t = next_targets(&st, &kn, 10);
         assert!(!t.is_empty());
-        // Chaque suggestion en tête doit apporter au moins un déblocage ou une marque Hard.
+        // Every top suggestion must bring at least one unlock or one Hard mark.
         assert!(t.iter().all(|s| s.new_unlocks > 0 || s.fills_hard_mark));
-        // Bethany→Mother (Revelation) doit figurer avec 1 déblocage.
+        // Bethany + Mother (Revelation) must appear with 1 unlock.
         assert!(t.iter().any(|s| s.character_id == "bethany" && s.target_id == "mother" && s.new_unlocks == 1));
     }
 
@@ -813,7 +813,7 @@ mod tests {
         let kn = knowledge();
         let st = State::build(&save(&[], empty_grid()), &kn, &Overrides::default());
         let d = character_detail(&st, &kn, "bethany").unwrap();
-        // La mark Mother est à faire, et son todo référence Revelation.
+        // The Mother mark is still to do, and its todo entry references Revelation.
         let mother_todo = d.todo.iter().find(|t| t.ending_id == "mother").expect("todo mother");
         assert!(mother_todo.unlocks.iter().any(|u| u.id == 470));
     }

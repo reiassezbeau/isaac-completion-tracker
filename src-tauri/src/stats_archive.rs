@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! stats_archive — historique PERMANENT des runs, stocke dans l'appdata de l'app
-//! (`stats_history.json`). Le mod ne garde qu'un buffer glissant ; l'app conserve
-//! TOUT, dedup par `run_id`. A chaque lecture, on fusionne les nouveaux runs du mod.
+//! stats_archive - the PERMANENT run history, stored in the app's data folder
+//! (`stats_history.json`). The mod only keeps a sliding buffer; the app keeps
+//! EVERYTHING, deduplicated by `run_id`. On every read we merge in the mod's new runs.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -16,7 +16,7 @@ use crate::stats_reader::{self, Run};
 pub struct Archive {
     #[serde(default = "one")]
     pub schema: u32,
-    /// Ordre d'insertion (~chronologique) — utile pour les tendances "N derniers runs".
+    /// Insertion order (roughly chronological) - useful for "last N runs" trends.
     #[serde(default)]
     pub runs: Vec<Run>,
 }
@@ -25,8 +25,8 @@ fn one() -> u32 {
     1
 }
 
-/// Résultat d'une fusion : `new` = runs jamais vus (affiché à l'utilisateur),
-/// `changed` = nouveaux + mis à jour → indique s'il faut réécrire le disque.
+/// The result of a merge: `new` counts never-seen runs (shown to the user),
+/// `changed` counts new plus updated runs, telling us whether to rewrite the file.
 #[derive(Debug, Default, Clone, Copy)]
 pub struct MergeReport {
     pub new: usize,
@@ -47,20 +47,20 @@ impl Archive {
 
     pub fn save(&self, app_data_dir: &Path) -> std::io::Result<()> {
         std::fs::create_dir_all(app_data_dir)?;
-        // ⚠️ NE JAMAIS écrire un contenu de repli en cas d'échec de sérialisation :
-        // cela écraserait tout l'historique par `{}`. On échoue proprement.
+        // NEVER write fallback content when serialization fails:
+        // that would overwrite the whole history with `{}`. We fail cleanly instead.
         let json = serde_json::to_string(self)
             .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))?;
-        // Écriture atomique : fichier temporaire puis renommage, pour qu'une
-        // coupure en plein write ne laisse pas un JSON tronqué (= historique perdu).
+        // Atomic write: a temp file then a rename, so that an interruption
+        // mid-write cannot leave truncated JSON behind (which would lose the history).
         let path = Self::file_path(app_data_dir);
         let tmp = path.with_extension("json.tmp");
         std::fs::write(&tmp, json)?;
         std::fs::rename(&tmp, &path)
     }
 
-    /// Un run "remplace" l'existant s'il est plus complet : cloture prioritaire,
-    /// sinon plus de hits (run en cours qui a avance).
+    /// A run "supersedes" the existing one when it is more complete: a closed run wins,
+    /// otherwise more hits (an in-progress run that has advanced).
     fn supersedes(new: &Run, old: &Run) -> bool {
         if new.ended && !old.ended {
             return true;
@@ -71,8 +71,8 @@ impl Archive {
         new.hits_total >= old.hits_total
     }
 
-    /// Fusionne les runs actuels du mod dans l'archive. Retourne `MergeReport`
-    /// (`new` = jamais vus, `changed` = nouveaux + mis à jour → faut-il réécrire).
+    /// Merges the mod's current runs into the archive. Returns a `MergeReport`
+    /// (`new` = never seen, `changed` = new plus updated, i.e. whether to rewrite).
     pub fn merge_from_mod(&mut self) -> MergeReport {
         let incoming = stats_reader::read_all_runs();
         let mut index: HashMap<String, usize> = self
@@ -139,18 +139,18 @@ mod tests {
         r
     }
 
-    /// Un run EN COURS qui progresse doit être vu comme « changé » (sinon la
-    /// progression resterait en mémoire sans jamais être persistée sur disque).
+    /// An IN-PROGRESS run that advances must count as "changed" (otherwise its
+    /// progress would stay in memory and never be persisted to disk).
     #[test]
     fn progressing_run_counts_as_changed_not_new() {
         assert!(Archive::supersedes(&run("a", false, 5), &run("a", false, 2)));
-        // une cloture remplace toujours un run en cours
+        // a closed run always supersedes an in-progress one
         assert!(Archive::supersedes(&run("a", true, 0), &run("a", false, 9)));
-        // ...et jamais l'inverse (on ne "dé-cloture" pas un run)
+        // ...and never the other way around (we never "un-close" a run)
         assert!(!Archive::supersedes(&run("a", false, 99), &run("a", true, 1)));
     }
 
-    /// L'écriture ne doit jamais produire un contenu de repli qui écraserait tout.
+    /// Writing must never produce fallback content that would overwrite everything.
     #[test]
     fn save_then_load_roundtrip_preserves_runs() {
         let dir = std::env::temp_dir().join(format!("isaac_arch_test_{}", std::process::id()));

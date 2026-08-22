@@ -29,7 +29,7 @@
         }
       },
       "complexity": "flat",
-      "note": "Tir triple, cadence fortement réduite."
+      "note": "Triple shot, heavily reduced fire rate."
     },
     {
       "id": 3,
@@ -41,7 +41,7 @@
         "homing"
       ],
       "complexity": "flat",
-      "note": "Donne le homing aux larmes."
+      "note": "Grants homing tears."
     },
     {
       "id": 4,
@@ -56,7 +56,7 @@
         }
       },
       "complexity": "flat",
-      "note": "Multiplicateur de dégâts (approximatif)."
+      "note": "Damage multiplier (approximate)."
     },
     {
       "id": 6,
@@ -85,7 +85,7 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familier qui tire des larmes."
+      "note": "Familiar that shoots tears."
     },
     {
       "id": 12,
@@ -114,7 +114,7 @@
       },
       "hearts": 1,
       "complexity": "conditional",
-      "note": "Boost global (dégâts multiplicatifs, approximatif)."
+      "note": "All-around boost (multiplicative damage, approximate)."
     },
     {
       "id": 20,
@@ -124,7 +124,7 @@
       ],
       "grants_flight": true,
       "complexity": "flat",
-      "note": "Donne le vol."
+      "note": "Grants flight."
     },
     {
       "id": 25,
@@ -134,7 +134,7 @@
       ],
       "hearts": 1,
       "complexity": "flat",
-      "note": "+1 conteneur de cœur."
+      "note": "+1 heart container."
     },
     {
       "id": 38,
@@ -144,7 +144,7 @@
         "utility"
       ],
       "complexity": "proc",
-      "note": "Actif : salve de larmes en anneau."
+      "note": "Active: ring burst of tears."
     },
     {
       "id": 48,
@@ -156,7 +156,7 @@
         "piercing"
       ],
       "complexity": "flat",
-      "note": "Larmes perçantes."
+      "note": "Piercing tears."
     },
     {
       "id": 50,
@@ -186,7 +186,7 @@
         "explosive"
       ],
       "complexity": "conditional",
-      "note": "Remplace les larmes par des bombes."
+      "note": "Replaces tears with bombs."
     },
     {
       "id": 55,
@@ -195,7 +195,7 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Chance de tirer une larme supplémentaire vers l'arrière."
+      "note": "Chance to fire an extra tear backward."
     },
     {
       "id": 67,
@@ -206,7 +206,7 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familier qui tire des larmes."
+      "note": "Familiar that shoots tears."
     },
     {
       "id": 68,
@@ -220,7 +220,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Remplace les larmes par un laser continu."
+      "note": "Replaces tears with a continuous laser."
     },
     {
       "id": 69,
@@ -230,7 +230,7 @@
         "tear_mod"
       ],
       "complexity": "conditional",
-      "note": "Tir chargeable ; dégâts selon la charge (PAS un remplacement de larmes)."
+      "note": "Chargeable shot; damage scales with charge (NOT a tear replacement)."
     },
     {
       "id": 81,
@@ -240,7 +240,7 @@
         "defensive"
       ],
       "complexity": "conditional",
-      "note": "9 vies, met la vie max à 1 cœur."
+      "note": "9 lives, sets max health to 1 heart."
     },
     {
       "id": 82,
@@ -254,7 +254,7 @@
         "homing"
       ],
       "complexity": "flat",
-      "note": "Vol + homing."
+      "note": "Flight + homing."
     },
     {
       "id": 87,
@@ -263,7 +263,7 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Chance de tirer en croix (4 directions)."
+      "note": "Chance to fire in a cross (4 directions)."
     },
     {
       "id": 95,
@@ -274,7 +274,7 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familier qui tire un laser."
+      "note": "Familiar that fires a laser."
     },
     {
       "id": 100,
@@ -288,7 +288,7 @@
         "homing"
       ],
       "complexity": "flat",
-      "note": "Familier à larmes homing."
+      "note": "Familiar with homing tears."
     },
     {
       "id": 101,
@@ -317,7 +317,7 @@
       },
       "hearts": 1,
       "complexity": "flat",
-      "note": "Petit boost de toutes les stats."
+      "note": "Small boost to every stat."
     },
     {
       "id": 108,
@@ -326,7 +326,7 @@
         "defensive"
       ],
       "complexity": "flat",
-      "note": "Dégâts reçus plafonnés à un demi-cœur."
+      "note": "Incoming damage capped at half a heart."
     },
     {
       "id": 113,
@@ -337,7 +337,7 @@
       ],
       "is_familiar": true,
       "complexity": "proc",
-      "note": "Familier qui tire sur les ennemis proches."
+      "note": "Familiar that shoots at nearby enemies."
     },
     {
       "id": 114,
@@ -351,7 +351,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Remplace les larmes par un couteau lancé."
+      "note": "Replaces tears with a thrown knife."
     },
     {
       "id": 115,
@@ -363,7 +363,7 @@
         "spectral"
       ],
       "complexity": "flat",
-      "note": "Larmes spectrales (traversent les obstacles)."
+      "note": "Spectral tears (pass through obstacles)."
     },
     {
       "id": 118,
@@ -377,7 +377,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Remplace les larmes par un rayon de sang chargé."
+      "note": "Replaces tears with a charged blood beam."
     },
     {
       "id": 134,
@@ -386,7 +386,7 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Change les probabilités de coffres/portes."
+      "note": "Changes chest and door odds."
     },
     {
       "id": 145,
@@ -396,7 +396,7 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Actif : invoque un essaim de mouches."
+      "note": "Active: summons a swarm of flies."
     },
     {
       "id": 149,
@@ -419,7 +419,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Larmes explosives empoisonnées en cloche — risque d'auto-dégâts."
+      "note": "Explosive poison tears with an arcing trajectory - self-damage risk."
     },
     {
       "id": 151,
@@ -429,7 +429,7 @@
       ],
       "is_familiar": true,
       "complexity": "proc",
-      "note": "Chance d'invoquer une mouche en tirant."
+      "note": "Chance to spawn a fly when firing."
     },
     {
       "id": 152,
@@ -443,7 +443,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Laser continu sur un œil (garde les larmes sur l'autre)."
+      "note": "Continuous laser from one eye (tears stay on the other)."
     },
     {
       "id": 153,
@@ -459,7 +459,7 @@
         }
       },
       "complexity": "flat",
-      "note": "Tir quadruple."
+      "note": "Quadruple shot."
     },
     {
       "id": 159,
@@ -473,7 +473,7 @@
         "spectral"
       ],
       "complexity": "flat",
-      "note": "Vol + larmes spectrales."
+      "note": "Flight + spectral tears."
     },
     {
       "id": 168,
@@ -487,7 +487,7 @@
         "explosive"
       ],
       "complexity": "conditional",
-      "note": "Remplace le tir par des frappes de missile ciblées."
+      "note": "Replaces the shot with targeted missile strikes."
     },
     {
       "id": 169,
@@ -506,7 +506,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Larmes énormes ; perce sur kill. Dégâts multiplicatifs (approximatif)."
+      "note": "Huge tears; pierces on kill. Multiplicative damage (approximate)."
     },
     {
       "id": 179,
@@ -516,7 +516,7 @@
       ],
       "grants_flight": true,
       "complexity": "flat",
-      "note": "Vol + cœur éternel."
+      "note": "Flight + eternal heart."
     },
     {
       "id": 182,
@@ -539,7 +539,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Gros dégâts + homing, cadence réduite."
+      "note": "Big damage + homing, reduced fire rate."
     },
     {
       "id": 185,
@@ -554,7 +554,7 @@
         "piercing"
       ],
       "complexity": "flat",
-      "note": "Vol + larmes spectrales et perçantes."
+      "note": "Flight + spectral and piercing tears."
     },
     {
       "id": 210,
@@ -564,7 +564,7 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Invincible à l'immobilité."
+      "note": "Invincible while standing still."
     },
     {
       "id": 222,
@@ -580,7 +580,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Les larmes flottent puis partent au relâchement."
+      "note": "Tears float, then fire on release."
     },
     {
       "id": 224,
@@ -596,7 +596,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Les larmes se divisent en 4 à l'atterrissage."
+      "note": "Tears split into 4 on landing."
     },
     {
       "id": 229,
@@ -607,7 +607,7 @@
       ],
       "is_tears_replacement": true,
       "complexity": "conditional",
-      "note": "Tir chargé en salve type fusil à pompe."
+      "note": "Charged shotgun-style burst."
     },
     {
       "id": 233,
@@ -622,7 +622,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Les larmes orbitent autour d'Isaac."
+      "note": "Tears orbit around Isaac."
     },
     {
       "id": 244,
@@ -635,7 +635,7 @@
         "piercing"
       ],
       "complexity": "proc",
-      "note": "Ajoute un laser tech (par-dessus les larmes)."
+      "note": "Adds a tech laser (on top of tears)."
     },
     {
       "id": 245,
@@ -645,7 +645,7 @@
         "tear_mod"
       ],
       "complexity": "flat",
-      "note": "Tir double."
+      "note": "Double shot."
     },
     {
       "id": 261,
@@ -660,7 +660,7 @@
         }
       },
       "complexity": "conditional",
-      "note": "Dégâts triplés à bout portant, décroissent avec la distance (approximatif)."
+      "note": "Triple damage at point-blank range, falling off with distance (approximate)."
     },
     {
       "id": 310,
@@ -680,7 +680,7 @@
         }
       },
       "complexity": "flat",
-      "note": "×2 dégâts, cadence et portée réduites."
+      "note": "2x damage, reduced fire rate and range."
     },
     {
       "id": 329,
@@ -691,7 +691,7 @@
       ],
       "is_tears_replacement": true,
       "complexity": "conditional",
-      "note": "Une seule larme flottante contrôlable."
+      "note": "A single controllable floating tear."
     },
     {
       "id": 330,
@@ -711,7 +711,7 @@
         }
       },
       "complexity": "flat",
-      "note": "Cadence extrême, dégâts minuscules."
+      "note": "Extreme fire rate, tiny damage."
     },
     {
       "id": 360,
@@ -722,7 +722,7 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familier qui copie tes tirs (stats comprises)."
+      "note": "Familiar that copies your shots (stats included)."
     },
     {
       "id": 394,
@@ -732,7 +732,7 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Tir automatique vers un marqueur au sol."
+      "note": "Auto-fires toward a marker on the ground."
     },
     {
       "id": 395,
@@ -746,7 +746,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Anneau laser chargé et perçant."
+      "note": "Charged, piercing laser ring."
     },
     {
       "id": 409,
@@ -755,7 +755,7 @@
         "defensive"
       ],
       "complexity": "conditional",
-      "note": "Vol + invincibilité à 0 cœur rouge (conditionnel)."
+      "note": "Flight + invincibility at 0 red hearts (conditional)."
     },
     {
       "id": 462,
@@ -769,7 +769,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Après avoir touché : larmes perçantes et homing."
+      "note": "After taking a hit: piercing and homing tears."
     },
     {
       "id": 533,
@@ -783,7 +783,7 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Remplace les larmes par des piliers de lumière perçants."
+      "note": "Replaces tears with piercing pillars of light."
     },
     {
       "id": 573,
@@ -802,7 +802,7 @@
         }
       },
       "complexity": "proc",
-      "note": "Chance de larme homing supplémentaire + cœur d'âme."
+      "note": "Chance of an extra homing tear + soul heart."
     },
     {
       "id": 698,
@@ -813,7 +813,7 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Deux familiers qui copient tes tirs."
+      "note": "Two familiars that copy your shots."
     }
   ],
   "synergies": [
@@ -821,73 +821,73 @@
       "a": 118,
       "b": 38,
       "type": "strong",
-      "text": "Anneau de rayons de Brimstone."
+      "text": "Ring of Brimstone beams."
     },
     {
       "a": 229,
       "b": 330,
       "type": "strong",
-      "text": "Salve de très nombreuses larmes (quasi mitraillette)."
+      "text": "A burst of many tears (near machine-gun)."
     },
     {
       "a": 169,
       "b": 330,
       "type": "strong",
-      "text": "Soy Milk rend à Polyphemus des dégâts complets par larme → grosses larmes rapides."
+      "text": "Soy Milk restores full per-tear damage on Polyphemus: big, fast tears."
     },
     {
       "a": 395,
       "b": 169,
       "type": "strong",
-      "text": "Énormes anneaux perçants très puissants."
+      "text": "Huge, very powerful piercing rings."
     },
     {
       "a": 149,
       "b": 229,
       "type": "strong",
-      "text": "Fusil à pompe explosif (attention aux auto-dégâts)."
+      "text": "Explosive shotgun (watch out for self-damage)."
     },
     {
       "a": 149,
       "b": 52,
       "type": "dangerous",
-      "text": "Explosions énormes mais fort risque d'auto-dégâts."
+      "text": "Huge explosions, but a high self-damage risk."
     },
     {
       "a": 329,
       "b": 114,
       "type": "strong",
-      "text": "Couteau flottant contrôlable."
+      "text": "Controllable floating knife."
     },
     {
       "a": 329,
       "b": 118,
       "type": "strong",
-      "text": "Boule de Brimstone contrôlable."
+      "text": "Controllable Brimstone ball."
     },
     {
       "a": 182,
       "b": 118,
       "type": "dangerous",
-      "text": "Brimstone écrase les larmes homing de Sacred Heart."
+      "text": "Brimstone overrides Sacred Heart's homing tears."
     },
     {
       "a": 233,
       "b": 118,
       "type": "weak",
-      "text": "Brimstone en orbite : difficile à viser."
+      "text": "Brimstone in orbit: hard to aim."
     },
     {
       "a": 69,
       "b": 169,
       "type": "strong",
-      "text": "Tir chargé à très gros dégâts."
+      "text": "Charged shot with very high damage."
     },
     {
       "a": 244,
       "b": 118,
       "type": "dangerous",
-      "text": "Brimstone masque le laser de Tech.5 (redondant)."
+      "text": "Brimstone hides the Tech.5 laser (redundant)."
     }
   ]
 }

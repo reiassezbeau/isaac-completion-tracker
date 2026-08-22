@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! stats_reader — lit et parse le JSON ecrit par le mod compagnon
-//! (`data/isaac-tracker-mod/save<slot>.dat`), par slot.
+//! stats_reader - reads and parses the JSON written by the companion mod
+//! (`data/isaac-tracker-mod/save<slot>.dat`), per slot.
 //!
-//! Parsing TOLERANT : le runtime Lua du jeu encode les tables VIDES comme `[]`
-//! (tableau), y compris pour les maps (`hits_by_source` vide -> `[]`). On passe
-//! donc par `serde_json::Value` et on extrait defensivement (un `[]` => map vide),
-//! + tolerance aux champs manquants (anciens runs, schema qui evolue — garde-fou §3.3).
+//! TOLERANT parsing: the game's Lua runtime encodes EMPTY tables as `[]`
+//! (an array), including for maps (an empty `hits_by_source` becomes `[]`). So we go
+//! through `serde_json::Value` and extract defensively (an `[]` means an empty map),
+//! plus tolerance for missing fields (old runs, evolving schema - guardrail §3.3).
 
 use std::collections::HashMap;
 use std::path::Path;
@@ -25,7 +25,7 @@ pub struct HitEvent {
     pub source: String,
 }
 
-/// Derniere source de degat subie (= cause de mort si le run se termine en mort).
+/// The last damage source taken (the cause of death if the run ends in a death).
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DeathSource {
     #[serde(default)]
@@ -38,7 +38,7 @@ pub struct DeathSource {
     pub frame: Option<i64>,
 }
 
-/// Un run tel que reconstruit depuis le JSON du mod (champs manquants tolerés).
+/// A run as rebuilt from the mod's JSON (missing fields are tolerated).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Run {
     pub run_id: String,
@@ -54,7 +54,7 @@ pub struct Run {
     pub ended_frame: Option<i64>,
     #[serde(default)]
     pub ended: bool,
-    /// "win" | "death" | "abandoned" | null (en cours)
+    /// "win" | "death" | "abandoned" | null (in progress)
     #[serde(default)]
     pub outcome: Option<String>,
     #[serde(default)]
@@ -71,7 +71,7 @@ pub struct Run {
     pub hits_by_stage: HashMap<String, u32>,
     #[serde(default)]
     pub hits: Vec<HitEvent>,
-    /// Champs larges (peuvent manquer sur d'anciens runs).
+    /// Wide fields (may be missing on older runs).
     #[serde(default)]
     pub rooms_cleared: Option<u32>,
     #[serde(default)]
@@ -88,7 +88,7 @@ pub struct Run {
     pub final_stage: Option<i64>,
     #[serde(default)]
     pub final_stage_type: Option<i64>,
-    /// Snapshot de build (§7) : ids de collectibles tenus en fin de run.
+    /// Build snapshot (§7): the collectible IDs held at the end of the run.
     #[serde(default)]
     pub final_build: Vec<i64>,
     #[serde(default)]
@@ -110,7 +110,7 @@ fn as_bool(v: &Value, k: &str) -> bool {
     v.get(k).and_then(|x| x.as_bool()).unwrap_or(false)
 }
 
-/// Map string->u32, en tolerant `[]` (table vide encodee en tableau) => map vide.
+/// A string->u32 map, tolerating `[]` (an empty table encoded as an array) as an empty map.
 fn as_u32_map(v: &Value, k: &str) -> HashMap<String, u32> {
     match v.get(k) {
         Some(Value::Object(m)) => m
@@ -190,7 +190,7 @@ fn parse_run(v: &Value, slot: u8) -> Option<Run> {
     })
 }
 
-/// Contenu d'un fichier de save du mod (un slot). Le slot est porté par chaque `Run`.
+/// The contents of one mod save file (a slot). The slot is carried by each `Run`.
 pub struct ModSlotData {
     pub current_run: Option<Run>,
     pub history: Vec<Run>,
@@ -205,7 +205,7 @@ fn slot_of_filename(path: &Path) -> u8 {
         .unwrap_or(0)
 }
 
-/// Parse un fichier `save<N>.dat` du mod.
+/// Parses one of the mod's `save<N>.dat` files.
 pub fn read_mod_file(path: &Path) -> Option<ModSlotData> {
     let raw = std::fs::read_to_string(path).ok()?;
     let v: Value = serde_json::from_str(&raw).ok()?;
@@ -224,8 +224,8 @@ pub fn read_mod_file(path: &Path) -> Option<ModSlotData> {
     Some(ModSlotData { current_run, history })
 }
 
-/// Tous les runs du mod, tous slots confondus (history + current_run), depuis les
-/// emplacements de donnees possibles (Steam et/ou Documents). Dedup par run_id.
+/// Every run from the mod, across all slots (history + current_run), from the
+/// possible data locations (Steam and/or Documents). Deduplicated by run_id.
 pub fn read_all_runs() -> Vec<Run> {
     use std::collections::HashSet;
     let mut seen: HashSet<String> = HashSet::new();
@@ -258,7 +258,7 @@ mod tests {
 
     #[test]
     fn parses_tolerant_json_with_empty_maps_as_arrays() {
-        // Reproduit le quirk : hits_by_source vide encode en `[]`.
+        // Reproduces the quirk: an empty hits_by_source encoded as `[]`.
         let raw = r#"{"schema":1,"next_index":2,"history":[
           {"run_id":"1-2-3","character":"blue_baby","player_type":4,"started_frame":10,
            "ended":true,"outcome":"death","deepest_stage":3,"hits_total":0,

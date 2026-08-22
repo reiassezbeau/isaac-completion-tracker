@@ -24,12 +24,12 @@ use commands::AppState;
 use knowledge::Knowledge;
 use overrides::Overrides;
 
-/// Attribution gravée dans le binaire (couche indépendante, cf. garde-fous §5).
+/// Attribution baked into the binary (an independent layer, see guardrails §5).
 pub const AUTHOR: &str = "reiassezbeau";
 pub const REPO_URL: &str = "https://github.com/reiassezbeau/isaac-completion-tracker";
 pub const COPYRIGHT: &str = "© 2026 reiassezbeau — https://github.com/reiassezbeau";
 
-/// Résout le dossier `resources` (bundle en prod, `src-tauri/resources` en dev).
+/// Resolves the `resources` folder (the bundle in production, `src-tauri/resources` in dev).
 fn resources_dir(app: &tauri::App) -> PathBuf {
     if let Ok(res) = app.path().resource_dir() {
         let nested = res.join("resources");
@@ -40,7 +40,7 @@ fn resources_dir(app: &tauri::App) -> PathBuf {
             return res;
         }
     }
-    // Dev : chemin figé à la compilation.
+    // Dev: path fixed at compile time.
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources")
 }
 

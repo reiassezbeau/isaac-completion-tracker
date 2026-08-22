@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! save_parser — décodage (lecture seule) de `persistentgamedata*.dat`
+//! save_parser - read-only decoding of `persistentgamedata*.dat`
 //! (The Binding of Isaac: Repentance / Repentance+).
 //!
-//! Format binaire little-endian, non chiffré, rétro-ingénieré par la communauté.
-//! Réimplémentation propre validée EMPIRIQUEMENT contre la vraie sauvegarde de
+//! A little-endian binary format, unencrypted, reverse-engineered by the community.
+//! A clean reimplementation, validated EMPIRICALLY against the real save of
 //! l'utilisateur (311/641 + assertions Annexe A + completion marks Mother={Eden},
-//! Beast={Isaac,Judas,Samson,Azazel,Eden}). Cf. tests en bas de fichier.
+//! Beast={Isaac,Judas,Samson,Azazel,Eden}). See the tests at the bottom of this file.
 //!
 //! Structure : header magic (16o) + version @0x18 + checksum CRC-32 (4 derniers
-//! octets, couvre [0x10..len-4]) + 11 sections auto-descriptives à partir de 0x14.
-//! Chaque section = en-tête de 12 octets (3× u32, le 3e = nb d'entrées) puis
-//! `count * entry_len` octets. On ne lit QUE : succès (section 0) et completion
-//! marks (section 1). Le reste est ignoré. On n'écrit JAMAIS dans la save.
+//! bytes, covering [0x10..len-4]) plus 11 self-describing sections starting at 0x14.
+//! Each section is a 12-byte header (3x u32, the 3rd being the entry count) followed by
+//! `count * entry_len` bytes. We read ONLY achievements (section 0) and completion
+//! marks (section 1). Everything else is ignored. We NEVER write to the save.
 
 use serde::Serialize;
 
-/// Magie d'en-tête : "ISAACNGSAVE09R  " (les 15 premiers octets sont vérifiés).
+/// Header magic: "ISAACNGSAVE09R  " (the first 15 bytes are checked).
 const HEADER: [u8; 16] = [
     0x49, 0x53, 0x41, 0x41, 0x43, 0x4E, 0x47, 0x53, 0x41, 0x56, 0x45, 0x30, 0x39, 0x52, 0x20, 0x20,
 ];
@@ -25,7 +25,7 @@ const HEADER_CHECK_LEN: usize = 15;
 const SECTION_OFFSET: usize = 0x14;
 const VERSION_OFFSET: usize = 0x18;
 const HEADER_OFFSET: usize = 0x10;
-/// Taille d'une entrée pour chacune des 11 sections (secrets, stats+marks, …, bestiaire).
+/// Entry size for each of the 11 sections (secrets, stats+marks, ..., bestiary).
 const ENTRY_LENS: [usize; 11] = [1, 4, 4, 1, 1, 1, 1, 4, 4, 1, 546];
 
 pub const NUM_ACHIEVEMENTS: usize = 641;
@@ -37,13 +37,13 @@ const VERSION_REPENTANCE_PLUS: u8 = 0x82;
 
 #[derive(Debug, thiserror::Error)]
 pub enum ParseError {
-    #[error("fichier trop court ({0} octets) pour être une sauvegarde valide")]
+    #[error("file too short ({0} bytes) to be a valid save")]
     TooShort(usize),
-    #[error("en-tête invalide : ce n'est pas une sauvegarde Binding of Isaac (Repentance/Repentance+)")]
+    #[error("invalid header: this is not a Binding of Isaac save (Repentance/Repentance+)")]
     BadHeader,
     #[error("version de sauvegarde inconnue (0x{0:02x}) — format inattendu")]
     UnknownVersion(u8),
-    #[error("lecture hors limites à l'offset {0} (fichier tronqué ou format inattendu)")]
+    #[error("out-of-bounds read at offset {0} (truncated file or unexpected format)")]
     OutOfBounds(usize),
 }
 
@@ -54,7 +54,7 @@ pub enum Edition {
     RepentancePlus,
 }
 
-/// Difficulté d'une completion mark. Dead God exige `Hard` sur toutes les marks.
+/// Difficulty of a completion mark. Dead God requires `Hard` on every mark.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MarkDifficulty {
@@ -74,8 +74,8 @@ impl MarkDifficulty {
     }
 }
 
-/// État d'une completion mark : le byte encode le solo (offline/Repentance, bits
-/// 0-1) ET l'online (Rep+, bits 2-3). `effective` = le meilleur des deux.
+/// State of a completion mark: the byte encodes solo (offline/Repentance, bits
+/// 0-1) AND online (Rep+, bits 2-3). `effective` is the better of the two.
 #[derive(Debug, Clone, Copy, Serialize)]
 pub struct Mark {
     pub solo: MarkDifficulty,
@@ -101,16 +101,16 @@ impl Mark {
     }
 }
 
-/// Résultat du parsing d'un slot de sauvegarde.
+/// The result of parsing one save slot.
 #[derive(Debug, Clone, Serialize)]
 pub struct SaveData {
     pub edition: Edition,
     pub version: u8,
     pub checksum_ok: bool,
-    /// `achievements[i]` = succès de secret-ID `i+1` débloqué (index 0 => ID 1).
+    /// `achievements[i]` is whether the achievement with secret ID `i+1` is unlocked (index 0 means ID 1).
     pub achievements: Vec<bool>,
-    /// `false` si le décodage des marks a échoué (format inattendu) → l'UI doit
-    /// basculer en dégradation gracieuse (déduction + override manuel, §3.4).
+    /// `false` when mark decoding failed (unexpected format), in which case the UI must
+    /// fall back to graceful degradation (inference plus manual override, §3.4).
     pub marks_reliable: bool,
     /// `marks[char_index][mark_index]` (34 × 12), ordre binaire.
     pub marks: Vec<Vec<Mark>>,
@@ -120,7 +120,7 @@ impl SaveData {
     pub fn unlocked_count(&self) -> usize {
         self.achievements.iter().filter(|&&b| b).count()
     }
-    /// Succès débloqué par secret-ID in-game (1..=641).
+    /// Whether the achievement with the given in-game secret ID (1..=641) is unlocked.
     pub fn is_unlocked(&self, secret_id: usize) -> bool {
         (1..=NUM_ACHIEVEMENTS).contains(&secret_id)
             && self.achievements.get(secret_id - 1).copied().unwrap_or(false)
@@ -132,12 +132,12 @@ fn u32_le(data: &[u8], off: usize) -> Result<u32, ParseError> {
     Ok(u32::from_le_bytes([b[0], b[1], b[2], b[3]]))
 }
 
-/// Offsets (début des entrées) des 11 sections, via le walk auto-descriptif.
+/// Offsets (start of the entries) of the 11 sections, via the self-describing walk.
 fn section_offsets(data: &[u8]) -> Result<[usize; 11], ParseError> {
     let mut offset = SECTION_OFFSET;
     let mut res = [0usize; 11];
     for i in 0..ENTRY_LENS.len() {
-        // en-tête : 3× u32 (le 3e = nombre d'entrées)
+        // header: 3x u32 (the 3rd is the entry count)
         let mut count = 0u32;
         for j in 0..3 {
             let v = u32_le(data, offset)?;
@@ -158,8 +158,8 @@ fn section_offsets(data: &[u8]) -> Result<[usize; 11], ParseError> {
     Ok(res)
 }
 
-/// Table CRC-32 EXACTE du jeu (non-standard, seed 0xFEDCBA76). Embarquée telle
-/// quelle : le jeu n'utilise pas la table CRC-32 standard.
+/// The game's EXACT CRC-32 table (non-standard, seed 0xFEDCBA76). Embedded as-is
+/// because the game does not use the standard CRC-32 table.
 #[rustfmt::skip]
 const CRC_TABLE: [u32; 256] = [
     0x00000000, 0x09073096, 0x120E612C, 0x1B0951BA, 0xFF6DC419, 0xF66AF48F, 0xED63A535, 0xE46495A3,
@@ -217,8 +217,8 @@ fn verify_checksum(data: &[u8]) -> bool {
     expected == stored
 }
 
-/// Lit les 12 marks d'un personnage (offsets validés empiriquement).
-/// Chaque mark est un octet (le décodage bits solo/online est dans `Mark`).
+/// Reads a character's 12 marks (offsets validated empirically).
+/// Each mark is one byte (the solo/online bit decoding lives in `Mark`).
 fn read_marks(data: &[u8], sec1: usize, char_index: usize) -> Result<Vec<Mark>, ParseError> {
     let mut out = Vec::with_capacity(NUM_MARKS);
     let byte = |o: usize| -> Result<u8, ParseError> {
@@ -240,7 +240,7 @@ fn read_marks(data: &[u8], sec1: usize, char_index: usize) -> Result<Vec<Mark>, 
             }
         }
     } else if char_index > 14 {
-        // Personnages Repentance + tous les Tainted
+        // Repentance characters plus all the Tainted ones
         let mut off = sec1 + 0x31C;
         for i in 0..NUM_MARKS {
             out.push(Mark::from_byte(byte(off + char_index * 4 + i * 19 * 4)?));
@@ -273,8 +273,8 @@ fn read_marks(data: &[u8], sec1: usize, char_index: usize) -> Result<Vec<Mark>, 
     Ok(out)
 }
 
-/// Parse un buffer de sauvegarde (lecture seule). Échoue proprement si le format
-/// est inattendu — l'appelant doit alors basculer vers l'override manuel.
+/// Parses a save buffer (read-only). Fails cleanly when the format
+/// is unexpected, in which case the caller should fall back to manual overrides.
 pub fn parse(data: &[u8]) -> Result<SaveData, ParseError> {
     if data.len() < 0x40 {
         return Err(ParseError::TooShort(data.len()));
@@ -292,7 +292,7 @@ pub fn parse(data: &[u8]) -> Result<SaveData, ParseError> {
     let sec = section_offsets(data)?;
     let checksum_ok = verify_checksum(data);
 
-    // Succès : secret-ID i (1..=641) => data[sec[0] + i].
+    // Achievements: secret ID i (1..=641) maps to data[sec[0] + i].
     let mut achievements = Vec::with_capacity(NUM_ACHIEVEMENTS);
     for id in 1..=NUM_ACHIEVEMENTS {
         let off = sec[0] + id;
@@ -300,10 +300,10 @@ pub fn parse(data: &[u8]) -> Result<SaveData, ParseError> {
         achievements.push(b == 1);
     }
 
-    // Completion marks : 34 personnages × 12 marks. Dégradation gracieuse (§3.4) :
-    // si un perso n'est pas décodable (offset hors limites / format inattendu), on
-    // marque l'ensemble comme non fiable et l'engine bascule sur la déduction +
-    // override manuel plutôt que d'afficher des données fausses.
+    // Completion marks: 34 characters x 12 marks. Graceful degradation (§3.4):
+    // if a character cannot be decoded (out-of-bounds offset or unexpected format), we
+    // mark the whole set as unreliable and the engine falls back to inference plus
+    // manual overrides rather than showing wrong data.
     let mut marks_reliable = true;
     let mut marks = Vec::with_capacity(NUM_CHARACTERS);
     for c in 0..NUM_CHARACTERS {
@@ -326,22 +326,22 @@ pub fn parse(data: &[u8]) -> Result<SaveData, ParseError> {
 mod tests {
     use super::*;
 
-    /// Construit une sauvegarde synthétique minimale (header + version + 11
-    /// sections dont la section 0 = succès) pour tester le parsing SANS committer
-    /// de vraie sauvegarde (respect de la vie privée). Les marks ne sont pas
-    /// exercées ici (offsets dépendants d'une vraie section stats) — elles le sont
-    /// par le test d'intégration sur la vraie save.
+    /// Builds a minimal synthetic save (header + version + 11
+    /// sections, with section 0 being achievements) to test parsing WITHOUT committing
+    /// a real save (for privacy). The marks are not
+    /// exercised here (their offsets depend on a real stats section); they are covered
+    /// by the integration test against a real save.
     fn synth_save(unlocked_ids: &[usize]) -> Vec<u8> {
         let mut data = vec![0u8; 0x14];
         data[..16].copy_from_slice(&HEADER);
 
-        // Section 0 (succès) : count = 642 (index 0 inutilisé + 641), entry_len 1.
-        // Son en-tête occupe 0x14..0x20 ; l'octet de version (0x18) tombe dedans.
+        // Section 0 (achievements): count = 642 (unused index 0 plus 641), entry_len 1.
+        // Its header spans 0x14..0x20, and the version byte (0x18) falls inside it.
         let ach_count: u32 = (NUM_ACHIEVEMENTS + 1) as u32;
         data.extend_from_slice(&0u32.to_le_bytes()); // idx  (0x14..0x18)
         data.extend_from_slice(&0u32.to_le_bytes()); // size (0x18..0x1C)
         data.extend_from_slice(&ach_count.to_le_bytes()); // count (0x1C..0x20)
-        data[VERSION_OFFSET] = VERSION_REPENTANCE_PLUS; // dans le champ « size », inutilisé par le walk
+        data[VERSION_OFFSET] = VERSION_REPENTANCE_PLUS; // inside the "size" field, unused by the walk
         let ach_start = data.len();
         data.resize(ach_start + ach_count as usize, 0);
         for &id in unlocked_ids {
@@ -353,7 +353,7 @@ mod tests {
             data.extend_from_slice(&0u32.to_le_bytes());
             data.extend_from_slice(&0u32.to_le_bytes());
         }
-        // Checksum sur [0x10..len] puis 4 octets.
+        // Checksum over [0x10..len], then 4 bytes.
         let length = data.len() - HEADER_OFFSET;
         let cs = calc_checksum(&data, HEADER_OFFSET, length);
         data.extend_from_slice(&cs.to_le_bytes());
@@ -374,47 +374,47 @@ mod tests {
         let data = synth_save(&ids);
         let save = parse(&data).expect("parse ok");
         assert_eq!(save.edition, Edition::RepentancePlus);
-        assert!(save.checksum_ok, "checksum synthétique doit être valide");
+        assert!(save.checksum_ok, "synthetic checksum must be valid");
         assert_eq!(save.unlocked_count(), ids.len());
         for id in ids {
-            assert!(save.is_unlocked(id), "secret {id} doit être débloqué");
+            assert!(save.is_unlocked(id), "secret {id} must be unlocked");
         }
         assert!(!save.is_unlocked(2));
         assert!(!save.is_unlocked(640));
     }
 
-    /// Test d'intégration : si `ISAAC_SAVE_PATH` pointe vers une vraie save (ou si
-    /// on la trouve dans Steam/userdata), on valide le total + les assertions
-    /// Annexe A + les completion marks connues. Sinon, on skippe proprement.
+    /// Integration test: if `ISAAC_SAVE_PATH` points to a real save (or if
+    /// we find one under Steam/userdata), we validate the total plus the Appendix A
+    /// assertions and the known completion marks. Otherwise we skip cleanly.
     #[test]
     fn validates_against_real_save() {
         let path = std::env::var("ISAAC_SAVE_PATH").ok().or_else(find_real_save);
         let Some(path) = path else {
-            eprintln!("(skip) aucune vraie save trouvée — définir ISAAC_SAVE_PATH pour ce test");
+            eprintln!("(skip) no real save found - set ISAAC_SAVE_PATH to run this test");
             return;
         };
         eprintln!("Validation contre : {path}");
-        let data = std::fs::read(&path).expect("lecture save");
+        let data = std::fs::read(&path).expect("reading save");
         let save = parse(&data).expect("parse ok");
 
         assert_eq!(save.edition, Edition::RepentancePlus);
-        assert!(save.checksum_ok, "checksum de la vraie save doit être valide");
+        assert!(save.checksum_ok, "checksum of the real save must be valid");
 
         let total = save.unlocked_count();
-        eprintln!("Total débloqués : {total}/641");
+        eprintln!("Total unlocked: {total}/641");
         assert!((300..=641).contains(&total), "total {total} hors plage attendue (~311)");
 
-        // Annexe A — quelques secret-IDs connus (id du wiki = secret-ID).
-        // Débloqués : Magdalene=1, Cain=2, Judas=3, Golden God!=41, Eve=42.
+        // Appendix A - a few known secret IDs (the wiki ID is the secret ID).
+        // Unlocked: Magdalene=1, Cain=2, Judas=3, Golden God!=41, Eve=42.
         for id in [1, 2, 3, 41, 42] {
-            assert!(save.is_unlocked(id), "secret {id} attendu débloqué");
+            assert!(save.is_unlocked(id), "secret {id} expected unlocked");
         }
-        // Verrouillés : Dead God=637.
-        assert!(!save.is_unlocked(637), "Dead God (637) attendu verrouillé");
+        // Locked: Dead God=637.
+        assert!(!save.is_unlocked(637), "Dead God (637) expected locked");
 
-        // Completion marks. La save ÉVOLUE quand l'utilisateur joue → on vérifie
-        // l'INCLUSION des complétions connues (elles ne peuvent que s'ajouter), pas
-        // l'égalité exacte. Connues à l'origine : Mother avec Eden(9) ; Beast avec
+        // Completion marks. The save EVOLVES as the user plays, so we check
+        // the INCLUSION of known completions (they can only be added to), not
+        // exact equality. Known at the time: Mother with Eden(9); Beast with
         // Isaac(0),Judas(3),Samson(6),Azazel(7),Eden(9).
         let has_mark = |c: usize, m: usize| save.marks[c][m].effective != MarkDifficulty::None;
         let mother: Vec<usize> = (0..NUM_CHARACTERS).filter(|&c| has_mark(c, 10)).collect();
@@ -425,14 +425,14 @@ mod tests {
             assert!(beast.contains(&c), "Beast doit inclure {{Isaac,Judas,Samson,Azazel,Eden}} ; obtenu {beast:?}");
         }
 
-        // Cohérence marks<->succès (garde-fous §1) : Revelation (secret-ID 470 =
-        // « Defeat Mother as Bethany ») verrouillé <=> la mark Mother de Bethany
-        // (char_index 15, mark_index 10) doit être vide. Recoupe les deux décodages.
+        // Marks/achievements consistency (guardrails §1): Revelation (secret ID 470 =
+        // "Defeat Mother as Bethany") locked means Bethany's Mother mark
+        // (char_index 15, mark_index 10) must be empty. This cross-checks both decoders.
         if !save.is_unlocked(470) {
             assert_eq!(
                 save.marks[15][10].effective,
                 MarkDifficulty::None,
-                "incohérence : Revelation(470) verrouillé mais la mark Mother de Bethany n'est pas vide"
+                "inconsistency: Revelation(470) locked but Bethany's Mother mark is not empty"
             );
         }
     }

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! save_locator — localisation des dossiers et slots de sauvegarde.
+//! save_locator - locates save folders and slots.
 //!
-//! ⚠️ Sur Repentance+, la save *live* n'est en général PAS dans
-//! `Documents/My Games/Binding of Isaac Repentance+/` (qui ne contient que des
-//! backups quotidiens), mais dans **Steam Cloud** :
+//! On Repentance+, the *live* save is usually NOT in
+//! `Documents/My Games/Binding of Isaac Repentance+/` (which only holds
+//! daily backups), but in **Steam Cloud**:
 //! `<Steam>/userdata/<id>/250900/remote/rep+persistentgamedata{1,2,3}.dat`.
-//! On scanne donc les deux, ainsi que le dossier `save_backups`.
+//! So we scan both, plus the `save_backups` folder.
 
 use serde::Serialize;
 use std::collections::HashSet;
@@ -17,8 +17,8 @@ use crate::save_parser::{self, Edition};
 
 const ISAAC_APPID: &str = "250900";
 
-/// Lecture avec petites tentatives : la save peut être momentanément verrouillée
-/// pendant que le jeu l'écrit (torn read). On réessaie brièvement au lieu de crasher.
+/// Read with small retries: the save can be briefly locked
+/// while the game writes it (torn read). We retry briefly instead of failing.
 pub fn read_file_with_retry(path: &Path) -> std::io::Result<Vec<u8>> {
     let mut last_err = None;
     for attempt in 0u64..4 {
@@ -30,28 +30,28 @@ pub fn read_file_with_retry(path: &Path) -> std::io::Result<Vec<u8>> {
             }
         }
     }
-    Err(last_err.unwrap_or_else(|| std::io::Error::other("lecture impossible")))
+    Err(last_err.unwrap_or_else(|| std::io::Error::other("cannot read file")))
 }
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SaveSlot {
     pub path: String,
     pub filename: String,
-    /// "Slot 1/2/3" déduit du nom de fichier.
+    /// "Slot 1/2/3", inferred from the file name.
     pub label: String,
     /// Provenance lisible : "Steam Cloud", "Documents", "Sauvegarde locale".
     pub source: String,
     pub edition: Option<Edition>,
-    /// Aperçu : nombre de succès débloqués (None si parsing échoué).
+    /// Preview: number of unlocked achievements (None when parsing failed).
     pub unlocked: Option<usize>,
     pub total: usize,
     pub marks_reliable: bool,
     pub parse_error: Option<String>,
 }
 
-/// Dossiers candidats côté « Documents » : on part de la racine de jeu RÉELLE
-/// (résolue en vérifiant les fichiers du jeu → gère le piège OneDrive), pas d'un
-/// chemin supposé.
+/// Candidate folders on the "Documents" side: we start from the REAL game root
+/// (resolved by checking for the game files, which handles the OneDrive pitfall), not from an
+/// assumed path.
 fn document_candidate_dirs() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     if let Some(root) = crate::paths::resolve_game_root() {
@@ -61,7 +61,7 @@ fn document_candidate_dirs() -> Vec<PathBuf> {
     dirs
 }
 
-/// Racines d'installation Steam (registre Windows + emplacements par défaut).
+/// Steam install roots (Windows registry plus default locations).
 fn steam_roots() -> Vec<PathBuf> {
     let mut roots: Vec<PathBuf> = Vec::new();
 
@@ -90,7 +90,7 @@ fn steam_roots() -> Vec<PathBuf> {
     roots
 }
 
-/// Dossiers `userdata/<id>/250900/remote` de chaque compte Steam.
+/// The `userdata/<id>/250900/remote` folders of every Steam account.
 fn steam_remote_dirs() -> Vec<PathBuf> {
     let mut out = Vec::new();
     for root in steam_roots() {
@@ -132,7 +132,7 @@ fn source_label(dir: &Path) -> String {
     }
 }
 
-/// Construit un slot à partir d'un fichier (parse pour l'aperçu).
+/// Builds a slot from a file (parsed for the preview).
 pub fn slot_from_file(path: &Path, source: String) -> SaveSlot {
     let filename = path
         .file_name()
@@ -158,12 +158,12 @@ pub fn slot_from_file(path: &Path, source: String) -> SaveSlot {
             }
             Err(e) => slot.parse_error = Some(e.to_string()),
         },
-        Err(e) => slot.parse_error = Some(format!("lecture impossible : {e}")),
+        Err(e) => slot.parse_error = Some(format!("cannot read file: {e}")),
     }
     slot
 }
 
-/// Scanne un dossier précis (utilisé aussi par le « Localiser ma save… » manuel).
+/// Scans a specific folder (also used by the manual "Locate my save..." flow).
 pub fn scan_dir(dir: &Path) -> Vec<SaveSlot> {
     let mut slots = Vec::new();
     if let Ok(entries) = std::fs::read_dir(dir) {
@@ -178,8 +178,8 @@ pub fn scan_dir(dir: &Path) -> Vec<SaveSlot> {
     slots
 }
 
-/// Liste tous les slots trouvés (Steam Cloud d'abord, puis Documents, puis backups),
-/// dédupliqués et triés (Rep+ et Steam Cloud en tête, meilleur aperçu d'abord).
+/// Lists every slot found (Steam Cloud first, then Documents, then backups),
+/// deduplicated and sorted (Rep+ and Steam Cloud first, best preview first).
 pub fn list_saves() -> Vec<SaveSlot> {
     let mut slots: Vec<SaveSlot> = Vec::new();
     let mut seen: HashSet<String> = HashSet::new();

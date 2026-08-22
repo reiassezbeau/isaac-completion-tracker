@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! paths — résolution ROBUSTE du dossier de jeu réel.
+//! paths - ROBUST resolution of the real game folder.
 //!
-//! ⚠️ Piège OneDrive : `dirs::document_dir()` peut renvoyer
-//! `…\OneDrive\Documents` (redirection Known-Folder) alors que le jeu écrit dans
-//! `…\Documents` (ou l'inverse). On ne fait donc PAS confiance à un seul chemin :
-//! on teste plusieurs candidats et on garde celui qui contient VRAIMENT les
-//! fichiers du jeu. L'app ET l'install du mod ciblent ainsi le même dossier réel.
+//! OneDrive pitfall: `dirs::document_dir()` may return
+//! `...\OneDrive\Documents` (Known-Folder redirection) while the game writes to
+//! `...\Documents` (or the other way around). So we do NOT trust a single path:
+//! we test several candidates and keep the one that ACTUALLY contains the
+//! game files. That way the app AND the mod install target the same real folder.
 
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 pub const MOD_FOLDER: &str = "isaac-tracker-mod";
 
-/// Chemins de jeu possibles sous un dossier « Documents » (composants joints
-/// proprement pour un affichage lisible du chemin).
+/// Possible game paths under a "Documents" folder (components joined
+/// cleanly so the path displays nicely).
 pub fn game_roots_under(base: &Path) -> [PathBuf; 2] {
     let my_games = base.join("My Games");
     [
@@ -24,12 +24,12 @@ pub fn game_roots_under(base: &Path) -> [PathBuf; 2] {
     ]
 }
 
-/// Un dossier est la racine du jeu s'il contient un marqueur connu.
+/// A folder is the game root when it contains a known marker.
 pub fn is_game_root(p: &Path) -> bool {
     p.join("options.ini").exists() || p.join("log.txt").exists() || p.join("save_backups").is_dir()
 }
 
-/// Dossiers « Documents » candidats (réel + OneDrive perso + OneDrive entreprise).
+/// Candidate "Documents" folders (real, personal OneDrive, and business OneDrive).
 pub fn documents_candidates() -> Vec<PathBuf> {
     let mut v: Vec<PathBuf> = Vec::new();
     if let Some(d) = dirs::document_dir() {
@@ -52,7 +52,7 @@ pub fn documents_candidates() -> Vec<PathBuf> {
     v.into_iter().filter(|p| seen.insert(p.clone())).collect()
 }
 
-/// Racine de jeu réelle : premier candidat existant contenant les fichiers du jeu.
+/// The real game root: the first existing candidate that contains the game files.
 pub fn resolve_game_root() -> Option<PathBuf> {
     for base in documents_candidates() {
         for root in game_roots_under(&base) {
@@ -64,10 +64,10 @@ pub fn resolve_game_root() -> Option<PathBuf> {
     None
 }
 
-// --- Résolution du dossier d'INSTALLATION Steam ---------------------------
-// ⚠️ Découverte clé : Isaac charge les mods depuis le dossier d'installation
-// Steam (`steamapps/common/The Binding of Isaac Rebirth/mods/`), PAS depuis
-// `Documents/.../mods`. Documents ne sert que pour saves/backups/data.
+// --- Resolving the Steam INSTALL folder ------------------------------------
+// Key discovery: Isaac loads mods from the Steam install folder
+// (`steamapps/common/The Binding of Isaac Rebirth/mods/`), NOT from
+// `Documents/.../mods`. Documents is only used for saves, backups, and data.
 
 const ISAAC_STEAM_SUBDIR: &str = "steamapps/common/The Binding of Isaac Rebirth";
 
@@ -95,8 +95,8 @@ fn steam_roots() -> Vec<PathBuf> {
     roots.into_iter().filter(|p| seen.insert(p.clone())).collect()
 }
 
-/// Bibliothèques Steam (le jeu peut être sur un autre disque) : les racines Steam
-/// + les chemins listés dans `steamapps/libraryfolders.vdf`.
+/// Steam libraries (the game may live on another drive): the Steam roots
+/// plus the paths listed in `steamapps/libraryfolders.vdf`.
 fn steam_libraries() -> Vec<PathBuf> {
     let mut libs: Vec<PathBuf> = Vec::new();
     for root in steam_roots() {
@@ -119,7 +119,7 @@ fn steam_libraries() -> Vec<PathBuf> {
     libs.into_iter().filter(|p| seen.insert(p.clone())).collect()
 }
 
-/// Dossier d'installation du jeu (Steam) — celui qui contient `mods/`.
+/// The game's install folder (Steam) - the one that contains `mods/`.
 pub fn steam_game_dir() -> Option<PathBuf> {
     for lib in steam_libraries() {
         let dir = lib.join(ISAAC_STEAM_SUBDIR);
@@ -130,18 +130,18 @@ pub fn steam_game_dir() -> Option<PathBuf> {
     None
 }
 
-/// Dossier des mods = dossier d'INSTALLATION Steam / mods (pas Documents).
+/// The mods folder is the Steam INSTALL folder / mods (not Documents).
 pub fn mods_dir() -> Option<PathBuf> {
     steam_game_dir().map(|g| g.join("mods"))
 }
 
-/// Dossier d'install du mod compagnon (déterministe).
+/// Install folder for the companion mod (deterministic).
 pub fn tracker_mod_dir() -> Option<PathBuf> {
     mods_dir().map(|m| m.join(MOD_FOLDER))
 }
 
-/// Dossiers `data/` candidats où le mod écrit son JSON (SaveData) : selon les
-/// versions/installations, Documents et/ou le dossier d'install Steam.
+/// Candidate `data/` folders where the mod writes its JSON (SaveData): depending on
+/// the version and install, Documents and/or the Steam install folder.
 pub fn data_candidates() -> Vec<PathBuf> {
     let mut v = Vec::new();
     if let Some(r) = resolve_game_root() {
@@ -157,8 +157,8 @@ pub fn data_dir() -> Option<PathBuf> {
     data_candidates().into_iter().find(|d| d.is_dir()).or_else(|| data_candidates().into_iter().next())
 }
 
-/// Cherche le fichier de données du mod (`data/<dossier>/save<N>.dat`), en
-/// scannant les deux emplacements possibles (Documents et Steam).
+/// Looks for the mod's data file (`data/<folder>/save<N>.dat`), scanning
+/// both possible locations (Documents and Steam).
 pub fn find_mod_data_file() -> Option<PathBuf> {
     for data in data_candidates() {
         for name in [MOD_FOLDER, "IsaacTracker"] {
@@ -205,12 +205,12 @@ mod tests {
         match resolve_game_root() {
             Some(r) => {
                 eprintln!("→ Racine Documents (saves/data) : {}", r.display());
-                assert!(is_game_root(&r), "la racine résolue doit contenir un marqueur de jeu");
+                assert!(is_game_root(&r), "the resolved root must contain a game marker");
             }
-            None => eprintln!("→ (aucun dossier de jeu Documents détecté)"),
+            None => eprintln!("-> (no Documents game folder detected)"),
         }
-        eprintln!("→ Dossier jeu Steam : {:?}", steam_game_dir().map(|p| p.display().to_string()));
-        eprintln!("→ Dossier mods (Steam) : {:?}", mods_dir().map(|p| p.display().to_string()));
+        eprintln!("-> Steam game folder: {:?}", steam_game_dir().map(|p| p.display().to_string()));
+        eprintln!("-> Mods folder (Steam): {:?}", mods_dir().map(|p| p.display().to_string()));
         eprintln!("→ data candidates : {:?}", data_candidates());
     }
 }

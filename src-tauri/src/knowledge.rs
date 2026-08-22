@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! knowledge — chargement de la base de connaissances bundlée (offline).
-//! Les JSON sont générés au dev-time par `tools/build-knowledge` et embarqués
+//! knowledge - loads the bundled knowledge base (offline).
+//! The JSON files are generated at dev time by `tools/build-knowledge` and embedded
 //! via `tauri.conf.json > bundle > resources`.
 
 use serde::{Deserialize, Serialize};
@@ -78,7 +78,7 @@ pub struct Knowledge {
 pub enum KnowledgeError {
     #[error("ressource introuvable : {0}")]
     Missing(String),
-    #[error("lecture {0} : {1}")]
+    #[error("reading {0}: {1}")]
     Io(String, std::io::Error),
     #[error("JSON {0} : {1}")]
     Json(String, serde_json::Error),
@@ -94,7 +94,7 @@ fn read_json<T: for<'de> Deserialize<'de>>(dir: &Path, name: &str) -> Result<T, 
 }
 
 impl Knowledge {
-    /// Charge les 4 JSON depuis le dossier `resources` résolu (dev ou bundle).
+    /// Loads the 4 JSON files from the resolved `resources` folder (dev or bundle).
     pub fn load(resources_dir: &Path) -> Result<Self, KnowledgeError> {
         let ach: AchievementsFile = read_json(resources_dir, "achievements.json")?;
         let characters: Vec<Character> = read_json(resources_dir, "characters.json")?;

@@ -1,56 +1,75 @@
-# tools/build-knowledge — Compilateur de la base de connaissances (dev-time)
+# tools/build-knowledge — Knowledge base compilers (dev time)
 
-Ce script **dev-time** (internet autorisé) compile la liste des **641 succès** de
-*The Binding of Isaac: Repentance+* et écrit les JSON bundlés par l'application.
-Il ne fait **pas** partie du binaire final : seuls les JSON générés sont embarqués,
-et l'app runtime ne fait **aucun** appel réseau.
+These **dev-time** scripts (internet allowed) compile the data bundled into the app.
+They are **not** part of the shipped binary: only the generated JSON is embedded, and the
+app makes **no** network call at runtime.
 
-> Créé par **reiassezbeau** — https://github.com/reiassezbeau
+> Created by **reiassezbeau** — https://github.com/reiassezbeau
 
-## Ce qu'il produit
+## What they produce
 
-- `src-tauri/resources/achievements.json` — les 641 succès : `id` (= secret-ID
-  in-game = bit dans la save), `name`, `description`, `category`, `dlc`, `hidden`,
-  `unlock` (`text` toujours lisible + classification structurée `type`/`character`/
-  `target`/`predictable`) et `reward`.
-- `src-tauri/resources/characters.json` — les 34 personnages (17 + 17 Tainted) avec
-  leur `save_index` (ordre binaire de la section marks).
-- `src-tauri/resources/endings.json` — les 12 completion marks (ordre binaire),
-  avec `mark_index` et `hard_matters`.
+### `build.ts` — the 641 achievements
 
-`routing_tips.json` est **édité à la main** (éditorial), pas généré ici.
+- `src-tauri/resources/achievements.json` — the 641 achievements: `id` (the in-game secret ID,
+  which is also the bit read from the save), `name`, `description`, `category`, `dlc`, `hidden`,
+  `unlock` (always-readable `text` plus a structured `type` / `character` / `target` /
+  `predictable` classification) and `reward`.
+- `src-tauri/resources/characters.json` — the 34 characters (17 + 17 Tainted) with their
+  `save_index` (the binary order of the marks section).
+- `src-tauri/resources/endings.json` — the 12 completion marks (binary order), with `mark_index`
+  and `hard_matters`.
+
+`routing_tips.json` is **hand-written** (editorial), not generated here.
+
+### `build-item-kb.ts` — the item knowledge base
+
+One curated, factual source produces **two formats** from a single definition:
+
+- `src-tauri/resources/item_kb.json` — for the app (rich views).
+- `isaac-tracker-mod/item_kb.lua` — for the mod (compact in-run lookups).
+
+Per item: `id`, `name`, roles, stat effects (with an additive vs multiplicative flag), granted
+tear flags, `is_tears_replacement`, `is_familiar`, `complexity`, plus a short factual note.
+Item IDs are verified against the official `CollectibleType` enum.
+
+**Constraints**: factual data only — **no ripped assets** (no sprites, no video) and no copied
+prose from other tools such as EID.
 
 ## Source
 
-Table `Achievements` du wiki communautaire **bindingofisaacrebirth.wiki.gg**
-(`order by = id`). L'ID de la table correspond exactement au « secret » in-game,
-donc au bit lu dans `persistentgamedata*.dat`. On réimplémente le parsing ; aucun
-code tiers n'est copié.
+The `Achievements` table of the community wiki **bindingofisaacrebirth.wiki.gg**
+(`order by = id`). The table ID matches the in-game "secret" exactly, and therefore the bit read
+from `persistentgamedata*.dat`. The parsing is reimplemented here; no third-party code is copied.
 
-Auto-contrôles durs (le build échoue si le wiki a changé de structure) :
+Hard self-checks (the build fails if the wiki structure changed):
+
 - total = **641**,
 - `id 1 = Magdalene`, `id 637 = Dead God`, `id 641 = Item Descriptions`,
-- aucun ID manquant sur `1..641`,
-- la répartition DLC affichée doit matcher les compteurs officiels
+- no missing ID across `1..641`,
+- the DLC breakdown must match the official counts
   (Rebirth 178, Afterbirth 98, Afterbirth+ 127, Repentance 234, Repentance+ 4).
 
-## Régénérer
+## Regenerating
 
 ```bash
-npm run build:knowledge
+npm run build:knowledge   # the 641 achievements
+npm run build:item-kb     # the item knowledge base (both formats)
 ```
 
-Les JSON générés sont **committés** (build reproductible sans re-scraper). Ne les
-édite pas à la main : relance le script. Si la structure du wiki change, ajuste le
-parsing/la classification ici puis régénère.
+The generated files are **committed** so the build is reproducible without re-scraping. Do not edit
+them by hand: re-run the script instead. If the wiki structure changes, adjust the parsing and
+classification here, then regenerate.
 
-## Limites connues
+## Known limitations
 
-- Le flag Steam « caché » (181 succès masqués) n'est pas exposé par le wiki :
-  `hidden` est mis à `false` pour tous. L'UI propose un révélateur de conditions
-  pour les succès **verrouillés** (spoilers) à la place.
-- La classification `unlock.type`/`predictable` est **heuristique** et volontairement
-  **conservatrice** : `predictable:true` seulement en haute confiance
-  (character_completion, boss_first_kill « propre », challenge). En cas de doute →
-  `predictable:false` (le succès reste visible dans le navigateur avec sa condition
-  texte, mais n'est pas prédit). La condition `unlock.text` est, elle, toujours exacte.
+- The Steam "hidden" flag (181 hidden achievements) is not exposed by the wiki, so `hidden` is set
+  to `false` for all of them. Instead, the UI offers an opt-in reveal for the conditions of
+  **locked** achievements (spoilers).
+- The `unlock.type` / `predictable` classification is **heuristic** and deliberately
+  **conservative**: `predictable: true` only in high-confidence cases (character_completion, clean
+  boss_first_kill, challenge). When in doubt it falls back to `predictable: false` — the
+  achievement stays visible in the browser with its condition text, but is not predicted. The
+  `unlock.text` condition itself is always exact.
+- The item knowledge base is intentionally **partial and extensible**: it prioritizes high-value,
+  highly reliable data (tear replacements and their conflicts, tear flags, flight, familiars,
+  classic stat-ups). Named synergies are a curated subset, not an exhaustive list.

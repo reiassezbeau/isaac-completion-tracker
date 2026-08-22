@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! ev_engine — moteur « valeur × probabilité ».
+//! ev_engine - the "value x probability" engine.
 //!
-//! Classe les prochaines actions par ESPÉRANCE de gain vers Dead God :
-//!   EV(perso, route) = Valeur × Probabilité.
-//! - Valeur = w_mark·(marques Hard gagnées) + w_ach·(succès de complétion) +
-//!   w_reward·(objets/familiers débloqués).
-//! - Probabilité = difficulté par défaut de la route (ancre « joueur moyen »)
-//!   mise à l'échelle par ta MAÎTRISE du perso (winrate lissé / baseline).
+//! Ranks the next actions by EXPECTED gain toward Dead God:
+//!   EV(character, route) = Value x Probability.
+//! - Value = w_mark*(Hard marks gained) + w_ach*(completion achievements) +
+//!   w_reward*(items/familiars unlocked).
+//! - Probability = the route's default difficulty (an "average player" anchor)
+//!   scaled by your MASTERY of the character (smoothed winrate / baseline).
 //!
-//! DÉTERMINISTE et 100 % offline. Sans aucune donnée de stats, la proba retombe
-//! exactement sur la difficulté par défaut de la route (démarrage à froid propre).
+//! DETERMINISTIC and 100% offline. With no stats data at all, the probability falls back
+//! exactly to the route's default difficulty (a clean cold start).
 
 use std::path::Path;
 
@@ -23,22 +23,22 @@ use crate::save_parser::MarkDifficulty;
 use crate::stats_reader::Run;
 
 // --------------------------------------------------------------------------
-// Configuration & routes (ressources bundlées / appdata)
+// Configuration and routes (bundled resources / app data)
 // --------------------------------------------------------------------------
 
-/// Une « route » = un chemin de run qui coche une ou plusieurs marques.
+/// A "route" is a run path that fills one or more marks.
 #[derive(Debug, Clone, Deserialize)]
 pub struct Route {
     pub id: String,
-    /// ids d'endings cochés si la route est réussie.
+    /// ending IDs filled when the route succeeds.
     pub fills: Vec<String>,
-    /// probabilité de réussite d'un « joueur moyen » (ancre, 0..1).
+    /// success probability for an "average player" (the anchor, 0..1).
     pub difficulty_default: f32,
     #[serde(default)]
     pub note: String,
 }
 
-/// Charge `routes.json` depuis le dossier de ressources résolu. Jamais fatal.
+/// Loads `routes.json` from the resolved resources folder. Never fatal.
 pub fn load_routes(resources_dir: &Path) -> Vec<Route> {
     std::fs::read_to_string(resources_dir.join("routes.json"))
         .ok()
@@ -46,20 +46,20 @@ pub fn load_routes(resources_dir: &Path) -> Vec<Route> {
         .unwrap_or_default()
 }
 
-/// Poids et priors du modèle EV. Ajustables via `appdata/ev_config.json`.
+/// Weights and priors for the EV model. Tunable through `appdata/ev_config.json`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EvConfig {
-    /// poids d'une marque Hard gagnée (l'objectif Dead God).
+    /// weight of a Hard mark gained (the Dead God goal).
     pub w_mark: f32,
-    /// poids d'un succès de complétion débloqué.
+    /// weight of a completion achievement unlocked.
     pub w_ach: f32,
-    /// poids d'un objet / familier débloqué.
+    /// weight of an item or familiar unlocked.
     pub w_reward: f32,
-    /// force du prior (nb de runs « virtuels » avant que tes stats ne pèsent).
+    /// prior strength (the number of "virtual" runs before your own stats carry weight).
     pub prior_k: f32,
-    /// winrate « joueur moyen » : ancre du facteur de maîtrise (skill = winrate/baseline).
+    /// "average player" winrate: the anchor for the mastery factor (skill = winrate/baseline).
     pub baseline_winrate: f32,
-    /// marques Hard gagnées par run gagnant (pour l'ETA Dead God).
+    /// Hard marks gained per winning run (used for the Dead God ETA).
     pub avg_marks_per_win: f32,
 }
 
@@ -77,7 +77,7 @@ impl Default for EvConfig {
 }
 
 impl EvConfig {
-    /// Charge depuis `appdata/ev_config.json` si présent, sinon valeurs par défaut.
+    /// Loads from `appdata/ev_config.json` when present, otherwise uses the defaults.
     pub fn load(app_data_dir: &Path) -> Self {
         std::fs::read_to_string(app_data_dir.join("ev_config.json"))
             .ok()
@@ -96,7 +96,7 @@ pub struct EvAction {
     pub character_name: String,
     pub route_id: String,
     pub route_note: String,
-    /// noms des marques réellement gagnées (pas encore Hard pour ce perso).
+    /// names of the marks actually gained (not yet Hard for this character).
     pub fills: Vec<String>,
     pub mark_gain: usize,
     pub ach_gain: usize,
@@ -104,7 +104,7 @@ pub struct EvAction {
     pub value: f32,
     pub probability: f32,
     pub ev: f32,
-    /// 0..1 : confiance dans la proba (basée sur le nb de runs de ce perso).
+    /// 0..1: confidence in the probability (based on this character's run count).
     pub confidence: f32,
     pub based_on_runs: usize,
     pub why: String,
@@ -114,7 +114,7 @@ pub struct EvAction {
 pub struct Bottleneck {
     pub ending_id: String,
     pub ending_name: String,
-    /// nb de persos qui n'ont PAS cette marque en Hard.
+    /// number of characters that do NOT have this mark on Hard.
     pub chars_missing: usize,
     pub difficulty_default: f32,
 }
@@ -144,12 +144,12 @@ pub struct OptimizerReport {
     pub bottlenecks: Vec<Bottleneck>,
     pub almost_there: Vec<AlmostThere>,
     pub eta: DeadGodEta,
-    /// total de runs « comptés » dans l'archive (indicateur de démarrage à froid).
+    /// total "counted" runs in the archive (a cold-start indicator).
     pub based_on_runs: usize,
 }
 
 // --------------------------------------------------------------------------
-// Helpers déterministes
+// Deterministic helpers
 // --------------------------------------------------------------------------
 
 fn is_counted(r: &Run) -> bool {
@@ -159,7 +159,7 @@ fn is_win(r: &Run) -> bool {
     r.outcome.as_deref() == Some("win")
 }
 
-/// (victoires, runs comptés) pour un perso donné.
+/// (wins, counted runs) for a given character.
 fn char_record(runs: &[Run], char_id: &str) -> (usize, usize) {
     let mut wins = 0;
     let mut n = 0;
@@ -172,7 +172,7 @@ fn char_record(runs: &[Run], char_id: &str) -> (usize, usize) {
     (wins, n)
 }
 
-/// Marque effective d'un perso sur un index de marque.
+/// A character's effective mark at a given mark index.
 fn mark_of(state: &State, save_index: usize, mark_index: usize) -> MarkDifficulty {
     state
         .marks
@@ -182,8 +182,8 @@ fn mark_of(state: &State, save_index: usize, mark_index: usize) -> MarkDifficult
         .unwrap_or(MarkDifficulty::None)
 }
 
-/// Succès (complétion, objets) prédictibles, encore verrouillés, déclenchés par
-/// finir `target` avec `char_id`. Retourne (succès de complétion, objets/familiers).
+/// Predictable achievements (completion, items), still locked, triggered by
+/// finishing `target` as `char_id`. Returns (completion achievements, items/familiars).
 fn locked_unlocks(kn: &Knowledge, state: &State, char_id: &str, target_id: &str) -> (usize, usize) {
     let mut ach = 0;
     let mut reward = 0;
@@ -210,10 +210,10 @@ fn locked_unlocks(kn: &Knowledge, state: &State, char_id: &str, target_id: &str)
     (ach, reward)
 }
 
-/// Probabilité de réussite = difficulté par défaut × facteur de maîtrise.
-/// - winrate lissé (Beta) vers baseline ; sans données -> baseline -> skill=1.
-/// - skill = winrate_lissé / baseline, borné [0.4, 1.8].
-/// - proba finale bornée [0.02, 0.98].
+/// Success probability = default difficulty x mastery factor.
+/// - winrate smoothed (Beta) toward the baseline; with no data it becomes baseline, so skill=1.
+/// - skill = smoothed_winrate / baseline, clamped to [0.4, 1.8].
+/// - the final probability is clamped to [0.02, 0.98].
 fn probability(difficulty: f32, wins: usize, n: usize, cfg: &EvConfig) -> f32 {
     let base = cfg.baseline_winrate.max(1e-3);
     let smoothed = (wins as f32 + base * cfg.prior_k) / (n as f32 + cfg.prior_k);
@@ -225,7 +225,7 @@ fn probability(difficulty: f32, wins: usize, n: usize, cfg: &EvConfig) -> f32 {
 // Calculs principaux
 // --------------------------------------------------------------------------
 
-/// Classement des prochaines actions par espérance de gain (EV décroissante).
+/// Ranks the next actions by expected value (descending EV).
 pub fn next_best_actions(
     state: &State,
     kn: &Knowledge,
@@ -256,7 +256,7 @@ pub fn next_best_actions(
             }
 
             if mark_gain == 0 && ach_gain == 0 && reward_gain == 0 {
-                continue; // rien à gagner ici
+                continue; // nothing to gain here
             }
 
             let value = cfg.w_mark * mark_gain as f32
@@ -291,7 +291,7 @@ pub fn next_best_actions(
         b.ev
             .partial_cmp(&a.ev)
             .unwrap_or(std::cmp::Ordering::Equal)
-            // départage stable : plus de marques d'abord, puis nom.
+            // stable tie-break: more marks first, then by name.
             .then(b.mark_gain.cmp(&a.mark_gain))
             .then(a.character_name.cmp(&b.character_name))
     });
@@ -303,29 +303,29 @@ fn build_why(mark_gain: usize, fills: &[String], ach: usize, reward: usize, p: f
     let mut parts = Vec::new();
     if mark_gain > 0 {
         parts.push(format!(
-            "coche {mark_gain} marque{} Hard ({})",
+            "fills {mark_gain} Hard mark{} ({})",
             if mark_gain > 1 { "s" } else { "" },
             fills.join(", ")
         ));
     }
     if ach > 0 {
-        parts.push(format!("{ach} succès de complétion"));
+        parts.push(format!("{ach} completion achievement(s)"));
     }
     if reward > 0 {
-        parts.push(format!("{reward} objet{}", if reward > 1 { "s" } else { "" }));
+        parts.push(format!("{reward} item{}", if reward > 1 { "s" } else { "" }));
     }
-    let gains = if parts.is_empty() { "rien de neuf".to_string() } else { parts.join(" + ") };
-    format!("Ce run {gains}. Réussite estimée : {:.0} %.", (p * 100.0).round())
+    let gains = if parts.is_empty() { "nothing new".to_string() } else { parts.join(" + ") };
+    format!("This run {gains}. Estimated success: {:.0}%.", (p * 100.0).round())
 }
 
-/// Marques qui bloquent le plus Dead God : cochées Hard chez le moins de persos.
+/// The marks that block Dead God the most: Hard on the fewest characters.
 pub fn bottlenecks(
     state: &State,
     kn: &Knowledge,
     routes: &[Route],
     limit: usize,
 ) -> Vec<Bottleneck> {
-    // difficulté par ending = min des routes qui le cochent (la voie la plus « facile »).
+    // difficulty per ending = the minimum across the routes that fill it (the "easiest" way).
     let difficulty_of = |ending_id: &str| -> f32 {
         routes
             .iter()
@@ -355,7 +355,7 @@ pub fn bottlenecks(
         .filter(|b| b.chars_missing > 0)
         .collect();
 
-    // le plus de persos manquants d'abord ; à égalité, la route la plus dure d'abord.
+    // most missing characters first; on a tie, the hardest route first.
     out.sort_by(|a, b| {
         b.chars_missing.cmp(&a.chars_missing).then(
             a.difficulty_default
@@ -367,7 +367,7 @@ pub fn bottlenecks(
     out
 }
 
-/// Persos les plus proches de la complétion totale (Hard partout).
+/// The characters closest to full completion (Hard everywhere).
 pub fn almost_there(state: &State, kn: &Knowledge, limit: usize) -> Vec<AlmostThere> {
     let mut out: Vec<AlmostThere> = kn
         .characters
@@ -389,13 +389,13 @@ pub fn almost_there(state: &State, kn: &Knowledge, limit: usize) -> Vec<AlmostTh
         .filter(|a| a.missing_marks > 0)
         .collect();
 
-    // le moins de marques manquantes d'abord (= le plus proche de finir).
+    // fewest missing marks first (that is, closest to finishing).
     out.sort_by(|a, b| a.missing_marks.cmp(&b.missing_marks).then(a.character_name.cmp(&b.character_name)));
     out.truncate(limit);
     out
 }
 
-/// Estimation (volontairement grossière, honnête) du chemin restant vers Dead God.
+/// A deliberately rough but honest estimate of the road left to Dead God.
 pub fn dead_god_eta(state: &State, runs: &[Run], cfg: &EvConfig) -> DeadGodEta {
     let remaining = state.dead_god_remaining();
     let counted: Vec<&Run> = runs.iter().filter(|r| is_counted(r)).collect();
@@ -413,12 +413,12 @@ pub fn dead_god_eta(state: &State, runs: &[Run], cfg: &EvConfig) -> DeadGodEta {
     };
 
     let note = if n == 0 {
-        "Estimation indisponible : joue quelques runs avec le mod de stats pour calibrer ton winrate."
+        "Estimate unavailable: play a few runs with the stats mod to calibrate your winrate."
             .to_string()
     } else {
         format!(
-            "Projection grossière : ~{:.1} marque(s) par run gagnant, winrate {:.0} %. \
-             S'affine au fil de tes runs.",
+            "Rough projection: about {:.1} mark(s) per winning run, winrate {:.0}%. \
+             It sharpens as you play more runs.",
             per_win,
             winrate.unwrap_or(0.0) * 100.0
         )
@@ -435,7 +435,7 @@ pub fn dead_god_eta(state: &State, runs: &[Run], cfg: &EvConfig) -> DeadGodEta {
     }
 }
 
-/// Rapport complet de l'optimiseur (une seule commande pour la vue).
+/// The optimizer's full report (a single command for the whole view).
 pub fn optimizer(
     state: &State,
     kn: &Knowledge,
@@ -455,7 +455,7 @@ pub fn optimizer(
 }
 
 // ===========================================================================
-// Tests déterministes
+// Deterministic tests
 // ===========================================================================
 #[cfg(test)]
 mod tests {
@@ -585,7 +585,7 @@ mod tests {
     #[test]
     fn cold_start_probability_equals_route_difficulty() {
         let cfg = EvConfig::default();
-        // aucune donnée -> skill=1 -> proba = difficulté (bornée).
+        // no data -> skill=1 -> probability equals the difficulty (clamped).
         let p = probability(0.4, 0, 0, &cfg);
         assert!((p - 0.4).abs() < 1e-4, "p={p}");
     }
@@ -604,7 +604,7 @@ mod tests {
         let cfg = EvConfig::default();
         let st = State::build(&save(&[], empty_grid()), &kn(), &Overrides::default());
         let acts = next_best_actions(&st, &kn(), &[], &routes(), &cfg, 20);
-        // isaac + beast_via_mother : 2 marques, +1 succès complétion (470), +1 objet (502 via hush? non).
+        // isaac + beast_via_mother: 2 marks, +1 completion achievement (470), and no item (502 targets hush).
         let a = acts
             .iter()
             .find(|a| a.character_id == "isaac" && a.route_id == "beast_via_mother")
@@ -622,7 +622,7 @@ mod tests {
         let st = State::build(&save(&[], empty_grid()), &kn(), &Overrides::default());
         let acts = next_best_actions(&st, &kn(), &[], &routes(), &cfg, 20);
         assert!(!acts.is_empty());
-        // Trié par EV décroissante.
+        // Sorted by descending EV.
         for w in acts.windows(2) {
             assert!(w[0].ev >= w[1].ev - 1e-6);
         }
@@ -632,23 +632,23 @@ mod tests {
     fn already_hard_marks_are_not_recounted() {
         let cfg = EvConfig::default();
         let mut grid = empty_grid();
-        grid[0][10] = mk(MarkDifficulty::Hard); // isaac mother déjà Hard
-        grid[0][11] = mk(MarkDifficulty::Hard); // isaac beast déjà Hard
+        grid[0][10] = mk(MarkDifficulty::Hard); // isaac mother already Hard
+        grid[0][11] = mk(MarkDifficulty::Hard); // isaac beast already Hard
         let st = State::build(&save(&[470], grid), &kn(), &Overrides::default());
         let acts = next_best_actions(&st, &kn(), &[], &routes(), &cfg, 20);
-        // isaac/beast_via_mother : marques déjà Hard + 470 débloqué -> action supprimée.
+        // isaac/beast_via_mother: marks already Hard and 470 unlocked, so the action is dropped.
         assert!(acts.iter().all(|a| !(a.character_id == "isaac" && a.route_id == "beast_via_mother")));
     }
 
     #[test]
     fn bottleneck_flags_most_missing_ending() {
         let mut grid = empty_grid();
-        // isaac a mother+beast Hard ; cain n'a rien -> beast & mother manquent chez 1 (cain).
+        // isaac has mother+beast on Hard; cain has nothing, so beast and mother are missing on 1 character (cain).
         grid[0][10] = mk(MarkDifficulty::Hard);
         grid[0][11] = mk(MarkDifficulty::Hard);
         let st = State::build(&save(&[], grid), &kn(), &Overrides::default());
         let b = bottlenecks(&st, &kn(), &routes(), 6);
-        // hush manque chez les 2 persos -> en tête.
+        // hush is missing on both characters, so it comes first.
         assert_eq!(b[0].ending_id, "hush");
         assert_eq!(b[0].chars_missing, 2);
     }
@@ -656,7 +656,7 @@ mod tests {
     #[test]
     fn almost_there_orders_closest_first() {
         let mut grid = empty_grid();
-        // cain : 2 des 3 marques en Hard -> il ne lui manque qu'1 (le plus proche).
+        // cain: 2 of the 3 marks on Hard, so only 1 is missing (the closest one).
         grid[2][10] = mk(MarkDifficulty::Hard);
         grid[2][11] = mk(MarkDifficulty::Hard);
         let st = State::build(&save(&[], grid), &kn(), &Overrides::default());

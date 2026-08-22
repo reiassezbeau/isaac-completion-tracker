@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! commands — surface Tauri (#[tauri::command]) + état applicatif partagé.
+//! commands - the Tauri surface (#[tauri::command]) plus shared app state.
 
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
@@ -30,7 +30,7 @@ pub struct AppState {
     pub overrides: Mutex<Overrides>,
     pub watcher: Mutex<Option<RecommendedWatcher>>,
     pub stats: Mutex<Archive>,
-    /// Dernière fusion mod -> archive (anti-amplification d'E/S).
+    /// Last mod-to-archive merge (guards against I/O amplification).
     pub stats_merged_at: Mutex<Option<std::time::Instant>>,
     pub routes: Vec<Route>,
     pub ev_config: EvConfig,
@@ -38,16 +38,16 @@ pub struct AppState {
     pub build_rules: BuildRules,
 }
 
-/// Anti-amplification d'E/S : une vue Stats déclenche 3-4 commandes d'affilée ;
-/// sans garde, chacune re-scannait le disque ET réécrivait tout l'historique.
+/// I/O amplification guard: opening the Stats view fires 3-4 commands in a row;
+/// without this, each one would re-scan the disk AND rewrite the whole history.
 const STATS_MERGE_TTL: std::time::Duration = std::time::Duration::from_millis(1500);
 
 impl AppState {
-    /// Fusionne les runs du mod dans l'archive et persiste. Retourne le nb de nouveaux.
-    /// N'écrit sur le disque QUE si de nouveaux runs sont apparus.
+    /// Merges the mod's runs into the archive and persists. Returns the number of new runs.
+    /// Writes to disk ONLY when something actually changed.
     fn refresh_stats(&self) -> usize {
         {
-            // Fusion déjà faite il y a moins de TTL -> on ne retouche pas le disque.
+            // Merged less than TTL ago, so leave the disk alone.
             let last = self.stats_merged_at.lock().unwrap();
             if last.map(|t| t.elapsed() < STATS_MERGE_TTL).unwrap_or(false) {
                 return 0;
@@ -55,9 +55,9 @@ impl AppState {
         }
         let mut a = self.stats.lock().unwrap();
         let report = a.merge_from_mod();
-        // On réécrit dès qu'il y a EU un changement (nouveau OU run mis à jour),
-        // pas seulement pour les nouveaux — sinon la progression d'un run en cours
-        // resterait en mémoire sans être persistée.
+        // We rewrite as soon as anything changed (a new run OR an updated one),
+        // not just for new ones; otherwise an in-progress run's progress
+        // would stay in memory without ever being persisted.
         if report.changed > 0 {
             let _ = a.save(&self.app_data_dir);
         }
@@ -65,7 +65,7 @@ impl AppState {
         report.new
     }
 
-    /// Force la fusion (bouton explicite) en ignorant le TTL.
+    /// Forces the merge (explicit button), ignoring the TTL.
     fn refresh_stats_forced(&self) -> usize {
         *self.stats_merged_at.lock().unwrap() = None;
         self.refresh_stats()
@@ -73,10 +73,10 @@ impl AppState {
 }
 
 impl AppState {
-    /// Construit l'état effectif (engine) à partir de la save chargée + overrides.
+    /// Builds the effective (engine) state from the loaded save plus overrides.
     fn engine_state(&self) -> Result<EngineState, String> {
         let cur = self.current.lock().unwrap();
-        let (save, _) = cur.as_ref().ok_or("Aucune sauvegarde chargée.")?;
+        let (save, _) = cur.as_ref().ok_or("No save loaded.")?;
         let ov = self.overrides.lock().unwrap();
         Ok(EngineState::build(save, &self.knowledge, &ov))
     }
@@ -101,10 +101,10 @@ pub fn load_slot(
     path: String,
 ) -> Result<engine::Dashboard, String> {
     let bytes = save_locator::read_file_with_retry(std::path::Path::new(&path))
-        .map_err(|e| format!("Lecture impossible : {e}"))?;
+        .map_err(|e| format!("Cannot read file: {e}"))?;
     let save = save_parser::parse(&bytes).map_err(|e| e.to_string())?;
 
-    // Watcher live sur ce fichier.
+    // Live watcher on this file.
     if let Ok(w) = watcher::watch_save(app.clone(), std::path::Path::new(&path)) {
         *state.watcher.lock().unwrap() = Some(w);
     }
@@ -117,10 +117,10 @@ pub fn load_slot(
 pub fn refresh(state: State<AppState>) -> Result<engine::Dashboard, String> {
     let path = {
         let cur = state.current.lock().unwrap();
-        cur.as_ref().map(|(_, p)| p.clone()).ok_or("Aucune sauvegarde chargée.")?
+        cur.as_ref().map(|(_, p)| p.clone()).ok_or("No save loaded.")?
     };
     let bytes = save_locator::read_file_with_retry(std::path::Path::new(&path))
-        .map_err(|e| format!("Lecture impossible : {e}"))?;
+        .map_err(|e| format!("Cannot read file: {e}"))?;
     let save = save_parser::parse(&bytes).map_err(|e| e.to_string())?;
     *state.current.lock().unwrap() = Some((save, path));
     dashboard(state)
@@ -154,8 +154,8 @@ pub fn get_characters(state: State<AppState>) -> Result<Vec<CharacterListItem>, 
         .characters
         .iter()
         .map(|c| {
-            // Chemin léger : pas de CharacterDetail complet (qui scannerait les
-            // 641 succès × 12 endings × 34 persos pour deux compteurs).
+            // Lightweight path: no full CharacterDetail, which would scan
+            // 641 achievements x 12 endings x 34 characters just for two counters.
             let (unlocked, marks_hard) = engine::character_summary(&st, &state.knowledge, c);
             CharacterListItem {
                 id: c.id.clone(),
@@ -174,7 +174,7 @@ pub fn get_characters(state: State<AppState>) -> Result<Vec<CharacterListItem>, 
 #[tauri::command]
 pub fn get_character(state: State<AppState>, id: String) -> Result<engine::CharacterDetail, String> {
     let st = state.engine_state()?;
-    engine::character_detail(&st, &state.knowledge, &id).ok_or_else(|| format!("Personnage inconnu : {id}"))
+    engine::character_detail(&st, &state.knowledge, &id).ok_or_else(|| format!("Unknown character: {id}"))
 }
 
 #[tauri::command]
@@ -185,7 +185,7 @@ pub fn predict(
 ) -> Result<engine::Prediction, String> {
     let st = state.engine_state()?;
     engine::predict(&st, &state.knowledge, &character_id, &target_id)
-        .ok_or_else(|| "Combinaison perso/cible inconnue.".to_string())
+        .ok_or_else(|| "Unknown character/target combination.".to_string())
 }
 
 #[tauri::command]
@@ -200,7 +200,7 @@ pub fn get_roadmap(state: State<AppState>) -> Result<engine::Roadmap, String> {
     Ok(engine::roadmap(&st, &state.knowledge))
 }
 
-/// Grille signature 34 × 12 (tous les persos × toutes les marques).
+/// The signature 34 x 12 grid (every character x every mark).
 #[tauri::command]
 pub fn get_marks_matrix(state: State<AppState>) -> Result<engine::MarksMatrix, String> {
     let st = state.engine_state()?;
@@ -323,7 +323,7 @@ fn path_status(p: Option<PathBuf>) -> PathStatus {
 
 #[derive(Serialize)]
 pub struct HealthReport {
-    /// Racine de jeu RÉELLE résolue (gère le piège OneDrive).
+    /// The REAL resolved game root (handles the OneDrive pitfall).
     pub game_root: PathStatus,
     pub mods_dir: PathStatus,
     pub data_dir: PathStatus,
@@ -338,7 +338,7 @@ pub struct HealthReport {
     pub mod_installed: bool,
     pub mod_dir: Option<String>,
     pub mod_data_file: Option<String>,
-    /// Mom battue sur le slot chargé (proxy : secret 4 « The Womb ») — cf. caveat §2.
+    /// Whether Mom has been beaten on the loaded slot (proxy: secret 4, "The Womb") - see caveat §2.
     pub mom_beaten: Option<bool>,
     pub warnings: Vec<String>,
 }
@@ -348,7 +348,7 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
     let game_root = paths::resolve_game_root();
     let mut warnings = Vec::new();
 
-    // Ambiguïté OneDrive : plusieurs "Documents" contiennent-ils un dossier de jeu ?
+    // OneDrive ambiguity: do several "Documents" folders contain a game folder?
     let roots_found: Vec<PathBuf> = paths::documents_candidates()
         .into_iter()
         .flat_map(|b| paths::game_roots_under(&b))
@@ -356,13 +356,13 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
         .collect();
     if roots_found.len() > 1 {
         warnings.push(format!(
-            "Plusieurs dossiers de jeu détectés (OneDrive ?) : {}. L'app utilise le premier réel.",
+            "Several game folders detected (OneDrive?): {}. The app uses the first real one.",
             roots_found.iter().map(|p| p.display().to_string()).collect::<Vec<_>>().join(" · ")
         ));
     }
     if let Some(r) = &game_root {
         if r.to_string_lossy().contains("OneDrive") {
-            warnings.push("Le dossier de jeu est sous OneDrive — la synchro peut déplacer les fichiers.".into());
+            warnings.push("The game folder sits under OneDrive; syncing may move files around.".into());
         }
     } else {
         warnings.push("Dossier de jeu introuvable. Lance le jeu au moins une fois, ou utilise « Localiser ma save… ».".into());
@@ -413,7 +413,7 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
     }
 }
 
-/// Source des fichiers du mod : bundle (resource_dir/isaac-tracker-mod) ou dev (repo).
+/// Where the mod files come from: the bundle (resource_dir/isaac-tracker-mod) or dev (the repo).
 fn mod_source_dir(app: &AppHandle) -> Option<PathBuf> {
     if let Ok(res) = app.path().resource_dir() {
         let p = res.join(paths::MOD_FOLDER);
@@ -439,12 +439,12 @@ pub fn is_tracker_mod_installed() -> bool {
 pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
     let src = mod_source_dir(&app).ok_or("Fichiers du mod introuvables dans les ressources de l'app.")?;
     let dest = paths::tracker_mod_dir()
-        .ok_or("Dossier de jeu introuvable — lance le jeu au moins une fois, puis réessaie.")?;
+        .ok_or("Game folder not found. Launch the game at least once, then try again.")?;
     std::fs::create_dir_all(&dest).map_err(|e| e.to_string())?;
     for f in ["metadata.xml", "main.lua"] {
         std::fs::copy(src.join(f), dest.join(f)).map_err(|e| format!("copie {f} : {e}"))?;
     }
-    // La KB d'items (générée) accompagne le mod si présente ; pas bloquant sinon.
+    // The generated item KB ships alongside the mod when present; not a blocker otherwise.
     let kb = src.join("item_kb.lua");
     if kb.exists() {
         let _ = std::fs::copy(kb, dest.join("item_kb.lua"));
@@ -452,7 +452,7 @@ pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
     Ok(dest.to_string_lossy().into_owned())
 }
 
-/// Lance Isaac via Steam (le mod ne fonctionne qu'une fois le jeu (re)démarré).
+/// Launches Isaac through Steam (the mod only works once the game is (re)started).
 #[tauri::command]
 pub fn launch_game(app: AppHandle) -> Result<(), String> {
     use tauri_plugin_opener::OpenerExt;
@@ -461,7 +461,7 @@ pub fn launch_game(app: AppHandle) -> Result<(), String> {
         .map_err(|e| e.to_string())
 }
 
-/// Copie datée de la sauvegarde dans l'appdata (filet de sécurité avant install mod).
+/// A dated copy of the save in the app data folder (a safety net before installing the mod).
 #[tauri::command]
 pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, String> {
     let src = Path::new(&slot_path);
@@ -483,8 +483,8 @@ pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, 
 
 // -- Stats (mod) ------------------------------------------------------------
 
-/// Fusionne les nouveaux runs du mod dans l'archive. Retourne le nb de nouveaux runs.
-/// Action explicite de l'utilisateur -> on ignore le TTL.
+/// Merges the mod's new runs into the archive. Returns the number of new runs.
+/// An explicit user action, so the TTL is ignored.
 #[tauri::command]
 pub fn refresh_stats(state: State<AppState>) -> usize {
     state.refresh_stats_forced()
@@ -511,7 +511,7 @@ pub fn get_character_stats(state: State<AppState>, char_id: String) -> analytics
     analytics::character_stats(&a.runs, &char_id)
 }
 
-/// Historique des runs (les plus récents d'abord), limité.
+/// Run history (most recent first), limited.
 #[tauri::command]
 pub fn get_run_history(state: State<AppState>, limit: usize) -> Vec<Run> {
     state.refresh_stats();
@@ -521,8 +521,8 @@ pub fn get_run_history(state: State<AppState>, limit: usize) -> Vec<Run> {
 
 // -- Optimiseur (moteur EV) -------------------------------------------------
 
-/// Rapport de l'optimiseur : prochaines actions classées par espérance de gain
-/// vers Dead God (valeur × probabilité), goulots, persos presque finis, ETA.
+/// The optimizer's report: next actions ranked by expected gain
+/// toward Dead God (value x probability), bottlenecks, almost-done characters, and the ETA.
 #[tauri::command]
 pub fn get_optimizer(state: State<AppState>, limit: usize) -> Result<ev_engine::OptimizerReport, String> {
     state.refresh_stats();
@@ -538,35 +538,35 @@ pub fn get_optimizer(state: State<AppState>, limit: usize) -> Result<ev_engine::
     ))
 }
 
-// -- Carte de stats partageable (PNG) ---------------------------------------
+// -- Shareable stats card (PNG) ---------------------------------------------
 
-/// Écrit les octets PNG d'une carte de stats (rendue au canvas côté frontend)
-/// vers le chemin choisi par l'utilisateur. 100 % local, aucun réseau.
+/// Writes the PNG bytes of a stats card (rendered on the front end's canvas)
+/// to the path chosen by the user. Fully local, no network.
 #[tauri::command]
 pub fn save_stat_card(path: String, bytes: Vec<u8>) -> Result<String, String> {
     let p = Path::new(&path);
     if let Some(dir) = p.parent() {
         std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
     }
-    std::fs::write(p, &bytes).map_err(|e| format!("Écriture impossible : {e}"))?;
+    std::fs::write(p, &bytes).map_err(|e| format!("Cannot write file: {e}"))?;
     Ok(p.to_string_lossy().into_owned())
 }
 
-// -- Assistant de build -----------------------------------------------------
+// -- Build Assistant --------------------------------------------------------
 
-/// Base de connaissances d'items (pour le sélecteur du simulateur).
+/// The item knowledge base (for the simulator's picker).
 #[tauri::command]
 pub fn get_item_kb(state: State<AppState>) -> Vec<ItemKb> {
     state.item_db.items.clone()
 }
 
-/// Feature A + B : composition + forces/faiblesses d'un build (liste d'ids d'items).
+/// Features A + B: composition plus strengths/weaknesses for a build (a list of item IDs).
 #[tauri::command]
 pub fn analyze_build(state: State<AppState>, item_ids: Vec<i64>) -> build_assistant::BuildAnalysis {
     build_assistant::analyze(&state.item_db, &item_ids, &state.build_rules)
 }
 
-/// Feature C : « try synergy » — delta + notes + verdict + radar avant/après.
+/// Feature C: "try synergy" - delta, notes, verdict, and the before/after radar.
 #[tauri::command]
 pub fn try_synergy(
     state: State<AppState>,

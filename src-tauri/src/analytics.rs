@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-//! analytics — stats derivees (Tier 2 & 3) calculees a la volee depuis l'archive.
-//! DETERMINISTE et 100% offline (aucun LLM). Tolerant aux runs anciens/incomplets.
+//! analytics - derived stats (Tier 2 & 3) computed on the fly from the archive.
+//! DETERMINISTIC and 100% offline (no LLM). Tolerant of old or incomplete runs.
 
 use std::collections::BTreeMap;
 
@@ -10,8 +10,8 @@ use serde::Serialize;
 
 use crate::stats_reader::Run;
 
-/// Un run "complet" (compte pour les stats/winrate) = cloture par une victoire ou
-/// une mort (on exclut les runs abandonnes/redemarres et ceux en cours).
+/// A "complete" run (one that counts toward stats/winrate) is closed by a win or
+/// a death (abandoned, restarted, and in-progress runs are excluded).
 fn is_counted(r: &Run) -> bool {
     matches!(r.outcome.as_deref(), Some("win") | Some("death"))
 }
@@ -29,9 +29,9 @@ pub struct CharacterStats {
     pub avg_hits: f32,
     pub min_hits: Option<u32>,
     pub avg_deepest_stage: f32,
-    /// hits par etage (proxy de proprete) — plus bas = plus clean.
+    /// hits per floor (a proxy for cleanliness) - lower is cleaner.
     pub cleanliness: f32,
-    /// etage moyen du premier hit (temps "intouche").
+    /// average floor of the first hit (how long you stayed untouched).
     pub first_hit_stage_avg: Option<f32>,
 }
 
@@ -42,15 +42,15 @@ pub struct StatsOverview {
     pub total_deaths: usize,
     pub overall_winrate: f32,
     pub avg_hits_per_run: f32,
-    /// (source, total) ayant inflige le plus de hits — ton "nemesis".
+    /// (source, total) that dealt the most hits - your "nemesis".
     pub nemesis: Option<(String, u32)>,
     pub hits_by_source: Vec<(String, u32)>,
     /// "stage-type" -> hits (heatmap), trie.
     pub hits_heatmap: Vec<(String, u32)>,
-    /// hits_total des N derniers runs comptes (tendance).
+    /// hits_total for the last N counted runs (trend).
     pub hits_trend: Vec<u32>,
     pub per_character: Vec<CharacterStats>,
-    /// Agrégats « champs larges » (mod v0.2.0+) sur les runs comptés.
+    /// "Wide field" aggregates (mod v0.2.0+) over the counted runs.
     pub total_kills: u64,
     pub total_boss_kills: u64,
     pub total_rooms_cleared: u64,
@@ -70,7 +70,7 @@ pub struct Insights {
     pub cleanest_characters: Vec<CharacterStats>,
     pub bloodiest_characters: Vec<CharacterStats>,
     pub best_clean_runs: Vec<CleanRecord>,
-    /// correlation (hits vs victoire) — negative attendue (moins de hits => plus de wins).
+    /// correlation (hits vs win) - expected to be negative (fewer hits means more wins).
     pub hits_win_correlation: Option<f32>,
     pub current_win_streak: usize,
     pub best_win_streak: usize,
@@ -88,7 +88,7 @@ fn char_stats(character: &str, runs: &[&Run]) -> CharacterStats {
     let avg_deepest = if n > 0 { sum_stage as f32 / n as f32 } else { 0.0 };
     let cleanliness = if avg_deepest > 0.0 { avg_hits / avg_deepest } else { avg_hits };
 
-    // Etage du premier hit : hits[0].stage si touche, sinon deepest (intouche jusque-la).
+    // Floor of the first hit: hits[0].stage if hit, otherwise deepest (untouched so far).
     let mut fh_sum = 0i64;
     let mut fh_n = 0usize;
     for r in runs {
@@ -176,7 +176,7 @@ pub fn character_stats(all: &[Run], char_id: &str) -> CharacterStats {
     char_stats(char_id, &runs)
 }
 
-/// Correlation de Pearson entre hits_total et victoire (1/0). None si trop peu de données.
+/// Pearson correlation between hits_total and win (1/0). None when there is too little data.
 fn hits_win_correlation(runs: &[&Run]) -> Option<f32> {
     let n = runs.len();
     if n < 3 {
@@ -216,7 +216,7 @@ pub fn insights(all: &[Run]) -> Insights {
     cleanest.truncate(8);
     bloodiest.truncate(8);
 
-    // Records : runs les plus clean (moins de hits), completes.
+    // Records: the cleanest runs (fewest hits), completed ones only.
     let mut records: Vec<CleanRecord> = counted
         .iter()
         .map(|r| CleanRecord {
@@ -229,7 +229,7 @@ pub fn insights(all: &[Run]) -> Insights {
     records.sort_by(|a, b| a.hits.cmp(&b.hits).then(b.deepest_stage.cmp(&a.deepest_stage)));
     records.truncate(10);
 
-    // Streaks de victoires (ordre d'archive ~ chronologique).
+    // Win streaks (archive order is roughly chronological).
     let mut best = 0usize;
     let mut cur = 0usize;
     for r in &counted {
@@ -240,7 +240,7 @@ pub fn insights(all: &[Run]) -> Insights {
             cur = 0;
         }
     }
-    // current_win_streak = victoires consecutives en fin de liste.
+    // current_win_streak = consecutive wins at the end of the list.
     let mut current = 0usize;
     for r in counted.iter().rev() {
         if is_win(r) {
@@ -328,7 +328,7 @@ mod tests {
         let ins = insights(&runs);
         assert_eq!(ins.best_win_streak, 2);
         assert_eq!(ins.current_win_streak, 1); // dernier est une win
-        // le run le plus clean = 0 hits
+        // the cleanest run has 0 hits
         assert_eq!(ins.best_clean_runs[0].hits, 0);
         assert_eq!(ins.total_runs, 4);
     }
