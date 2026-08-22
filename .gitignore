@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Assets de release stages localement (uploades sur GitHub Releases)
+release-assets/
