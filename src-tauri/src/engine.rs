@@ -254,6 +254,18 @@ fn character_unlocked(state: &State, kn: &Knowledge, char_name: &str) -> bool {
     }
 }
 
+/// Résumé LÉGER d'un personnage : (débloqué, nb de marks Hard).
+/// Utilisé par les listes (34 persos) : évite de construire un `CharacterDetail`
+/// complet — qui scanne les 641 succès pour chaque ending — juste pour compter.
+pub fn character_summary(state: &State, kn: &Knowledge, ch: &crate::knowledge::Character) -> (bool, usize) {
+    let hard = kn
+        .endings
+        .iter()
+        .filter(|e| state.mark_for(ch.save_index, e.mark_index) == MarkDifficulty::Hard)
+        .count();
+    (character_unlocked(state, kn, &ch.name), hard)
+}
+
 pub fn character_detail(state: &State, kn: &Knowledge, char_id: &str) -> Option<CharacterDetail> {
     let ch = kn.character(char_id)?;
 

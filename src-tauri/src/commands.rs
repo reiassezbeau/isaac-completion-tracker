@@ -18,7 +18,7 @@ use crate::knowledge::{Achievement, Character, Ending, Knowledge};
 use crate::overrides::Overrides;
 use crate::paths;
 use crate::save_locator::{self, SaveSlot};
-use crate::save_parser::{self, Edition, MarkDifficulty, SaveData, NUM_MARKS};
+use crate::save_parser::{self, Edition, SaveData, NUM_MARKS};
 use crate::stats_archive::Archive;
 use crate::stats_reader::Run;
 use crate::watcher;
@@ -30,19 +30,45 @@ pub struct AppState {
     pub overrides: Mutex<Overrides>,
     pub watcher: Mutex<Option<RecommendedWatcher>>,
     pub stats: Mutex<Archive>,
+    /// Dernière fusion mod -> archive (anti-amplification d'E/S).
+    pub stats_merged_at: Mutex<Option<std::time::Instant>>,
     pub routes: Vec<Route>,
     pub ev_config: EvConfig,
     pub item_db: ItemDb,
     pub build_rules: BuildRules,
 }
 
+/// Anti-amplification d'E/S : une vue Stats déclenche 3-4 commandes d'affilée ;
+/// sans garde, chacune re-scannait le disque ET réécrivait tout l'historique.
+const STATS_MERGE_TTL: std::time::Duration = std::time::Duration::from_millis(1500);
+
 impl AppState {
     /// Fusionne les runs du mod dans l'archive et persiste. Retourne le nb de nouveaux.
+    /// N'écrit sur le disque QUE si de nouveaux runs sont apparus.
     fn refresh_stats(&self) -> usize {
+        {
+            // Fusion déjà faite il y a moins de TTL -> on ne retouche pas le disque.
+            let last = self.stats_merged_at.lock().unwrap();
+            if last.map(|t| t.elapsed() < STATS_MERGE_TTL).unwrap_or(false) {
+                return 0;
+            }
+        }
         let mut a = self.stats.lock().unwrap();
-        let n = a.merge_from_mod();
-        let _ = a.save(&self.app_data_dir);
-        n
+        let report = a.merge_from_mod();
+        // On réécrit dès qu'il y a EU un changement (nouveau OU run mis à jour),
+        // pas seulement pour les nouveaux — sinon la progression d'un run en cours
+        // resterait en mémoire sans être persistée.
+        if report.changed > 0 {
+            let _ = a.save(&self.app_data_dir);
+        }
+        *self.stats_merged_at.lock().unwrap() = Some(std::time::Instant::now());
+        report.new
+    }
+
+    /// Force la fusion (bouton explicite) en ignorant le TTL.
+    fn refresh_stats_forced(&self) -> usize {
+        *self.stats_merged_at.lock().unwrap() = None;
+        self.refresh_stats()
     }
 }
 
@@ -128,14 +154,9 @@ pub fn get_characters(state: State<AppState>) -> Result<Vec<CharacterListItem>, 
         .characters
         .iter()
         .map(|c| {
-            let detail = engine::character_detail(&st, &state.knowledge, &c.id);
-            let (unlocked, marks_hard) = match &detail {
-                Some(d) => (
-                    d.character_unlocked,
-                    d.marks.iter().filter(|m| m.status == MarkDifficulty::Hard).count(),
-                ),
-                None => (true, 0),
-            };
+            // Chemin léger : pas de CharacterDetail complet (qui scannerait les
+            // 641 succès × 12 endings × 34 persos pour deux compteurs).
+            let (unlocked, marks_hard) = engine::character_summary(&st, &state.knowledge, c);
             CharacterListItem {
                 id: c.id.clone(),
                 name: c.name.clone(),
@@ -463,9 +484,10 @@ pub fn backup_save(state: State<AppState>, slot_path: String) -> Result<String, 
 // -- Stats (mod) ------------------------------------------------------------
 
 /// Fusionne les nouveaux runs du mod dans l'archive. Retourne le nb de nouveaux runs.
+/// Action explicite de l'utilisateur -> on ignore le TTL.
 #[tauri::command]
 pub fn refresh_stats(state: State<AppState>) -> usize {
-    state.refresh_stats()
+    state.refresh_stats_forced()
 }
 
 #[tauri::command]

@@ -71,6 +71,7 @@ pub fn run() {
                 overrides: Mutex::new(overrides),
                 watcher: Mutex::new(None),
                 stats: Mutex::new(stats),
+                stats_merged_at: Mutex::new(None),
                 routes,
                 ev_config,
                 item_db,
