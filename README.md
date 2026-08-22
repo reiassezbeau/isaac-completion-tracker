@@ -2,6 +2,10 @@
 
 **🇫🇷 Français** · [🇬🇧 English](README.en.md)
 
+[![Télécharger](https://img.shields.io/badge/T%C3%A9l%C3%A9charger-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.1.0/Isaac-Completion-Tracker_0.1.0_x64-setup.exe)
+[![Release](https://img.shields.io/github/v/release/reiassezbeau/isaac-completion-tracker?style=for-the-badge&color=d4af37)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest)
+[![licence](https://img.shields.io/badge/licence-GPL--3.0-8c1a1a?style=for-the-badge)](LICENSE)
+
 > Suivi de complétion **local et 100 % hors-ligne** pour *The Binding of Isaac: Repentance+*
 > (641 succès Steam). Lit ta sauvegarde en **lecture seule** et te dit précisément quoi
 > faire pour avancer — jusqu'à **Dead God**.
@@ -51,7 +55,9 @@ n'est trouvé, un bouton **« Localiser ma save… »** permet de pointer le dos
 
 ## Installation (utilisateur)
 
-Télécharge le dernier installeur `.exe` depuis les [Releases](https://github.com/reiassezbeau/isaac-completion-tracker/releases), lance-le, c'est tout.
+**[⬇️ Télécharger l'installeur Windows (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.1.0/Isaac-Completion-Tracker_0.1.0_x64-setup.exe)** — lance-le, c'est tout.
+
+Toutes les versions : [page des Releases](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest). Un `.msi` et les empreintes `SHA256SUMS.txt` y sont aussi fournis.
 
 > ⚠️ **SmartScreen** : l'installeur n'est pas signé (certificat payant). Windows peut afficher
 > « Windows a protégé votre ordinateur ». Clique sur **« Informations complémentaires » →
