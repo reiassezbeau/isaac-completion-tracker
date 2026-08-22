@@ -46,23 +46,13 @@ export function AboutView() {
           {t("nav.about")}
         </h2>
         <div className="space-y-2 text-sm text-isaac-muted">
-          <p>
-            Outil <strong className="text-isaac-text">100 % local et hors-ligne</strong> : il lit ta
-            sauvegarde (lecture seule) pour suivre tes 641 succès, tes completion marks par personnage, et
-            tracer ta route vers Dead God. Aucun appel réseau, aucune API Steam requise.
-          </p>
-          <p>
-            Projet open-source (licence GPL-3.0). La base des 641 succès est compilée au dev-time depuis le wiki
-            communautaire et embarquée dans l'app.
-          </p>
+          <p>{t("about.body1")}</p>
+          <p>{t("about.body2")}</p>
           <p className="flex items-center gap-1.5 text-xs">
             <Heart className="h-3 w-3 text-isaac-blood" />
-            Outil communautaire non affilié à Nicalis ni à Edmund McMillen.
+            {t("about.notAffiliated")}
           </p>
-          <p className="text-xs text-isaac-faint">
-            Esthétique 100 % originale (SVG maison) — aucun asset du jeu. Texture de parchemin :
-            domaine public (CC0, OpenGameArt).
-          </p>
+          <p className="text-xs text-isaac-faint">{t("about.assets")}</p>
         </div>
       </Card>
     </div>

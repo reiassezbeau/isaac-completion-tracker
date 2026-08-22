@@ -6,6 +6,7 @@ import { Activity, Skull, Swords, Trophy } from "lucide-react";
 import { api } from "../lib/api";
 import { useStore } from "../store";
 import { pct, stageKeyLabel } from "../lib/format";
+import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components/ui";
 import { Icon } from "../lib/art";
 import type { CharacterStats, Insights, Run, StatsOverview } from "../lib/types";
@@ -22,12 +23,12 @@ function useCharNames() {
   return (id: string) => names[id] ?? id;
 }
 
-function outcomePill(outcome: string | null) {
+function outcomePill(outcome: string | null, t: (k: string) => string) {
   if (outcome === "win")
     return <Pill className="border-isaac-done/40 bg-isaac-done/10 text-isaac-done">win</Pill>;
   if (outcome === "death")
     return <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">death</Pill>;
-  return <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">{outcome ?? "en cours"}</Pill>;
+  return <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">{outcome ?? t("st.inProgress")}</Pill>;
 }
 
 function StatTile({ label, value, hint, tone, icon }: { label: string; value: string; hint?: string; tone?: "gold" | "blood" | "done"; icon?: string }) {
@@ -49,18 +50,19 @@ function StatTile({ label, value, hint, tone, icon }: { label: string; value: st
 }
 
 function CharTable({ rows, name }: { rows: CharacterStats[]; name: (id: string) => string }) {
-  if (rows.length === 0) return <p className="text-sm text-isaac-muted">Aucune donnée par personnage.</p>;
+  const t = useT();
+  if (rows.length === 0) return <p className="text-sm text-isaac-muted">{t("st.noCharData")}</p>;
   const maxAvg = Math.max(...rows.map((r) => r.avg_hits), 1);
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-xs uppercase tracking-widest text-isaac-muted">
-            <th className="py-1 pr-3">Perso</th>
-            <th className="py-1 pr-3">Runs</th>
-            <th className="py-1 pr-3">Winrate</th>
-            <th className="py-1 pr-3">Hits/run</th>
-            <th className="py-1">Propreté</th>
+            <th className="py-1 pr-3">{t("st.character")}</th>
+            <th className="py-1 pr-3">{t("st.runs")}</th>
+            <th className="py-1 pr-3">{t("char.winrate")}</th>
+            <th className="py-1 pr-3">{t("char.hitsPerRun")}</th>
+            <th className="py-1">{t("st.cleanliness")}</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +77,7 @@ function CharTable({ rows, name }: { rows: CharacterStats[]; name: (id: string) 
                   <div className="h-1.5 w-24 overflow-hidden rounded-full bg-isaac-surface2">
                     <div className="h-full rounded-full bg-isaac-blood" style={{ width: `${(r.avg_hits / maxAvg) * 100}%` }} />
                   </div>
-                  <span className="text-xs text-isaac-muted">{r.cleanliness.toFixed(2)}/étage</span>
+                  <span className="text-xs text-isaac-muted">{r.cleanliness.toFixed(2)}{t("st.perFloor")}</span>
                 </div>
               </td>
             </tr>
@@ -87,6 +89,7 @@ function CharTable({ rows, name }: { rows: CharacterStats[]; name: (id: string) 
 }
 
 export function StatsView() {
+  const t = useT();
   const [tab, setTab] = useState<Tab>("overview");
   const [ov, setOv] = useState<StatsOverview | null>(null);
   const [ins, setIns] = useState<Insights | null>(null);
@@ -108,11 +111,11 @@ export function StatsView() {
   if (ov.total_runs === 0) {
     return (
       <div className="mx-auto max-w-2xl py-6">
-        <EmptyState title="Aucune donnée de stats pour l'instant.">
-          Installe le mod compagnon et joue un run — tes hits, winrates et tendances apparaîtront ici.
+        <EmptyState title={t("st.empty")}>
+          {t("st.emptyHint")}
           <div className="mt-3">
             <button onClick={() => setView("diagnostic")} className="rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-2 text-sm text-isaac-gold">
-              Aller au Diagnostic (installer le mod)
+              {t("st.goDiag")}
             </button>
           </div>
         </EmptyState>
@@ -121,15 +124,15 @@ export function StatsView() {
   }
 
   const tabs: [Tab, string][] = [
-    ["overview", "Aperçu"],
-    ["runs", "Runs"],
-    ["insights", "Insights"],
+    ["overview", t("st.overview")],
+    ["runs", t("st.runs")],
+    ["insights", t("st.insights")],
   ];
 
   return (
     <div className="mx-auto max-w-5xl space-y-5">
       <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-        <Activity className="h-6 w-6 text-isaac-dried" /> Stats de jeu
+        <Activity className="h-6 w-6 text-isaac-dried" /> {t("st.title")}
       </h1>
       <div className="flex gap-1 rounded-lg border border-isaac-border bg-isaac-surface p-1 text-sm">
         {tabs.map(([id, label]) => (
@@ -146,24 +149,24 @@ export function StatsView() {
       {tab === "overview" && (
         <>
           <div className="grid gap-3 sm:grid-cols-4">
-            <StatTile label="Runs comptés" value={String(ov.total_runs)} hint={`${ov.total_wins}W / ${ov.total_deaths}D`} icon="dice" />
-            <StatTile label="Winrate" value={pct(ov.overall_winrate)} tone="done" icon="star" />
-            <StatTile label="Hits / run" value={ov.avg_hits_per_run.toFixed(1)} tone="blood" icon="tear" />
-            <StatTile label="Nemesis" value={ov.nemesis ? ov.nemesis[0] : "—"} hint={ov.nemesis ? `${ov.nemesis[1]} hits` : undefined} tone="gold" icon="skull" />
+            <StatTile label={t("st.countedRuns")} value={String(ov.total_runs)} hint={`${ov.total_wins}W / ${ov.total_deaths}D`} icon="dice" />
+            <StatTile label={t("char.winrate")} value={pct(ov.overall_winrate)} tone="done" icon="star" />
+            <StatTile label={t("char.hitsPerRun")} value={ov.avg_hits_per_run.toFixed(1)} tone="blood" icon="tear" />
+            <StatTile label={t("st.nemesis")} value={ov.nemesis ? ov.nemesis[0] : "—"} hint={ov.nemesis ? `${ov.nemesis[1]} ${t("st.hits")}` : undefined} tone="gold" icon="skull" />
           </div>
 
           <div className="grid gap-3 sm:grid-cols-4">
-            <StatTile label="Ennemis tués" value={ov.total_kills.toLocaleString("fr")} tone="blood" icon="fly" />
-            <StatTile label="Boss battus" value={String(ov.total_boss_kills)} tone="gold" icon="skull" />
-            <StatTile label="Salles nettoyées" value={ov.total_rooms_cleared.toLocaleString("fr")} icon="chest" />
-            <StatTile label="Deals du diable" value={String(ov.total_devil_deals)} tone="blood" icon="horns" />
+            <StatTile label={t("st.kills")} value={ov.total_kills.toLocaleString("fr")} tone="blood" icon="fly" />
+            <StatTile label={t("st.bossKills")} value={String(ov.total_boss_kills)} tone="gold" icon="skull" />
+            <StatTile label={t("st.rooms")} value={ov.total_rooms_cleared.toLocaleString("fr")} icon="chest" />
+            <StatTile label={t("st.deals")} value={String(ov.total_devil_deals)} tone="blood" icon="horns" />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
-              <SectionTitle>Hits par source</SectionTitle>
+              <SectionTitle>{t("st.hitsBySource")}</SectionTitle>
               {ov.hits_by_source.length === 0 ? (
-                <p className="text-sm text-isaac-muted">Aucun hit enregistré.</p>
+                <p className="text-sm text-isaac-muted">{t("st.noHits")}</p>
               ) : (
                 <div className="space-y-2">
                   {ov.hits_by_source.map(([src, n]) => (
@@ -180,9 +183,9 @@ export function StatsView() {
             </Card>
 
             <Card>
-              <SectionTitle hint="où tu prends des coups">Heatmap par étage</SectionTitle>
+              <SectionTitle hint={t("st.whereHit")}>{t("st.heatmap")}</SectionTitle>
               {ov.hits_heatmap.length === 0 ? (
-                <p className="text-sm text-isaac-muted">Aucune donnée.</p>
+                <p className="text-sm text-isaac-muted">{t("st.noData")}</p>
               ) : (
                 <div className="space-y-1.5">
                   {ov.hits_heatmap.map(([key, n]) => (
@@ -200,7 +203,7 @@ export function StatsView() {
           </div>
 
           <Card>
-            <SectionTitle hint="hits/run des derniers runs">Tendance</SectionTitle>
+            <SectionTitle hint={t("st.trendHint")}>{t("st.trend")}</SectionTitle>
             <div className="flex h-24 items-end gap-1">
               {ov.hits_trend.map((n, i) => (
                 <div key={i} className="flex-1 rounded-t bg-isaac-blood/70" style={{ height: `${(n / trendMax) * 100}%` }} title={`${n} hits`} />
@@ -209,7 +212,7 @@ export function StatsView() {
           </Card>
 
           <Card>
-            <SectionTitle>Par personnage</SectionTitle>
+            <SectionTitle>{t("st.byCharacter")}</SectionTitle>
             <CharTable rows={ov.per_character} name={name} />
           </Card>
         </>
@@ -217,16 +220,16 @@ export function StatsView() {
 
       {tab === "runs" && (
         <Card>
-          <SectionTitle hint={`${runs.length} runs récents`}>Historique des runs</SectionTitle>
+          <SectionTitle hint={`${runs.length} ${t("st.recentRuns")}`}>Historique des runs</SectionTitle>
           {runs.length === 0 ? (
-            <p className="text-sm text-isaac-muted">Aucun run enregistré.</p>
+            <p className="text-sm text-isaac-muted">{t("st.noRuns")}</p>
           ) : (
             <div className="space-y-1.5">
               {runs.map((r) => (
                 <div key={r.run_id} className="flex items-center justify-between gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2 text-sm">
                   <span className="flex items-center gap-2">
                     <span className="font-medium">{name(r.character)}</span>
-                    {outcomePill(r.outcome)}
+                    {outcomePill(r.outcome, t)}
                     <span className="text-xs text-isaac-muted">slot {r.slot}</span>
                   </span>
                   <span className="flex flex-wrap items-center justify-end gap-x-3 gap-y-0.5 text-xs text-isaac-muted">
@@ -234,14 +237,14 @@ export function StatsView() {
                       <Icon name="tear" size={12} />
                       {r.hits_total}
                     </span>
-                    <span>étage {r.deepest_stage}</span>
+                    <span>{t("st.floor")} {r.deepest_stage}</span>
                     {r.kills != null && (
                       <span className="inline-flex items-center gap-1">
                         <Icon name="skull" size={12} />
                         {r.kills}
                       </span>
                     )}
-                    {r.rooms_cleared != null && <span>{r.rooms_cleared} salles</span>}
+                    {r.rooms_cleared != null && <span>{r.rooms_cleared} {t("st.rooms")}</span>}
                     {r.final_build.length > 0 && (
                       <span className="inline-flex items-center gap-1 text-isaac-gold/80">
                         <Icon name="pedestal" size={12} />
@@ -260,33 +263,33 @@ export function StatsView() {
       {tab === "insights" && ins && (
         <>
           <div className="grid gap-3 sm:grid-cols-3">
-            <StatTile label="Streak de victoires" value={String(ins.current_win_streak)} hint={`record : ${ins.best_win_streak}`} tone="gold" />
+            <StatTile label={t("st.winStreak")} value={String(ins.current_win_streak)} hint={`${t("st.record")} ${ins.best_win_streak}`} tone="gold" />
             <StatTile
-              label="Corrélation hits↔win"
+              label={t("st.correlation")}
               value={ins.hits_win_correlation == null ? "—" : ins.hits_win_correlation.toFixed(2)}
-              hint={ins.hits_win_correlation != null && ins.hits_win_correlation < 0 ? "moins de hits → plus de wins" : "pas assez de données"}
+              hint={ins.hits_win_correlation != null && ins.hits_win_correlation < 0 ? t("st.fewerHits") : t("st.notEnough")}
             />
-            <StatTile label="Runs analysés" value={String(ins.total_runs)} />
+            <StatTile label={t("st.analyzed")} value={String(ins.total_runs)} />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <SectionTitle>
-                <span className="inline-flex items-center gap-1"><Trophy className="h-4 w-4 text-isaac-gold" /> Persos les plus clean</span>
+                <span className="inline-flex items-center gap-1"><Trophy className="h-4 w-4 text-isaac-gold" /> {t("st.cleanest")}</span>
               </SectionTitle>
               <CharTable rows={ins.cleanest_characters} name={name} />
             </Card>
             <Card>
               <SectionTitle>
-                <span className="inline-flex items-center gap-1"><Swords className="h-4 w-4 text-isaac-blood" /> Les plus « saignants »</span>
+                <span className="inline-flex items-center gap-1"><Swords className="h-4 w-4 text-isaac-blood" /> {t("st.bloodiest")}</span>
               </SectionTitle>
               <CharTable rows={ins.bloodiest_characters} name={name} />
             </Card>
           </div>
 
           <Card>
-            <SectionTitle hint="tes runs les plus propres">
-              <span className="inline-flex items-center gap-1"><Activity className="h-4 w-4" /> Records de propreté</span>
+            <SectionTitle hint={t("st.cleanestRuns")}>
+              <span className="inline-flex items-center gap-1"><Activity className="h-4 w-4" /> {t("st.cleanRecords")}</span>
             </SectionTitle>
             <div className="space-y-1.5">
               {ins.best_clean_runs.map((r, i) => (
@@ -294,11 +297,11 @@ export function StatsView() {
                   <span className="flex items-center gap-2">
                     <span className="text-isaac-gold">#{i + 1}</span>
                     <span className="font-medium">{name(r.character)}</span>
-                    {outcomePill(r.outcome)}
+                    {outcomePill(r.outcome, t)}
                   </span>
                   <span className="flex items-center gap-3 text-xs text-isaac-muted">
                     <span className="inline-flex items-center gap-1"><Skull className="h-3 w-3" />{r.hits} hits</span>
-                    <span>étage {r.deepest_stage}</span>
+                    <span>{t("st.floor")} {r.deepest_stage}</span>
                   </span>
                 </div>
               ))}

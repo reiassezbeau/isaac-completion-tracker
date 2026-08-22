@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Crosshair, Flame, Gauge, Info, Sparkles, Target, TrendingUp } from "lucide-react";
 import { api } from "../lib/api";
 import { pct } from "../lib/format";
+import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components/ui";
 import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { AlmostThere, Bottleneck, DeadGodEta, EvAction, OptimizerReport } from "../lib/types";
@@ -17,12 +18,13 @@ function probTone(p: number): "blood" | "gold" | "done" {
 }
 
 function EtaHero({ eta }: { eta: DeadGodEta }) {
+  const t = useT();
   const done = eta.total - eta.remaining;
   return (
     <Card>
-      <SectionTitle hint="objectif ultime : Hard partout (34 × 12)">
+      <SectionTitle hint={t("opt.ultimate")}>
         <span className="inline-flex items-center gap-1">
-          <Gauge className="h-4 w-4 text-isaac-gold" /> Route vers Dead God
+          <Gauge className="h-4 w-4 text-isaac-gold" /> {t("road.route")}
         </span>
       </SectionTitle>
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -32,16 +34,16 @@ function EtaHero({ eta }: { eta: DeadGodEta }) {
             <span className="text-isaac-muted"> / {eta.total}</span>
           </div>
           <div className="mt-1 text-sm text-isaac-muted">
-            marques dorées · <span className="text-isaac-blood">{eta.remaining} restantes</span>
+            {t("road.goldMarks")} · <span className="text-isaac-blood">{eta.remaining} {t("dash.remaining")}</span>
           </div>
         </div>
         <div className="flex gap-6 text-right">
           <div>
-            <div className="text-xs uppercase tracking-widest text-isaac-muted">Runs gagnants estimés</div>
+            <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("opt.winRuns")}</div>
             <div className="text-xl font-bold">{eta.estimated_winning_runs ?? "—"}</div>
           </div>
           <div>
-            <div className="text-xs uppercase tracking-widest text-isaac-muted">Tentatives estimées</div>
+            <div className="text-xs uppercase tracking-widest text-isaac-muted">{t("opt.attempts")}</div>
             <div className="text-xl font-bold text-isaac-blood">{eta.estimated_attempts ?? "—"}</div>
           </div>
         </div>
@@ -58,6 +60,7 @@ function EtaHero({ eta }: { eta: DeadGodEta }) {
 }
 
 function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; maxEv: number }) {
+  const t = useT();
   const tone = probTone(action.probability);
   const barColor =
     tone === "done" ? "bg-isaac-done" : tone === "gold" ? "bg-isaac-gold" : "bg-isaac-blood";
@@ -75,17 +78,17 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
         <div className="flex flex-shrink-0 flex-wrap items-center justify-end gap-1.5">
           {action.mark_gain > 0 && (
             <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">
-              +{action.mark_gain} marque{action.mark_gain > 1 ? "s" : ""}
+              +{action.mark_gain} {t("opt.marks")}
             </Pill>
           )}
           {action.ach_gain > 0 && (
             <Pill className="border-isaac-done/40 bg-isaac-done/10 text-isaac-done">
-              +{action.ach_gain} succès
+              +{action.ach_gain} {t("dash.newAch")}
             </Pill>
           )}
           {action.reward_gain > 0 && (
             <Pill className="border-isaac-blood/30 bg-isaac-blood/10 text-isaac-blood/90">
-              +{action.reward_gain} objet{action.reward_gain > 1 ? "s" : ""}
+              +{action.reward_gain} {t("opt.items")}
             </Pill>
           )}
         </div>
@@ -101,7 +104,7 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
           <div className={`h-full rounded-full ${barColor}`} style={{ width: `${(action.ev / maxEv) * 100}%` }} />
         </div>
         <span className="w-24 flex-shrink-0 text-right text-isaac-muted">
-          réussite{" "}
+          {t("opt.success")}{" "}
           <span className={tone === "done" ? "text-isaac-done" : tone === "gold" ? "text-isaac-gold" : "text-isaac-blood"}>
             {pct(action.probability)}
           </span>
@@ -109,7 +112,7 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
       </div>
       {action.based_on_runs === 0 && (
         <div className="mt-1 text-[0.7rem] text-isaac-muted/80">
-          proba = difficulté par défaut (aucun run de ce perso pour l'instant)
+          {t("opt.defaultProb")}
         </div>
       )}
     </div>
@@ -117,8 +120,9 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
 }
 
 function BottleneckList({ items }: { items: Bottleneck[] }) {
+  const t = useT();
   if (items.length === 0)
-    return <p className="text-sm text-isaac-done">Aucun goulot : tout est complété 🎉</p>;
+    return <p className="text-sm text-isaac-done">{t("opt.noBottle")}</p>;
   const max = Math.max(...items.map((b) => b.chars_missing), 1);
   return (
     <div className="space-y-2">
@@ -132,7 +136,7 @@ function BottleneckList({ items }: { items: Bottleneck[] }) {
               {b.ending_name}
             </span>
             <span className="text-xs text-isaac-muted">
-              {b.chars_missing} perso{b.chars_missing > 1 ? "s" : ""} · ~{pct(b.difficulty_default)} réussite
+              {b.chars_missing} {t("opt.charsMissing")} · ~{pct(b.difficulty_default)} {t("opt.success")}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-isaac-surface2">
@@ -148,8 +152,9 @@ function BottleneckList({ items }: { items: Bottleneck[] }) {
 }
 
 function AlmostList({ items }: { items: AlmostThere[] }) {
+  const t = useT();
   if (items.length === 0)
-    return <p className="text-sm text-isaac-muted">Aucun perso proche de la complétion.</p>;
+    return <p className="text-sm text-isaac-muted">{t("opt.noAlmost")}</p>;
   return (
     <div className="space-y-2">
       {items.map((a) => (
@@ -165,7 +170,7 @@ function AlmostList({ items }: { items: AlmostThere[] }) {
             </div>
           </div>
           <Pill className="flex-shrink-0 border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">
-            {a.missing_marks} restante{a.missing_marks > 1 ? "s" : ""}
+            {a.missing_marks} {t("opt.remainingF")}
           </Pill>
         </div>
       ))}
@@ -174,6 +179,7 @@ function AlmostList({ items }: { items: AlmostThere[] }) {
 }
 
 export function OptimizerView() {
+  const t = useT();
   const [report, setReport] = useState<OptimizerReport | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -187,7 +193,7 @@ export function OptimizerView() {
   if (error) {
     return (
       <div className="mx-auto max-w-2xl py-6">
-        <EmptyState title="Optimiseur indisponible.">{error}</EmptyState>
+        <EmptyState title={t("opt.unavailable")}>{error}</EmptyState>
       </div>
     );
   }
@@ -199,11 +205,10 @@ export function OptimizerView() {
     <div className="mx-auto max-w-5xl space-y-5">
       <div>
         <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-          <Target className="h-6 w-6 text-isaac-dried" /> Optimiseur
+          <Target className="h-6 w-6 text-isaac-dried" /> {t("nav.optimizer")}
         </h1>
         <p className="mt-1 text-sm text-isaac-muted">
-          Que jouer ensuite pour avancer le plus vite vers Dead God — classé par espérance de gain
-          (valeur × probabilité de réussite).
+          {t("opt.sub")}
         </p>
       </div>
 
@@ -213,21 +218,19 @@ export function OptimizerView() {
         <div className="flex items-start gap-2 rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-3 text-sm text-isaac-text">
           <Sparkles className="mt-0.5 h-4 w-4 flex-shrink-0 text-isaac-gold" />
           <span>
-            Aucune donnée de stats pour l'instant : les probabilités affichées sont les difficultés
-            par défaut de chaque route. Installe le mod compagnon et joue — le classement s'ajustera à
-            <em> ta</em> maîtrise de chaque perso.
+            {t("opt.coldStart")}
           </span>
         </div>
       )}
 
       <Card>
-        <SectionTitle hint="classé par espérance de gain">
+        <SectionTitle hint={t("opt.byEv")}>
           <span className="inline-flex items-center gap-1">
-            <TrendingUp className="h-4 w-4 text-isaac-gold" /> Prochaines actions
+            <TrendingUp className="h-4 w-4 text-isaac-gold" /> {t("opt.nextActions")}
           </span>
         </SectionTitle>
         {report.actions.length === 0 ? (
-          <p className="text-sm text-isaac-done">Plus rien à optimiser — Dead God atteint ? 🎉</p>
+          <p className="text-sm text-isaac-done">{t("opt.nothingLeft")}</p>
         ) : (
           <div className="space-y-2">
             {report.actions.map((a, i) => (
@@ -239,17 +242,17 @@ export function OptimizerView() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <SectionTitle hint="marques manquantes chez le plus de persos">
+          <SectionTitle hint={t("opt.bottleHint")}>
             <span className="inline-flex items-center gap-1">
-              <Flame className="h-4 w-4 text-isaac-blood" /> Goulots d'étranglement
+              <Flame className="h-4 w-4 text-isaac-blood" /> {t("opt.bottlenecks")}
             </span>
           </SectionTitle>
           <BottleneckList items={report.bottlenecks} />
         </Card>
         <Card>
-          <SectionTitle hint="persos les plus proches du 100 %">
+          <SectionTitle hint={t("opt.almostHint")}>
             <span className="inline-flex items-center gap-1">
-              <Crosshair className="h-4 w-4 text-isaac-gold" /> Presque fini
+              <Crosshair className="h-4 w-4 text-isaac-gold" /> {t("opt.almost")}
             </span>
           </SectionTitle>
           <AlmostList items={report.almost_there} />

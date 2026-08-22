@@ -7,6 +7,7 @@ import { Download, Image as ImageIcon } from "lucide-react";
 import { api } from "../lib/api";
 import { useStore } from "../store";
 import { Card, EmptyState, SectionTitle } from "../components/ui";
+import { useT } from "../lib/useT";
 import type { Dashboard, Insights, Run, StatsOverview } from "../lib/types";
 
 type Template = "profile" | "run";
@@ -104,10 +105,10 @@ function paintHeader(ctx: CanvasRenderingContext2D, subtitle: string) {
   ctx.fillText(subtitle, 48, 90);
 }
 
-function paintWatermark(ctx: CanvasRenderingContext2D) {
+function paintWatermark(ctx: CanvasRenderingContext2D, t: (k: string) => string) {
   ctx.fillStyle = C.muted;
   ctx.font = "500 16px system-ui, sans-serif";
-  ctx.fillText("github.com/reiassezbeau · outil communautaire, non affilié à Nicalis / Edmund McMillen", 48, H - 30);
+  ctx.fillText("github.com/reiassezbeau · " + t("about.notAffiliated"), 48, H - 30);
 }
 
 function pctStr(x: number): string {
@@ -116,11 +117,11 @@ function pctStr(x: number): string {
 
 function drawProfile(
   ctx: CanvasRenderingContext2D,
-  data: { dash: Dashboard; ov: StatsOverview | null; ins: Insights | null; attempts: number | null; name: (id: string) => string },
+  data: { dash: Dashboard; ov: StatsOverview | null; ins: Insights | null; attempts: number | null; name: (id: string) => string; t: (k: string) => string },
 ) {
-  const { dash, ov, ins, attempts, name } = data;
+  const { dash, ov, ins, attempts, name, t } = data;
   paintFrame(ctx);
-  paintHeader(ctx, "Progression vers Dead God");
+  paintHeader(ctx, t("card.progressTo"));
 
   const dgDone = dash.dead_god_total - dash.dead_god_remaining;
   const dgPct = dash.dead_god_total > 0 ? dgDone / dash.dead_god_total : 0;
@@ -131,10 +132,10 @@ function drawProfile(
   ctx.fillText(pctStr(dgPct), 48, 236);
   ctx.fillStyle = C.text;
   ctx.font = "600 26px system-ui, sans-serif";
-  ctx.fillText("vers Dead God", 48, 280);
+  ctx.fillText(t("card.towardDG"), 48, 280);
   ctx.fillStyle = C.muted;
   ctx.font = "500 20px system-ui, sans-serif";
-  ctx.fillText(`${dgDone} / ${dash.dead_god_total} marques Hard  ·  ${dash.total_unlocked} / ${dash.total} succès`, 48, 312);
+  ctx.fillText(`${dgDone} / ${dash.dead_god_total} · ${dash.total_unlocked} / ${dash.total} — ${t("card.hardMarksAch")}`, 48, 312);
 
   // Barre de progression Dead God
   const bx = 48;
@@ -153,14 +154,14 @@ function drawProfile(
   const ty = 392;
   const tw = (W - 96 - 3 * 20) / 4;
   const th = 96;
-  tile(ctx, 48 + 0 * (tw + 20), ty, tw, th, "Winrate", ov ? pctStr(ov.overall_winrate) : "—", C.done);
+  tile(ctx, 48 + 0 * (tw + 20), ty, tw, th, t("char.winrate"), ov ? pctStr(ov.overall_winrate) : "—", C.done);
   tile(
     ctx,
     48 + 1 * (tw + 20),
     ty,
     tw,
     th,
-    "Perso le + clean",
+    t("card.cleanest"),
     cleanest ? name(cleanest.character) : "—",
     C.gold,
   );
@@ -170,13 +171,13 @@ function drawProfile(
     ty,
     tw,
     th,
-    "Meilleur run",
-    best ? `${best.hits} hits` : "—",
+    t("card.bestRun"),
+    best ? `${best.hits} ${t("st.hits")}` : "—",
     C.blood,
   );
-  tile(ctx, 48 + 3 * (tw + 20), ty, tw, th, "Tentatives → DG", attempts != null ? String(attempts) : "—", C.text);
+  tile(ctx, 48 + 3 * (tw + 20), ty, tw, th, t("card.attemptsDG"), attempts != null ? String(attempts) : "—", C.text);
 
-  paintWatermark(ctx);
+  paintWatermark(ctx, t);
 }
 
 function fmtDuration(frames: number | null): string {
@@ -186,9 +187,9 @@ function fmtDuration(frames: number | null): string {
   return `${m}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string) {
+function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string, t: (k: string) => string) {
   paintFrame(ctx);
-  paintHeader(ctx, "Récap de run");
+  paintHeader(ctx, t("card.runRecap"));
 
   // Perso
   ctx.fillStyle = C.text;
@@ -197,7 +198,7 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string) {
 
   // Issue
   const win = run.outcome === "win";
-  const label = win ? "VICTOIRE" : run.outcome === "death" ? "MORT" : (run.outcome ?? "EN COURS").toUpperCase();
+  const label = win ? t("card.victory") : run.outcome === "death" ? t("card.death") : t("card.ongoing");
   const color = win ? C.done : run.outcome === "death" ? C.blood : C.muted;
   ctx.font = "700 26px system-ui, sans-serif";
   const lw = ctx.measureText(label).width + 36;
@@ -214,19 +215,19 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string) {
   if (run.ending) {
     ctx.fillStyle = C.muted;
     ctx.font = "500 22px system-ui, sans-serif";
-    ctx.fillText(`Fin : ${run.ending}`, 60 + lw, 276);
+    ctx.fillText(`${t("card.ending")} ${run.ending}`, 60 + lw, 276);
   }
 
   // Tuiles
   const ty = 360;
   const tw = (W - 96 - 3 * 20) / 4;
   const th = 96;
-  tile(ctx, 48 + 0 * (tw + 20), ty, tw, th, "Hits subis", String(run.hits_total), C.blood);
-  tile(ctx, 48 + 1 * (tw + 20), ty, tw, th, "Étage atteint", String(run.deepest_stage), C.gold);
-  tile(ctx, 48 + 2 * (tw + 20), ty, tw, th, "Durée", fmtDuration(run.duration_frames), C.text);
-  tile(ctx, 48 + 3 * (tw + 20), ty, tw, th, "Coups bloqués", String(run.shielded_hits), C.done);
+  tile(ctx, 48 + 0 * (tw + 20), ty, tw, th, t("card.hitsTaken"), String(run.hits_total), C.blood);
+  tile(ctx, 48 + 1 * (tw + 20), ty, tw, th, t("card.floorReached"), String(run.deepest_stage), C.gold);
+  tile(ctx, 48 + 2 * (tw + 20), ty, tw, th, t("card.duration"), fmtDuration(run.duration_frames), C.text);
+  tile(ctx, 48 + 3 * (tw + 20), ty, tw, th, t("card.blocked"), String(run.shielded_hits), C.done);
 
-  paintWatermark(ctx);
+  paintWatermark(ctx, t);
 }
 
 function canvasToBytes(canvas: HTMLCanvasElement): Promise<number[]> {
@@ -240,6 +241,7 @@ function canvasToBytes(canvas: HTMLCanvasElement): Promise<number[]> {
 }
 
 export function StatCardView() {
+  const t = useT();
   const dashboard = useStore((s) => s.dashboard);
   const toast = useStore((s) => s.toast);
   const theme = useStore((s) => s.theme);
@@ -277,19 +279,19 @@ export function StatCardView() {
     if (!ctx) return;
     readPalette(); // épouse le thème actif
     if (template === "profile") {
-      drawProfile(ctx, { dash: dashboard, ov, ins, attempts, name });
+      drawProfile(ctx, { dash: dashboard, ov, ins, attempts, name, t });
     } else if (runs.length > 0) {
       const run = runs[Math.min(runIdx, runs.length - 1)];
-      drawRun(ctx, run, name(run.character));
+      drawRun(ctx, run, name(run.character), t);
     } else {
       paintFrame(ctx);
-      paintHeader(ctx, "Récap de run");
+      paintHeader(ctx, t("card.runRecap"));
       ctx.fillStyle = C.muted;
       ctx.font = "500 24px system-ui, sans-serif";
-      ctx.fillText("Aucun run enregistré (installe le mod et joue).", 48, 200);
-      paintWatermark(ctx);
+      ctx.fillText(t("card.noRunYet"), 48, 200);
+      paintWatermark(ctx, t);
     }
-  }, [template, dashboard, ov, ins, attempts, runs, runIdx, name, theme, fontsReady]);
+  }, [template, dashboard, ov, ins, attempts, runs, runIdx, name, theme, fontsReady, t]);
 
   const onExport = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -299,7 +301,7 @@ export function StatCardView() {
     try {
       const path = await save({
         defaultPath,
-        title: "Enregistrer la carte de stats",
+        title: t("card.saveDialog"),
         filters: [{ name: "Image PNG", extensions: ["png"] }],
       });
       if (!path) return; // annulé
@@ -308,34 +310,33 @@ export function StatCardView() {
       const written = await api.saveStatCard(path, bytes);
       toast(`Carte enregistrée ✓ (${written.split(/[\\/]/).pop()})`);
     } catch (e) {
-      toast(`Échec de l'export : ${String(e)}`);
+      toast(`${t("card.exportFail")} ${String(e)}`);
     } finally {
       setSaving(false);
     }
-  }, [template, toast]);
+  }, [template, toast, t]);
 
   if (!dashboard) {
     return (
       <div className="mx-auto max-w-2xl py-6">
-        <EmptyState title="Charge une sauvegarde d'abord." />
+        <EmptyState title={t("card.loadFirst")} />
       </div>
     );
   }
 
   const tabs: [Template, string][] = [
-    ["profile", "Carte profil"],
-    ["run", "Carte run"],
+    ["profile", t("card.profile")],
+    ["run", t("card.run")],
   ];
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <div>
         <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-          <ImageIcon className="h-6 w-6 text-isaac-gold" /> Carte de stats
+          <ImageIcon className="h-6 w-6 text-isaac-gold" /> {t("nav.card")}
         </h1>
         <p className="mt-1 text-sm text-isaac-muted">
-          Génère une image partageable (Discord / Reddit) de ta progression ou d'un run marquant.
-          100 % hors-ligne.
+          {t("card.sub")}
         </p>
       </div>
 
@@ -360,7 +361,7 @@ export function StatCardView() {
           >
             {runs.map((r, i) => (
               <option key={r.run_id} value={i}>
-                {name(r.character)} · {r.outcome ?? "en cours"} · {r.hits_total} hits
+                {name(r.character)} · {r.outcome ?? t("st.inProgress")} · {r.hits_total} hits
               </option>
             ))}
           </select>
@@ -372,12 +373,12 @@ export function StatCardView() {
           className="inline-flex items-center gap-1.5 rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-4 py-1.5 text-sm text-isaac-gold transition-colors hover:bg-isaac-gold/20 disabled:opacity-50"
         >
           <Download className="h-4 w-4" />
-          {saving ? "Enregistrement…" : "Enregistrer le PNG"}
+          {saving ? t("card.saving") : t("card.savePng")}
         </button>
       </div>
 
       <Card>
-        <SectionTitle hint="1200 × 630">Aperçu</SectionTitle>
+        <SectionTitle hint="1200 × 630">{t("card.preview")}</SectionTitle>
         <div className="overflow-hidden rounded-lg border border-isaac-border">
           <canvas ref={canvasRef} width={W} height={H} className="block h-auto w-full" />
         </div>

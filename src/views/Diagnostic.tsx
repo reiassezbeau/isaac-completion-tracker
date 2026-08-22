@@ -26,14 +26,15 @@ function StatusRow({ ok, label, children }: { ok: boolean | null; label: string;
 }
 
 function PathLine({ p }: { p: PathStatus }) {
-  if (!p.path) return <span className="italic">non résolu</span>;
+  const t = useT();
+  if (!p.path) return <span className="italic">{t("diag.unresolved")}</span>;
   return (
     <span className="inline-flex items-center gap-2">
       <code className="rounded bg-isaac-surface2 px-1.5 py-0.5">{p.path}</code>
       <button
         onClick={() => navigator.clipboard?.writeText(p.path!)}
         className="text-isaac-muted hover:text-isaac-text"
-        title="Copier le chemin"
+        title={t("diag.copyPath")}
       >
         <Copy className="h-3 w-3" />
       </button>
@@ -42,11 +43,11 @@ function PathLine({ p }: { p: PathStatus }) {
 }
 
 export function DiagnosticView() {
+  const t = useT();
   const [health, setHealth] = useState<HealthReport | null>(null);
   const [busy, setBusy] = useState(false);
   const [info, setInfo] = useState<{ title: string; body: ReactNode } | null>(null);
   const { currentPath, toast } = useStore();
-  const t = useT();
 
   async function refresh() {
     setHealth(await api.getHealth());
@@ -60,18 +61,18 @@ export function DiagnosticView() {
     setBusy(true);
     try {
       const dest = await api.backupSave(currentPath);
-      toast("Backup créé ✓");
+      toast(t("diag.backupOk"));
       setInfo({
-        title: "Sauvegarde copiée",
+        title: t("diag.backupTitle"),
         body: (
           <>
-            Une copie datée a été écrite ici :
+            {t("diag.backupBody")}
             <code className="mt-2 block break-all rounded-lg bg-isaac-surface2 px-3 py-2 font-mono text-xs text-isaac-gold">{dest}</code>
           </>
         ),
       });
     } catch (e) {
-      toast("Échec du backup : " + String(e));
+      toast(t("diag.backupFail") + " " + String(e));
     } finally {
       setBusy(false);
     }
@@ -83,26 +84,26 @@ export function DiagnosticView() {
       const dest = await api.installTrackerMod();
       await refresh();
       setInfo({
-        title: "Mod installé",
+        title: t("diag.modInstalled"),
         body: (
           <>
             <code className="mb-3 block break-all rounded-lg bg-isaac-surface2 px-3 py-2 font-mono text-xs text-isaac-gold">{dest}</code>
             <ol className="space-y-1.5">
               <li>
-                <strong className="text-isaac-text">➊</strong> Ferme et <strong className="text-isaac-text">relance</strong> le jeu (les mods se chargent au lancement).
+                <strong className="text-isaac-text">➊</strong> {t("diag.step1")}
               </li>
               <li>
-                <strong className="text-isaac-text">➋</strong> Le watermark « modded » apparaîtra — inoffensif une fois Mom battue sur ce slot.
+                <strong className="text-isaac-text">➋</strong> {t("diag.step2")}
               </li>
               <li>
-                <strong className="text-isaac-text">➌</strong> Sur une <strong className="text-isaac-text">nouvelle</strong> sauvegarde : bats Mom une fois avant de compter sur les déblocages (règle du jeu, pas du tracker).
+                <strong className="text-isaac-text">➌</strong> {t("diag.step3")}
               </li>
             </ol>
           </>
         ),
       });
     } catch (e) {
-      toast("Échec de l'installation : " + String(e));
+      toast(t("diag.installFail") + " " + String(e));
     } finally {
       setBusy(false);
     }
@@ -114,13 +115,13 @@ export function DiagnosticView() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-          <FolderCog className="h-6 w-6 text-isaac-gold" /> Diagnostic
+          <FolderCog className="h-6 w-6 text-isaac-gold" /> {t("nav.diagnostic")}
         </h1>
         <button
           onClick={refresh}
           className="inline-flex items-center gap-1.5 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-1.5 text-sm text-isaac-muted hover:text-isaac-text"
         >
-          <RefreshCw className="h-4 w-4" /> Rafraîchir
+          <RefreshCw className="h-4 w-4" /> {t("common.refresh")}
         </button>
       </div>
 
@@ -132,23 +133,23 @@ export function DiagnosticView() {
       ))}
 
       <Card>
-        <SectionTitle>Chemins résolus (réels, gère OneDrive)</SectionTitle>
-        <StatusRow ok={health.game_root.exists} label="Dossier de jeu">
+        <SectionTitle>{t("diag.paths")}</SectionTitle>
+        <StatusRow ok={health.game_root.exists} label={t("diag.gameFolder")}>
           <PathLine p={health.game_root} />
         </StatusRow>
-        <StatusRow ok={health.mods_dir.exists} label="Dossier des mods">
+        <StatusRow ok={health.mods_dir.exists} label={t("diag.modsFolder")}>
           <PathLine p={health.mods_dir} />
           {!health.mods_dir.exists && " — sera créé à l'installation du mod"}
         </StatusRow>
-        <StatusRow ok={health.data_dir.exists} label="Dossier de données (mod)">
+        <StatusRow ok={health.data_dir.exists} label={t("diag.dataFolder")}>
           <PathLine p={health.data_dir} />
           {!health.data_dir.exists && " — créé au premier run avec le mod"}
         </StatusRow>
       </Card>
 
       <Card>
-        <SectionTitle>Sauvegarde</SectionTitle>
-        <StatusRow ok={health.steam_save_found} label="Save Steam Cloud détectée" />
+        <SectionTitle>{t("diag.save")}</SectionTitle>
+        <StatusRow ok={health.steam_save_found} label={t("diag.steamSave")} />
         <StatusRow
           ok={health.save_loaded}
           label={
@@ -177,14 +178,14 @@ export function DiagnosticView() {
             disabled={!currentPath || busy}
             className="inline-flex items-center gap-2 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-1.5 text-sm text-isaac-text hover:border-isaac-gold/50 disabled:opacity-40"
           >
-            <Download className="h-4 w-4" /> Sauvegarder ma save (backup daté)
+            <Download className="h-4 w-4" /> {t("diag.backupBtn")}
           </button>
         </div>
       </Card>
 
       <Card>
-        <SectionTitle>Mod de stats</SectionTitle>
-        <StatusRow ok={health.mod_installed} label={health.mod_installed ? "Mod installé" : "Mod non installé"}>
+        <SectionTitle>{t("diag.statsMod")}</SectionTitle>
+        <StatusRow ok={health.mod_installed} label={health.mod_installed ? t("diag.modYes") : t("diag.modNo")}>
           {health.mod_dir}
         </StatusRow>
         <StatusRow ok={health.mod_data_file != null} label="Données du mod présentes">

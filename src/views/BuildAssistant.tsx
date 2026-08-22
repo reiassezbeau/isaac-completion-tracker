@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Feather, Heart, Plus, Search, Sparkles, Wand2, X } from "lucide-react";
 import { api } from "../lib/api";
 import { roleLabel, statDimLabel, tearFlagLabel, VERDICT_META } from "../lib/format";
+import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
 import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
 
@@ -85,6 +86,7 @@ function noteToneClass(kind: string): string {
 }
 
 function SynergyPanel({ result }: { result: SynergyResult }) {
+  const t = useT();
   const meta = VERDICT_META[result.verdict] ?? VERDICT_META.situational;
   const deltas = result.stat_deltas.filter((d) => d.direction !== 0);
   return (
@@ -92,7 +94,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <SectionTitle>
           <span className="inline-flex items-center gap-1">
-            <Wand2 className="h-4 w-4 text-isaac-gold" /> Test : {result.candidate_name}
+            <Wand2 className="h-4 w-4 text-isaac-gold" /> {t("bld.testOf")} {result.candidate_name}
           </span>
         </SectionTitle>
         <Pill className={toneClass(meta.tone)}>{meta.label}</Pill>
@@ -105,10 +107,10 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
           <Radar before={result.radar_before} after={result.radar_after} />
           <div className="mt-1 flex items-center justify-center gap-4 text-[0.7rem] text-isaac-muted">
             <span className="inline-flex items-center gap-1">
-              <span className="inline-block h-2 w-3 rounded-sm bg-isaac-muted/40" /> avant
+              <span className="inline-block h-2 w-3 rounded-sm bg-isaac-muted/40" /> {t("bld.before")}
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="inline-block h-2 w-3 rounded-sm bg-isaac-gold/60" /> après
+              <span className="inline-block h-2 w-3 rounded-sm bg-isaac-gold/60" /> {t("bld.after")}
             </span>
           </div>
         </div>
@@ -122,7 +124,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
             ))}
             {result.adds_flight && (
               <Pill className="border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold">
-                <Feather className="h-3 w-3" /> + vol
+                <Feather className="h-3 w-3" /> + {t("bld.flight")}
               </Pill>
             )}
             {result.hearts_delta > 0 && (
@@ -158,8 +160,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
           {result.estimate_approximate && (
             <p className="flex items-start gap-1.5 text-xs text-isaac-muted">
               <AlertTriangle className="mt-0.5 h-3 w-3 flex-shrink-0 text-isaac-gold" />
-              Delta de stats <strong>approximatif</strong> (item multiplicatif / à proc / conditionnel —
-              la formule de dégâts d'Isaac est non triviale).
+              {t("bld.approx")} 
             </p>
           )}
         </div>
@@ -169,10 +170,11 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
 }
 
 function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
+  const t = useT();
   const { composition: c } = analysis;
   return (
     <Card>
-      <SectionTitle hint={`${c.total} item(s)`}>Composition & analyse</SectionTitle>
+      <SectionTitle hint={`${c.total}`}>{t("bld.composition")}</SectionTitle>
 
       <div className="mb-3 flex flex-wrap gap-1.5">
         {c.by_role.map(([role, n]) => (
@@ -189,7 +191,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
 
       {analysis.unknown_ids.length > 0 && (
         <p className="mb-3 text-xs text-isaac-muted">
-          {analysis.unknown_ids.length} item(s) hors base de connaissances (comptés dans le total, non détaillés).
+          {analysis.unknown_ids.length} {t("bld.unknownItems")}
         </p>
       )}
 
@@ -201,7 +203,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-done">Forces</div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-done">{t("bld.strengths")}</div>
           {analysis.strengths.length === 0 ? (
             <p className="text-sm text-isaac-muted">—</p>
           ) : (
@@ -215,7 +217,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
           )}
         </div>
         <div>
-          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-blood/90">Faiblesses</div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-blood/90">{t("bld.weaknesses")}</div>
           {analysis.weaknesses.length === 0 ? (
             <p className="text-sm text-isaac-muted">—</p>
           ) : (
@@ -234,6 +236,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
 }
 
 export function BuildAssistantView() {
+  const t = useT();
   const [kb, setKb] = useState<ItemKb[] | null>(null);
   const [build, setBuild] = useState<number[]>([]);
   const [candidate, setCandidate] = useState<number | null>(null);
@@ -278,11 +281,10 @@ export function BuildAssistantView() {
     <div className="mx-auto max-w-6xl space-y-5">
       <div>
         <h1 className="flex items-center gap-2 font-display text-3xl text-isaac-text">
-          <Wand2 className="h-6 w-6 text-isaac-gold" /> Assistant de build
+          <Wand2 className="h-6 w-6 text-isaac-gold" /> {t("nav.build")}
         </h1>
         <p className="mt-1 text-sm text-isaac-muted">
-          Simulateur : compose ton build, puis « teste » un item candidat pour voir le delta, la
-          synergie et le verdict. Hors-ligne, factuel — pas d'EID, aucun asset du jeu.
+          {t("bld.sub")}
         </p>
       </div>
 
@@ -295,7 +297,7 @@ export function BuildAssistantView() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Chercher un item…"
+                placeholder={t("bld.searchItem")}
                 className="w-full bg-transparent text-sm text-isaac-text outline-none placeholder:text-isaac-muted"
               />
             </div>
@@ -316,15 +318,15 @@ export function BuildAssistantView() {
                         onClick={() => setCandidate(it.id)}
                         disabled={inBuild}
                         className="rounded-md border border-isaac-gold/30 px-1.5 py-0.5 text-[0.7rem] text-isaac-gold transition-colors hover:bg-isaac-gold/10 disabled:opacity-30"
-                        title="Tester comme candidat"
+                        title={t("bld.testTitle")}
                       >
-                        Test
+                        {t("bld.test")}
                       </button>
                       <button
                         onClick={() => addToBuild(it.id)}
                         disabled={inBuild}
                         className="rounded-md border border-isaac-border px-1.5 py-0.5 text-[0.7rem] text-isaac-muted transition-colors hover:text-isaac-text disabled:opacity-30"
-                        title="Ajouter au build"
+                        title={t("bld.addToBuild")}
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -340,7 +342,7 @@ export function BuildAssistantView() {
         <div className="space-y-5">
           <Card>
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-isaac-muted">Ton build</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-isaac-muted">{t("bld.yourBuild")}</h2>
               <div className="flex items-center gap-2">
                 {runs.length > 0 && (
                   <select
@@ -353,9 +355,9 @@ export function BuildAssistantView() {
                       }
                     }}
                     className="rounded-lg border border-isaac-border bg-isaac-surface2 px-2.5 py-1 text-xs text-isaac-text outline-none focus:border-isaac-gold/60"
-                    title="Charger le build d'un run récent (mod)"
+                    title={t("bld.loadRunTitle")}
                   >
-                    <option value="">Charger un run…</option>
+                    <option value="">{t("bld.loadRun")}</option>
                     {runs.map((r, i) => (
                       <option key={r.run_id} value={i}>
                         {r.character} · {r.final_build.length} items · {r.outcome ?? "en cours"}
@@ -371,15 +373,14 @@ export function BuildAssistantView() {
                     }}
                     className="rounded-lg border border-isaac-border px-2.5 py-1 text-xs text-isaac-muted transition-colors hover:text-isaac-blood"
                   >
-                    Vider
+                    {t("bld.clear")}
                   </button>
                 )}
               </div>
             </div>
             {build.length === 0 ? (
               <p className="text-sm text-isaac-muted">
-                Ajoute des items depuis la liste (bouton <Plus className="inline h-3 w-3" />), charge le build d'un
-                run récent, puis « Test » un candidat.
+                {t("bld.emptyBuild")}
               </p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
@@ -401,7 +402,7 @@ export function BuildAssistantView() {
           {candidate != null && synergy ? (
             <SynergyPanel result={synergy} />
           ) : (
-            <EmptyState title="Choisis un item candidat.">
+            <EmptyState title={t("bld.pickCandidate")}>
               <span className="inline-flex items-center gap-1">
                 <Sparkles className="h-4 w-4 text-isaac-gold" /> Clique « Test » sur un item pour voir son effet
                 sur ce build.
