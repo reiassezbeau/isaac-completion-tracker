@@ -17,6 +17,7 @@ import { useT } from "../lib/useT";
 import type { SaveSlot } from "../lib/types";
 
 function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => void }) {
+  const t = useT();
   const ok = slot.parse_error == null;
   return (
     <button
@@ -40,7 +41,7 @@ function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => vo
             <div className="text-xs text-isaac-muted">{editionLabel(slot.edition)}</div>
           </>
         ) : (
-          <span className="text-xs text-isaac-blood">Corriger via ⚙️</span>
+          <span className="text-xs text-isaac-blood">{t("slot.fixVia")}</span>
         )}
       </div>
     </button>
@@ -57,11 +58,11 @@ export function SlotPicker() {
   }, [slots, loadSlots]);
 
   async function locateManually() {
-    const dir = await open({ directory: true, title: "Localiser le dossier de sauvegarde Isaac" });
+    const dir = await open({ directory: true, title: t("slot.dialogTitle") });
     if (typeof dir !== "string") return;
     const found = await api.scanFolder(dir);
     if (found.length === 0) {
-      toast("Aucune sauvegarde trouvée dans ce dossier.");
+      toast(t("slot.noneFound"));
       return;
     }
     useStore.setState((s) => ({
@@ -69,7 +70,7 @@ export function SlotPicker() {
         (v, i, arr) => arr.findIndex((x) => x.path === v.path) === i,
       ),
     }));
-    toast(`${found.length} sauvegarde(s) trouvée(s).`);
+    toast(`${found.length} ${t("slot.found")}`);
   }
 
   return (
@@ -94,7 +95,7 @@ export function SlotPicker() {
 
       {loadingSlots && (
         <div className="flex items-center justify-center gap-2 py-8 text-isaac-muted">
-          <Loader2 className="h-5 w-5 animate-spin" /> Recherche des sauvegardes…
+          <Loader2 className="h-5 w-5 animate-spin" /> {t("slot.searching")}
         </div>
       )}
 
@@ -107,8 +108,8 @@ export function SlotPicker() {
       )}
 
       {!loadingSlots && slots && slots.length === 0 && (
-        <EmptyState title="Aucune sauvegarde détectée automatiquement.">
-          Utilise « Localiser ma save… » pour pointer le dossier manuellement.
+        <EmptyState title={t("slot.none")}>
+          {t("slot.noneHint")}
         </EmptyState>
       )}
 
@@ -117,13 +118,13 @@ export function SlotPicker() {
           onClick={locateManually}
           className="inline-flex items-center gap-2 rounded-lg border border-isaac-border bg-isaac-surface2 px-4 py-2 text-sm text-isaac-text transition-colors hover:border-isaac-gold/50"
         >
-          <FolderSearch className="h-4 w-4" /> Localiser ma save…
+          <FolderSearch className="h-4 w-4" /> {t("slot.locate")}
         </button>
         <button
           onClick={() => loadSlots()}
           className="inline-flex items-center gap-2 rounded-lg border border-isaac-border bg-isaac-surface2 px-4 py-2 text-sm text-isaac-muted transition-colors hover:text-isaac-text"
         >
-          <HardDriveDownload className="h-4 w-4" /> Re-scanner
+          <HardDriveDownload className="h-4 w-4" /> {t("slot.rescan")}
         </button>
         </div>
       </div>
