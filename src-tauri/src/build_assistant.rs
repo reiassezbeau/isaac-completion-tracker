@@ -594,8 +594,7 @@ mod tests {
         let db = db();
         // 3 sources de homing (seuil par défaut = 3) : Spoon Bender, Lord of the Pit + on
         // ajoute un 3e via la KB ? Ici on n'a que 2 -> pas de redondance ; testons le seuil.
-        let mut rules = BuildRules::default();
-        rules.tear_flag_redundancy_threshold = 2;
+        let rules = BuildRules { tear_flag_redundancy_threshold: 2, ..Default::default() };
         let a = analyze(&db, &[3, 82], &rules);
         assert!(a.weaknesses.iter().any(|w| w.contains("Redondance") && w.contains("homing")));
     }
