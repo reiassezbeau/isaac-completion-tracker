@@ -3,7 +3,7 @@
 
 import { create } from "zustand";
 import { api } from "./lib/api";
-import { type Lang, LANG_CODES, isRtl } from "./lib/i18n";
+import { type Lang, LANG_CODES, isRtl, translate } from "./lib/i18n";
 import type { Dashboard, SaveSlot } from "./lib/types";
 
 function readInitialLang(): Lang {
@@ -87,7 +87,7 @@ interface AppStore {
   theme: ThemeId;
   setTheme: (t: ThemeId) => void;
 
-  // langue
+  // language
   lang: Lang;
   setLang: (l: Lang) => void;
 
@@ -183,8 +183,8 @@ export const useStore = create<AppStore>((set, get) => ({
     try {
       const dashboard = await api.refresh();
       set({ dashboard, parseError: null });
-      if (!silent) get().toast("Progress updated ✓");
-      else get().toast("Progress updated ✓ (live)");
+      const t = (k: string) => translate(k, get().lang);
+      get().toast(t(silent ? "common.progressUpdatedLive" : "common.progressUpdated"));
     } catch (e) {
       set({ error: String(e) });
     }

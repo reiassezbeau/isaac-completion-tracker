@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Feather, Heart, Plus, Search, Sparkles, Wand2, X } from "lucide-react";
 import { api } from "../lib/api";
-import { roleLabel, statDimLabel, tearFlagLabel, VERDICT_META } from "../lib/format";
+import { roleLabel, statDimLabel, tearFlagLabel, verdictLabel, VERDICT_META } from "../lib/format";
 import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
 import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
@@ -19,6 +19,7 @@ function Radar({
   before: [string, number][];
   after: [string, number][];
 }) {
+  const t = useT();
   const size = 220;
   const c = size / 2;
   const R = size / 2 - 26;
@@ -55,7 +56,7 @@ function Radar({
               textAnchor="middle"
               dominantBaseline="middle"
             >
-              {statDimLabel(d)}
+              {statDimLabel(d, t)}
             </text>
           </g>
         );
@@ -97,7 +98,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
             <Wand2 className="h-4 w-4 text-isaac-gold" /> {t("bld.testOf")} {result.candidate_name}
           </span>
         </SectionTitle>
-        <Pill className={toneClass(meta.tone)}>{meta.label}</Pill>
+        <Pill className={toneClass(meta.tone)}>{verdictLabel(result.verdict, t)}</Pill>
       </div>
 
       <p className="mb-3 text-sm text-isaac-text">{result.verdict_text}</p>
@@ -119,7 +120,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
           <div className="flex flex-wrap gap-1.5">
             {result.adds_tear_flags.map((f) => (
               <Pill key={f} className="border-isaac-done/40 bg-isaac-done/10 text-isaac-done">
-                + {tearFlagLabel(f)}
+                + {tearFlagLabel(f, t)}
               </Pill>
             ))}
             {result.adds_flight && (
@@ -138,7 +139,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
             <div className="space-y-1 text-sm">
               {deltas.map((d) => (
                 <div key={d.dim} className="flex items-center gap-2">
-                  <span className="w-20 text-isaac-muted">{statDimLabel(d.dim)}</span>
+                  <span className="w-20 text-isaac-muted">{statDimLabel(d.dim, t)}</span>
                   <span className={d.direction > 0 ? "text-isaac-done" : "text-isaac-blood/90"}>
                     {d.direction > 0 ? "↑" : "↓"} {d.before.toFixed(1)} → {d.after.toFixed(1)}
                   </span>
@@ -179,12 +180,12 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
       <div className="mb-3 flex flex-wrap gap-1.5">
         {c.by_role.map(([role, n]) => (
           <Pill key={role} className="border-isaac-border bg-isaac-surface2 text-isaac-text">
-            {roleLabel(role)} · {n}
+            {roleLabel(role, t)} · {n}
           </Pill>
         ))}
         {c.tear_flags.map(([f, n]) => (
           <Pill key={f} className="border-isaac-gold/30 bg-isaac-gold/10 text-isaac-gold">
-            {tearFlagLabel(f)} ×{n}
+            {tearFlagLabel(f, t)} ×{n}
           </Pill>
         ))}
       </div>
@@ -311,7 +312,7 @@ export function BuildAssistantView() {
                   >
                     <span className="min-w-0 truncate text-sm" title={it.note || it.name}>
                       {it.name}
-                      {it.is_tears_replacement && <span className="ml-1 text-isaac-blood/80" title="tear replacement">⟳</span>}
+                      {it.is_tears_replacement && <span className="ml-1 text-isaac-blood/80" title={t("bld.tearReplacement")}>⟳</span>}
                     </span>
                     <span className="flex flex-shrink-0 gap-1">
                       <button
@@ -404,8 +405,7 @@ export function BuildAssistantView() {
           ) : (
             <EmptyState title={t("bld.pickCandidate")}>
               <span className="inline-flex items-center gap-1">
-                <Sparkles className="h-4 w-4 text-isaac-gold" /> Click “Test” on an item to see its effect
-                on this build.
+                <Sparkles className="h-4 w-4 text-isaac-gold" /> {t("bld.clickTest")}
               </span>
             </EmptyState>
           )}

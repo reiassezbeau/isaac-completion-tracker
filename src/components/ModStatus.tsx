@@ -49,9 +49,9 @@ export function ModStatusCard() {
     try {
       await api.installTrackerMod();
       await refresh();
-      toast("Mod installed ✓ — relaunch Isaac to enable it");
+      toast(t("mod.installedToast"));
     } catch (e) {
-      toast("Installation failed: " + String(e));
+      toast(`${t("diag.installFail")} ${String(e)}`);
     } finally {
       setBusy(false);
     }
@@ -74,11 +74,11 @@ export function ModStatusCard() {
           <div className="font-semibold">{t("mod.title")}</div>
           <p className="mt-0.5 text-sm text-isaac-muted">
             {step === "notfound" &&
-              "Game not found yet — see the Diagnostic tab to locate Isaac."}
+              t("mod.stepNotFound")}
             {step === "install" &&
-              "Install the companion mod (one click), relaunch Isaac, and it will count your hits and stats on every run — cross-referenced with your completion."}
+              t("mod.stepInstall")}
             {step === "play" &&
-              "Mod installed ✓. Relaunch Isaac and play a run: the first stats will show up here automatically."}
+              t("mod.stepPlay")}
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {step === "install" && (
@@ -88,22 +88,22 @@ export function ModStatusCard() {
                 className={`${btn} border border-isaac-blood/40 bg-isaac-blood/10 text-isaac-text hover:border-isaac-blood/70 disabled:opacity-40`}
               >
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackagePlus className="h-4 w-4" />}
-                Install the mod
+                {t("mod.installBtn")}
               </button>
             )}
             {step === "play" && (
               <button
-                onClick={() => api.launchGame().catch((e) => toast("Could not launch Isaac: " + String(e)))}
+                onClick={() => api.launchGame().catch((e) => toast(`${t("mod.launchFail")} ${String(e)}`))}
                 className={`${btn} border border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold hover:border-isaac-gold/70`}
               >
-                <Gamepad2 className="h-4 w-4" /> Launch Isaac
+                <Gamepad2 className="h-4 w-4" /> {t("mod.launchBtn")}
               </button>
             )}
             <button
               onClick={() => setView("diagnostic")}
               className={`${btn} text-isaac-muted hover:text-isaac-text`}
             >
-              <Settings2 className="h-4 w-4" /> Diagnostic
+              <Settings2 className="h-4 w-4" /> {t("nav.diagnostic")}
             </button>
           </div>
         </div>

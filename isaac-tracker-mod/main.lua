@@ -22,6 +22,9 @@ local mod = RegisterMod("IsaacTracker", 1)
 local json = require("json")
 
 local SCHEMA = 1
+-- Mod version. MUST stay in sync with <version> in metadata.xml (the value the
+-- game shows in its Mods menu); this one is what ends up in log.txt.
+local MOD_VERSION = "0.2.1"
 -- Sliding buffer on the mod side: small (the app keeps the full permanent history).
 -- Small => cheap json.encode + disk write => no in-game hitch.
 local MAX_HISTORY = 40
@@ -34,7 +37,7 @@ local data = { schema = SCHEMA, current_run = nil, history = {}, next_index = 1 
 
 -- PlayerType (integer) -> character id from characters.json.
 -- Alternate "forms" point at their base character: Lazarus2->lazarus, BlackJudas->judas,
--- TheSoul->the_forgotten, Esau->jacob_esau ; cote Tainted idem (38/39/40).
+-- TheSoul->the_forgotten, Esau->jacob_esau; same on the Tainted side (38/39/40).
 local PLAYER_TYPE_TO_ID = {
   [0] = "isaac", [1] = "magdalene", [2] = "cain", [3] = "judas", [4] = "blue_baby",
   [5] = "eve", [6] = "samson", [7] = "azazel", [8] = "lazarus", [9] = "eden",
@@ -428,4 +431,4 @@ mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, safe("new_level", onNewLevel))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, safe("new_room", onNewRoom))
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, safe("pre_game_exit", onPreGameExit))
 
-log("loaded (v0.2.1) -- observer + wide fields + hardened run resume")
+log("loaded (v" .. MOD_VERSION .. ") -- observer + wide fields + hardened run resume")

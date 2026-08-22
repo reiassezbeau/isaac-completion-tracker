@@ -2,7 +2,7 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * Isaac Completion Tracker — coquille applicative.
+ * Isaac Completion Tracker — application shell.
  * Created by reiassezbeau - https://github.com/reiassezbeau
  */
 import { useEffect } from "react";
@@ -62,16 +62,16 @@ function CurrentView() {
 
 function ParseErrorScreen() {
   const { parseError, currentSlot } = useStore();
+  const t = useT();
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
       <AlertOctagon className="h-12 w-12 text-isaac-blood" />
-      <h1 className="font-display text-2xl text-isaac-text">This save could not be read</h1>
+      <h1 className="font-display text-2xl text-isaac-text">{t("err.saveUnreadable")}</h1>
       <p className="text-sm text-isaac-muted">
         {currentSlot?.filename} — {parseError}
       </p>
       <p className="text-sm text-isaac-muted">
-        The format does not match what was expected. Pick another slot, or locate the right
-        save folder.
+        {t("err.saveFormat")}
       </p>
       <button
         onClick={() =>
@@ -79,7 +79,7 @@ function ParseErrorScreen() {
         }
         className="rounded-lg border border-isaac-border bg-isaac-surface2 px-4 py-2 text-sm text-isaac-text hover:border-isaac-gold/50"
       >
-        ← Choose another save
+        ← {t("err.chooseAnother")}
       </button>
     </div>
   );

@@ -138,7 +138,7 @@ export function DashboardView() {
                     <span className="flex text-isaac-faint">
                       <Icon name={CATEGORY_ICON[c.category] ?? "coin"} size={15} />
                     </span>
-                    {categoryLabel(c.category)}
+                    {categoryLabel(c.category, t)}
                   </span>
                   <span className="font-mono text-xs text-isaac-faint">
                     {c.unlocked}/{c.total}

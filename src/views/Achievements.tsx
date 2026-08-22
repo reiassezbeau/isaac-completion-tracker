@@ -69,7 +69,7 @@ export function AchievementsView() {
             <option value="all">{t("ach.allCats")}</option>
             {categories.map((c) => (
               <option key={c} value={c}>
-                {categoryLabel(c)}
+                {categoryLabel(c, t)}
               </option>
             ))}
           </select>
@@ -93,14 +93,14 @@ export function AchievementsView() {
                 ? "border-isaac-gold/50 bg-isaac-gold/10 text-isaac-gold"
                 : "border-isaac-border bg-isaac-surface2 text-isaac-muted"
             }`}
-            title="Show the conditions of locked achievements (spoilers)"
+            title={t("ach.spoilerTitle")}
           >
             {reveal ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-            {reveal ? "Spoilers shown" : "Reveal conditions"}
+            {reveal ? t("ach.spoilersShown") : t("ach.revealConds")}
           </button>
         </div>
         <div className="mt-2 text-xs text-isaac-muted">
-          {filtered.length} achievements · {unlockedCount} unlocked
+          {filtered.length} {t("ach.countSuffix")} · {unlockedCount} {t("ach.unlockedSuffix")}
         </div>
       </Card>
 
@@ -138,7 +138,7 @@ export function AchievementsView() {
                 <span className="text-isaac-muted">{a.reward}</span>
                 <div className="flex gap-1">
                   <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">
-                    {categoryLabel(a.category)}
+                    {categoryLabel(a.category, t)}
                   </Pill>
                   <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">
                     {dlcLabel(a.dlc)}

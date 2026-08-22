@@ -190,7 +190,7 @@ export function StatsView() {
                 <div className="space-y-1.5">
                   {ov.hits_heatmap.map(([key, n]) => (
                     <div key={key} className="flex items-center gap-2 text-sm">
-                      <span className="w-32 flex-shrink-0 text-isaac-muted">{stageKeyLabel(key)}</span>
+                      <span className="w-32 flex-shrink-0 text-isaac-muted">{stageKeyLabel(key, t)}</span>
                       <div className="h-4 flex-1 overflow-hidden rounded bg-isaac-surface2">
                         <div className="h-full rounded bg-gradient-to-r from-isaac-gold to-isaac-blood" style={{ width: `${(n / heatMax) * 100}%` }} />
                       </div>

@@ -3,6 +3,9 @@
 
 import type { MarkDifficulty } from "./types";
 
+/** The translation function returned by `useT()` (optional on every label helper). */
+type Tr = (k: string) => string;
+
 export const GITHUB_URL = "https://github.com/reiassezbeau";
 export const GITHUB_HANDLE = "reiassezbeau";
 
@@ -31,11 +34,18 @@ export function dlcLabel(dlc: string): string {
   return DLC_LABELS[dlc] ?? dlc;
 }
 
-export function categoryLabel(cat: string): string {
-  return CATEGORY_LABELS[cat] ?? cat;
+/** Translated label, falling back to the English map then to the raw key. */
+function tr(t: Tr | undefined, key: string, fallback: string): string {
+  if (!t) return fallback;
+  const s = t(key);
+  return s === key ? fallback : s;
 }
 
-export function markLabel(d: MarkDifficulty, t?: (k: string) => string): string {
+export function categoryLabel(cat: string, t?: Tr): string {
+  return tr(t, `cat.${cat}`, CATEGORY_LABELS[cat] ?? cat);
+}
+
+export function markLabel(d: MarkDifficulty, t?: Tr): string {
   const key = d === "hard" ? "mark.hard" : d === "normal" ? "mark.normal" : "mark.todo";
   if (t) return t(key);
   return d === "hard" ? "Hard" : d === "normal" ? "Normal" : "To do";
@@ -70,14 +80,14 @@ const STAGE_NAMES: Record<number, string> = {
   13: "Home",
 };
 
-export function stageLabel(stage: number): string {
-  return STAGE_NAMES[stage] ?? `Floor ${stage}`;
+export function stageLabel(stage: number, t?: Tr): string {
+  return STAGE_NAMES[stage] ?? `${tr(t, "stage.floor", "Floor")} ${stage}`;
 }
 
 /** "stage-type" key (e.g. "2-2") -> readable name. */
-export function stageKeyLabel(key: string): string {
+export function stageKeyLabel(key: string, t?: Tr): string {
   const n = parseInt(key.split("-")[0] ?? "", 10);
-  return Number.isFinite(n) ? stageLabel(n) : key;
+  return Number.isFinite(n) ? stageLabel(n, t) : key;
 }
 
 export function pct(x: number): string {
@@ -117,14 +127,19 @@ export const STAT_DIM_LABELS: Record<string, string> = {
   luck: "Luck",
 };
 
-export function roleLabel(r: string): string {
-  return ROLE_LABELS[r] ?? r;
+export function roleLabel(r: string, t?: Tr): string {
+  return tr(t, `role.${r}`, ROLE_LABELS[r] ?? r);
 }
-export function tearFlagLabel(f: string): string {
-  return TEAR_FLAG_LABELS[f] ?? f;
+export function tearFlagLabel(f: string, t?: Tr): string {
+  return tr(t, `tflag.${f}`, TEAR_FLAG_LABELS[f] ?? f);
 }
-export function statDimLabel(d: string): string {
-  return STAT_DIM_LABELS[d] ?? d;
+export function statDimLabel(d: string, t?: Tr): string {
+  return tr(t, `stat.${d}`, STAT_DIM_LABELS[d] ?? d);
+}
+
+export function verdictLabel(verdict: string, t?: Tr): string {
+  const meta = VERDICT_META[verdict] ?? VERDICT_META.situational;
+  return tr(t, `verdict.${verdict}`, meta.label);
 }
 
 export function complexityLabel(c: string): string {

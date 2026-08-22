@@ -230,10 +230,10 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string, t: (
   paintWatermark(ctx, t);
 }
 
-function canvasToBytes(canvas: HTMLCanvasElement): Promise<number[]> {
+function canvasToBytes(canvas: HTMLCanvasElement, t: (k: string) => string): Promise<number[]> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(async (blob) => {
-      if (!blob) return reject(new Error("Canvas rendering failed."));
+      if (!blob) return reject(new Error(t("card.renderFail")));
       const buf = await blob.arrayBuffer();
       resolve(Array.from(new Uint8Array(buf)));
     }, "image/png");
@@ -306,9 +306,9 @@ export function StatCardView() {
       });
       if (!path) return; // canceled
       setSaving(true);
-      const bytes = await canvasToBytes(canvas);
+      const bytes = await canvasToBytes(canvas, t);
       const written = await api.saveStatCard(path, bytes);
-      toast(`Card saved ✓ (${written.split(/[\\/]/).pop()})`);
+      toast(`${t("card.savedOk")} (${written.split(/[\\/]/).pop()})`);
     } catch (e) {
       toast(`${t("card.exportFail")} ${String(e)}`);
     } finally {
