@@ -12,6 +12,7 @@ import { useStore } from "./store";
 import { Shell } from "./components/Layout";
 import { Defs } from "./components/Defs";
 import { Emblem } from "./lib/art";
+import { useT } from "./lib/useT";
 import { SlotPicker } from "./views/SlotPicker";
 import { DashboardView } from "./views/Dashboard";
 import { CharacterView } from "./views/Character";
@@ -86,6 +87,7 @@ function ParseErrorScreen() {
 
 export default function App() {
   const { dashboard, currentSlot, parseError, loading } = useStore();
+  const t = useT();
 
   useEffect(() => {
     const unlisten = listen("save-changed", () => {
@@ -110,7 +112,7 @@ export default function App() {
           <Emblem size={44} />
         </div>
         <div className="flex items-center gap-2 text-sm text-isaac-muted">
-          <Loader2 className="h-4 w-4 animate-spin" /> Ouverture du grimoire…
+          <Loader2 className="h-4 w-4 animate-spin" /> {t("common.loading")}
         </div>
       </div>
     );

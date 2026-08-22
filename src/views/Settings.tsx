@@ -9,6 +9,7 @@ import { markLabel } from "../lib/format";
 import { Card, Pill, SectionTitle } from "../components/ui";
 import { Modal, ModalButton } from "../components/Modal";
 import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { useT } from "../lib/useT";
 import type { AchievementView, Character, Ending, MarkDifficulty, Overrides } from "../lib/types";
 
 const DIFFS: MarkDifficulty[] = ["none", "normal", "hard"];
@@ -24,6 +25,7 @@ export function SettingsView() {
   const [q, setQ] = useState("");
   const [charId, setCharId] = useState("bethany");
   const [confirmReset, setConfirmReset] = useState(false);
+  const t = useT();
 
   async function refreshAll() {
     const [a, o] = await Promise.all([api.getAchievements(), api.getOverrides()]);
@@ -176,7 +178,7 @@ export function SettingsView() {
         title="Réinitialiser les corrections ?"
         actions={
           <>
-            <ModalButton onClick={() => setConfirmReset(false)}>Annuler</ModalButton>
+            <ModalButton onClick={() => setConfirmReset(false)}>{t("common.cancel")}</ModalButton>
             <ModalButton onClick={reset} tone="danger">
               Tout réinitialiser
             </ModalButton>

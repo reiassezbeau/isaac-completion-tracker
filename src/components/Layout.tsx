@@ -9,23 +9,25 @@ import { Defs } from "./Defs";
 import { ThemeBackdrop } from "./ThemeBackdrop";
 import { PageBackdrop } from "./PageBackdrop";
 import { ThemePicker } from "./ThemePicker";
+import { LanguagePicker } from "./LanguagePicker";
 import { Emblem, NavGlyph } from "../lib/art";
 import { editionLabel } from "../lib/format";
+import { useT } from "../lib/useT";
 
-const NAV: { id: ViewId; label: string; glyph: string }[] = [
-  { id: "dashboard", label: "Dashboard", glyph: "dash" },
-  { id: "character", label: "Personnage", glyph: "user" },
-  { id: "grid", label: "La Grille", glyph: "grid" },
-  { id: "predictor", label: "Prédicteur", glyph: "wand" },
-  { id: "achievements", label: "Succès", glyph: "list" },
-  { id: "roadmap", label: "Roadmap", glyph: "map" },
-  { id: "optimizer", label: "Optimiseur", glyph: "target" },
-  { id: "build", label: "Assistant build", glyph: "flask" },
-  { id: "stats", label: "Stats", glyph: "chart" },
-  { id: "card", label: "Carte", glyph: "image" },
-  { id: "diagnostic", label: "Diagnostic", glyph: "steth" },
-  { id: "settings", label: "Corrections", glyph: "gear" },
-  { id: "about", label: "À propos", glyph: "info" },
+const NAV: { id: ViewId; tkey: string; glyph: string }[] = [
+  { id: "dashboard", tkey: "nav.dashboard", glyph: "dash" },
+  { id: "character", tkey: "nav.character", glyph: "user" },
+  { id: "grid", tkey: "nav.grid", glyph: "grid" },
+  { id: "predictor", tkey: "nav.predictor", glyph: "wand" },
+  { id: "achievements", tkey: "nav.achievements", glyph: "list" },
+  { id: "roadmap", tkey: "nav.roadmap", glyph: "map" },
+  { id: "optimizer", tkey: "nav.optimizer", glyph: "target" },
+  { id: "build", tkey: "nav.build", glyph: "flask" },
+  { id: "stats", tkey: "nav.stats", glyph: "chart" },
+  { id: "card", tkey: "nav.card", glyph: "image" },
+  { id: "diagnostic", tkey: "nav.diagnostic", glyph: "steth" },
+  { id: "settings", tkey: "nav.settings", glyph: "gear" },
+  { id: "about", tkey: "nav.about", glyph: "info" },
 ];
 
 /** Voile de grain de suie — texture du chrome (jamais sous la data). */
@@ -42,6 +44,7 @@ function Grain({ opacity = 0.08 }: { opacity?: number }) {
 function Sidebar() {
   const view = useStore((s) => s.view);
   const setView = useStore((s) => s.setView);
+  const t = useT();
   return (
     <nav className="relative flex w-52 flex-shrink-0 flex-col border-r border-isaac-border bg-isaac-surface">
       <Grain opacity={0.09} />
@@ -55,7 +58,7 @@ function Sidebar() {
         </div>
       </div>
       <div className="relative flex-1 space-y-0.5 px-2 py-2">
-        {NAV.map(({ id, label, glyph }) => {
+        {NAV.map(({ id, tkey, glyph }) => {
           const active = view === id;
           return (
             <button
@@ -79,7 +82,7 @@ function Sidebar() {
               <span className="relative flex flex-shrink-0">
                 <NavGlyph kind={glyph} size={16} />
               </span>
-              <span className="relative">{label}</span>
+              <span className="relative">{t(tkey)}</span>
             </button>
           );
         })}
@@ -93,6 +96,7 @@ function Sidebar() {
 
 function Header() {
   const { slots, currentSlot, dashboard, selectSlot, refresh } = useStore();
+  const t = useT();
   return (
     <header className="relative flex items-center justify-between gap-4 border-b border-isaac-border bg-isaac-surface px-6 py-3">
       <Grain opacity={0.07} />
@@ -118,10 +122,10 @@ function Header() {
           onClick={() => refresh(false)}
           disabled={!currentSlot}
           className="inline-flex items-center gap-1.5 rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-1.5 text-sm text-isaac-muted transition-colors hover:text-isaac-text disabled:opacity-40"
-          title="Rafraîchir"
+          title={t("common.refresh")}
         >
           <RefreshCw className="h-4 w-4" />
-          Rafraîchir
+          {t("common.refresh")}
         </button>
       </div>
 
@@ -140,6 +144,8 @@ function Header() {
         )}
         <span className="h-5 w-px bg-isaac-border" />
         <ThemePicker />
+        <span className="h-5 w-px bg-isaac-border" />
+        <LanguagePicker />
       </div>
     </header>
   );
@@ -164,6 +170,7 @@ function Toasts() {
 export function Shell({ children }: { children: ReactNode }) {
   const view = useStore((s) => s.view);
   const theme = useStore((s) => s.theme);
+  const t = useT();
   return (
     <div className="relative flex h-screen flex-col">
       <Defs />
@@ -183,7 +190,7 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       </div>
       <footer className="relative z-10 flex items-center justify-between border-t border-isaac-border bg-isaac-surface px-6 py-2 text-xs text-isaac-faint">
-        <span>Isaac Completion Tracker · outil communautaire, non affilié à Nicalis / Edmund McMillen</span>
+        <span>{t("app.disclaimer")}</span>
         <GitHubLink />
       </footer>
       <Toasts />

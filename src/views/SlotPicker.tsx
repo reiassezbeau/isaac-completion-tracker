@@ -12,6 +12,8 @@ import { Defs } from "../components/Defs";
 import { ThemeBackdrop } from "../components/ThemeBackdrop";
 import { ThemePicker } from "../components/ThemePicker";
 import { Emblem } from "../lib/art";
+import { LanguagePicker } from "../components/LanguagePicker";
+import { useT } from "../lib/useT";
 import type { SaveSlot } from "../lib/types";
 
 function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => void }) {
@@ -48,6 +50,7 @@ function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => vo
 export function SlotPicker() {
   const { slots, loadingSlots, loadSlots, selectSlot, toast } = useStore();
   const theme = useStore((s) => s.theme);
+  const t = useT();
 
   useEffect(() => {
     if (slots == null) loadSlots();
@@ -73,8 +76,9 @@ export function SlotPicker() {
     <div className="relative min-h-screen">
       <Defs />
       <ThemeBackdrop theme={theme} />
-      <div className="absolute right-5 top-5 z-10">
+      <div className="absolute right-5 top-5 z-10 flex items-center gap-3">
         <ThemePicker />
+        <LanguagePicker />
       </div>
       <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-10">
         <div className="mb-8 text-center">
@@ -82,13 +86,10 @@ export function SlotPicker() {
             <Emblem size={56} />
           </div>
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.35em] text-isaac-gold">
-            The Binding of Isaac · Repentance+
+            {t("app.tagline")}
           </p>
           <h1 className="font-display text-4xl text-isaac-text">Isaac Completion Tracker</h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-isaac-muted">
-            Choisis ta sauvegarde. Détection auto dans Steam Cloud et Documents. Lecture seule — ta save
-            n'est jamais modifiée.
-          </p>
+          <p className="mx-auto mt-3 max-w-md text-sm text-isaac-muted">{t("slot.pick")}</p>
         </div>
 
       {loadingSlots && (

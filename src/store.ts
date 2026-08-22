@@ -3,7 +3,35 @@
 
 import { create } from "zustand";
 import { api } from "./lib/api";
+import { type Lang, LANG_CODES, isRtl } from "./lib/i18n";
 import type { Dashboard, SaveSlot } from "./lib/types";
+
+function readInitialLang(): Lang {
+  try {
+    const l = localStorage.getItem("isaac-lang") as Lang | null;
+    if (l && LANG_CODES.includes(l)) return l;
+  } catch {
+    /* ignore */
+  }
+  try {
+    const n = (navigator.language || "en").slice(0, 2) as Lang;
+    if (LANG_CODES.includes(n)) return n;
+  } catch {
+    /* ignore */
+  }
+  return "en";
+}
+
+function applyLang(l: Lang) {
+  const el = document.documentElement;
+  el.lang = l;
+  el.dir = isRtl(l) ? "rtl" : "ltr";
+  try {
+    localStorage.setItem("isaac-lang", l);
+  } catch {
+    /* ignore */
+  }
+}
 
 export type ThemeId = "basement" | "sheol" | "void" | "corpse" | "cathedral";
 
@@ -59,6 +87,10 @@ interface AppStore {
   theme: ThemeId;
   setTheme: (t: ThemeId) => void;
 
+  // langue
+  lang: Lang;
+  setLang: (l: Lang) => void;
+
   // save selection
   slots: SaveSlot[] | null;
   currentPath: string | null;
@@ -84,6 +116,8 @@ let toastSeq = 0;
 
 const initialTheme = readInitialTheme();
 applyTheme(initialTheme);
+const initialLang = readInitialLang();
+applyLang(initialLang);
 
 export const useStore = create<AppStore>((set, get) => ({
   view: "dashboard",
@@ -93,6 +127,12 @@ export const useStore = create<AppStore>((set, get) => ({
   setTheme: (theme) => {
     applyTheme(theme);
     set({ theme });
+  },
+
+  lang: initialLang,
+  setLang: (lang) => {
+    applyLang(lang);
+    set({ lang });
   },
 
   slots: null,

@@ -8,6 +8,7 @@ import { useStore } from "../store";
 import { editionLabel } from "../lib/format";
 import { Card, SectionTitle } from "../components/ui";
 import { Modal, ModalButton } from "../components/Modal";
+import { useT } from "../lib/useT";
 import type { HealthReport, PathStatus } from "../lib/types";
 
 function StatusRow({ ok, label, children }: { ok: boolean | null; label: string; children?: ReactNode }) {
@@ -45,6 +46,7 @@ export function DiagnosticView() {
   const [busy, setBusy] = useState(false);
   const [info, setInfo] = useState<{ title: string; body: ReactNode } | null>(null);
   const { currentPath, toast } = useStore();
+  const t = useT();
 
   async function refresh() {
     setHealth(await api.getHealth());
@@ -206,7 +208,7 @@ export function DiagnosticView() {
         title={info?.title ?? ""}
         actions={
           <ModalButton onClick={() => setInfo(null)} tone="primary">
-            Compris
+            {t("common.gotIt")}
           </ModalButton>
         }
       >
