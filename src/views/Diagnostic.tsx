@@ -139,11 +139,11 @@ export function DiagnosticView() {
         </StatusRow>
         <StatusRow ok={health.mods_dir.exists} label={t("diag.modsFolder")}>
           <PathLine p={health.mods_dir} />
-          {!health.mods_dir.exists && " — sera créé à l'installation du mod"}
+          {!health.mods_dir.exists && " — will be created when the mod is installed"}
         </StatusRow>
         <StatusRow ok={health.data_dir.exists} label={t("diag.dataFolder")}>
           <PathLine p={health.data_dir} />
-          {!health.data_dir.exists && " — créé au premier run avec le mod"}
+          {!health.data_dir.exists && " — created on the first run with the mod"}
         </StatusRow>
       </Card>
 
@@ -154,23 +154,23 @@ export function DiagnosticView() {
           ok={health.save_loaded}
           label={
             health.save_loaded
-              ? `Save chargée : ${health.unlocked}/${health.total} (${editionLabel(health.edition)})`
-              : "Aucune save chargée"
+              ? `Save loaded: ${health.unlocked}/${health.total} (${editionLabel(health.edition)})`
+              : "No save loaded"
           }
         >
           {health.save_path}
           {health.save_loaded && (
             <>
               <br />
-              Checksum {health.checksum_ok ? "OK" : "invalide"} · marks{" "}
-              {health.marks_reliable ? "fiables" : "NON fiables (override recommandé)"}
+              Checksum {health.checksum_ok ? "OK" : "invalid"} · marks{" "}
+              {health.marks_reliable ? "reliable" : "NOT reliable (override recommended)"}
             </>
           )}
         </StatusRow>
-        <StatusRow ok={health.mom_beaten} label="Mom battue sur ce slot">
+        <StatusRow ok={health.mom_beaten} label="Mom beaten on this slot">
           {health.mom_beaten === false &&
-            "⚠ Sur une nouvelle save, les mods bloquent les déblocages tant que Mom n'a pas été battue une fois (règle du jeu)."}
-          {health.mom_beaten === true && "Les mods ne bloquent aucun déblocage sur ce slot."}
+            "⚠ On a fresh save, mods block unlocks until Mom has been beaten once (a rule of the game)."}
+          {health.mom_beaten === true && "Mods block no unlock on this slot."}
         </StatusRow>
         <div className="pt-3">
           <button
@@ -188,8 +188,8 @@ export function DiagnosticView() {
         <StatusRow ok={health.mod_installed} label={health.mod_installed ? t("diag.modYes") : t("diag.modNo")}>
           {health.mod_dir}
         </StatusRow>
-        <StatusRow ok={health.mod_data_file != null} label="Données du mod présentes">
-          {health.mod_data_file ?? "aucune (fais un run avec le mod activé)"}
+        <StatusRow ok={health.mod_data_file != null} label="Mod data present">
+          {health.mod_data_file ?? "none (play a run with the mod enabled)"}
         </StatusRow>
         <div className="pt-3">
           <button
@@ -198,7 +198,7 @@ export function DiagnosticView() {
             className="inline-flex items-center gap-2 rounded-lg border border-isaac-blood/40 bg-isaac-blood/10 px-3 py-1.5 text-sm text-isaac-text hover:border-isaac-blood/70 disabled:opacity-40"
           >
             <PackagePlus className="h-4 w-4" />
-            {health.mod_installed ? "Réinstaller le mod de stats" : "Installer le mod de stats"}
+            {health.mod_installed ? "Reinstall the stats mod" : "Install the stats mod"}
           </button>
         </div>
       </Card>

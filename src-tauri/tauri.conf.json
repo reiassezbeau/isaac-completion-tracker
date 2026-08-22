@@ -43,8 +43,8 @@
     "publisher": "reiassezbeau",
     "copyright": "© 2026 reiassezbeau — https://github.com/reiassezbeau",
     "category": "Utility",
-    "shortDescription": "Suivi de complétion local pour The Binding of Isaac: Repentance+ — par reiassezbeau (github.com/reiassezbeau).",
-    "longDescription": "Isaac Completion Tracker — application desktop 100% hors-ligne qui lit votre sauvegarde de The Binding of Isaac: Repentance+ pour suivre vos 641 succès, vos completion marks par personnage, et tracer votre route vers Dead God. Créé par reiassezbeau (https://github.com/reiassezbeau). Outil communautaire non affilié à Nicalis / Edmund McMillen.",
+    "shortDescription": "Local completion tracker for The Binding of Isaac: Repentance+ — by reiassezbeau (github.com/reiassezbeau).",
+    "longDescription": "Isaac Completion Tracker — a 100% offline desktop app that reads your The Binding of Isaac: Repentance+ save to track your 641 achievements and your per-character completion marks, and to chart your route to Dead God. Created by reiassezbeau (https://github.com/reiassezbeau). A community tool, not affiliated with Nicalis or Edmund McMillen.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

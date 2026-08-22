@@ -93,14 +93,14 @@ export function AchievementsView() {
                 ? "border-isaac-gold/50 bg-isaac-gold/10 text-isaac-gold"
                 : "border-isaac-border bg-isaac-surface2 text-isaac-muted"
             }`}
-            title="Afficher les conditions des succès verrouillés (spoilers)"
+            title="Show the conditions of locked achievements (spoilers)"
           >
             {reveal ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-            {reveal ? "Spoilers affichés" : "Révéler conditions"}
+            {reveal ? "Spoilers shown" : "Reveal conditions"}
           </button>
         </div>
         <div className="mt-2 text-xs text-isaac-muted">
-          {filtered.length} succès · {unlockedCount} débloqués
+          {filtered.length} achievements · {unlockedCount} unlocked
         </div>
       </Card>
 

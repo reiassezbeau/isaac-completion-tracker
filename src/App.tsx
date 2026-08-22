@@ -3,7 +3,7 @@
 
 /**
  * Isaac Completion Tracker — coquille applicative.
- * Créé par reiassezbeau — https://github.com/reiassezbeau
+ * Created by reiassezbeau - https://github.com/reiassezbeau
  */
 import { useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
@@ -65,13 +65,13 @@ function ParseErrorScreen() {
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
       <AlertOctagon className="h-12 w-12 text-isaac-blood" />
-      <h1 className="font-display text-2xl text-isaac-text">Impossible de lire cette sauvegarde</h1>
+      <h1 className="font-display text-2xl text-isaac-text">This save could not be read</h1>
       <p className="text-sm text-isaac-muted">
         {currentSlot?.filename} — {parseError}
       </p>
       <p className="text-sm text-isaac-muted">
-        Le format ne correspond pas à ce qui était attendu. Choisis un autre slot, ou localise le bon
-        dossier de sauvegarde.
+        The format does not match what was expected. Pick another slot, or locate the right
+        save folder.
       </p>
       <button
         onClick={() =>
@@ -79,7 +79,7 @@ function ParseErrorScreen() {
         }
         className="rounded-lg border border-isaac-border bg-isaac-surface2 px-4 py-2 text-sm text-isaac-text hover:border-isaac-gold/50"
       >
-        ← Choisir une autre sauvegarde
+        ← Choose another save
       </button>
     </div>
   );

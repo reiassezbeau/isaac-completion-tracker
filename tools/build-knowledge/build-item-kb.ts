@@ -2,21 +2,21 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * tools/build-knowledge/build-item-kb.ts — Compilateur de la BASE DE CONNAISSANCES
- * D'ITEMS (DEV-TIME). Source = données FACTUELLES curées à la main (ids vérifiés
- * contre l'enum CollectibleType officiel ; effets documentés sur le wiki).
+ * tools/build-knowledge/build-item-kb.ts - Compiler for the ITEM KNOWLEDGE BASE
+ * (DEV-TIME). Source = hand-curated FACTUAL data (ids checked
+ * against the official CollectibleType enum; effects documented on the wiki).
  *
- * UNE source → DEUX sorties (garde-fous : pas deux copies de la connaissance) :
- *   - src-tauri/resources/item_kb.json   (pour l'app, vues riches)
- *   - isaac-tracker-mod/item_kb.lua      (pour le mod, calcul in-run compact)
+ * ONE source -> TWO outputs (guardrail: never two copies of the knowledge):
+ *   - src-tauri/resources/item_kb.json   (for the app, rich views)
+ *   - isaac-tracker-mod/item_kb.lua      (for the mod, compact in-run computation)
  *
- * ⚠️ CONTRAINTES (garde-fous §3.4) : AUCUN asset rippé — pas de sprite, pas de
- * recopie de la prose EID. Uniquement des faits (ids, rôles, deltas de stats,
- * tear flags, remplacement de larmes, complexité) + notes courtes de notre plume.
+ * CONSTRAINTS (guardrails §3.4): NO ripped asset - no sprite, no
+ * copying of EID prose. Facts only (ids, roles, stat deltas,
+ * tear flags, tear replacement, complexity) + short notes written by us.
  *
- * KB volontairement PARTIELLE et EXTENSIBLE : on couvre en priorité les items à
- * haute valeur & très fiables (remplacements de larmes = conflits, tear flags,
- * vol, familiers, stat-ups classiques). Régénérer : `npm run build:item-kb`.
+ * The KB is deliberately PARTIAL and EXTENSIBLE: it covers first the items with
+ * high value and high confidence (tear replacements = conflicts, tear flags,
+ * flight, familiars, classic stat-ups). Regenerate with `npm run build:item-kb`.
  *
  * Auteur : reiassezbeau — https://github.com/reiassezbeau
  */
@@ -29,7 +29,7 @@ const RES = resolve(__dirname, "../../src-tauri/resources");
 const MOD = resolve(__dirname, "../../isaac-tracker-mod");
 
 // ---------------------------------------------------------------------------
-// Vocabulaires (validés au build).
+// Vocabularies (validated at build time).
 // ---------------------------------------------------------------------------
 const ROLES = ["offensive", "defensive", "mobility", "tear_mod", "utility", "familiar"] as const;
 const DIMS = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"] as const;
@@ -51,10 +51,10 @@ interface Item {
   grants_flight?: boolean;
   is_tears_replacement?: boolean;
   is_familiar?: boolean;
-  /** delta de conteneurs de cœurs rouges (documenté), si pertinent. */
+  /** delta of red heart containers (documented), when relevant. */
   hearts?: number;
   complexity: Complexity;
-  /** note factuelle courte, de notre plume (jamais de la prose EID). */
+  /** short factual note, written by us (never EID prose). */
   note?: string;
 }
 
@@ -66,7 +66,7 @@ interface Synergy {
 }
 
 // ---------------------------------------------------------------------------
-// SOURCE FACTUELLE (curée). ids = enum CollectibleType (vérifiés).
+// FACTUAL SOURCE (curated). ids = CollectibleType enum (verified).
 // ---------------------------------------------------------------------------
 const ITEMS: Item[] = [
   { id: 1, name: "Sad Onion", roles: ["offensive"], stat_effects: { fire_rate: { op: "flat", value: 0.7 } }, complexity: "flat" },
@@ -130,9 +130,9 @@ const ITEMS: Item[] = [
   { id: 698, name: "Twisted Pair", roles: ["familiar", "offensive"], is_familiar: true, complexity: "flat", note: "Two familiars that copy your shots." },
 ];
 
-// Synergies CURÉES (haute valeur, factuelles). Les CONFLITS génériques de
-// remplacement de larmes sont détectés par RÈGLE côté moteur (toute paire de
-// is_tears_replacement) — ici on ne liste que des combos spécifiques connus.
+// CURATED synergies (high value, factual). Generic tear-replacement
+// CONFLICTS are detected by a RULE in the engine (any pair of
+// is_tears_replacement) - here we only list known specific combos.
 const SYNERGIES: Synergy[] = [
   { a: 118, b: 38, type: "strong", text: "Ring of Brimstone beams." },
   { a: 229, b: 330, type: "strong", text: "A burst of many tears (near machine-gun)." },
@@ -149,7 +149,7 @@ const SYNERGIES: Synergy[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Validation (le build échoue si la source est incohérente).
+// Validation (the build fails if the source is inconsistent).
 // ---------------------------------------------------------------------------
 function fail(msg: string): never {
   console.error(`\n❌ build-item-kb : ${msg}\n`);
@@ -159,17 +159,17 @@ function fail(msg: string): never {
 const ids = new Set<number>();
 for (const it of ITEMS) {
   if (!Number.isInteger(it.id) || it.id <= 0) fail(`id invalide pour « ${it.name} »`);
-  if (ids.has(it.id)) fail(`id dupliqué : ${it.id} (${it.name})`);
+  if (ids.has(it.id)) fail(`duplicate id: ${it.id} (${it.name})`);
   ids.add(it.id);
-  if (!it.roles.length) fail(`« ${it.name} » sans rôle`);
-  for (const r of it.roles) if (!ROLES.includes(r)) fail(`rôle inconnu « ${r} » (${it.name})`);
+  if (!it.roles.length) fail(`"${it.name}" has no role`);
+  for (const r of it.roles) if (!ROLES.includes(r)) fail(`unknown role "${r}" (${it.name})`);
   for (const f of it.grants_tear_flags ?? []) if (!TEAR_FLAGS.includes(f)) fail(`tear flag inconnu « ${f} » (${it.name})`);
-  if (!COMPLEXITY.includes(it.complexity)) fail(`complexité inconnue « ${it.complexity} » (${it.name})`);
+  if (!COMPLEXITY.includes(it.complexity)) fail(`unknown complexity "${it.complexity}" (${it.name})`);
   for (const d of Object.keys(it.stat_effects ?? {})) if (!DIMS.includes(d as Dim)) fail(`dimension inconnue « ${d} » (${it.name})`);
-  if (it.is_familiar && !it.roles.includes("familiar")) fail(`« ${it.name} » is_familiar mais rôle familiar manquant`);
+  if (it.is_familiar && !it.roles.includes("familiar")) fail(`"${it.name}" is_familiar but the familiar role is missing`);
 }
 for (const s of SYNERGIES) {
-  if (!ids.has(s.a) || !ids.has(s.b)) fail(`synergie référence un id absent : ${s.a}/${s.b}`);
+  if (!ids.has(s.a) || !ids.has(s.b)) fail(`synergy references a missing id: ${s.a}/${s.b}`);
   if (!["strong", "weak", "dangerous"].includes(s.type)) fail(`type de synergie inconnu « ${s.type} »`);
 }
 
@@ -181,7 +181,7 @@ mkdirSync(RES, { recursive: true });
 writeFileSync(resolve(RES, "item_kb.json"), JSON.stringify(kb, null, 2) + "\n", "utf8");
 
 // ---------------------------------------------------------------------------
-// Sortie Lua (mod) — module retournant une table. Sérialiseur minimal.
+// Lua output (mod) - a module returning a table. Minimal serializer.
 // ---------------------------------------------------------------------------
 function luaStr(s: string): string {
   return '"' + s.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n") + '"';
@@ -206,20 +206,20 @@ function luaVal(v: unknown): string {
 
 const luaHeader = `-- SPDX-License-Identifier: GPL-3.0-only
 -- Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
--- GÉNÉRÉ par tools/build-knowledge/build-item-kb.ts — NE PAS ÉDITER À LA MAIN.
--- Base de connaissances d'items (faits uniquement, aucun asset rippé).
+-- GENERATED by tools/build-knowledge/build-item-kb.ts - DO NOT EDIT BY HAND.
+-- Item knowledge base (facts only, no ripped asset).
 `;
 const luaBody = `return ${luaVal(kb)}\n`;
 mkdirSync(MOD, { recursive: true });
 writeFileSync(resolve(MOD, "item_kb.lua"), luaHeader + luaBody, "utf8");
 
 // ---------------------------------------------------------------------------
-// Résumé.
+// Summary.
 // ---------------------------------------------------------------------------
 const byRole: Record<string, number> = {};
 for (const it of ITEMS) for (const r of it.roles) byRole[r] = (byRole[r] ?? 0) + 1;
 const replacements = ITEMS.filter((i) => i.is_tears_replacement).length;
-console.log(`✅ item_kb : ${ITEMS.length} items, ${SYNERGIES.length} synergies curées.`);
-console.log(`   remplacements de larmes : ${replacements} · par rôle : ${JSON.stringify(byRole)}`);
+console.log(`✅ item_kb: ${ITEMS.length} items, ${SYNERGIES.length} curated synergies.`);
+console.log(`   tear replacements: ${replacements} · by role: ${JSON.stringify(byRole)}`);
 console.log(`   → ${resolve(RES, "item_kb.json")}`);
 console.log(`   → ${resolve(MOD, "item_kb.lua")}`);

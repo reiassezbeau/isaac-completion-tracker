@@ -73,7 +73,7 @@ export function DashboardView() {
         </div>
       )}
 
-      {/* ── HÉRO : la jauge Dead God (artefact de pierre) + les compteurs ── */}
+      {/* ── HERO: the Dead God gauge (stone artifact) + the counters ── */}
       <div className="grid overflow-hidden rounded-xl border border-isaac-border bg-isaac-surface md:grid-cols-[300px_1fr]">
         <div
           className="flex flex-col items-center border-b border-isaac-border px-5 py-5 md:border-b-0 md:border-r"

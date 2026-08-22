@@ -1,15 +1,15 @@
-# Build l'installeur Windows et l'attache à une Release GitHub.
-# Le build tourne dans la CI (dev-time) — ça ne viole pas la contrainte « app
-# hors-ligne », qui ne concerne que le runtime de l'application.
+# Builds the Windows installer and attaches it to a GitHub Release.
+# The build runs in CI (dev time) — that does not break the "offline app"
+# constraint, which only concerns the application's runtime.
 #
-# Créé par reiassezbeau — https://github.com/reiassezbeau
+# Created by reiassezbeau — https://github.com/reiassezbeau
 #
-# Déclenchement : MANUEL uniquement (workflow_dispatch).
-# Le déclenchement automatique sur tag a été retiré volontairement : les releases
-# sont publiées avec un installeur construit et vérifié localement, et une CI qui
-# se déclencherait sur le même tag créerait une release/des assets en double.
-# Pour publier depuis la CI : onglet Actions → « Release (Windows installer) »
-# → Run workflow → indiquer le tag.
+# Trigger: MANUAL only (workflow_dispatch).
+# The automatic tag trigger was removed on purpose: releases are published with
+# an installer built and verified locally, and a CI run firing on the same tag
+# would create a duplicate release and duplicate assets.
+# To publish from CI: Actions tab → "Release (Windows installer)"
+# → Run workflow → enter the tag.
 
 name: Release (Windows installer)
 
@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag de la release (ex. v0.1.0)"
+        description: "Release tag (e.g. v0.1.0)"
         required: false
         default: "v0.0.0-dev"
 
@@ -55,11 +55,11 @@ jobs:
           tagName: ${{ inputs.tag }}
           releaseName: "Isaac Completion Tracker ${{ inputs.tag }}"
           releaseBody: |
-            Installeur Windows (**.exe** NSIS + **.msi**) pour Isaac Completion Tracker.
+            Windows installer (**.exe** NSIS + **.msi**) for Isaac Completion Tracker.
 
-            > ⚠️ Non signé : Windows SmartScreen affichera « éditeur inconnu ».
-            > Clique sur **« Informations complémentaires » → « Exécuter quand même »**.
+            > ⚠️ Unsigned: Windows SmartScreen will show "unknown publisher".
+            > Click **"More info" → "Run anyway"**.
 
-            Créé par [reiassezbeau](https://github.com/reiassezbeau).
+            Created by [reiassezbeau](https://github.com/reiassezbeau).
           releaseDraft: true
           prerelease: false

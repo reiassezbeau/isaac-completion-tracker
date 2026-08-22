@@ -2,38 +2,38 @@
 -- Isaac Completion Tracker -- (c) 2026 reiassezbeau -- https://github.com/reiassezbeau
 
 --[[
-  Isaac Tracker -- mod compagnon "Stats" (ETAPE 1 : minimal)
-  Cree par reiassezbeau -- https://github.com/reiassezbeau
+  Isaac Tracker -- companion "Stats" mod
+  Created by reiassezbeau -- https://github.com/reiassezbeau
 
-  PUREMENT OBSERVATEUR :
-    - ne modifie JAMAIS le gameplay (aucun return dans TAKE_DMG => degats intacts) ;
-    - n'utilise JAMAIS la console de debug ;
-    - se contente d'ecouter les callbacks et d'ecrire un JSON par slot.
-    - chaque callback est protege par pcall : une erreur ne peut PAS casser le jeu
-      ni desactiver le mod (au pire un hit non compte, loggue dans log.txt).
+  PURELY AN OBSERVER:
+    - NEVER changes gameplay (no return in TAKE_DMG => damage untouched);
+    - NEVER uses the debug console;
+    - only listens to callbacks and writes one JSON file per slot.
+    - every callback is wrapped in pcall: an error can NOT break the game
+      or disable the mod (at worst one hit goes uncounted, logged in log.txt).
 
-  Signatures verifiees contre la doc Lua Repentance+ (wofsauge IsaacDocs) :
-    - les handlers recoivent le mod en 1er argument -> function(_, <params>)
+  Signatures verified against the Repentance+ Lua docs (wofsauge IsaacDocs):
+    - handlers receive the mod as their 1st argument -> function(_, <params>)
     - MC_ENTITY_TAKE_DMG(_, entity, amount, damageFlags, source, countdownFrames)
-    - MC_POST_GAME_STARTED(_, isContinue) ; MC_POST_GAME_END(_, isGameOver)
+    - MC_POST_GAME_STARTED(_, isContinue); MC_POST_GAME_END(_, isGameOver)
 ]]
 
 local mod = RegisterMod("IsaacTracker", 1)
 local json = require("json")
 
 local SCHEMA = 1
--- Buffer glissant cote mod : petit (l'app garde l'historique permanent complet).
--- Petit => json.encode + ecriture disque legers => aucun hitch en jeu.
+-- Sliding buffer on the mod side: small (the app keeps the full permanent history).
+-- Small => cheap json.encode + disk write => no in-game hitch.
 local MAX_HISTORY = 40
--- Log par-hit dans log.txt : utile en debug, mais couteux si degats rapides
--- (feu, pics, DoT) -> ecritures disque en rafale. Desactive par defaut (perf).
+-- Per-hit logging to log.txt: handy when debugging, but costly with fast damage
+-- (fire, spikes, DoT) -> bursts of disk writes. Off by default (perf).
 local DEBUG_LOG = false
 
--- Etat en memoire (persiste via mod:SaveData).
+-- In-memory state (persisted through mod:SaveData).
 local data = { schema = SCHEMA, current_run = nil, history = {}, next_index = 1 }
 
--- PlayerType (entier) -> id de perso de characters.json.
--- Les "formes" pointent vers leur perso : Lazarus2->lazarus, BlackJudas->judas,
+-- PlayerType (integer) -> character id from characters.json.
+-- Alternate "forms" point at their base character: Lazarus2->lazarus, BlackJudas->judas,
 -- TheSoul->the_forgotten, Esau->jacob_esau ; cote Tainted idem (38/39/40).
 local PLAYER_TYPE_TO_ID = {
   [0] = "isaac", [1] = "magdalene", [2] = "cain", [3] = "judas", [4] = "blue_baby",
@@ -54,13 +54,13 @@ local function log(msg)
   Isaac.DebugString("[IsaacTracker] " .. msg)
 end
 
--- Enveloppe un handler dans pcall : une erreur ne casse jamais le jeu, et comme
--- on ne renvoie RIEN, TAKE_DMG reste un observateur pur (degats inchanges).
+-- Wraps a handler in pcall: an error can never break the game, and since
+-- we return NOTHING, TAKE_DMG stays a pure observer (damage untouched).
 local function safe(name, fn)
   return function(...)
     local ok, err = pcall(fn, ...)
     if not ok then
-      log("ERREUR " .. name .. ": " .. tostring(err))
+      log("ERROR " .. name .. ": " .. tostring(err))
     end
   end
 end
@@ -69,8 +69,8 @@ local function frame()
   return Game():GetFrameCount()
 end
 
--- ⚠️ `Level()` global n'est PAS appelable dans cette API (c'est une table/classe).
--- On passe par Game():GetLevel().
+-- ⚠️ the global `Level()` is NOT callable in this API (it is a table/class).
+-- Use Game():GetLevel() instead.
 local function level()
   return Game():GetLevel()
 end
@@ -83,8 +83,8 @@ local function characterIdFor(playerType)
   return PLAYER_TYPE_TO_ID[playerType] or ("unknown_" .. tostring(playerType))
 end
 
--- Borne haute des ids de collectibles (depuis l'ItemConfig ; repli prudent).
--- Cache : calcule une seule fois (l'ItemConfig ne change pas en cours de partie).
+-- Upper bound of collectible ids (from ItemConfig; conservative fallback).
+-- Cached: computed once (ItemConfig never changes mid-session).
 local maxCollectibleId = nil
 local function collectibleUpperBound()
   if maxCollectibleId ~= nil then
@@ -99,8 +99,8 @@ local function collectibleUpperBound()
   return n
 end
 
--- Snapshot du build : liste des ids de collectibles reellement tenus (§7).
--- GetCollectibleNum(id) renvoie 0 pour un id invalide -> boucle sure.
+-- Build snapshot: the ids of the collectibles actually held (§7).
+-- GetCollectibleNum(id) returns 0 for an invalid id -> the loop is safe.
 local function snapshotBuild(player)
   local ids = {}
   local bound = collectibleUpperBound()
@@ -117,7 +117,7 @@ local function snapshotBuild(player)
   return ids
 end
 
--- Persistance (buffer glissant : on ne garde que les N derniers runs ; l'app
+-- Persistence (sliding buffer: only the last N runs are kept; the app
 -- tient l'historique permanent complet).
 local function save()
   while #data.history > MAX_HISTORY do
@@ -138,10 +138,10 @@ local function load()
   end
 end
 
--- Categorise la source d'un hit : self | environment | enemy | unknown.
+-- Classifies the source of a hit: self | environment | enemy | unknown.
 local function classifySource(damageFlags, source)
   local DF = DamageFlag
-  -- Garde : damageFlags doit etre un entier ; sinon on ne devine pas.
+  -- Guard: damageFlags must be an integer; otherwise we do not guess.
   if type(damageFlags) ~= "number" then
     return "unknown"
   end
@@ -153,7 +153,7 @@ local function classifySource(damageFlags, source)
   if has(DF.DAMAGE_IV_BAG) or has(DF.DAMAGE_DEVIL) or has(DF.DAMAGE_CURSED_DOOR) or has(DF.DAMAGE_RED_HEARTS) then
     return "self"
   end
-  -- Pics : "self" si salle de sacrifice (on a choisi), sinon environnement.
+  -- Spikes: "self" in a sacrifice room (it was a choice), otherwise environment.
   if has(DF.DAMAGE_SPIKES) then
     local ok, roomType = pcall(function() return Game():GetRoom():GetType() end)
     if ok and roomType == RoomType.ROOM_SACRIFICE then
@@ -164,7 +164,7 @@ local function classifySource(damageFlags, source)
   if has(DF.DAMAGE_ACID) or has(DF.DAMAGE_FIRE) then
     return "environment"
   end
-  -- Source = une entite non-joueur -> ennemi (NPC, projectile d'ennemi...).
+  -- Source = a non-player entity -> enemy (NPC, enemy projectile...).
   if source ~= nil and source.Type ~= nil and source.Type ~= 0 and source.Type ~= EntityType.ENTITY_PLAYER then
     return "enemy"
   end
@@ -174,19 +174,19 @@ local function classifySource(damageFlags, source)
   return "unknown"
 end
 
--- Deduplication : meme entite touchee deux fois sur la meme frame = 1 hit.
+-- Deduplication: the same entity hitting twice on the same frame counts as 1 hit.
 local lastHitFrame = {}
--- MC_PRE_SPAWN_CLEAN_AWARD peut se declencher plusieurs fois par salle -> on ne
--- compte la salle nettoyee qu'une fois (flag remis a zero a chaque nouvelle salle).
+-- MC_PRE_SPAWN_CLEAN_AWARD can fire several times per room -> a cleared room
+-- is only counted once (the flag resets on every new room).
 local roomAwardCounted = false
--- Anti sur-comptage des boss : les boss segmentes (Larry Jr, Pin, Gemini...) tuent
--- plusieurs entites qui renvoient toutes IsBoss()=true. On deduplique par
--- (Type:Variant) DANS la salle courante -> un boss = 1, deux boss distincts = 2.
+-- Boss over-counting guard: segmented bosses (Larry Jr, Pin, Gemini...) kill
+-- several entities that all report IsBoss()=true. We deduplicate by
+-- (Type:Variant) WITHIN the current room -> one boss = 1, two distinct bosses = 2.
 local bossKilledInRoom = {}
 
--- ── HIT (degat sur une entite joueur) ─────────────────────────────────────
+-- ── HIT (damage on a player entity) ─────────────────────────────────────
 local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames)
-  -- Ignore les degats factices.
+  -- Ignore fake damage.
   if type(damageFlags) == "number" and (damageFlags & DamageFlag.DAMAGE_FAKE) ~= 0 then
     return
   end
@@ -195,7 +195,7 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
     return
   end
   if entity == nil or entity:ToPlayer() == nil then
-    return -- securite (le filtre ENTITY_PLAYER devrait deja garantir ca)
+    return -- safety (the ENTITY_PLAYER filter should already guarantee this)
   end
 
   local key = tostring(GetPtrHash(entity))
@@ -215,7 +215,7 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
   local sk = tostring(st) .. "-" .. tostring(stt)
   run.hits_by_stage[sk] = (run.hits_by_stage[sk] or 0) + 1
 
-  -- Dernier degat subi : sert de "cause de mort" si le run se termine par une mort.
+  -- Last damage taken: used as the "cause of death" if the run ends in a death.
   local srcType = nil
   if source ~= nil then
     srcType = source.Type
@@ -227,31 +227,31 @@ local function onTakeDmg(_, entity, amount, damageFlags, source, countdownFrames
   end
 end
 
--- ── DEBUT DE RUN ──────────────────────────────────────────────────────────
--- IMPORTANT : on NE recharge PAS le disque ici. Le jeu ne flush SaveData qu'au
--- retour menu/sortie ; relire le disque a chaque run ecraserait l'historique en
--- memoire (accumule pendant la session). Le chargement se fait UNE fois a l'init.
+-- ── RUN START ──────────────────────────────────────────────────────────
+-- IMPORTANT: we do NOT reload from disk here. The game only flushes SaveData when
+-- returning to the menu or exiting; re-reading on every run would overwrite the
+-- in-memory history (built up during the session). Loading happens ONCE at init.
 local function onGameStarted(_, isContinue)
-  -- ── Reprise d'un run (CAPITAL : ne JAMAIS perdre le run en cours) ─────────
-  -- Desactiver le mod puis relancer : pour atteindre le menu Mods il faut sortir
-  -- vers le menu -> le jeu FLUSHE SaveData sur disque (MC_PRE_GAME_EXIT a deja
-  -- appele save()). A la relance, load() (init) restaure current_run, et ici on
-  -- reprend. FILET : si l'init a lu un slot vide/incorrect (current_run == nil)
-  -- ET qu'aucun historique de session n'est encore accumule (#history == 0, donc
-  -- rien a ecraser), on RELIT le disque -- le bon slot est actif maintenant.
+  -- ── Resuming a run (CRITICAL: NEVER lose the run in progress) ─────────
+  -- Disabling the mod then relaunching: reaching the Mods menu requires exiting
+  -- to the menu -> the game FLUSHES SaveData to disk (MC_PRE_GAME_EXIT has already
+  -- called save()). On relaunch, load() (init) restores current_run, and here we
+  -- resume. SAFETY NET: if init read an empty or wrong slot (current_run == nil)
+  -- AND no session history has accumulated yet (#history == 0, so there is
+  -- nothing to overwrite), we RE-READ from disk -- the right slot is active now.
   if isContinue then
     if data.current_run == nil and #data.history == 0 then
       pcall(load)
     end
     if data.current_run ~= nil then
       lastHitFrame = {}
-      log("continue -> reprise du run courant")
+      log("continue -> resuming the current run")
       return
     end
   end
 
-  -- Run precedent non cloture (redemarrage / nouvelle partie sans mourir/gagner)
-  -- => on l'archive comme "abandoned" pour ne pas perdre ses donnees.
+  -- Previous run left open (restart or new game without dying/winning)
+  -- => archive it as "abandoned" so its data is not lost.
   if data.current_run ~= nil and not data.current_run.ended then
     data.current_run.ended = true
     data.current_run.outcome = "abandoned"
@@ -263,9 +263,9 @@ local function onGameStarted(_, isContinue)
   local idx = data.next_index or 1
   data.next_index = idx + 1
   local pt = currentPlayerType()
-  -- ID de run unique SANS toucher au RNG global (math.random) pour ne PAS
-  -- perturber les autres mods : on combine un compteur persistant + la graine
-  -- de run du jeu + la frame de depart.
+  -- Unique run id WITHOUT touching the global RNG (math.random) so other mods
+  -- are NOT disturbed: combine a persistent counter + the game's run seed
+  -- + the starting frame.
   local startSeed = 0
   do
     local ok, s = pcall(function() return Game():GetSeeds():GetStartSeed() end)
@@ -285,7 +285,7 @@ local function onGameStarted(_, isContinue)
     death_source = nil,
     deepest_stage = level():GetStage(),
     hits_total = 0,
-    -- champs larges (§4.5) — remplis au fil du run
+    -- wide fields (§4.5) - filled in as the run goes
     shielded_hits = 0,
     rooms_cleared = 0,
     kills = 0,
@@ -301,10 +301,10 @@ local function onGameStarted(_, isContinue)
   }
   lastHitFrame = {}
   save()
-  log(string.format("nouveau run: %s (%s)", data.current_run.run_id, data.current_run.character))
+  log(string.format("new run: %s (%s)", data.current_run.run_id, data.current_run.character))
 end
 
--- ── FIN DE RUN ────────────────────────────────────────────────────────────
+-- ── RUN END ────────────────────────────────────────────────────────────
 local function onGameEnd(_, isGameOver)
   local run = data.current_run
   if run == nil then
@@ -315,7 +315,7 @@ local function onGameEnd(_, isGameOver)
   run.ended_frame = frame()
   run.duration_frames = run.ended_frame - (run.started_frame or run.ended_frame)
 
-  -- Instantane final : etage atteint, deals du diable, build tenu.
+  -- Final snapshot: floor reached, devil deals, build held.
   run.final_stage = level():GetStage()
   run.final_stage_type = level():GetStageType()
   local ok, deals = pcall(function() return Game():GetDevilRoomDeals() end)
@@ -326,7 +326,7 @@ local function onGameEnd(_, isGameOver)
   if okB and type(build) == "table" then
     run.final_build = build
   end
-  -- Cause de mort = derniere source de degat subie.
+  -- Cause of death = the last damage source taken.
   if run.outcome == "death" then
     run.death_source = run.last_damage
   end
@@ -334,10 +334,10 @@ local function onGameEnd(_, isGameOver)
   data.history[#data.history + 1] = run
   data.current_run = nil
   save()
-  log(string.format("fin de run: %s, %d hits, %d kills, %d salles", run.outcome, run.hits_total, run.kills or 0, run.rooms_cleared or 0))
+  log(string.format("run end: %s, %d hits, %d kills, %d rooms", run.outcome, run.hits_total, run.kills or 0, run.rooms_cleared or 0))
 end
 
--- ── KILLS (ennemis + boss) ────────────────────────────────────────────────
+-- ── KILLS (enemies + bosses) ────────────────────────────────────────────────
 local function onEntityKill(_, entity)
   local run = data.current_run
   if run == nil or entity == nil then
@@ -345,20 +345,20 @@ local function onEntityKill(_, entity)
   end
   local npc = entity:ToNPC()
   if npc == nil then
-    return -- on ne compte que les NPC (pas les larmes/effets/joueur)
+    return -- only NPCs are counted (not tears, effects or the player)
   end
   local isBoss = false
   pcall(function() isBoss = npc:IsBoss() end)
   if isBoss then
-    -- 1 boss par (Type:Variant) et par salle : ignore les segments repetes.
+    -- 1 boss per (Type:Variant) per room: repeated segments are ignored.
     local key = tostring(entity.Type) .. ":" .. tostring(entity.Variant)
     if not bossKilledInRoom[key] then
       bossKilledInRoom[key] = true
       run.boss_kills = (run.boss_kills or 0) + 1
     end
   end
-  -- Ennemi actif (ou boss) -> compte comme kill. IsActiveEnemy(true) inclut la
-  -- frame de mort. Les PNJ neutres/amis (marchand, familiers) sont exclus.
+  -- Active enemy (or boss) -> counts as a kill. IsActiveEnemy(true) includes the
+  -- death frame. Neutral or friendly NPCs (shopkeeper, familiars) are excluded.
   local counts = isBoss
   pcall(function() counts = counts or npc:IsActiveEnemy(true) end)
   if counts then
@@ -366,8 +366,8 @@ local function onEntityKill(_, entity)
   end
 end
 
--- ── SALLE NETTOYEE ────────────────────────────────────────────────────────
--- Observateur pur : on ne renvoie RIEN (l'award se genere normalement).
+-- ── ROOM CLEARED ────────────────────────────────────────────────────────
+-- Pure observer: we return NOTHING (the award spawns normally).
 local function onClearAward(_, _rng, _pos)
   local run = data.current_run
   if run == nil or roomAwardCounted then
@@ -377,7 +377,7 @@ local function onClearAward(_, _rng, _pos)
   run.rooms_cleared = (run.rooms_cleared or 0) + 1
 end
 
--- ── Etage le plus profond + sauvegardes regulieres (survie aux crashes) ────
+-- ── Deepest floor + regular saves (crash survival) ────
 local function onNewLevel(_)
   local run = data.current_run
   if run ~= nil then
@@ -385,12 +385,12 @@ local function onNewLevel(_)
     if st > (run.deepest_stage or 0) then
       run.deepest_stage = st
     end
-    -- Union des maledictions rencontrees sur le run (bitmask LevelCurse).
+    -- Union of the curses met during the run (LevelCurse bitmask).
     local ok, c = pcall(function() return level():GetCurses() end)
     if ok and type(c) == "number" then
       run.curses = (run.curses or 0) | c
     end
-    -- Instantane du build a chaque etage (au cas ou le run ne se cloture pas).
+    -- Build snapshot on every floor (in case the run never closes).
     local okB, build = pcall(function() return snapshotBuild(Isaac.GetPlayer(0)) end)
     if okB and type(build) == "table" then
       run.final_build = build
@@ -399,8 +399,8 @@ local function onNewLevel(_)
 end
 
 local function onNewRoom(_)
-  -- Les entites de la salle precedente ont disparu -> on borne la table de dedup
-  -- (evite qu'elle grossisse sur un long run).
+  -- The previous room's entities are gone -> bound the dedup table
+  -- (keeps it from growing over a long run).
   lastHitFrame = {}
   roomAwardCounted = false
   bossKilledInRoom = {}
@@ -413,7 +413,7 @@ local function onPreGameExit(_, shouldSave)
   save()
 end
 
--- Chargement UNIQUE des donnees persistees (a l'init du mod, pas a chaque run).
+-- ONE-TIME load of the persisted data (at mod init, not on every run).
 local okLoad = pcall(load)
 if not okLoad then
   data = { schema = SCHEMA, current_run = nil, history = {}, next_index = 1 }
@@ -428,4 +428,4 @@ mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, safe("new_level", onNewLevel))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, safe("new_room", onNewRoom))
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, safe("pre_game_exit", onPreGameExit))
 
-log("charge (v0.2.1) -- observateur + champs larges + reprise de run durcie")
+log("loaded (v0.2.1) -- observer + wide fields + hardened run resume")

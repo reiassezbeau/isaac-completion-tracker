@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  /* ═══ THÈMES — chaque thème = un lieu de l'univers d'Isaac ═══
-     Neutres + accent de chrome (--i-accent) + voile ambiant (--i-veil).
-     Les sémantiques (--i-gold/jade/blood) restent stables en sombre (lisibilité
-     de la data) et ne s'ajustent qu'en Cathédrale (clair). */
+  /* ═══ THEMES - each theme is a place from the world of Isaac ═══
+     Neutrals + chrome accent (--i-accent) + ambient veil (--i-veil).
+     The semantic colors (--i-gold/jade/blood) stay stable in dark themes (data
+     legibility) and are only adjusted in Cathedral (light). */
 
-  /* ── Le Sous-sol (défaut) : suie chaude, sang séché ── */
+  /* ── The Basement (default): warm soot, dried blood ── */
   :root {
     color-scheme: dark;
     --i-bg: 10 8 7;
@@ -46,7 +46,7 @@
     --i-blood: 221 64 73;
   }
 
-  /* ── Le Vide (Delirium) : cosmos violet ── */
+  /* ── The Void (Delirium): purple cosmos ── */
   :root[data-theme="void"] {
     color-scheme: dark;
     --i-bg: 9 7 15;
@@ -65,7 +65,7 @@
     --i-blood: 205 84 120;
   }
 
-  /* ── Corpse / Mother : chair verdâtre ── */
+  /* ── Corpse / Mother: greenish flesh ── */
   :root[data-theme="corpse"] {
     color-scheme: dark;
     --i-bg: 8 11 8;
@@ -84,7 +84,7 @@
     --i-blood: 196 78 70;
   }
 
-  /* ── La Cathédrale : lumière sacrée (thème clair, vélin) ── */
+  /* ── The Cathedral: holy light (light theme, vellum) ── */
   :root[data-theme="cathedral"] {
     color-scheme: light;
     --i-bg: 240 236 228;
@@ -113,12 +113,12 @@
     @apply bg-isaac-bg text-isaac-text font-sans antialiased;
     margin: 0;
     font-variant-numeric: tabular-nums;
-    /* voile ambiant du thème, en haut de la fenêtre */
+    /* ambient theme veil at the top of the window */
     background-image: radial-gradient(130% 90% at 50% -15%, rgb(var(--i-veil) / 0.1), transparent 62%);
     background-attachment: fixed;
   }
 
-  /* grain de suie global — filtre SVG original, subtil */
+  /* global soot grain - original SVG filter, subtle */
   body::before {
     content: "";
     position: fixed;
@@ -135,8 +135,8 @@
     opacity: 0.045;
   }
 
-  /* vieux parchemin (texture CC0 / domaine public, bundlée offline) — le monde
-     de l'app repose sur du vélin. Tinté par le thème via mix-blend. */
+  /* old parchment (CC0 / public-domain texture, bundled offline) - the world
+     of the app rests on vellum. Tinted by the theme through mix-blend. */
   body::after {
     content: "";
     position: fixed;
@@ -168,7 +168,7 @@
     @apply bg-isaac-blood/40 text-isaac-text;
   }
 
-  /* transition douce des couleurs quand on change de thème */
+  /* smooth color transition when switching themes */
   body,
   .theme-tween {
     transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
@@ -186,7 +186,7 @@
   }
 }
 
-/* rejoue l'animation d'entrée à chaque changement de vue (clé React) */
+/* replays the entrance animation on every view change (React key) */
 .view-enter {
   animation: fadeSlide 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }

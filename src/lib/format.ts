@@ -15,16 +15,16 @@ export const DLC_LABELS: Record<string, string> = {
 };
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  character: "Personnages",
-  item: "Objets",
-  trinket: "Breloques",
-  pill: "Pilules",
-  card: "Cartes / Runes",
-  coop_baby: "Bébés co-op",
+  character: "Characters",
+  item: "Items",
+  trinket: "Trinkets",
+  pill: "Pills",
+  card: "Cards / Runes",
+  coop_baby: "Co-op babies",
   challenge: "Challenges",
   completion_mark: "Completion marks",
   boss: "Boss",
-  misc: "Divers",
+  misc: "Misc",
 };
 
 export function dlcLabel(dlc: string): string {
@@ -41,7 +41,7 @@ export function markLabel(d: MarkDifficulty, t?: (k: string) => string): string 
   return d === "hard" ? "Hard" : d === "normal" ? "Normal" : "To do";
 }
 
-/** Classes Tailwind pour un badge de mark (or = Hard, jade = Normal, creux = à faire). */
+/** Tailwind classes for a mark badge (gold = Hard, jade = Normal, hollow = to do). */
 export function markClasses(d: MarkDifficulty): string {
   switch (d) {
     case "hard":
@@ -49,7 +49,7 @@ export function markClasses(d: MarkDifficulty): string {
     case "normal":
       return "bg-jade-500/10 text-isaac-done border-jade-600/50";
     default:
-      // « à faire » = creux et discret (jamais un mur de rouge), cf. DA v2
+      // "to do" = hollow and discreet (never a wall of red), see art direction v2
       return "bg-isaac-surface2 text-isaac-faint border-isaac-border";
   }
 }
@@ -71,10 +71,10 @@ const STAGE_NAMES: Record<number, string> = {
 };
 
 export function stageLabel(stage: number): string {
-  return STAGE_NAMES[stage] ?? `Étage ${stage}`;
+  return STAGE_NAMES[stage] ?? `Floor ${stage}`;
 }
 
-/** Clé "stage-type" (ex. "2-2") → nom lisible. */
+/** "stage-type" key (e.g. "2-2") -> readable name. */
 export function stageKeyLabel(key: string): string {
   const n = parseInt(key.split("-")[0] ?? "", 10);
   return Number.isFinite(n) ? stageLabel(n) : key;
@@ -90,31 +90,31 @@ export function editionLabel(e: string | null): string {
   return "—";
 }
 
-// -- Assistant de build -----------------------------------------------------
+// -- Build assistant -----------------------------------------------------
 
 export const ROLE_LABELS: Record<string, string> = {
-  offensive: "Offensif",
-  defensive: "Défensif",
-  mobility: "Mobilité",
-  tear_mod: "Modif. de tirs",
-  utility: "Utilitaire",
-  familiar: "Familier",
+  offensive: "Offensive",
+  defensive: "Defensive",
+  mobility: "Mobility",
+  tear_mod: "Tear modifier",
+  utility: "Utility",
+  familiar: "Familiar",
 };
 
 export const TEAR_FLAG_LABELS: Record<string, string> = {
   homing: "homing",
-  piercing: "perçant",
+  piercing: "piercing",
   spectral: "spectral",
-  explosive: "explosif",
+  explosive: "explosive",
 };
 
 export const STAT_DIM_LABELS: Record<string, string> = {
-  damage: "Dégâts",
-  fire_rate: "Cadence",
-  range: "Portée",
-  shot_speed: "Vél. tir",
-  speed: "Vitesse",
-  luck: "Chance",
+  damage: "Damage",
+  fire_rate: "Fire rate",
+  range: "Range",
+  shot_speed: "Shot speed",
+  speed: "Speed",
+  luck: "Luck",
 };
 
 export function roleLabel(r: string): string {
@@ -128,15 +128,15 @@ export function statDimLabel(d: string): string {
 }
 
 export function complexityLabel(c: string): string {
-  if (c === "flat") return "delta fiable";
-  if (c === "proc") return "à proc";
-  if (c === "conditional") return "conditionnel";
+  if (c === "flat") return "reliable delta";
+  if (c === "proc") return "on proc";
+  if (c === "conditional") return "conditional";
   return c;
 }
 
 export const VERDICT_META: Record<string, { label: string; tone: "done" | "gold" | "blood" | "muted" }> = {
-  strong_pickup: { label: "Bon pick", tone: "done" },
-  fills_gap: { label: "Comble un trou", tone: "gold" },
-  situational: { label: "Situationnel", tone: "muted" },
-  redundant_or_conflict: { label: "Conflit / redondant", tone: "blood" },
+  strong_pickup: { label: "Strong pick", tone: "done" },
+  fills_gap: { label: "Fills a gap", tone: "gold" },
+  situational: { label: "Situational", tone: "muted" },
+  redundant_or_conflict: { label: "Conflict / redundant", tone: "blood" },
 };

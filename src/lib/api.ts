@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-// Couche d'appel des commands Tauri (invoke). Aucune requête réseau : tout passe
-// par le backend Rust local.
+// Call layer for the Tauri commands (invoke). No network request: everything goes
+// through the local Rust backend.
 import { invoke } from "@tauri-apps/api/core";
 import type {
   AchievementView,

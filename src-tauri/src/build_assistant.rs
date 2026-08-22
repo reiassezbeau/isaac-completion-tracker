@@ -624,7 +624,7 @@ mod tests {
     #[test]
     fn try_synergy_fills_gap_flight() {
         let db = db();
-        let r = try_synergy(&db, &[1], 179).unwrap(); // build sans vol, candidat = Fate (vol)
+        let r = try_synergy(&db, &[1], 179).unwrap(); // build with no flight, candidate = Fate (flight)
         assert!(r.adds_flight);
         assert_eq!(r.verdict, "fills_gap");
     }

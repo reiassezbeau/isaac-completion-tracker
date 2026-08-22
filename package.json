@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Suivi de complétion local et hors-ligne pour The Binding of Isaac: Repentance+",
+  "description": "Local, offline completion tracker for The Binding of Isaac: Repentance+",
   "author": "reiassezbeau (https://github.com/reiassezbeau)",
   "license": "GPL-3.0-only",
   "homepage": "https://github.com/reiassezbeau/isaac-completion-tracker",

@@ -2,10 +2,10 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * PageBackdrop — fond propre à CHAQUE page, tiré de l'univers d'Isaac.
- * Collage d'icônes ORIGINALES (pièces, cœurs, dés, piédestal, crâne, crotte…),
- * grand et très discret, teinté par l'accent du thème, derrière le contenu.
- * Le jeu comme noyau esthétique — jamais sous une donnée (opacité basse).
+ * PageBackdrop - a backdrop specific to EACH page, drawn from the world of Isaac.
+ * A collage of ORIGINAL icons (coins, hearts, dice, pedestal, skull, poop...),
+ * large and very subtle, tinted with the theme accent, behind the content.
+ * The game as the aesthetic core - never behind data (low opacity).
  */
 import { useStore, type ViewId } from "../store";
 import { Emblem, Glyph, Icon } from "../lib/art";

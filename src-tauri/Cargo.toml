@@ -1,7 +1,7 @@
 [package]
 name = "isaac-completion-tracker"
 version = "0.1.0"
-description = "Suivi de complétion local et hors-ligne pour The Binding of Isaac: Repentance+"
+description = "Local, offline completion tracker for The Binding of Isaac: Repentance+"
 authors = ["reiassezbeau <https://github.com/reiassezbeau>"]
 homepage = "https://github.com/reiassezbeau"
 repository = "https://github.com/reiassezbeau/isaac-completion-tracker"
@@ -34,10 +34,10 @@ walkdir = "2"
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"
 
-# Profil de release : binaire compact et rapide pour la distribution.
-#   opt-level "s" + LTO + codegen-units=1 -> code optimise et compact
-#   panic="abort" -> pas de tables de deroulement (binaire plus petit)
-#   strip -> retire les symboles de debug
+# Release profile: a compact, fast binary for distribution.
+#   opt-level "s" + LTO + codegen-units=1 -> optimized, compact code
+#   panic="abort" -> no unwind tables (smaller binary)
+#   strip -> removes debug symbols
 [profile.release]
 opt-level = "s"
 lto = true

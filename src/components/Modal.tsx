@@ -4,7 +4,7 @@
 import { useEffect, type ReactNode } from "react";
 import { X } from "lucide-react";
 
-/** Modale thémée (remplace les alert()/confirm bruts). Fermeture Échap / clic hors. */
+/** Themed modal (replaces raw alert()/confirm). Closes on Escape or outside click. */
 export function Modal({
   open,
   onClose,
@@ -45,7 +45,7 @@ export function Modal({
   );
 }
 
-/** Bouton d'action standard pour les modales. */
+/** Standard action button for modals. */
 export function ModalButton({
   onClick,
   children,

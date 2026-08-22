@@ -10,9 +10,9 @@ import { Card } from "./ui";
 import type { HealthReport } from "../lib/types";
 
 /**
- * Encart d'onboarding du mod de stats (in-game). Guide l'utilisateur :
- * installer → relancer Isaac → jouer. Se réduit à une ligne discrète une fois
- * le mod installé ET des données détectées.
+ * Onboarding card for the in-game stats mod. Walks the user through:
+ * install -> relaunch Isaac -> play. Shrinks to a discreet single line once
+ * the mod is installed AND data has been detected.
  */
 export function ModStatusCard() {
   const t = useT();
@@ -25,7 +25,7 @@ export function ModStatusCard() {
     try {
       setH(await api.getHealth());
     } catch {
-      /* pas de save chargée : on n'affiche rien */
+      /* no save loaded: show nothing */
     }
   }
   useEffect(() => {
@@ -34,7 +34,7 @@ export function ModStatusCard() {
 
   if (!h) return null;
 
-  // Tout bon → ligne discrète.
+  // All good -> discreet line.
   if (h.mod_installed && h.mod_data_file) {
     return (
       <div className="flex items-center gap-2 rounded-xl border border-isaac-done/30 bg-isaac-done/5 px-4 py-2 text-sm text-isaac-muted">
@@ -49,9 +49,9 @@ export function ModStatusCard() {
     try {
       await api.installTrackerMod();
       await refresh();
-      toast("Mod installé ✓ — relance Isaac pour l'activer");
+      toast("Mod installed ✓ — relaunch Isaac to enable it");
     } catch (e) {
-      toast("Échec de l'installation : " + String(e));
+      toast("Installation failed: " + String(e));
     } finally {
       setBusy(false);
     }
@@ -74,11 +74,11 @@ export function ModStatusCard() {
           <div className="font-semibold">{t("mod.title")}</div>
           <p className="mt-0.5 text-sm text-isaac-muted">
             {step === "notfound" &&
-              "Jeu introuvable pour l'instant — vois l'onglet Diagnostic pour localiser Isaac."}
+              "Game not found yet — see the Diagnostic tab to locate Isaac."}
             {step === "install" &&
-              "Installe le mod compagnon (1 clic), relance Isaac, et il comptera tes hits + stats à chaque run — croisés avec ta complétion."}
+              "Install the companion mod (one click), relaunch Isaac, and it will count your hits and stats on every run — cross-referenced with your completion."}
             {step === "play" &&
-              "Mod installé ✓. Relance Isaac et joue un run : les premières stats apparaîtront ici automatiquement."}
+              "Mod installed ✓. Relaunch Isaac and play a run: the first stats will show up here automatically."}
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {step === "install" && (
@@ -88,15 +88,15 @@ export function ModStatusCard() {
                 className={`${btn} border border-isaac-blood/40 bg-isaac-blood/10 text-isaac-text hover:border-isaac-blood/70 disabled:opacity-40`}
               >
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackagePlus className="h-4 w-4" />}
-                Installer le mod
+                Install the mod
               </button>
             )}
             {step === "play" && (
               <button
-                onClick={() => api.launchGame().catch((e) => toast("Impossible de lancer Isaac : " + String(e)))}
+                onClick={() => api.launchGame().catch((e) => toast("Could not launch Isaac: " + String(e)))}
                 className={`${btn} border border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold hover:border-isaac-gold/70`}
               >
-                <Gamepad2 className="h-4 w-4" /> Lancer Isaac
+                <Gamepad2 className="h-4 w-4" /> Launch Isaac
               </button>
             )}
             <button

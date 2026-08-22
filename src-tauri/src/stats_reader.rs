@@ -95,7 +95,7 @@ pub struct Run {
     pub death_source: Option<DeathSource>,
 }
 
-// --- extraction defensive depuis serde_json::Value -------------------------
+// --- defensive extraction from serde_json::Value -------------------------
 
 fn as_i64(v: &Value, k: &str) -> Option<i64> {
     v.get(k).and_then(|x| x.as_i64())

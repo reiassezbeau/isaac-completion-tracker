@@ -365,7 +365,7 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
             warnings.push("The game folder sits under OneDrive; syncing may move files around.".into());
         }
     } else {
-        warnings.push("Dossier de jeu introuvable. Lance le jeu au moins une fois, ou utilise « Localiser ma save… ».".into());
+        warnings.push("Game folder not found. Launch the game at least once, or use \"Locate my save…\".".into());
     }
 
     let mods_dir = paths::mods_dir();
@@ -437,7 +437,7 @@ pub fn is_tracker_mod_installed() -> bool {
 
 #[tauri::command]
 pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
-    let src = mod_source_dir(&app).ok_or("Fichiers du mod introuvables dans les ressources de l'app.")?;
+    let src = mod_source_dir(&app).ok_or("Mod files not found in the app resources.")?;
     let dest = paths::tracker_mod_dir()
         .ok_or("Game folder not found. Launch the game at least once, then try again.")?;
     std::fs::create_dir_all(&dest).map_err(|e| e.to_string())?;

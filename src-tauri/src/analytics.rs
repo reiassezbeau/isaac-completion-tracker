@@ -327,7 +327,7 @@ mod tests {
         ];
         let ins = insights(&runs);
         assert_eq!(ins.best_win_streak, 2);
-        assert_eq!(ins.current_win_streak, 1); // dernier est une win
+        assert_eq!(ins.current_win_streak, 1); // the last one is a win
         // the cleanest run has 0 hits
         assert_eq!(ins.best_clean_runs[0].hits, 0);
         assert_eq!(ins.total_runs, 4);

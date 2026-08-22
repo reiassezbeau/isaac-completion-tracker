@@ -11,7 +11,7 @@ import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
 
 const DIMS = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"] as const;
 
-/** Radar original (6 axes) — data-viz maison, aucun asset du jeu. */
+/** Original radar (6 axes) - hand-rolled data-viz, no game asset. */
 function Radar({
   before,
   after,
@@ -247,7 +247,7 @@ export function BuildAssistantView() {
 
   useEffect(() => {
     api.getItemKb().then(setKb);
-    // Runs recents ayant un snapshot de build (§7) -> chargeables dans le simulateur.
+    // Recent runs that carry a build snapshot (§7) -> loadable into the simulator.
     api.getRunHistory(40).then((rs) => setRuns(rs.filter((r) => r.final_build.length > 0))).catch(() => setRuns([]));
   }, []);
 
@@ -289,7 +289,7 @@ export function BuildAssistantView() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[300px_1fr]">
-        {/* Sélecteur d'items */}
+        {/* Item picker */}
         <div className="space-y-3">
           <Card className="!p-3">
             <div className="mb-2 flex items-center gap-2 rounded-lg border border-isaac-border bg-isaac-surface2 px-2.5 py-1.5">
@@ -311,7 +311,7 @@ export function BuildAssistantView() {
                   >
                     <span className="min-w-0 truncate text-sm" title={it.note || it.name}>
                       {it.name}
-                      {it.is_tears_replacement && <span className="ml-1 text-isaac-blood/80" title="remplacement de larmes">⟳</span>}
+                      {it.is_tears_replacement && <span className="ml-1 text-isaac-blood/80" title="tear replacement">⟳</span>}
                     </span>
                     <span className="flex flex-shrink-0 gap-1">
                       <button
@@ -404,8 +404,8 @@ export function BuildAssistantView() {
           ) : (
             <EmptyState title={t("bld.pickCandidate")}>
               <span className="inline-flex items-center gap-1">
-                <Sparkles className="h-4 w-4 text-isaac-gold" /> Clique « Test » sur un item pour voir son effet
-                sur ce build.
+                <Sparkles className="h-4 w-4 text-isaac-gold" /> Click “Test” on an item to see its effect
+                on this build.
               </span>
             </EmptyState>
           )}

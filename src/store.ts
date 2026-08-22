@@ -83,7 +83,7 @@ interface AppStore {
   view: ViewId;
   setView: (v: ViewId) => void;
 
-  // thème (lieu de l'univers d'Isaac)
+  // theme (a place from the world of Isaac)
   theme: ThemeId;
   setTheme: (t: ThemeId) => void;
 
@@ -171,7 +171,7 @@ export const useStore = create<AppStore>((set, get) => ({
       const dashboard = await api.loadSlot(slot.path);
       set({ dashboard, currentPath: slot.path, currentSlot: slot, view: "dashboard" });
     } catch (e) {
-      // Parsing douteux -> écran override
+      // Doubtful parse -> override screen
       set({ parseError: String(e), currentPath: slot.path, currentSlot: slot });
     } finally {
       set({ loading: false });
@@ -183,8 +183,8 @@ export const useStore = create<AppStore>((set, get) => ({
     try {
       const dashboard = await api.refresh();
       set({ dashboard, parseError: null });
-      if (!silent) get().toast("Progression mise à jour ✓");
-      else get().toast("Progression mise à jour ✓ (live)");
+      if (!silent) get().toast("Progress updated ✓");
+      else get().toast("Progress updated ✓ (live)");
     } catch (e) {
       set({ error: String(e) });
     }

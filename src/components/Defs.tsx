@@ -2,12 +2,12 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * Defs — les 8 filtres SVG « matière » de la DA v2 (grimoire maudit).
- * 100 % originaux (feTurbulence / feDisplacementMap) : aucun bitmap, aucun
- * téléchargement. Montés une seule fois dans le Shell ; référencés via
- * `filter: url(#wob1)` etc. par les glyphes, sigils et le chrome.
- *   wob1/2/3 : trait tremblé (encre) · etch : gravure · splat : éclaboussure
- *   grain : suie · blotch : tache · tornEdge : bord déchiré
+ * Defs - the 8 "material" SVG filters of art direction v2 (cursed grimoire).
+ * 100% original (feTurbulence / feDisplacementMap): no bitmaps, no
+ * downloads. Mounted once in the Shell; referenced through
+ * `filter: url(#wob1)` and friends by the glyphs, sigils and chrome.
+ *   wob1/2/3: shaky ink line · etch: engraving · splat: splatter
+ *   grain: soot · blotch: stain · tornEdge: torn edge
  */
 export function Defs() {
   return (

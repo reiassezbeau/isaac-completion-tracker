@@ -252,7 +252,7 @@ fn read_marks(data: &[u8], sec1: usize, char_index: usize) -> Result<Vec<Mark>, 
             }
         }
     } else {
-        // Personnages avant The Forgotten (index 0..13)
+        // Characters before The Forgotten (index 0..13)
         let mut off = sec1 + 0x6C;
         for i in 0..NUM_MARKS {
             out.push(Mark::from_byte(byte(off + char_index * 4 + i * 14 * 4)?));
@@ -393,7 +393,7 @@ mod tests {
             eprintln!("(skip) no real save found - set ISAAC_SAVE_PATH to run this test");
             return;
         };
-        eprintln!("Validation contre : {path}");
+        eprintln!("Validating against: {path}");
         let data = std::fs::read(&path).expect("reading save");
         let save = parse(&data).expect("parse ok");
 

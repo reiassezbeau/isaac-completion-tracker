@@ -611,7 +611,7 @@ mod tests {
             .expect("action isaac/beast_via_mother");
         assert_eq!(a.mark_gain, 2); // mother + beast pas Hard
         assert_eq!(a.ach_gain, 1); // 470 = compl isaac/beast
-        assert_eq!(a.reward_gain, 0); // 502 cible hush, pas dans cette route
+        assert_eq!(a.reward_gain, 0); // 502 targets hush, which is not on this route
         // valeur = 3*2 + 1*1 + 1.5*0 = 7
         assert!((a.value - 7.0).abs() < 1e-4, "value={}", a.value);
     }

@@ -2,9 +2,9 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * i18n-views — textes des VUES dans les 13 langues (le chrome est dans i18n.ts).
- * Repli : langue demandée -> anglais -> clé. Traductions perfectibles pour les
- * langues non-latines : corrections communautaires bienvenues (open-source).
+ * i18n-views - the VIEW strings in all 13 languages (the chrome lives in i18n.ts).
+ * Fallback: requested language -> English -> key. Translations are imperfect for
+ * the non-Latin languages: community fixes are welcome (open-source).
  */
 import type { Lang } from "./i18n";
 
@@ -33,19 +33,19 @@ export const VIEW_STRINGS: Record<string, Entry> = {
   "dash.manualOverrides": { en: "manual overrides", fr: "corrections manuelles", es: "correcciones manuales", pt: "correções manuais", de: "manuelle Korrekturen", ru: "ручные правки", pl: "ręczne korekty", zh: "手动修正", ja: "手動修正", hi: "मैन्युअल सुधार", ar: "التصحيحات اليدوية", bn: "ম্যানুয়াল সংশোধন", ur: "دستی درستیاں" },
   "dash.checksumWarn": { en: "⚠ The save checksum doesn't match (file may be mid-write). Data is still readable; refresh if needed.", fr: "⚠ Le checksum de la sauvegarde ne correspond pas (fichier peut-être en cours d'écriture). Les données restent lisibles ; rafraîchis si besoin.", es: "⚠ La suma de verificación no coincide (el archivo puede estar escribiéndose). Los datos siguen legibles; actualiza si hace falta.", pt: "⚠ O checksum do save não confere (arquivo talvez em gravação). Os dados continuam legíveis; atualize se preciso.", de: "⚠ Die Prüfsumme stimmt nicht (Datei wird evtl. gerade geschrieben). Daten bleiben lesbar; ggf. aktualisieren.", ru: "⚠ Контрольная сумма не совпадает (файл может записываться). Данные читаемы; обновите при необходимости.", pl: "⚠ Suma kontrolna się nie zgadza (plik może być zapisywany). Dane są czytelne; odśwież w razie potrzeby.", zh: "⚠ 存档校验和不匹配（文件可能正在写入）。数据仍可读；需要时请刷新。", ja: "⚠ セーブのチェックサムが不一致（書き込み中の可能性）。データは読めます。必要なら更新を。", hi: "⚠ सेव चेकसम मेल नहीं खाता (फ़ाइल लिखी जा रही हो सकती है)। डेटा पठनीय है; ज़रूरत हो तो ताज़ा करें।", ar: "⚠ المجموع الاختباري غير مطابق (قد يكون الملف قيد الكتابة). البيانات مقروءة؛ حدِّث عند الحاجة.", bn: "⚠ সেভ চেকসাম মেলেনি (ফাইল লেখা হচ্ছে হয়তো)। ডেটা পাঠযোগ্য; দরকারে রিফ্রেশ করুন।", ur: "⚠ سیو چیک سم میل نہیں کھاتا (فائل لکھی جا رہی ہو سکتی ہے)۔ ڈیٹا پڑھنے کے قابل ہے؛ ضرورت ہو تو ریفریش کریں۔" },
 
-  // ═══ La Grille ═══
+  // ═══ The Grid ═══
   "grid.subtitle": { en: "34 characters × 12 marks", fr: "Les 34 personnages × 12 marques", es: "34 personajes × 12 marcas", pt: "34 personagens × 12 marcas", de: "34 Charaktere × 12 Marken", ru: "34 персонажа × 12 меток", pl: "34 postacie × 12 znaczników", zh: "34 个角色 × 12 个标记", ja: "34キャラ × 12マーク", hi: "34 पात्र × 12 मार्क", ar: "٣٤ شخصية × ١٢ علامة", bn: "৩৪ চরিত্র × ১২ মার্ক", ur: "34 کردار × 12 مارکس" },
   "grid.legendHint": { en: "gold = Hard, green ring = Normal (redo), hollow = to do. Column totals show the bottleneck at a glance.", fr: "Or = Hard, anneau vert = Normal (à refaire), creux = à faire. Les totaux de colonne montrent le goulot d'un coup d'œil.", es: "Oro = Hard, anillo verde = Normal (rehacer), hueco = pendiente. Los totales por columna muestran el cuello de botella.", pt: "Ouro = Hard, anel verde = Normal (refazer), vazado = a fazer. Os totais por coluna mostram o gargalo.", de: "Gold = Hard, grüner Ring = Normal (wiederholen), hohl = offen. Spaltensummen zeigen den Engpass.", ru: "Золото = Hard, зелёное кольцо = Normal (переделать), пусто = не сделано. Итоги столбцов показывают узкое место.", pl: "Złoto = Hard, zielony pierścień = Normal (powtórka), puste = do zrobienia. Sumy kolumn pokazują wąskie gardło.", zh: "金色 = Hard，绿环 = Normal（需重做），空心 = 待完成。列合计一眼看出瓶颈。", ja: "金 = Hard、緑の輪 = Normal（やり直し）、空 = 未完了。列の合計でボトルネックが一目で分かります。", hi: "सुनहरा = Hard, हरा वलय = Normal (फिर से), खोखला = बाकी। कॉलम योग बाधा दिखाते हैं।", ar: "ذهبي = Hard، حلقة خضراء = Normal (إعادة)، مجوّف = متبقٍ. مجاميع الأعمدة تُظهر الاختناق.", bn: "সোনালি = Hard, সবুজ রিং = Normal (পুনরায়), ফাঁপা = বাকি। কলাম যোগফল বাধা দেখায়।", ur: "سنہری = Hard، سبز حلقہ = Normal (دوبارہ)، خالی = باقی۔ کالم کے مجموعے رکاوٹ دکھاتے ہیں۔" },
   "grid.hoverHint": { en: "· hover a cell = character · ending · status", fr: "· survol d'une cellule = perso · ending · statut", es: "· pasa el ratón = personaje · final · estado", pt: "· passe o mouse = personagem · final · status", de: "· Zelle überfahren = Charakter · Ending · Status", ru: "· наведение = персонаж · концовка · статус", pl: "· najedź = postać · zakończenie · status", zh: "· 悬停单元格 = 角色 · 结局 · 状态", ja: "· セルにホバー = キャラ · エンディング · 状態", hi: "· सेल पर होवर = पात्र · एंडिंग · स्थिति", ar: "· مرِّر فوق خلية = شخصية · نهاية · حالة", bn: "· সেলে হোভার = চরিত্র · এন্ডিং · অবস্থা", ur: "· سیل پر ہوور = کردار · اینڈنگ · حالت" },
   "grid.characters": { en: "Characters", fr: "Personnages", es: "Personajes", pt: "Personagens", de: "Charaktere", ru: "Персонажи", pl: "Postacie", zh: "角色", ja: "キャラクター", hi: "पात्र", ar: "الشخصيات", bn: "চরিত্র", ur: "کردار" },
   "grid.perCol": { en: "Hard / col", fr: "Hard / col", es: "Hard / col", pt: "Hard / col", de: "Hard / Sp.", ru: "Hard / стлб", pl: "Hard / kol.", zh: "Hard / 列", ja: "Hard / 列", hi: "Hard / कॉलम", ar: "Hard / عمود", bn: "Hard / কলাম", ur: "Hard / کالم" },
-  // « Hard » et « Normal » sont les termes DU JEU : volontairement non traduits
-  // (fidelite a Isaac — les joueurs les utilisent tels quels dans toutes les langues).
+  // "Hard" and "Normal" are the GAME's own terms: deliberately left untranslated
+  // (faithfulness to Isaac - players use them as-is in every language).
   "mark.hard": { en: "Hard", fr: "Hard" },
   "mark.normal": { en: "Normal", fr: "Normal" },
   "mark.todo": { en: "To do", fr: "À faire", es: "Pendiente", pt: "A fazer", de: "Offen", ru: "Не сделано", pl: "Do zrobienia", zh: "待完成", ja: "未完了", hi: "बाकी", ar: "متبقٍ", bn: "বাকি", ur: "باقی" },
 
-  // ═══ Personnage ═══
+  // ═══ Character ═══
   "char.locked": { en: "Character locked", fr: "Perso verrouillé", es: "Personaje bloqueado", pt: "Personagem bloqueado", de: "Charakter gesperrt", ru: "Персонаж закрыт", pl: "Postać zablokowana", zh: "角色未解锁", ja: "キャラ未解除", hi: "पात्र लॉक", ar: "الشخصية مقفلة", bn: "চরিত্র লক", ur: "کردار مقفل" },
   "char.regular": { en: "Regular", fr: "Régulier", es: "Normal", pt: "Regular", de: "Regulär", ru: "Обычный", pl: "Zwykła", zh: "普通", ja: "通常", hi: "सामान्य", ar: "عادي", bn: "সাধারণ", ur: "عام" },
   "char.gameStats": { en: "Game stats (this character)", fr: "Stats de jeu (ce perso)", es: "Estadísticas (este personaje)", pt: "Estatísticas (este personagem)", de: "Spielstatistik (dieser Charakter)", ru: "Игровая статистика (персонаж)", pl: "Statystyki gry (ta postać)", zh: "游戏统计（该角色）", ja: "ゲーム統計（このキャラ）", hi: "गेम आँकड़े (यह पात्र)", ar: "إحصاءات اللعب (هذه الشخصية)", bn: "গেম পরিসংখ্যান (এই চরিত্র)", ur: "گیم شماریات (یہ کردار)" },

@@ -15,8 +15,8 @@ type Template = "profile" | "run";
 const W = 1200;
 const H = 630;
 
-// Palette lue depuis les variables CSS du thème actif → la carte exportée épouse
-// le thème courant (Sous-sol / Sheol / Vide / Corpse / Cathédrale).
+// Palette read from the active theme CSS variables -> the exported card matches
+// the current theme (Basement / Sheol / Void / Corpse / Cathedral).
 function cssVar(name: string, fallback: string): string {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const p = v.split(/\s+/).map(Number);
@@ -82,13 +82,13 @@ function tile(
 function paintFrame(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
-  // vignette discrète, teintée par l'accent du thème
+  // subtle vignette, tinted with the theme accent
   const g = ctx.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, W * 0.7);
   g.addColorStop(0, C.accent.replace("rgb(", "rgba(").replace(")", ", 0.09)"));
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
-  // liseré or en haut
+  // gold rule at the top
   ctx.fillStyle = C.gold;
   ctx.fillRect(0, 0, W, 5);
 }
@@ -126,7 +126,7 @@ function drawProfile(
   const dgDone = dash.dead_god_total - dash.dead_god_remaining;
   const dgPct = dash.dead_god_total > 0 ? dgDone / dash.dead_god_total : 0;
 
-  // Héros : % Dead God
+  // Hero: Dead God %
   ctx.fillStyle = C.gold;
   ctx.font = "700 112px 'Cinzel', Georgia, serif";
   ctx.fillText(pctStr(dgPct), 48, 236);
@@ -137,7 +137,7 @@ function drawProfile(
   ctx.font = "500 20px system-ui, sans-serif";
   ctx.fillText(`${dgDone} / ${dash.dead_god_total} · ${dash.total_unlocked} / ${dash.total} — ${t("card.hardMarksAch")}`, 48, 312);
 
-  // Barre de progression Dead God
+  // Dead God progress bar
   const bx = 48;
   const by = 336;
   const bw = W - 96;
@@ -191,7 +191,7 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string, t: (
   paintFrame(ctx);
   paintHeader(ctx, t("card.runRecap"));
 
-  // Perso
+  // Character
   ctx.fillStyle = C.text;
   ctx.font = "700 70px 'Cinzel', Georgia, serif";
   ctx.fillText(charName, 48, 214);
@@ -233,7 +233,7 @@ function drawRun(ctx: CanvasRenderingContext2D, run: Run, charName: string, t: (
 function canvasToBytes(canvas: HTMLCanvasElement): Promise<number[]> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(async (blob) => {
-      if (!blob) return reject(new Error("Rendu du canvas impossible."));
+      if (!blob) return reject(new Error("Canvas rendering failed."));
       const buf = await blob.arrayBuffer();
       resolve(Array.from(new Uint8Array(buf)));
     }, "image/png");
@@ -271,13 +271,13 @@ export function StatCardView() {
 
   const name = useCallback((id: string) => names[id] ?? id, [names]);
 
-  // rendu du canvas à chaque changement de données/template/thème
+  // canvas is redrawn on every data / template / theme change
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !dashboard) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    readPalette(); // épouse le thème actif
+    readPalette(); // matches the active theme
     if (template === "profile") {
       drawProfile(ctx, { dash: dashboard, ov, ins, attempts, name, t });
     } else if (runs.length > 0) {
@@ -304,11 +304,11 @@ export function StatCardView() {
         title: t("card.saveDialog"),
         filters: [{ name: "Image PNG", extensions: ["png"] }],
       });
-      if (!path) return; // annulé
+      if (!path) return; // canceled
       setSaving(true);
       const bytes = await canvasToBytes(canvas);
       const written = await api.saveStatCard(path, bytes);
-      toast(`Carte enregistrée ✓ (${written.split(/[\\/]/).pop()})`);
+      toast(`Card saved ✓ (${written.split(/[\\/]/).pop()})`);
     } catch (e) {
       toast(`${t("card.exportFail")} ${String(e)}`);
     } finally {

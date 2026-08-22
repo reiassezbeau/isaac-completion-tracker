@@ -2,10 +2,10 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * ThemeBackdrop — arrière-plan ORIGINAL par thème (lieu de l'univers d'Isaac).
- * Motifs procéduraux (SVG/CSS maison) : briques du sous-sol, fissures de Sheol,
- * étoiles du Vide, veines de Corpse, rais de lumière de la Cathédrale.
- * Fixe, très subtil, teinté par l'accent du thème (jamais sous une donnée).
+ * ThemeBackdrop - an ORIGINAL background per theme (a place from the world of Isaac).
+ * Procedural patterns (hand-rolled SVG/CSS): basement bricks, Sheol cracks,
+ * Void stars, Corpse veins, Cathedral light shafts.
+ * Fixed, very subtle, tinted with the theme accent (never behind data).
  */
 import type { ReactNode } from "react";
 import type { ThemeId } from "../store";

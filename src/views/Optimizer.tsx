@@ -10,7 +10,7 @@ import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components
 import { Glyph, Sigil, baseSigilId } from "../lib/art";
 import type { AlmostThere, Bottleneck, DeadGodEta, EvAction, OptimizerReport } from "../lib/types";
 
-/** Couleur de la probabilité : rouge (dur) → or → vert (sûr). */
+/** Probability color: red (hard) -> gold -> green (safe). */
 function probTone(p: number): "blood" | "gold" | "done" {
   if (p >= 0.6) return "done";
   if (p >= 0.4) return "gold";

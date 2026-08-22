@@ -5,7 +5,7 @@
     "total": 641,
     "generated_at": "2026-08-10",
     "source": "bindingofisaacrebirth.wiki.gg (page Achievements, order by id)",
-    "note": "Compilé au dev-time ; runtime 100% offline. Les secret-IDs correspondent aux bits de la save."
+    "note": "Compiled at dev time; runtime is 100% offline. The secret IDs match the bits in the save."
   },
   "achievements": [
     {
@@ -22,7 +22,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Magdalene (personnage)"
+      "reward": "Magdalene (character)"
     },
     {
       "id": 2,
@@ -38,7 +38,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Cain (personnage)"
+      "reward": "Cain (character)"
     },
     {
       "id": 3,
@@ -54,7 +54,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Judas (personnage)"
+      "reward": "Judas (character)"
     },
     {
       "id": 4,
@@ -102,7 +102,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Cube of Meat (objet)"
+      "reward": "A Cube of Meat (item)"
     },
     {
       "id": 7,
@@ -118,7 +118,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Book of Revelations (objet)"
+      "reward": "The Book of Revelations (item)"
     },
     {
       "id": 8,
@@ -134,7 +134,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Noose (objet)"
+      "reward": "A Noose (item)"
     },
     {
       "id": 9,
@@ -150,7 +150,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "The Nail (objet)"
+      "reward": "The Nail (item)"
     },
     {
       "id": 10,
@@ -166,7 +166,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Quarter (objet)"
+      "reward": "A Quarter (item)"
     },
     {
       "id": 11,
@@ -182,7 +182,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Fetus in a Jar (objet)"
+      "reward": "A Fetus in a Jar (item)"
     },
     {
       "id": 12,
@@ -198,7 +198,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Small Rock (objet)"
+      "reward": "A Small Rock (item)"
     },
     {
       "id": 13,
@@ -214,7 +214,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Monstro's Tooth (objet)"
+      "reward": "Monstro's Tooth (item)"
     },
     {
       "id": 14,
@@ -230,7 +230,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lil' Chubby (objet)"
+      "reward": "Lil' Chubby (item)"
     },
     {
       "id": 15,
@@ -246,7 +246,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Loki's Horns (objet)"
+      "reward": "Loki's Horns (item)"
     },
     {
       "id": 16,
@@ -310,7 +310,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Bandage (objet)"
+      "reward": "A Bandage (item)"
     },
     {
       "id": 20,
@@ -326,7 +326,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "A Cross (objet)"
+      "reward": "A Cross (item)"
     },
     {
       "id": 21,
@@ -342,7 +342,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "A Bag of Pennies (objet)"
+      "reward": "A Bag of Pennies (item)"
     },
     {
       "id": 22,
@@ -358,7 +358,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Book of Sin (objet)"
+      "reward": "The Book of Sin (item)"
     },
     {
       "id": 23,
@@ -374,7 +374,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Little Gish (objet)"
+      "reward": "Little Gish (item)"
     },
     {
       "id": 24,
@@ -390,7 +390,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Little Steven (objet)"
+      "reward": "Little Steven (item)"
     },
     {
       "id": 25,
@@ -406,7 +406,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Little C.H.A.D. (objet)"
+      "reward": "Little C.H.A.D. (item)"
     },
     {
       "id": 26,
@@ -422,7 +422,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Gamekid (objet)"
+      "reward": "A Gamekid (item)"
     },
     {
       "id": 27,
@@ -438,7 +438,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "A Halo (objet)"
+      "reward": "A Halo (item)"
     },
     {
       "id": 28,
@@ -454,7 +454,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mr. Mega (objet)"
+      "reward": "Mr. Mega (item)"
     },
     {
       "id": 29,
@@ -486,7 +486,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Scissors (objet)"
+      "reward": "The Scissors (item)"
     },
     {
       "id": 31,
@@ -502,7 +502,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Parasite (objet)"
+      "reward": "The Parasite (item)"
     },
     {
       "id": 32,
@@ -518,7 +518,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "??? (personnage)"
+      "reward": "??? (character)"
     },
     {
       "id": 33,
@@ -566,7 +566,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mom's Contact (objet)"
+      "reward": "Mom's Contact (item)"
     },
     {
       "id": 36,
@@ -582,7 +582,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Necronomicon (objet)"
+      "reward": "The Necronomicon (item)"
     },
     {
       "id": 37,
@@ -678,7 +678,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Eve (personnage)"
+      "reward": "Eve (character)"
     },
     {
       "id": 43,
@@ -694,7 +694,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Mom's Knife (objet)"
+      "reward": "Mom's Knife (item)"
     },
     {
       "id": 44,
@@ -710,7 +710,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "The Razor (objet)"
+      "reward": "The Razor (item)"
     },
     {
       "id": 45,
@@ -726,7 +726,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Guardian Angel (objet)"
+      "reward": "Guardian Angel (item)"
     },
     {
       "id": 46,
@@ -742,7 +742,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "A Bag of Bombs (objet)"
+      "reward": "A Bag of Bombs (item)"
     },
     {
       "id": 47,
@@ -758,7 +758,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Demon Baby (objet)"
+      "reward": "Demon Baby (item)"
     },
     {
       "id": 48,
@@ -774,7 +774,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Forget Me Now (objet)"
+      "reward": "Forget Me Now (item)"
     },
     {
       "id": 49,
@@ -790,7 +790,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "The D20 (objet)"
+      "reward": "The D20 (item)"
     },
     {
       "id": 50,
@@ -806,7 +806,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Celtic Cross (objet)"
+      "reward": "Celtic Cross (item)"
     },
     {
       "id": 51,
@@ -822,7 +822,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Abel (objet)"
+      "reward": "Abel (item)"
     },
     {
       "id": 52,
@@ -838,7 +838,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Curved Horn (objet)"
+      "reward": "Curved Horn (item)"
     },
     {
       "id": 53,
@@ -854,7 +854,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Sacrificial Dagger (objet)"
+      "reward": "Sacrificial Dagger (item)"
     },
     {
       "id": 54,
@@ -870,7 +870,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Bloody Lust (objet)"
+      "reward": "Bloody Lust (item)"
     },
     {
       "id": 55,
@@ -886,7 +886,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Blood Penny (objet)"
+      "reward": "Blood Penny (item)"
     },
     {
       "id": 56,
@@ -902,7 +902,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Blood Rights (objet)"
+      "reward": "Blood Rights (item)"
     },
     {
       "id": 57,
@@ -918,7 +918,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Polaroid (objet)"
+      "reward": "The Polaroid (item)"
     },
     {
       "id": 58,
@@ -934,7 +934,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Dad's Key (objet)"
+      "reward": "Dad's Key (item)"
     },
     {
       "id": 59,
@@ -950,7 +950,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Blue Candle (objet)"
+      "reward": "Blue Candle (item)"
     },
     {
       "id": 60,
@@ -966,7 +966,7 @@
         "target": "challenge_13",
         "predictable": true
       },
-      "reward": "Burnt Penny (objet)"
+      "reward": "Burnt Penny (item)"
     },
     {
       "id": 61,
@@ -982,7 +982,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lucky Toe (objet)"
+      "reward": "Lucky Toe (item)"
     },
     {
       "id": 62,
@@ -998,7 +998,7 @@
         "target": "challenge_19",
         "predictable": true
       },
-      "reward": "Epic Fetus (objet)"
+      "reward": "Epic Fetus (item)"
     },
     {
       "id": 63,
@@ -1014,7 +1014,7 @@
         "target": "challenge_14",
         "predictable": true
       },
-      "reward": "SMB Super Fan (objet)"
+      "reward": "SMB Super Fan (item)"
     },
     {
       "id": 64,
@@ -1030,7 +1030,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Counterfeit Coin (objet)"
+      "reward": "Counterfeit Coin (item)"
     },
     {
       "id": 65,
@@ -1046,7 +1046,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Guppy's Hairball (objet)"
+      "reward": "Guppy's Hairball (item)"
     },
     {
       "id": 66,
@@ -1078,7 +1078,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Samson (personnage)"
+      "reward": "Samson (character)"
     },
     {
       "id": 68,
@@ -1126,7 +1126,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Isaac's Head (objet)"
+      "reward": "Isaac's Head (item)"
     },
     {
       "id": 71,
@@ -1142,7 +1142,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Maggy's Faith (objet)"
+      "reward": "Maggy's Faith (item)"
     },
     {
       "id": 72,
@@ -1158,7 +1158,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Judas' Tongue (objet)"
+      "reward": "Judas' Tongue (item)"
     },
     {
       "id": 73,
@@ -1174,7 +1174,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???'s Soul (objet)"
+      "reward": "???'s Soul (item)"
     },
     {
       "id": 74,
@@ -1190,7 +1190,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Samson's Lock (objet)"
+      "reward": "Samson's Lock (item)"
     },
     {
       "id": 75,
@@ -1206,7 +1206,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Cain's Eye (objet)"
+      "reward": "Cain's Eye (item)"
     },
     {
       "id": 76,
@@ -1222,7 +1222,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Eve's Bird Foot (objet)"
+      "reward": "Eve's Bird Foot (item)"
     },
     {
       "id": 77,
@@ -1238,7 +1238,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "The Left Hand (objet)"
+      "reward": "The Left Hand (item)"
     },
     {
       "id": 78,
@@ -1254,7 +1254,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Negative (objet)"
+      "reward": "The Negative (item)"
     },
     {
       "id": 79,
@@ -1270,7 +1270,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Azazel (personnage)"
+      "reward": "Azazel (character)"
     },
     {
       "id": 80,
@@ -1286,7 +1286,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lazarus (personnage)"
+      "reward": "Lazarus (character)"
     },
     {
       "id": 81,
@@ -1302,7 +1302,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Eden (personnage)"
+      "reward": "Eden (character)"
     },
     {
       "id": 82,
@@ -1318,7 +1318,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Lost (personnage)"
+      "reward": "The Lost (character)"
     },
     {
       "id": 83,
@@ -1430,7 +1430,7 @@
         "target": "challenge_1",
         "predictable": true
       },
-      "reward": "Rune of Hagalaz (objet)"
+      "reward": "Rune of Hagalaz (item)"
     },
     {
       "id": 90,
@@ -1446,7 +1446,7 @@
         "target": "challenge_2",
         "predictable": true
       },
-      "reward": "Rune of Jera (objet)"
+      "reward": "Rune of Jera (item)"
     },
     {
       "id": 91,
@@ -1462,7 +1462,7 @@
         "target": "challenge_3",
         "predictable": true
       },
-      "reward": "Rune of Ehwaz (objet)"
+      "reward": "Rune of Ehwaz (item)"
     },
     {
       "id": 92,
@@ -1478,7 +1478,7 @@
         "target": "challenge_4",
         "predictable": true
       },
-      "reward": "Rune of Dagaz (objet)"
+      "reward": "Rune of Dagaz (item)"
     },
     {
       "id": 93,
@@ -1494,7 +1494,7 @@
         "target": "challenge_5",
         "predictable": true
       },
-      "reward": "Rune of Ansuz (objet)"
+      "reward": "Rune of Ansuz (item)"
     },
     {
       "id": 94,
@@ -1510,7 +1510,7 @@
         "target": "challenge_6",
         "predictable": true
       },
-      "reward": "Rune of Perthro (objet)"
+      "reward": "Rune of Perthro (item)"
     },
     {
       "id": 95,
@@ -1526,7 +1526,7 @@
         "target": "challenge_20",
         "predictable": true
       },
-      "reward": "Rune of Berkano (objet)"
+      "reward": "Rune of Berkano (item)"
     },
     {
       "id": 96,
@@ -1542,7 +1542,7 @@
         "target": "challenge_8",
         "predictable": true
       },
-      "reward": "Rune of Algiz (objet)"
+      "reward": "Rune of Algiz (item)"
     },
     {
       "id": 97,
@@ -1558,7 +1558,7 @@
         "target": "challenge_9",
         "predictable": true
       },
-      "reward": "Chaos Card (objet)"
+      "reward": "Chaos Card (item)"
     },
     {
       "id": 98,
@@ -1574,7 +1574,7 @@
         "target": "challenge_10",
         "predictable": true
       },
-      "reward": "Credit Card (objet)"
+      "reward": "Credit Card (item)"
     },
     {
       "id": 99,
@@ -1590,7 +1590,7 @@
         "target": "challenge_11",
         "predictable": true
       },
-      "reward": "Rules Card (objet)"
+      "reward": "Rules Card (item)"
     },
     {
       "id": 100,
@@ -1606,7 +1606,7 @@
         "target": "challenge_12",
         "predictable": true
       },
-      "reward": "Card Against Humanity (objet)"
+      "reward": "Card Against Humanity (item)"
     },
     {
       "id": 101,
@@ -1622,7 +1622,7 @@
         "target": "challenge_15",
         "predictable": true
       },
-      "reward": "Swallowed Penny (objet)"
+      "reward": "Swallowed Penny (item)"
     },
     {
       "id": 102,
@@ -1638,7 +1638,7 @@
         "target": "challenge_16",
         "predictable": true
       },
-      "reward": "Robo-Baby 2.0 (objet)"
+      "reward": "Robo-Baby 2.0 (item)"
     },
     {
       "id": 103,
@@ -1654,7 +1654,7 @@
         "target": "challenge_17",
         "predictable": true
       },
-      "reward": "Death's Touch (objet)"
+      "reward": "Death's Touch (item)"
     },
     {
       "id": 104,
@@ -1670,7 +1670,7 @@
         "target": "challenge_18",
         "predictable": true
       },
-      "reward": "Technology .5 (objet)"
+      "reward": "Technology .5 (item)"
     },
     {
       "id": 105,
@@ -1686,7 +1686,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Missing No. (objet)"
+      "reward": "Missing No. (item)"
     },
     {
       "id": 106,
@@ -1702,7 +1702,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Isaac's Tears (objet)"
+      "reward": "Isaac's Tears (item)"
     },
     {
       "id": 107,
@@ -1718,7 +1718,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Guillotine (objet)"
+      "reward": "Guillotine (item)"
     },
     {
       "id": 108,
@@ -1734,7 +1734,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Judas' Shadow (objet)"
+      "reward": "Judas' Shadow (item)"
     },
     {
       "id": 109,
@@ -1750,7 +1750,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Maggy's Bow (objet)"
+      "reward": "Maggy's Bow (item)"
     },
     {
       "id": 110,
@@ -1766,7 +1766,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Cain's Other Eye (objet)"
+      "reward": "Cain's Other Eye (item)"
     },
     {
       "id": 111,
@@ -1782,7 +1782,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Black Lipstick (objet)"
+      "reward": "Black Lipstick (item)"
     },
     {
       "id": 112,
@@ -1798,7 +1798,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Eve's Mascara (objet)"
+      "reward": "Eve's Mascara (item)"
     },
     {
       "id": 113,
@@ -1814,7 +1814,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Fate (objet)"
+      "reward": "Fate (item)"
     },
     {
       "id": 114,
@@ -1830,7 +1830,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???'s Only Friend (objet)"
+      "reward": "???'s Only Friend (item)"
     },
     {
       "id": 115,
@@ -1846,7 +1846,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Samson's Chains (objet)"
+      "reward": "Samson's Chains (item)"
     },
     {
       "id": 116,
@@ -1862,7 +1862,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Lazarus' Rags (objet)"
+      "reward": "Lazarus' Rags (item)"
     },
     {
       "id": 117,
@@ -1878,7 +1878,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Broken Ankh (objet)"
+      "reward": "Broken Ankh (item)"
     },
     {
       "id": 118,
@@ -1894,7 +1894,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Store Credit (objet)"
+      "reward": "Store Credit (item)"
     },
     {
       "id": 119,
@@ -1910,7 +1910,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Pandora's Box (objet)"
+      "reward": "Pandora's Box (item)"
     },
     {
       "id": 120,
@@ -1926,7 +1926,7 @@
         "target": "challenge_7",
         "predictable": true
       },
-      "reward": "Suicide King (objet)"
+      "reward": "Suicide King (item)"
     },
     {
       "id": 121,
@@ -1942,7 +1942,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Blank Card (objet)"
+      "reward": "Blank Card (item)"
     },
     {
       "id": 122,
@@ -1958,7 +1958,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Book of Secrets (objet)"
+      "reward": "Book of Secrets (item)"
     },
     {
       "id": 123,
@@ -1974,7 +1974,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Mysterious Paper (objet)"
+      "reward": "Mysterious Paper (item)"
     },
     {
       "id": 124,
@@ -1990,7 +1990,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Mystery Sack (objet)"
+      "reward": "Mystery Sack (item)"
     },
     {
       "id": 125,
@@ -2006,7 +2006,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Undefined (objet)"
+      "reward": "Undefined (item)"
     },
     {
       "id": 126,
@@ -2022,7 +2022,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Satanic Bible (objet)"
+      "reward": "Satanic Bible (item)"
     },
     {
       "id": 127,
@@ -2038,7 +2038,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Daemon's Tail (objet)"
+      "reward": "Daemon's Tail (item)"
     },
     {
       "id": 128,
@@ -2054,7 +2054,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Abaddon (objet)"
+      "reward": "Abaddon (item)"
     },
     {
       "id": 129,
@@ -2070,7 +2070,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Isaac's Heart (objet)"
+      "reward": "Isaac's Heart (item)"
     },
     {
       "id": 130,
@@ -2086,7 +2086,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "The Mind (objet)"
+      "reward": "The Mind (item)"
     },
     {
       "id": 131,
@@ -2102,7 +2102,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "The Body (objet)"
+      "reward": "The Body (item)"
     },
     {
       "id": 132,
@@ -2118,7 +2118,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "The Soul (objet)"
+      "reward": "The Soul (item)"
     },
     {
       "id": 133,
@@ -2134,7 +2134,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "The D100 (objet)"
+      "reward": "The D100 (item)"
     },
     {
       "id": 134,
@@ -2150,7 +2150,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Blue Map (objet)"
+      "reward": "Blue Map (item)"
     },
     {
       "id": 135,
@@ -2166,7 +2166,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "There's Options (objet)"
+      "reward": "There's Options (item)"
     },
     {
       "id": 136,
@@ -2182,7 +2182,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Black Candle (objet)"
+      "reward": "Black Candle (item)"
     },
     {
       "id": 137,
@@ -2198,7 +2198,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Red Candle (objet)"
+      "reward": "Red Candle (item)"
     },
     {
       "id": 138,
@@ -2214,7 +2214,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Stop Watch (objet)"
+      "reward": "Stop Watch (item)"
     },
     {
       "id": 139,
@@ -2230,7 +2230,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Wire Coat Hanger (objet)"
+      "reward": "Wire Coat Hanger (item)"
     },
     {
       "id": 140,
@@ -2246,7 +2246,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Ipecac (objet)"
+      "reward": "Ipecac (item)"
     },
     {
       "id": 141,
@@ -2262,7 +2262,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Experimental Treatment (objet)"
+      "reward": "Experimental Treatment (item)"
     },
     {
       "id": 142,
@@ -2294,7 +2294,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Head of Krampus (objet)"
+      "reward": "Head of Krampus (item)"
     },
     {
       "id": 144,
@@ -2326,7 +2326,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Butter Bean (objet)"
+      "reward": "Butter Bean (item)"
     },
     {
       "id": 146,
@@ -2342,7 +2342,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Little Baggy (objet)"
+      "reward": "Little Baggy (item)"
     },
     {
       "id": 147,
@@ -2358,7 +2358,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Blood Bag (objet)"
+      "reward": "Blood Bag (item)"
     },
     {
       "id": 148,
@@ -2374,7 +2374,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The D4 (objet)"
+      "reward": "The D4 (item)"
     },
     {
       "id": 149,
@@ -2390,7 +2390,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Missing Poster (objet)"
+      "reward": "Missing Poster (item)"
     },
     {
       "id": 150,
@@ -2406,7 +2406,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Rubber Cement (objet)"
+      "reward": "Rubber Cement (item)"
     },
     {
       "id": 151,
@@ -2502,7 +2502,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Godhead (objet)"
+      "reward": "Godhead (item)"
     },
     {
       "id": 157,
@@ -2678,7 +2678,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Lost Baby (bébé co-op)"
+      "reward": "Lost Baby (co-op baby)"
     },
     {
       "id": 168,
@@ -2694,7 +2694,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Cute Baby (bébé co-op)"
+      "reward": "Cute Baby (co-op baby)"
     },
     {
       "id": 169,
@@ -2710,7 +2710,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Crow Baby (bébé co-op)"
+      "reward": "Crow Baby (co-op baby)"
     },
     {
       "id": 170,
@@ -2726,7 +2726,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Shadow Baby (bébé co-op)"
+      "reward": "Shadow Baby (co-op baby)"
     },
     {
       "id": 171,
@@ -2742,7 +2742,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Glass Baby (bébé co-op)"
+      "reward": "Glass Baby (co-op baby)"
     },
     {
       "id": 172,
@@ -2758,7 +2758,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Wrapped Baby (bébé co-op)"
+      "reward": "Wrapped Baby (co-op baby)"
     },
     {
       "id": 173,
@@ -2774,7 +2774,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Begotten Baby (bébé co-op)"
+      "reward": "Begotten Baby (co-op baby)"
     },
     {
       "id": 174,
@@ -2790,7 +2790,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Dead Baby (bébé co-op)"
+      "reward": "Dead Baby (co-op baby)"
     },
     {
       "id": 175,
@@ -2806,7 +2806,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "-0- Baby (bébé co-op)"
+      "reward": "-0- Baby (co-op baby)"
     },
     {
       "id": 176,
@@ -2822,7 +2822,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Glitch Baby (bébé co-op)"
+      "reward": "Glitch Baby (co-op baby)"
     },
     {
       "id": 177,
@@ -2838,7 +2838,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Fighting Baby (bébé co-op)"
+      "reward": "Fighting Baby (co-op baby)"
     },
     {
       "id": 178,
@@ -2870,7 +2870,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Fart Baby (objet)"
+      "reward": "Fart Baby (item)"
     },
     {
       "id": 180,
@@ -2886,7 +2886,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Purity (objet)"
+      "reward": "Purity (item)"
     },
     {
       "id": 181,
@@ -2902,7 +2902,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "D12 (objet)"
+      "reward": "D12 (item)"
     },
     {
       "id": 182,
@@ -2918,7 +2918,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Betrayal (objet)"
+      "reward": "Betrayal (item)"
     },
     {
       "id": 183,
@@ -2934,7 +2934,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Fate's Reward (objet)"
+      "reward": "Fate's Reward (item)"
     },
     {
       "id": 184,
@@ -2950,7 +2950,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Athame (objet)"
+      "reward": "Athame (item)"
     },
     {
       "id": 185,
@@ -2966,7 +2966,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Blind Rage (objet)"
+      "reward": "Blind Rage (item)"
     },
     {
       "id": 186,
@@ -2982,7 +2982,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Maw of the Void (objet)"
+      "reward": "Maw of the Void (item)"
     },
     {
       "id": 187,
@@ -2998,7 +2998,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Empty Vessel (objet)"
+      "reward": "Empty Vessel (item)"
     },
     {
       "id": 188,
@@ -3014,7 +3014,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Eden's Blessing (objet)"
+      "reward": "Eden's Blessing (item)"
     },
     {
       "id": 189,
@@ -3030,7 +3030,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Sworn Protector (objet)"
+      "reward": "Sworn Protector (item)"
     },
     {
       "id": 190,
@@ -3046,7 +3046,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Incubus (objet)"
+      "reward": "Incubus (item)"
     },
     {
       "id": 191,
@@ -3062,7 +3062,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Keeper now holds... A Penny! (objet)"
+      "reward": "Keeper now holds... A Penny! (item)"
     },
     {
       "id": 192,
@@ -3078,7 +3078,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Lil' Chest (objet)"
+      "reward": "Lil' Chest (item)"
     },
     {
       "id": 193,
@@ -3094,7 +3094,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Censer (objet)"
+      "reward": "Censer (item)"
     },
     {
       "id": 194,
@@ -3110,7 +3110,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Evil Eye (objet)"
+      "reward": "Evil Eye (item)"
     },
     {
       "id": 195,
@@ -3126,7 +3126,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "My Shadow (objet)"
+      "reward": "My Shadow (item)"
     },
     {
       "id": 196,
@@ -3142,7 +3142,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Cracked Dice (objet)"
+      "reward": "Cracked Dice (item)"
     },
     {
       "id": 197,
@@ -3158,7 +3158,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Black Feather (objet)"
+      "reward": "Black Feather (item)"
     },
     {
       "id": 198,
@@ -3174,7 +3174,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Lusty Blood (objet)"
+      "reward": "Lusty Blood (item)"
     },
     {
       "id": 199,
@@ -3190,7 +3190,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Lilith (personnage)"
+      "reward": "Lilith (character)"
     },
     {
       "id": 200,
@@ -3206,7 +3206,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Key Bum (objet)"
+      "reward": "Key Bum (item)"
     },
     {
       "id": 201,
@@ -3222,7 +3222,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "GB Bug (objet)"
+      "reward": "GB Bug (item)"
     },
     {
       "id": 202,
@@ -3238,7 +3238,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Zodiac (objet)"
+      "reward": "Zodiac (item)"
     },
     {
       "id": 203,
@@ -3254,7 +3254,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Box of Friends (objet)"
+      "reward": "Box of Friends (item)"
     },
     {
       "id": 204,
@@ -3270,7 +3270,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Rib of Greed (objet)"
+      "reward": "Rib of Greed (item)"
     },
     {
       "id": 205,
@@ -3286,7 +3286,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Cry Baby (bébé co-op)"
+      "reward": "Cry Baby (co-op baby)"
     },
     {
       "id": 206,
@@ -3302,7 +3302,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Red Baby (bébé co-op)"
+      "reward": "Red Baby (co-op baby)"
     },
     {
       "id": 207,
@@ -3318,7 +3318,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Green Baby (bébé co-op)"
+      "reward": "Green Baby (co-op baby)"
     },
     {
       "id": 208,
@@ -3334,7 +3334,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Brown Baby (bébé co-op)"
+      "reward": "Brown Baby (co-op baby)"
     },
     {
       "id": 209,
@@ -3350,7 +3350,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Blue Baby (bébé co-op)"
+      "reward": "Blue Baby (co-op baby)"
     },
     {
       "id": 210,
@@ -3366,7 +3366,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Lil' Baby (bébé co-op)"
+      "reward": "Lil' Baby (co-op baby)"
     },
     {
       "id": 211,
@@ -3382,7 +3382,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Rage Baby (bébé co-op)"
+      "reward": "Rage Baby (co-op baby)"
     },
     {
       "id": 212,
@@ -3398,7 +3398,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Black Baby (bébé co-op)"
+      "reward": "Black Baby (co-op baby)"
     },
     {
       "id": 213,
@@ -3414,7 +3414,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Long Baby (bébé co-op)"
+      "reward": "Long Baby (co-op baby)"
     },
     {
       "id": 214,
@@ -3430,7 +3430,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Yellow Baby (bébé co-op)"
+      "reward": "Yellow Baby (co-op baby)"
     },
     {
       "id": 215,
@@ -3446,7 +3446,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "White Baby (bébé co-op)"
+      "reward": "White Baby (co-op baby)"
     },
     {
       "id": 216,
@@ -3462,7 +3462,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Big Baby (bébé co-op)"
+      "reward": "Big Baby (co-op baby)"
     },
     {
       "id": 217,
@@ -3478,7 +3478,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Noose Baby (bébé co-op)"
+      "reward": "Noose Baby (co-op baby)"
     },
     {
       "id": 218,
@@ -3494,7 +3494,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Rune Bag (objet)"
+      "reward": "Rune Bag (item)"
     },
     {
       "id": 219,
@@ -3510,7 +3510,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Cambion Conception (objet)"
+      "reward": "Cambion Conception (item)"
     },
     {
       "id": 220,
@@ -3526,7 +3526,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Serpent's Kiss (objet)"
+      "reward": "Serpent's Kiss (item)"
     },
     {
       "id": 221,
@@ -3542,7 +3542,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Succubus (objet)"
+      "reward": "Succubus (item)"
     },
     {
       "id": 222,
@@ -3558,7 +3558,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Immaculate Conception (objet)"
+      "reward": "Immaculate Conception (item)"
     },
     {
       "id": 223,
@@ -3574,7 +3574,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Goat Head Baby (bébé co-op)"
+      "reward": "Goat Head Baby (co-op baby)"
     },
     {
       "id": 224,
@@ -3590,7 +3590,7 @@
         "target": "challenge_21",
         "predictable": true
       },
-      "reward": "Gold Heart (objet)"
+      "reward": "Gold Heart (item)"
     },
     {
       "id": 225,
@@ -3606,7 +3606,7 @@
         "target": "challenge_22",
         "predictable": true
       },
-      "reward": "Get out of Jail Free Card (objet)"
+      "reward": "Get out of Jail Free Card (item)"
     },
     {
       "id": 226,
@@ -3622,7 +3622,7 @@
         "target": "challenge_23",
         "predictable": true
       },
-      "reward": "Gold Bomb (objet)"
+      "reward": "Gold Bomb (item)"
     },
     {
       "id": 227,
@@ -3638,7 +3638,7 @@
         "target": "challenge_24",
         "predictable": true
       },
-      "reward": "2 new pills (objet)"
+      "reward": "2 new pills (item)"
     },
     {
       "id": 228,
@@ -3654,7 +3654,7 @@
         "target": "challenge_25",
         "predictable": true
       },
-      "reward": "2 new pills (objet)"
+      "reward": "2 new pills (item)"
     },
     {
       "id": 229,
@@ -3670,7 +3670,7 @@
         "target": "challenge_26",
         "predictable": true
       },
-      "reward": "Poker Chip (objet)"
+      "reward": "Poker Chip (item)"
     },
     {
       "id": 230,
@@ -3686,7 +3686,7 @@
         "target": "challenge_27",
         "predictable": true
       },
-      "reward": "Stud Finder (objet)"
+      "reward": "Stud Finder (item)"
     },
     {
       "id": 231,
@@ -3702,7 +3702,7 @@
         "target": "challenge_28",
         "predictable": true
       },
-      "reward": "D8 (objet)"
+      "reward": "D8 (item)"
     },
     {
       "id": 232,
@@ -3718,7 +3718,7 @@
         "target": "challenge_30",
         "predictable": true
       },
-      "reward": "Kidney Stone (objet)"
+      "reward": "Kidney Stone (item)"
     },
     {
       "id": 233,
@@ -3734,7 +3734,7 @@
         "target": "challenge_29",
         "predictable": true
       },
-      "reward": "Blank Rune (objet)"
+      "reward": "Blank Rune (item)"
     },
     {
       "id": 234,
@@ -3814,7 +3814,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Deep Pockets (objet)"
+      "reward": "Deep Pockets (item)"
     },
     {
       "id": 239,
@@ -3830,7 +3830,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Karma (objet)"
+      "reward": "Karma (item)"
     },
     {
       "id": 240,
@@ -3846,7 +3846,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Sticky Nickels (objet)"
+      "reward": "Sticky Nickels (item)"
     },
     {
       "id": 241,
@@ -3862,7 +3862,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Super Greed Baby (bébé co-op)"
+      "reward": "Super Greed Baby (co-op baby)"
     },
     {
       "id": 242,
@@ -3878,7 +3878,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lucky Pennies (objet)"
+      "reward": "Lucky Pennies (item)"
     },
     {
       "id": 243,
@@ -3910,7 +3910,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Wooden Nickel (objet)"
+      "reward": "Wooden Nickel (item)"
     },
     {
       "id": 245,
@@ -3990,7 +3990,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Store Key (objet)"
+      "reward": "Store Key (item)"
     },
     {
       "id": 250,
@@ -4022,7 +4022,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Keeper (personnage)"
+      "reward": "Keeper (character)"
     },
     {
       "id": 252,
@@ -4038,7 +4038,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Hive Baby (bébé co-op)"
+      "reward": "Hive Baby (co-op baby)"
     },
     {
       "id": 253,
@@ -4054,7 +4054,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Buddy Baby (bébé co-op)"
+      "reward": "Buddy Baby (co-op baby)"
     },
     {
       "id": 254,
@@ -4070,7 +4070,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Colorful Baby (bébé co-op)"
+      "reward": "Colorful Baby (co-op baby)"
     },
     {
       "id": 255,
@@ -4086,7 +4086,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Whore Baby (bébé co-op)"
+      "reward": "Whore Baby (co-op baby)"
     },
     {
       "id": 256,
@@ -4102,7 +4102,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Cracked Baby (bébé co-op)"
+      "reward": "Cracked Baby (co-op baby)"
     },
     {
       "id": 257,
@@ -4118,7 +4118,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Dripping Baby (bébé co-op)"
+      "reward": "Dripping Baby (co-op baby)"
     },
     {
       "id": 258,
@@ -4134,7 +4134,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Blinding Baby (bébé co-op)"
+      "reward": "Blinding Baby (co-op baby)"
     },
     {
       "id": 259,
@@ -4150,7 +4150,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Sucky Baby (bébé co-op)"
+      "reward": "Sucky Baby (co-op baby)"
     },
     {
       "id": 260,
@@ -4166,7 +4166,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Dark Baby (bébé co-op)"
+      "reward": "Dark Baby (co-op baby)"
     },
     {
       "id": 261,
@@ -4182,7 +4182,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Picky Baby (bébé co-op)"
+      "reward": "Picky Baby (co-op baby)"
     },
     {
       "id": 262,
@@ -4198,7 +4198,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Revenge Baby (bébé co-op)"
+      "reward": "Revenge Baby (co-op baby)"
     },
     {
       "id": 263,
@@ -4214,7 +4214,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Belial Baby (bébé co-op)"
+      "reward": "Belial Baby (co-op baby)"
     },
     {
       "id": 264,
@@ -4230,7 +4230,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Sale Baby (bébé co-op)"
+      "reward": "Sale Baby (co-op baby)"
     },
     {
       "id": 265,
@@ -4518,7 +4518,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "D infinity (objet)"
+      "reward": "D infinity (item)"
     },
     {
       "id": 283,
@@ -4534,7 +4534,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Eucharist (objet)"
+      "reward": "Eucharist (item)"
     },
     {
       "id": 284,
@@ -4550,7 +4550,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Silver Dollar (objet)"
+      "reward": "Silver Dollar (item)"
     },
     {
       "id": 285,
@@ -4566,7 +4566,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Shade (objet)"
+      "reward": "Shade (item)"
     },
     {
       "id": 286,
@@ -4582,7 +4582,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "King Baby (bébé co-op)"
+      "reward": "King Baby (co-op baby)"
     },
     {
       "id": 287,
@@ -4598,7 +4598,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Bloody Crown (objet)"
+      "reward": "Bloody Crown (item)"
     },
     {
       "id": 288,
@@ -4614,7 +4614,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Dull Razor (objet)"
+      "reward": "Dull Razor (item)"
     },
     {
       "id": 289,
@@ -4630,7 +4630,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Eden's Soul (objet)"
+      "reward": "Eden's Soul (item)"
     },
     {
       "id": 290,
@@ -4646,7 +4646,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Dark Prince's Crown (objet)"
+      "reward": "Dark Prince's Crown (item)"
     },
     {
       "id": 291,
@@ -4662,7 +4662,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Compound Fracture (objet)"
+      "reward": "Compound Fracture (item)"
     },
     {
       "id": 292,
@@ -4678,7 +4678,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Euthanasia (objet)"
+      "reward": "Euthanasia (item)"
     },
     {
       "id": 293,
@@ -4694,7 +4694,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Holy Card (objet)"
+      "reward": "Holy Card (item)"
     },
     {
       "id": 294,
@@ -4710,7 +4710,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Crooked Penny (objet)"
+      "reward": "Crooked Penny (item)"
     },
     {
       "id": 295,
@@ -4726,7 +4726,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Void (objet)"
+      "reward": "Void (item)"
     },
     {
       "id": 296,
@@ -4742,7 +4742,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "D1 (objet)"
+      "reward": "D1 (item)"
     },
     {
       "id": 297,
@@ -4758,7 +4758,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Glyph of Balance (objet)"
+      "reward": "Glyph of Balance (item)"
     },
     {
       "id": 298,
@@ -4774,7 +4774,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Sack of Sacks (objet)"
+      "reward": "Sack of Sacks (item)"
     },
     {
       "id": 299,
@@ -4790,7 +4790,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Eye of Belial (objet)"
+      "reward": "Eye of Belial (item)"
     },
     {
       "id": 300,
@@ -4806,7 +4806,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Meconium (objet)"
+      "reward": "Meconium (item)"
     },
     {
       "id": 301,
@@ -4822,7 +4822,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Stem Cell (objet)"
+      "reward": "Stem Cell (item)"
     },
     {
       "id": 302,
@@ -4838,7 +4838,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Crow Heart (objet)"
+      "reward": "Crow Heart (item)"
     },
     {
       "id": 303,
@@ -4854,7 +4854,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Metronome (objet)"
+      "reward": "Metronome (item)"
     },
     {
       "id": 304,
@@ -4870,7 +4870,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Bat Wing (objet)"
+      "reward": "Bat Wing (item)"
     },
     {
       "id": 305,
@@ -4886,7 +4886,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Plan C (objet)"
+      "reward": "Plan C (item)"
     },
     {
       "id": 306,
@@ -4902,7 +4902,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Duality (objet)"
+      "reward": "Duality (item)"
     },
     {
       "id": 307,
@@ -4918,7 +4918,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Dad's Lost Coin (objet)"
+      "reward": "Dad's Lost Coin (item)"
     },
     {
       "id": 308,
@@ -4934,7 +4934,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Eye of Greed (objet)"
+      "reward": "Eye of Greed (item)"
     },
     {
       "id": 309,
@@ -4950,7 +4950,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Black Rune (objet)"
+      "reward": "Black Rune (item)"
     },
     {
       "id": 310,
@@ -4966,7 +4966,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Locust of Wrath (objet)"
+      "reward": "Locust of Wrath (item)"
     },
     {
       "id": 311,
@@ -4982,7 +4982,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Locust of Pestilence (objet)"
+      "reward": "Locust of Pestilence (item)"
     },
     {
       "id": 312,
@@ -4998,7 +4998,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Locust of Famine (objet)"
+      "reward": "Locust of Famine (item)"
     },
     {
       "id": 313,
@@ -5014,7 +5014,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Locust of Death (objet)"
+      "reward": "Locust of Death (item)"
     },
     {
       "id": 314,
@@ -5030,7 +5030,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Locust of Conquest (objet)"
+      "reward": "Locust of Conquest (item)"
     },
     {
       "id": 315,
@@ -5046,7 +5046,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Hushy (objet)"
+      "reward": "Hushy (item)"
     },
     {
       "id": 316,
@@ -5062,7 +5062,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Brown Nugget (objet)"
+      "reward": "Brown Nugget (item)"
     },
     {
       "id": 317,
@@ -5078,7 +5078,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Mort Baby (bébé co-op)"
+      "reward": "Mort Baby (co-op baby)"
     },
     {
       "id": 318,
@@ -5094,7 +5094,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Smelter (objet)"
+      "reward": "Smelter (item)"
     },
     {
       "id": 319,
@@ -5110,7 +5110,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Apollyon Baby (bébé co-op)"
+      "reward": "Apollyon Baby (co-op baby)"
     },
     {
       "id": 320,
@@ -5142,7 +5142,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Once More with Feeling! (objet)"
+      "reward": "Once More with Feeling! (item)"
     },
     {
       "id": 322,
@@ -5158,7 +5158,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Hat trick! (objet)"
+      "reward": "Hat trick! (item)"
     },
     {
       "id": 323,
@@ -5190,7 +5190,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Sin collector (objet)"
+      "reward": "Sin collector (item)"
     },
     {
       "id": 325,
@@ -5206,7 +5206,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Dedication (objet)"
+      "reward": "Dedication (item)"
     },
     {
       "id": 326,
@@ -5222,7 +5222,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "ZIP! (objet)"
+      "reward": "ZIP! (item)"
     },
     {
       "id": 327,
@@ -5238,7 +5238,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "It's the Key (objet)"
+      "reward": "It's the Key (item)"
     },
     {
       "id": 328,
@@ -5254,7 +5254,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mr. Resetter! (objet)"
+      "reward": "Mr. Resetter! (item)"
     },
     {
       "id": 329,
@@ -5270,7 +5270,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Living on the edge (objet)"
+      "reward": "Living on the edge (item)"
     },
     {
       "id": 330,
@@ -5286,7 +5286,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "U Broke It! (objet)"
+      "reward": "U Broke It! (item)"
     },
     {
       "id": 331,
@@ -5334,7 +5334,7 @@
         "target": "challenge_33",
         "predictable": true
       },
-      "reward": "Charged Key (objet)"
+      "reward": "Charged Key (item)"
     },
     {
       "id": 334,
@@ -5366,7 +5366,7 @@
         "target": "challenge_35",
         "predictable": true
       },
-      "reward": "Greed's Gullet (objet)"
+      "reward": "Greed's Gullet (item)"
     },
     {
       "id": 336,
@@ -5382,7 +5382,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Marathon (objet)"
+      "reward": "The Marathon (item)"
     },
     {
       "id": 337,
@@ -5414,7 +5414,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Delirious (objet)"
+      "reward": "Delirious (item)"
     },
     {
       "id": 339,
@@ -5446,7 +5446,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Apollyon (personnage)"
+      "reward": "Apollyon (character)"
     },
     {
       "id": 341,
@@ -5590,7 +5590,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Black Hole (objet)"
+      "reward": "Black Hole (item)"
     },
     {
       "id": 350,
@@ -5606,7 +5606,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mystery Gift (objet)"
+      "reward": "Mystery Gift (item)"
     },
     {
       "id": 351,
@@ -5622,7 +5622,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Sprinkler (objet)"
+      "reward": "Sprinkler (item)"
     },
     {
       "id": 352,
@@ -5638,7 +5638,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Angry Fly (objet)"
+      "reward": "Angry Fly (item)"
     },
     {
       "id": 353,
@@ -5654,7 +5654,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Bozo (objet)"
+      "reward": "Bozo (item)"
     },
     {
       "id": 354,
@@ -5670,7 +5670,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Broken Modem (objet)"
+      "reward": "Broken Modem (item)"
     },
     {
       "id": 355,
@@ -5686,7 +5686,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Buddy in a Box (objet)"
+      "reward": "Buddy in a Box (item)"
     },
     {
       "id": 356,
@@ -5702,7 +5702,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Fast Bombs (objet)"
+      "reward": "Fast Bombs (item)"
     },
     {
       "id": 357,
@@ -5718,7 +5718,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lil Delirium (objet)"
+      "reward": "Lil Delirium (item)"
     },
     {
       "id": 358,
@@ -5734,7 +5734,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Hairpin (objet)"
+      "reward": "Hairpin (item)"
     },
     {
       "id": 359,
@@ -5750,7 +5750,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Wooden Cross (objet)"
+      "reward": "Wooden Cross (item)"
     },
     {
       "id": 360,
@@ -5766,7 +5766,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Butter! (objet)"
+      "reward": "Butter! (item)"
     },
     {
       "id": 361,
@@ -5782,7 +5782,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Huge Growth (objet)"
+      "reward": "Huge Growth (item)"
     },
     {
       "id": 362,
@@ -5798,7 +5798,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Ancient Recall (objet)"
+      "reward": "Ancient Recall (item)"
     },
     {
       "id": 363,
@@ -5814,7 +5814,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Era Walk (objet)"
+      "reward": "Era Walk (item)"
     },
     {
       "id": 364,
@@ -5830,7 +5830,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Coupon (objet)"
+      "reward": "Coupon (item)"
     },
     {
       "id": 365,
@@ -5846,7 +5846,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Telekinesis (objet)"
+      "reward": "Telekinesis (item)"
     },
     {
       "id": 366,
@@ -5862,7 +5862,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Moving Box (objet)"
+      "reward": "Moving Box (item)"
     },
     {
       "id": 367,
@@ -5878,7 +5878,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Jumper Cables (objet)"
+      "reward": "Jumper Cables (item)"
     },
     {
       "id": 368,
@@ -5894,7 +5894,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Leprosy (objet)"
+      "reward": "Leprosy (item)"
     },
     {
       "id": 369,
@@ -5910,7 +5910,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Technology Zero (objet)"
+      "reward": "Technology Zero (item)"
     },
     {
       "id": 370,
@@ -5926,7 +5926,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Filigree Feather (objet)"
+      "reward": "Filigree Feather (item)"
     },
     {
       "id": 371,
@@ -5942,7 +5942,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mr. ME! (objet)"
+      "reward": "Mr. ME! (item)"
     },
     {
       "id": 372,
@@ -5958,7 +5958,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "7 Seals (objet)"
+      "reward": "7 Seals (item)"
     },
     {
       "id": 373,
@@ -5974,7 +5974,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Angelic Prism (objet)"
+      "reward": "Angelic Prism (item)"
     },
     {
       "id": 374,
@@ -5990,7 +5990,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Pop! (objet)"
+      "reward": "Pop! (item)"
     },
     {
       "id": 375,
@@ -6006,7 +6006,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Door Stop (objet)"
+      "reward": "Door Stop (item)"
     },
     {
       "id": 376,
@@ -6022,7 +6022,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Death's List (objet)"
+      "reward": "Death's List (item)"
     },
     {
       "id": 377,
@@ -6038,7 +6038,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Haemolacria (objet)"
+      "reward": "Haemolacria (item)"
     },
     {
       "id": 378,
@@ -6054,7 +6054,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lachryphagy (objet)"
+      "reward": "Lachryphagy (item)"
     },
     {
       "id": 379,
@@ -6070,7 +6070,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Schoolbag (objet)"
+      "reward": "Schoolbag (item)"
     },
     {
       "id": 380,
@@ -6086,7 +6086,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Trisagion (objet)"
+      "reward": "Trisagion (item)"
     },
     {
       "id": 381,
@@ -6102,7 +6102,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Extension Cord (objet)"
+      "reward": "Extension Cord (item)"
     },
     {
       "id": 382,
@@ -6118,7 +6118,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Flat Stone (objet)"
+      "reward": "Flat Stone (item)"
     },
     {
       "id": 383,
@@ -6134,7 +6134,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Sacrificial Altar (objet)"
+      "reward": "Sacrificial Altar (item)"
     },
     {
       "id": 384,
@@ -6150,7 +6150,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Lil Spewer (objet)"
+      "reward": "Lil Spewer (item)"
     },
     {
       "id": 385,
@@ -6166,7 +6166,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Blanket (objet)"
+      "reward": "Blanket (item)"
     },
     {
       "id": 386,
@@ -6182,7 +6182,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Marbles (objet)"
+      "reward": "Marbles (item)"
     },
     {
       "id": 387,
@@ -6198,7 +6198,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Mystery Egg (objet)"
+      "reward": "Mystery Egg (item)"
     },
     {
       "id": 388,
@@ -6214,7 +6214,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Rotten Penny (objet)"
+      "reward": "Rotten Penny (item)"
     },
     {
       "id": 389,
@@ -6230,7 +6230,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Baby-Bender (objet)"
+      "reward": "Baby-Bender (item)"
     },
     {
       "id": 390,
@@ -6246,7 +6246,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "The Forgotten (personnage)"
+      "reward": "The Forgotten (character)"
     },
     {
       "id": 391,
@@ -6262,7 +6262,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Bone Heart (objet)"
+      "reward": "Bone Heart (item)"
     },
     {
       "id": 392,
@@ -6278,7 +6278,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "Marrow (objet)"
+      "reward": "Marrow (item)"
     },
     {
       "id": 393,
@@ -6294,7 +6294,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "Slipped Rib (objet)"
+      "reward": "Slipped Rib (item)"
     },
     {
       "id": 394,
@@ -6310,7 +6310,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "Pointy Rib (objet)"
+      "reward": "Pointy Rib (item)"
     },
     {
       "id": 395,
@@ -6326,7 +6326,7 @@
         "target": "blue_baby",
         "predictable": true
       },
-      "reward": "Jaw Bone (objet)"
+      "reward": "Jaw Bone (item)"
     },
     {
       "id": 396,
@@ -6342,7 +6342,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "Brittle Bones (objet)"
+      "reward": "Brittle Bones (item)"
     },
     {
       "id": 397,
@@ -6358,7 +6358,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "Divorce Papers (objet)"
+      "reward": "Divorce Papers (item)"
     },
     {
       "id": 398,
@@ -6374,7 +6374,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "Hallowed Ground (objet)"
+      "reward": "Hallowed Ground (item)"
     },
     {
       "id": 399,
@@ -6390,7 +6390,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Finger Bone (objet)"
+      "reward": "Finger Bone (item)"
     },
     {
       "id": 400,
@@ -6406,7 +6406,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "Dad's Ring (objet)"
+      "reward": "Dad's Ring (item)"
     },
     {
       "id": 401,
@@ -6422,7 +6422,7 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "Book of the Dead (objet)"
+      "reward": "Book of the Dead (item)"
     },
     {
       "id": 402,
@@ -6438,7 +6438,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "Bone Baby (bébé co-op)"
+      "reward": "Bone Baby (co-op baby)"
     },
     {
       "id": 403,
@@ -6454,7 +6454,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "Bound Baby (bébé co-op)"
+      "reward": "Bound Baby (co-op baby)"
     },
     {
       "id": 404,

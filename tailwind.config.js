@@ -2,11 +2,11 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * Direction artistique « grimoire maudit » — SYSTÈME DE THÈMES autour de
- * l'univers d'Isaac (Sous-sol / Sheol / le Vide / Corpse / Cathédrale).
- * Tout est piloté par variables CSS : les neutres, l'accent de chrome ET les
- * accents sémantiques (or=Hard, jade=Normal, sang=à faire) — le thème bascule,
- * aucune classe des 13 vues ne change. Namespace `isaac-*` conservé.
+ * "Cursed grimoire" art direction - a THEME SYSTEM built around
+ * the world of Isaac (Basement / Sheol / the Void / Corpse / Cathedral).
+ * Everything is driven by CSS variables: the neutrals, the chrome accent AND the
+ * semantic accents (gold=Hard, jade=Normal, blood=to do) - the theme switches,
+ * and not a single class across the 13 views changes. The `isaac-*` namespace is kept.
  */
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -14,7 +14,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Rampes fixes (nuances précises : barres, hover, data-viz).
+        // Fixed ramps (precise shades: bars, hover, data-viz).
         blood: {
           300: "#ef6a72", 400: "#dd4049", 500: "#c1272d",
           600: "#9b1c22", 700: "#71141a", 900: "#8c1a1a", 950: "#2a0a0d",
@@ -29,7 +29,7 @@ export default {
         },
         viz: { azure: "#5b9dd9", violet: "#9d7fd6", ember: "#e08c3c" },
 
-        // Namespace historique — tout via variables CSS (thémable).
+        // Historic namespace - everything through CSS variables (themable).
         isaac: {
           bg: "rgb(var(--i-bg) / <alpha-value>)",
           surface: "rgb(var(--i-surface) / <alpha-value>)",
@@ -40,10 +40,10 @@ export default {
           text: "rgb(var(--i-text) / <alpha-value>)",
           muted: "rgb(var(--i-muted) / <alpha-value>)",
           faint: "rgb(var(--i-faint) / <alpha-value>)",
-          // Accent de chrome (change selon le lieu).
+          // Chrome accent (changes with the place).
           accent: "rgb(var(--i-accent) / <alpha-value>)",
           dried: "rgb(var(--i-accent) / <alpha-value>)",
-          // Sémantiques (constantes en sombre, ajustées en Cathédrale/clair).
+          // Semantic colors (constant in dark themes, adjusted for Cathedral/light).
           gold: "rgb(var(--i-gold) / <alpha-value>)",
           "gold-dim": "#9c7c26",
           done: "rgb(var(--i-jade) / <alpha-value>)",

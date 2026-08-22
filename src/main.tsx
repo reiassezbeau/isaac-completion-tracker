@@ -4,7 +4,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-// Police display « gravée » Cinzel (OFL) — bundlée en woff2, 100 % offline.
+// Cinzel (OFL), the "engraved" display face - bundled as woff2, 100% offline.
 import "@fontsource/cinzel/400.css";
 import "@fontsource/cinzel/600.css";
 import "@fontsource/cinzel/700.css";

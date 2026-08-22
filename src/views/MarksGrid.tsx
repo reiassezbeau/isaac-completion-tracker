@@ -54,7 +54,7 @@ function Block({
         </span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: cols, gap: GAP, alignItems: "center", width: "max-content" }}>
-        {/* en-têtes : glyphes d'endings */}
+        {/* headers: ending glyphs */}
         <div />
         {endings.map((e) => (
           <div key={e.id} title={e.name} className="flex justify-center text-isaac-faint">
@@ -68,7 +68,7 @@ function Block({
           <MatrixRow key={c.id + i} char={c} statuses={rows[i]} endings={endings} />
         ))}
 
-        {/* totaux de colonne */}
+        {/* column totals */}
         <div className="pt-1 text-right font-mono text-[0.6rem] uppercase tracking-wider text-isaac-faint">{t("grid.perCol")}</div>
         {colHard.map((n, j) => {
           const full = n === chars.length;

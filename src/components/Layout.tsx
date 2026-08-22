@@ -30,7 +30,7 @@ const NAV: { id: ViewId; tkey: string; glyph: string }[] = [
   { id: "about", tkey: "nav.about", glyph: "info" },
 ];
 
-/** Voile de grain de suie — texture du chrome (jamais sous la data). */
+/** Soot-grain veil - chrome texture (never behind the data). */
 function Grain({ opacity = 0.08 }: { opacity?: number }) {
   return (
     <div className="pointer-events-none absolute inset-0 mix-blend-overlay" style={{ opacity }} aria-hidden="true">

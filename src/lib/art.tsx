@@ -2,11 +2,11 @@
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
 /**
- * art — iconographie ORIGINALE de la DA v2 (grimoire maudit).
- * Glyphes d'endings (occulte), sigils de perso (tête + attribut), emblème,
- * icônes de nav dessinées-main, jauge Dead God, éclaboussures de sang.
- * Tout est du SVG maison au trait tremblé (filtres de `Defs`). AUCUN sprite du
- * jeu. Les couleurs viennent de `currentColor` (pilotées par la classe texte).
+ * art - ORIGINAL iconography for art direction v2 (cursed grimoire).
+ * Ending glyphs (occult), character sigils (head + attribute), emblem,
+ * hand-drawn nav icons, Dead God gauge, blood splatters.
+ * Everything is hand-rolled shaky-line SVG (filters from `Defs`). NO sprite from
+ * the game. Colors come from `currentColor` (driven by the text class).
  */
 import type { CSSProperties, ReactNode } from "react";
 
@@ -60,7 +60,7 @@ function Drawn({ shape, size, sw = 1.7, filter = "wob1", prefix = "g" }: { shape
   );
 }
 
-// ── Les 12 signes (iconographie occulte redessinée) ────────────────────────
+// ── The 12 signs (redrawn occult iconography) ────────────────────────
 export const ENDINGS: Record<string, Shape> = {
   moms_heart: { p: ["M12 20.4C6.1 15.3 3.7 11.7 3.7 8.8 3.7 6.2 5.7 4.3 8.1 4.3 9.9 4.3 11.3 5.3 12 6.8 12.7 5.3 14.1 4.3 15.9 4.3 18.3 4.3 20.3 6.2 20.3 8.8 20.3 11.7 17.9 15.3 12 20.4Z", "M12 1.6V9.2", "M9.7 2.4h4.6"] },
   isaac: { p: ["M12 13.2a4.9 4.9 0 100-9.8 4.9 4.9 0 000 9.8Z"], e: [[12, 4.1, 6.2, 2.1]], t: [[13.2, 15.4]] },
@@ -76,14 +76,14 @@ export const ENDINGS: Record<string, Shape> = {
   beast: { p: ["M2.9 12.6C7.1 7 17 7 21.1 12.6 17 18.1 7.1 18.1 2.9 12.6Z", "M12 9.4v6.4", "M4.9 8.6C3.3 5.9 4.8 4.5 6.2 6.3", "M19.1 8.6c1.6-2.7.1-4.1-1.3-2.3"] },
 };
 
-/** Glyphe d'un ending (id = ceux d'endings.json). currentColor = couleur. */
+/** Glyph for an ending (id = the ones in endings.json). currentColor = color. */
 export function Glyph({ id, size = 18, sw = 1.7, filter = "wob1" }: { id: string; size?: number; sw?: number; filter?: string | false }) {
   const shape = ENDINGS[id];
   if (!shape) return null;
   return <Drawn shape={shape} size={size} sw={sw} filter={filter} prefix={`e_${id}`} />;
 }
 
-// ── Les 17 sigils de base (tête + attribut, 3 traits max) ───────────────────
+// ── The 17 base sigils (head + attribute, 3 strokes max) ───────────────────
 const SIGILS: Record<string, Shape> = {
   isaac: { p: ["M12 13.4a5 5 0 100-10 5 5 0 000 10Z"], e: [[12, 4.2, 6.3, 2.1]], t: [[13.4, 15.8]] },
   magdalene: { p: ["M12 21a5.4 5.4 0 100-10.8A5.4 5.4 0 0012 21Z", "M12 8.4C9.1 6 7.9 4.6 7.9 3.4 7.9 2.2 8.8 1.4 9.9 1.4c.9 0 1.7.5 2.1 1.3.4-.8 1.2-1.3 2.1-1.3 1.1 0 2 .8 2 2 0 1.2-1.2 2.6-4.1 5Z"] },
@@ -105,9 +105,9 @@ const SIGILS: Record<string, Shape> = {
 };
 
 /**
- * Sigil de personnage sur plaque : régulier = os sur pierre gravée ; Tainted =
- * même sigil encré de sang + barre oblique. `id` = id de perso (les formes
- * Tainted/formes alternatives retombent sur leur base via `baseSigilId`).
+ * Character sigil on a plaque: regular = bone on engraved stone; Tainted =
+ * the same sigil inked in blood + a slash. `id` = character id (Tainted and
+ * alternate forms fall back to their base through `baseSigilId`).
  */
 export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: number; tainted?: boolean }) {
   const shape = SIGILS[baseSigilId(id)] ?? SIGILS.isaac;
@@ -144,7 +144,7 @@ export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: n
   );
 }
 
-/** Ramène un id de perso (forme/alt/Tainted) vers son sigil de base. */
+/** Maps a character id (form/alt/Tainted) back to its base sigil. */
 export function baseSigilId(id: string): string {
   let base = id.startsWith("tainted_") ? id.slice("tainted_".length) : id;
   const alias: Record<string, string> = {
@@ -157,7 +157,7 @@ export function baseSigilId(id: string): string {
   return SIGILS[base] ? base : "isaac";
 }
 
-// ── Emblème (croix + cœur + larme) ─────────────────────────────────────────
+// ── Emblem (cross + heart + tear) ─────────────────────────────────────────
 export function Emblem({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", overflow: "visible" }}>
@@ -170,7 +170,7 @@ export function Emblem({ size = 20 }: { size?: number }) {
   );
 }
 
-// ── Icônes de nav dessinées-main ───────────────────────────────────────────
+// ── Hand-drawn nav icons ───────────────────────────────────────────
 const NAV: Record<string, Shape> = {
   dash: { p: ["M4.2 5.2h6.2v6.2H4.2Z", "M13.6 5.2h6.2v3.6h-6.2Z", "M13.6 11h6.2v7.8h-6.2Z", "M4.2 14h6.2v4.8H4.2Z"] },
   user: { p: ["M12 11.6a4 4 0 100-8 4 4 0 000 8Z", "M5.4 20.4c0-3.4 3-5.4 6.6-5.4s6.6 2 6.6 5.4"] },
@@ -196,7 +196,7 @@ export function NavGlyph({ kind, size = 15 }: { kind: string; size?: number }) {
   );
 }
 
-// ── Bibliothèque d'objets de l'univers d'Isaac (ORIGINAUX, au trait tremblé) ──
+// ── Library of objects from the world of Isaac (ORIGINAL, shaky line) ──
 export const ICONS: Record<string, Shape> = {
   coin: { c: [[12, 12, 8], [12, 12, 4.6]], d: [[12, 12, 1]] },
   key: { c: [[8.4, 8.4, 3.4]], p: ["M10.6 10.6 18.6 18.6", "M16.4 16.4l2.2-2.2", "M18.4 18.4l1.8-1.8"] },
@@ -221,14 +221,14 @@ export const ICONS: Record<string, Shape> = {
   wing: { p: ["M20 5c-6 0-11 3-14 9 3-1 5-1 6 0-2 1-3 2.5-3.5 4.5C12 15 17 12 20 5Z"] },
 };
 
-/** Icône de l'univers d'Isaac (currentColor = couleur). */
+/** An icon from the world of Isaac (currentColor = color). */
 export function Icon({ name, size = 18, sw = 1.7, filter = "wob1" }: { name: string; size?: number; sw?: number; filter?: string | false }) {
   const shape = ICONS[name];
   if (!shape) return null;
   return <Drawn shape={shape} size={size} sw={sw} filter={filter} prefix={`ic_${name}`} />;
 }
 
-// ── Jauge Dead God : 12 anneaux gravés (un par ending) ─────────────────────
+// ── Dead God gauge: 12 engraved rings (one per ending) ─────────────────────
 function arc(cx: number, cy: number, r: number, a0: number, a1: number): string {
   const p = (a: number): [number, number] => {
     const t = ((a - 90) * Math.PI) / 180;
@@ -239,7 +239,7 @@ function arc(cx: number, cy: number, r: number, a0: number, a1: number): string 
   return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
 }
 
-/** `perEnding` = 12 entrées {hard, normal} (compte sur les 34 persos). */
+/** `perEnding` = 12 entries {hard, normal} (counted across the 34 characters). */
 export function DeadGodGauge({ perEnding, size = 246, total = 34 }: { perEnding: { hard: number; normal: number }[]; size?: number; total?: number }) {
   const cx = 200;
   const cy = 200;
@@ -268,7 +268,7 @@ export function DeadGodGauge({ perEnding, size = 246, total = 34 }: { perEnding:
   );
 }
 
-// ── Éclaboussure de sang (décor, jamais sous la data) ──────────────────────
+// ── Blood splatter (decoration, never behind the data) ──────────────────────
 function rngFn(seed: number): () => number {
   let s = seed >>> 0;
   return () => {
