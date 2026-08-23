@@ -21,7 +21,7 @@ function CharGrid({
 }) {
   const t = useT();
   const groups: [string, CharacterListItem[]][] = [
-    [t("grid.characters"), chars.filter((c) => c.kind === "regular")],
+    [t("char.regular"), chars.filter((c) => c.kind === "regular")],
     ["Tainted", chars.filter((c) => c.kind === "tainted")],
   ];
   return (
@@ -31,7 +31,7 @@ function CharGrid({
           <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-isaac-muted">
             {label}
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))] gap-2">
             {list.map((c) => (
               <button
                 key={c.id}
@@ -44,7 +44,9 @@ function CharGrid({
               >
                 <div className="flex items-center gap-2">
                   <Portrait id={basePortraitId(c.id)} size={22} tainted={c.kind === "tainted"} />
-                  <span className="truncate font-medium">{c.name}</span>
+                  <span className="truncate font-medium" title={c.name}>
+                    {c.kind === "tainted" ? c.name.replace(/^Tainted\s+/i, "") : c.name}
+                  </span>
                   {!c.unlocked && <Lock className="ml-auto h-3 w-3 flex-shrink-0 text-isaac-faint" />}
                 </div>
                 <div className="mt-1 flex items-center gap-1">

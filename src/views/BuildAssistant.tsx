@@ -176,7 +176,17 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
   const { composition: c } = analysis;
   return (
     <Card>
-      <SectionTitle hint={`${c.total}`}>{t("bld.composition")}</SectionTitle>
+      {/* A build of 15 unknown items used to show a bare "0" here, which read as
+          broken. Showing analysed-of-loaded makes the gap explicit instead. */}
+      <SectionTitle
+        hint={
+          analysis.unknown_ids.length > 0
+            ? `${c.total}/${c.total + analysis.unknown_ids.length}`
+            : `${c.total}`
+        }
+      >
+        {t("bld.composition")}
+      </SectionTitle>
 
       <div className="mb-3 flex flex-wrap gap-1.5">
         {c.by_role.map(([role, n]) => (
