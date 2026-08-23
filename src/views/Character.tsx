@@ -116,7 +116,7 @@ export function CharacterView() {
                     {detail.kind === "tainted" ? "Tainted" : t("char.regular")}
                   </Pill>
                   {!detail.character_unlocked && (
-                    <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">
+                    <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light">
                       <Lock className="h-3 w-3" /> {t("char.locked")}
                     </Pill>
                   )}

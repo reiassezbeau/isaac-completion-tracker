@@ -75,7 +75,7 @@ function toneClass(tone: "done" | "gold" | "blood" | "muted"): string {
     case "gold":
       return "border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold";
     case "blood":
-      return "border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90";
+      return "border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light";
     default:
       return "border-isaac-border bg-isaac-surface2 text-isaac-muted";
   }
@@ -83,7 +83,7 @@ function toneClass(tone: "done" | "gold" | "blood" | "muted"): string {
 
 function noteToneClass(kind: string): string {
   if (kind === "strong") return "border-isaac-done/40 bg-isaac-done/10 text-isaac-done";
-  if (kind === "dangerous") return "border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90";
+  if (kind === "dangerous") return "border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light";
   return "border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold";
 }
 
@@ -130,7 +130,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
               </Pill>
             )}
             {result.hearts_delta > 0 && (
-              <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">
+              <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light">
                 <Heart className="h-3 w-3" /> +{result.hearts_delta}
               </Pill>
             )}
@@ -141,7 +141,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
               {deltas.map((d) => (
                 <div key={d.dim} className="flex items-center gap-2">
                   <span className="w-20 text-isaac-muted">{statDimLabel(d.dim, t)}</span>
-                  <span className={d.direction > 0 ? "text-isaac-done" : "text-isaac-blood/90"}>
+                  <span className={d.direction > 0 ? "text-isaac-done" : "text-isaac-blood-light"}>
                     {d.direction > 0 ? "↑" : "↓"} {d.before.toFixed(1)} → {d.after.toFixed(1)}
                   </span>
                 </div>
@@ -234,14 +234,14 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
           )}
         </div>
         <div>
-          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-blood/90">{t("bld.weaknesses")}</div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-isaac-blood-light">{t("bld.weaknesses")}</div>
           {analysis.weaknesses.length === 0 ? (
             <p className="text-sm text-isaac-muted">—</p>
           ) : (
             <ul className="space-y-1 text-sm">
               {analysis.weaknesses.map((w, i) => (
                 <li key={i} className="flex items-baseline gap-1.5">
-                  <span className="text-isaac-blood/90">•</span> {w}
+                  <span className="text-isaac-blood-light">•</span> {w}
                 </li>
               ))}
             </ul>

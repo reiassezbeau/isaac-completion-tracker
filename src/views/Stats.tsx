@@ -27,7 +27,7 @@ function outcomePill(outcome: string | null, t: (k: string) => string) {
   if (outcome === "win")
     return <Pill className="border-isaac-done/40 bg-isaac-done/10 text-isaac-done">win</Pill>;
   if (outcome === "death")
-    return <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">death</Pill>;
+    return <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light">death</Pill>;
   return <Pill className="border-isaac-border bg-isaac-surface2 text-isaac-muted">{outcome ?? t("st.inProgress")}</Pill>;
 }
 

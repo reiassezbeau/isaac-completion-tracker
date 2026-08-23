@@ -87,7 +87,7 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
             </Pill>
           )}
           {action.reward_gain > 0 && (
-            <Pill className="border-isaac-blood/30 bg-isaac-blood/10 text-isaac-blood/90">
+            <Pill className="border-isaac-blood/30 bg-isaac-blood/10 text-isaac-blood-light">
               +{action.reward_gain} {t("opt.items")}
             </Pill>
           )}

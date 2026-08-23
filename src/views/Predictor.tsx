@@ -153,7 +153,7 @@ export function PredictorView() {
                     </Pill>
                   )}
                   {sg.fills_hard_mark && (
-                    <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood/90">
+                    <Pill className="border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light">
                       Hard
                     </Pill>
                   )}
