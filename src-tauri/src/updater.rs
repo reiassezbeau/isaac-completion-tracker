@@ -202,6 +202,38 @@ pub fn download_verified(info: &UpdateInfo) -> Result<PathBuf, String> {
 mod tests {
     use super::*;
 
+    /// The only test here that leaves the machine, so it is `#[ignore]`d and never
+    /// runs in a normal `cargo test`. Run it deliberately after publishing a release:
+    ///
+    ///   cargo test --lib updater::tests::live -- --ignored --nocapture
+    ///
+    /// It exercises the real shipped code path against the real published release -
+    /// fetch the release, find the installer, read SHA256SUMS.txt, download, verify -
+    /// which is otherwise the one part of the update feature that only ever gets
+    /// tried for the first time on a user's machine.
+    #[test]
+    #[ignore = "hits the network; run explicitly after publishing a release"]
+    fn live_release_is_downloadable_and_matches_its_checksum() {
+        // Pretend to be an old version so `available` must come back true.
+        let info = check("0.0.1").expect("could not reach GitHub");
+        assert!(info.available, "a published release must look newer than 0.0.1");
+        assert!(!info.latest_version.is_empty());
+        let name = info.installer_name.clone().expect("the release publishes no .exe installer");
+        assert!(name.ends_with("-setup.exe"), "unexpected installer name: {name}");
+        let sha = info.sha256.clone().expect("the release publishes no SHA256SUMS.txt entry");
+        assert_eq!(sha.len(), 64, "malformed checksum: {sha}");
+        println!("  latest    : {} ({name})", info.latest_version);
+        println!("  expected  : {sha}");
+
+        // download_verified() only returns Ok when the hash matches, so reaching
+        // this line at all is the assertion that matters.
+        let path = download_verified(&info).expect("download or checksum verification failed");
+        let bytes = std::fs::metadata(&path).expect("installer missing after download").len();
+        println!("  downloaded: {} ({bytes} bytes)", path.display());
+        assert!(bytes > 1_000_000, "installer suspiciously small: {bytes} bytes");
+        let _ = std::fs::remove_file(&path);
+    }
+
     #[test]
     fn version_comparison_is_numeric_not_lexicographic() {
         assert!(is_newer("0.10.0", "0.9.9"), "10 > 9 even though '1' < '9' as text");
