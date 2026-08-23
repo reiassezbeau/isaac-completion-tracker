@@ -291,7 +291,35 @@ def audit_versions():
             ok(f"README download links point at v{v}")
 
 
-for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data, audit_versions):
+
+# ---------------------------------------------------------------------------
+# 6. Right-to-left safety.
+#    Caught: the search inputs pinned their magnifier with `left-3` and reserved
+#    room with `pl-9`. Neither flips under dir=rtl, so in Arabic and Urdu the icon
+#    sat stranded on the wrong side of the field. Tailwind's logical utilities
+#    (start/end, ps/pe, ms/me) flip; the physical ones never do.
+# ---------------------------------------------------------------------------
+def audit_rtl():
+    check("Right-to-left safety (ar, ur)")
+    # Only the placement utilities matter: a physical padding on a centred button
+    # is harmless, but one that positions or pushes an element is not.
+    RISKY = re.compile(r'(absolute[^"]*(left|right)-\d|[mp][lr]-auto)')
+    hits = []
+    for p_ in source_files((".tsx",)):
+        for i, line in enumerate(read(p_).split(chr(10)), 1):
+            if line.strip().startswith(("//", "*")):
+                continue
+            m = RISKY.search(line)
+            if m:
+                hits.append((p_, i, m.group(0)))
+    if hits:
+        for p_, i, what in hits:
+            fail(f"{p_}:{i} `{what}` does not flip under dir=rtl - use the logical form")
+    else:
+        ok("no placement utility that would break Arabic or Urdu")
+
+
+for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data, audit_versions, audit_rtl):
     fn()
 
 print()

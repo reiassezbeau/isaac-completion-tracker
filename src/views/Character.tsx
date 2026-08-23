@@ -47,7 +47,7 @@ function CharGrid({
                   <span className="truncate font-medium" title={c.name}>
                     {c.kind === "tainted" ? c.name.replace(/^Tainted\s+/i, "") : c.name}
                   </span>
-                  {!c.unlocked && <Lock className="ml-auto h-3 w-3 flex-shrink-0 text-isaac-faint" />}
+                  {!c.unlocked && <Lock className="ms-auto h-3 w-3 flex-shrink-0 text-isaac-faint" />}
                 </div>
                 <div className="mt-1 flex items-center gap-1">
                   <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-isaac-surface2">

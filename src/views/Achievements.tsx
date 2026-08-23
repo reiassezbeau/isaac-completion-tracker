@@ -6,7 +6,7 @@ import { Eye, EyeOff, ListChecks, Lock, Search, Unlock } from "lucide-react";
 import { api } from "../lib/api";
 import { categoryLabel, dlcLabel } from "../lib/format";
 import { useT } from "../lib/useT";
-import { Card, Pill } from "../components/ui";
+import { Card, EmptyState, Pill } from "../components/ui";
 import type { AchievementView } from "../lib/types";
 
 type StatusFilter = "all" | "unlocked" | "locked";
@@ -57,12 +57,12 @@ export function AchievementsView() {
       <Card className="!p-4">
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative flex-1 min-w-[220px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-isaac-muted" />
+            <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-isaac-muted" />
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder={t("ach.searchPh")}
-              className="w-full rounded-lg border border-isaac-border bg-isaac-surface2 py-2 pl-9 pr-3 text-sm outline-none focus:border-isaac-blood/60"
+              className="w-full rounded-lg border border-isaac-border bg-isaac-surface2 py-2 ps-9 pe-3 text-sm outline-none focus:border-isaac-blood/60"
             />
           </div>
           <select value={cat} onChange={(e) => setCat(e.target.value)} className="rounded-lg border border-isaac-border bg-isaac-surface2 px-3 py-2 text-sm">
@@ -103,6 +103,10 @@ export function AchievementsView() {
           {filtered.length} {t("ach.countSuffix")} · {unlockedCount} {t("ach.unlockedSuffix")}
         </div>
       </Card>
+
+      {filtered.length === 0 && (
+        <EmptyState title={t("set.noAch")}>{t("ach.noResultsHint")}</EmptyState>
+      )}
 
       <div className="space-y-1.5">
         {filtered.map((a) => {

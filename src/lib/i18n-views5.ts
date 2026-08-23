@@ -17,6 +17,9 @@ import type { Lang } from "./i18n";
 type Entry = Partial<Record<Lang, string>>;
 
 export const VIEW_STRINGS_5: Record<string, Entry> = {
+  // ═══ Achievements browser ═══
+  "ach.noResultsHint": { en: "Try a shorter search, or widen the category, DLC and status filters.", fr: "Essaie une recherche plus courte, ou élargis les filtres catégorie, DLC et statut.", es: "Prueba una búsqueda más corta, o amplía los filtros de categoría, DLC y estado.", pt: "Tente uma busca mais curta, ou amplie os filtros de categoria, DLC e status.", de: "Versuche eine kürzere Suche oder lockere die Filter für Kategorie, DLC und Status.", ru: "Попробуйте более короткий запрос или ослабьте фильтры категории, DLC и статуса.", pl: "Spróbuj krótszego wyszukiwania lub poszerz filtry kategorii, DLC i statusu.", zh: "试试更短的关键词，或放宽分类、DLC 和状态筛选。", ja: "もっと短い語で検索するか、カテゴリ・DLC・状態の絞り込みを緩めてください。", hi: "छोटी खोज आजमाएँ, या श्रेणी, DLC और स्थिति फ़िल्टर ढीले करें।", ar: "جرّب بحثًا أقصر، أو وسّع مرشّحات الفئة والمحتوى الإضافي والحالة.", bn: "আরও ছোট খুঁজুন, অথবা ক্যাটাগরি, DLC ও স্ট্যাটাস ফিল্টার শিথিল করুন।", ur: "مختصر تلاش آزمائیں، یا زمرہ، DLC اور حالت کے فلٹرز وسیع کریں۔" },
+
   // ═══ Where a save file came from ═══
   // "Steam Cloud" is Valve's product name: identical in every language.
   "src.steam_cloud": { en: "Steam Cloud" },

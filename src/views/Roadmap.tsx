@@ -31,7 +31,7 @@ export function RoadmapView() {
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-3xl font-bold text-isaac-gold">{dgDone}</span>
           <span className="text-isaac-muted">/ {roadmap.dead_god_total} {t("road.goldMarks")}</span>
-          <span className="ml-auto text-sm text-isaac-blood">{roadmap.dead_god_remaining} {t("dash.remaining")}</span>
+          <span className="ms-auto text-sm text-isaac-blood">{roadmap.dead_god_remaining} {t("dash.remaining")}</span>
         </div>
         <div className="mt-3">
           <ProgressBar value={dgDone} max={roadmap.dead_god_total} tone="gold" />

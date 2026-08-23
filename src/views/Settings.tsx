@@ -95,12 +95,12 @@ export function SettingsView() {
       <Card>
         <SectionTitle>{t("set.fixAch")}</SectionTitle>
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-isaac-muted" />
+          <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-isaac-muted" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={t("set.achName")}
-            className="w-full rounded-lg border border-isaac-border bg-isaac-surface2 py-2 pl-9 pr-3 text-sm outline-none focus:border-isaac-blood/60"
+            className="w-full rounded-lg border border-isaac-border bg-isaac-surface2 py-2 ps-9 pe-3 text-sm outline-none focus:border-isaac-blood/60"
           />
         </div>
         <div className="mt-3 space-y-1.5">
