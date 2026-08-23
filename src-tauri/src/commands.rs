@@ -638,8 +638,13 @@ pub fn install_update(app: AppHandle, installer_path: String) -> Result<(), Stri
         std::process::Command::new(&path)
             .spawn()
             .map_err(|e| format!("Could not start the installer: {e}"))?;
-        // Let the installer take over before we release our file locks.
-        std::thread::sleep(std::time::Duration::from_millis(400));
+        // Then get out of the installer's way. NSIS replaces the running .exe, so it
+        // checks whether the app is still alive and offers to close it - a prompt the
+        // user should never see, because we close ourselves first. Spawning is
+        // instant but NSIS needs a moment to initialise before it looks, so this
+        // window is generous on purpose: 400 ms was cutting it fine on a cold disk,
+        // and the cost of being late here is a confusing dialog mid-update.
+        std::thread::sleep(std::time::Duration::from_millis(1500));
         app.exit(0);
         Ok(())
     }

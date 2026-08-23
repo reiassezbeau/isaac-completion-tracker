@@ -1,6 +1,6 @@
 # Isaac Completion Tracker
 
-[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.3.0/Isaac-Completion-Tracker_0.3.0_x64-setup.exe)
+[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.0/Isaac-Completion-Tracker_0.4.0_x64-setup.exe)
 [![Release](https://img.shields.io/github/v/release/reiassezbeau/isaac-completion-tracker?style=for-the-badge&color=d4af37)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest)
 [![License](https://img.shields.io/badge/license-GPL--3.0-8c1a1a?style=for-the-badge)](LICENSE)
 
@@ -66,10 +66,15 @@ is found, a **"Locate my save…"** button lets you point to the folder manually
 
 ## Installation (users)
 
-**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.3.0/Isaac-Completion-Tracker_0.3.0_x64-setup.exe)** — run it, done.
+**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.0/Isaac-Completion-Tracker_0.4.0_x64-setup.exe)** — run it, done.
 
 All versions: [Releases page](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest).
 An `.msi` and `SHA256SUMS.txt` checksums are provided as well.
+
+**Already have an older version?** Run the new installer over it — there is nothing to uninstall
+first. Your save, your manual overrides, the mod's run history, and your language and theme are all
+stored outside the program folder and are left untouched. The installer replaces the old files and
+updates the existing Start Menu entry rather than adding a second one.
 
 > ⚠️ **SmartScreen**: the installer is unsigned (certificates cost money). Windows may show
 > "Windows protected your PC". Click **"More info" → "Run anyway"**. This is normal for unsigned
