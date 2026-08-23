@@ -18,7 +18,7 @@
  * high value and high confidence (tear replacements = conflicts, tear flags,
  * flight, familiars, classic stat-ups). Regenerate with `npm run build:item-kb`.
  *
- * Auteur : reiassezbeau — https://github.com/reiassezbeau
+ * Created by reiassezbeau — https://github.com/reiassezbeau
  */
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -146,35 +146,44 @@ const SYNERGIES: Synergy[] = [
   { a: 233, b: 118, type: "weak", text: "Brimstone in orbit: hard to aim." },
   { a: 69, b: 169, type: "strong", text: "Charged shot with very high damage." },
   { a: 244, b: 118, type: "dangerous", text: "Brimstone hides the Tech.5 laser (redundant)." },
+
+  // Tear-replacement OUTCOMES. Two items that both replace your tears do not simply
+  // cancel each other: depending on the pair, Isaac either merges them or lets one
+  // take over. Only pairs whose outcome is documented are listed here - when a pair
+  // is missing the engine says so rather than guessing (see build_assistant.rs).
+  { a: 118, b: 533, type: "dangerous", text: "Brimstone takes over: Trisagion's light pillars are not applied." },
+  { a: 168, b: 52, type: "dangerous", text: "Epic Fetus takes over: it replaces Dr. Fetus entirely." },
+  { a: 118, b: 114, type: "strong", text: "They merge: the thrown knife gains a Brimstone beam." },
+  { a: 118, b: 229, type: "strong", text: "They merge: a charged burst of several Brimstone beams." },
 ];
 
 // ---------------------------------------------------------------------------
 // Validation (the build fails if the source is inconsistent).
 // ---------------------------------------------------------------------------
 function fail(msg: string): never {
-  console.error(`\n❌ build-item-kb : ${msg}\n`);
+  console.error(`\n❌ build-item-kb: ${msg}\n`);
   process.exit(1);
 }
 
 const ids = new Set<number>();
 for (const it of ITEMS) {
-  if (!Number.isInteger(it.id) || it.id <= 0) fail(`id invalide pour « ${it.name} »`);
+  if (!Number.isInteger(it.id) || it.id <= 0) fail(`invalid id for "${it.name}"`);
   if (ids.has(it.id)) fail(`duplicate id: ${it.id} (${it.name})`);
   ids.add(it.id);
   if (!it.roles.length) fail(`"${it.name}" has no role`);
   for (const r of it.roles) if (!ROLES.includes(r)) fail(`unknown role "${r}" (${it.name})`);
-  for (const f of it.grants_tear_flags ?? []) if (!TEAR_FLAGS.includes(f)) fail(`tear flag inconnu « ${f} » (${it.name})`);
+  for (const f of it.grants_tear_flags ?? []) if (!TEAR_FLAGS.includes(f)) fail(`unknown tear flag "${f}" (${it.name})`);
   if (!COMPLEXITY.includes(it.complexity)) fail(`unknown complexity "${it.complexity}" (${it.name})`);
-  for (const d of Object.keys(it.stat_effects ?? {})) if (!DIMS.includes(d as Dim)) fail(`dimension inconnue « ${d} » (${it.name})`);
+  for (const d of Object.keys(it.stat_effects ?? {})) if (!DIMS.includes(d as Dim)) fail(`unknown stat dimension "${d}" (${it.name})`);
   if (it.is_familiar && !it.roles.includes("familiar")) fail(`"${it.name}" is_familiar but the familiar role is missing`);
 }
 for (const s of SYNERGIES) {
   if (!ids.has(s.a) || !ids.has(s.b)) fail(`synergy references a missing id: ${s.a}/${s.b}`);
-  if (!["strong", "weak", "dangerous"].includes(s.type)) fail(`type de synergie inconnu « ${s.type} »`);
+  if (!["strong", "weak", "dangerous"].includes(s.type)) fail(`unknown synergy type "${s.type}"`);
 }
 
 // ---------------------------------------------------------------------------
-// Sortie JSON (app).
+// JSON output (app).
 // ---------------------------------------------------------------------------
 const kb = { schema: 1, items: ITEMS, synergies: SYNERGIES };
 mkdirSync(RES, { recursive: true });

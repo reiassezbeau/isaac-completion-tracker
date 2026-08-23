@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-// Call layer for the Tauri commands (invoke). No network request: everything goes
-// through the local Rust backend.
+// Call layer for the Tauri commands (invoke). The web view itself never touches the
+// network: everything goes through the local Rust backend. The single exception is
+// the update check below, which the backend performs only when the user clicks it.
 import { invoke } from "@tauri-apps/api/core";
 import type {
   AchievementView,
@@ -26,6 +27,8 @@ import type {
   SaveSlot,
   StatsOverview,
   TargetSuggestion,
+  UiPrefs,
+  UpdateInfo,
 } from "./types";
 
 export const api = {
@@ -75,4 +78,18 @@ export const api = {
   setOverrideMark: (charId: string, markIndex: number, value: string | null) =>
     invoke<void>("set_override_mark", { charId, markIndex, value }),
   resetOverrides: () => invoke<void>("reset_overrides"),
+
+  /** Every collectible id -> name, so a run snapshot never shows a raw "#317". */
+  getItemNames: () => invoke<Record<string, string>>("get_item_names"),
+
+  // -- Updates: the only calls that leave this machine, and only on a click. ----
+  checkForUpdate: () => invoke<UpdateInfo>("check_for_update"),
+  /** Downloads the installer and verifies its SHA-256; returns the local path. */
+  downloadUpdate: (info: UpdateInfo) => invoke<string>("download_update", { info }),
+  /** Runs a verified installer and closes the app so files can be replaced. */
+  installUpdate: (installerPath: string) => invoke<void>("install_update", { installerPath }),
+
+  // -- UI preferences (authoritative copy, outside the web view's storage) ------
+  getUiPrefs: () => invoke<UiPrefs>("get_ui_prefs"),
+  setUiPrefs: (prefs: UiPrefs) => invoke<void>("set_ui_prefs", { prefs }),
 };

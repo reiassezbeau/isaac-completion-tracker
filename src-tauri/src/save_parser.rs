@@ -41,10 +41,33 @@ pub enum ParseError {
     TooShort(usize),
     #[error("invalid header: this is not a Binding of Isaac save (Repentance/Repentance+)")]
     BadHeader,
-    #[error("version de sauvegarde inconnue (0x{0:02x}) — format inattendu")]
+    #[error("unknown save version (0x{0:02x}) - unexpected format")]
     UnknownVersion(u8),
     #[error("out-of-bounds read at offset {0} (truncated file or unexpected format)")]
     OutOfBounds(usize),
+}
+
+impl ParseError {
+    /// Stable code the UI turns into a translated sentence (`perr.<code>`).
+    /// The English `Display` text stays available for logs and the Diagnostic tab.
+    pub fn code(&self) -> &'static str {
+        match self {
+            ParseError::TooShort(_) => "too_short",
+            ParseError::BadHeader => "bad_header",
+            ParseError::UnknownVersion(_) => "unknown_version",
+            ParseError::OutOfBounds(_) => "out_of_bounds",
+        }
+    }
+
+    /// The one technical value worth showing next to the translated sentence.
+    pub fn detail(&self) -> Option<String> {
+        match self {
+            ParseError::TooShort(n) => Some(format!("{n} bytes")),
+            ParseError::BadHeader => None,
+            ParseError::UnknownVersion(v) => Some(format!("0x{v:02x}")),
+            ParseError::OutOfBounds(off) => Some(format!("offset {off}")),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]

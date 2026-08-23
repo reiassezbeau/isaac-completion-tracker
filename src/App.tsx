@@ -90,6 +90,10 @@ export default function App() {
   const t = useT();
 
   useEffect(() => {
+    // The backend holds the authoritative language/theme: the web view's storage can
+    // be cleared out from under us, and the choice must survive that.
+    useStore.getState().hydratePrefs();
+    useStore.getState().loadItemNames();
     const unlisten = listen("save-changed", () => {
       useStore.getState().refresh(true);
     });

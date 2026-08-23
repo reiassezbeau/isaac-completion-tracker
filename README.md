@@ -1,12 +1,13 @@
 # Isaac Completion Tracker
 
-[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.2.0/Isaac-Completion-Tracker_0.2.0_x64-setup.exe)
+[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.3.0/Isaac-Completion-Tracker_0.3.0_x64-setup.exe)
 [![Release](https://img.shields.io/github/v/release/reiassezbeau/isaac-completion-tracker?style=for-the-badge&color=d4af37)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest)
 [![License](https://img.shields.io/badge/license-GPL--3.0-8c1a1a?style=for-the-badge)](LICENSE)
 
-> **Local, 100% offline** completion tracker for *The Binding of Isaac: Repentance+*
+> **Local, offline** completion tracker for *The Binding of Isaac: Repentance+*
 > (641 Steam achievements). Reads your save **read-only** and tells you exactly what to
-> do next — all the way to **Dead God**.
+> do next — all the way to **Dead God**. Nothing leaves your machine unless you press
+> *Check for updates*.
 >
 > Created by **[reiassezbeau](https://github.com/reiassezbeau)** · [github.com/reiassezbeau](https://github.com/reiassezbeau)
 
@@ -33,15 +34,27 @@
 - **Roadmap** to Dead God, recomputed on every save read.
 - **Manual overrides** — safety net if parsing gets something wrong (stored outside the save).
 - **Live update** — as you play, the app refreshes itself.
+- **Update check** — *About* → **Check for updates**. Manual by design (see below).
 
 ### Personalization
 
 - **5 themes** inspired by the game's locations: Basement, Sheol, The Void, Corpse, Cathedral (light).
 - **13 languages**: English, French, Spanish, Portuguese, German, Russian, Polish, Chinese,
-  Japanese, Hindi, Arabic, Bengali, and Urdu (with RTL support).
+  Japanese, Hindi, Arabic, Bengali, and Urdu (with RTL support). Your choice is stored by the
+  app itself, so it survives anything that clears the web view's storage.
 
-**Zero network at runtime.** All knowledge (the 641 achievements and their conditions) is bundled.
-The app's CSP blocks any external access (`connect-src 'self'`).
+### Network: what leaves your machine, and when
+
+**Nothing, until you ask.** All knowledge (the 641 achievements, their conditions, and the
+collectible names) is compiled at dev time and bundled, so tracking, predicting and routing all
+run with the network unplugged. The web view itself can never reach outside — its CSP is
+`connect-src 'self'`.
+
+The single exception is **Check for updates**, in the *About* tab. Pressing it asks GitHub for the
+public release list; pressing *Download* then fetches the installer. Nothing about your save,
+your progress or your machine is ever sent, nothing runs on a timer or at startup, and the
+downloaded installer is **refused unless its SHA-256 matches** the checksum published with the
+release — so a corrupted or tampered file can never be executed.
 
 ## Where the app finds your save
 
@@ -53,7 +66,7 @@ is found, a **"Locate my save…"** button lets you point to the folder manually
 
 ## Installation (users)
 
-**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.2.0/Isaac-Completion-Tracker_0.2.0_x64-setup.exe)** — run it, done.
+**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.3.0/Isaac-Completion-Tracker_0.3.0_x64-setup.exe)** — run it, done.
 
 All versions: [Releases page](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest).
 An `.msi` and `SHA256SUMS.txt` checksums are provided as well.
@@ -141,6 +154,13 @@ To replace it, supply your own 1024×1024 PNG then run:
 ```bash
 npm run tauri icon path/to/your-icon.png
 ```
+
+## Community
+
+[![Discord](https://img.shields.io/badge/Discord-join%20the%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/53NyaVUE73)
+
+Questions, bug reports, feature ideas, or just comparing Dead God runs — **[join the Discord](https://discord.gg/53NyaVUE73)**.
+The link is also in the app, under *About*.
 
 ## Stack
 

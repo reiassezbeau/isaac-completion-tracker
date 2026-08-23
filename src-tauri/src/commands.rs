@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 
 use notify::RecommendedWatcher;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager, State};
 
 use crate::analytics;
@@ -22,6 +22,38 @@ use crate::save_parser::{self, Edition, SaveData, NUM_MARKS};
 use crate::stats_archive::Archive;
 use crate::stats_reader::Run;
 use crate::watcher;
+
+/// UI preferences persisted by the backend (`ui_prefs.json` in the app data folder).
+/// Kept deliberately tiny and fully optional so an older or hand-edited file can
+/// never stop the app from starting.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UiPrefs {
+    #[serde(default)]
+    pub lang: Option<String>,
+    #[serde(default)]
+    pub theme: Option<String>,
+}
+
+impl UiPrefs {
+    fn file(app_data_dir: &Path) -> PathBuf {
+        app_data_dir.join("ui_prefs.json")
+    }
+    pub fn load(app_data_dir: &Path) -> Self {
+        std::fs::read_to_string(Self::file(app_data_dir))
+            .ok()
+            .and_then(|raw| serde_json::from_str(&raw).ok())
+            .unwrap_or_default()
+    }
+    pub fn save(&self, app_data_dir: &Path) -> Result<(), String> {
+        std::fs::create_dir_all(app_data_dir).map_err(|e| e.to_string())?;
+        let raw = serde_json::to_string_pretty(self).map_err(|e| e.to_string())?;
+        // Same atomic write as the stats archive: a crash mid-write must not leave
+        // a truncated file that would reset the user's language on next launch.
+        let tmp = Self::file(app_data_dir).with_extension("json.tmp");
+        std::fs::write(&tmp, raw).map_err(|e| e.to_string())?;
+        std::fs::rename(&tmp, Self::file(app_data_dir)).map_err(|e| e.to_string())
+    }
+}
 
 pub struct AppState {
     pub knowledge: Knowledge,
@@ -558,6 +590,80 @@ pub fn save_stat_card(path: String, bytes: Vec<u8>) -> Result<String, String> {
 #[tauri::command]
 pub fn get_item_kb(state: State<AppState>) -> Vec<ItemKb> {
     state.item_db.items.clone()
+}
+
+/// Every collectible id -> name. The knowledge base only covers the items the
+/// assistant reasons about, but a run snapshot holds whatever the player carried,
+/// so the UI needs this to show a name instead of a raw id.
+#[tauri::command]
+pub fn get_item_names(state: State<AppState>) -> std::collections::HashMap<String, String> {
+    state
+        .item_db
+        .names
+        .iter()
+        .map(|(id, name)| (id.to_string(), name.clone()))
+        .collect()
+}
+
+// -- Updates ----------------------------------------------------------------
+
+/// Asks GitHub whether a newer release exists. This is the ONLY network call in the
+/// app, and it only ever runs on an explicit click - never on a timer or at startup.
+#[tauri::command]
+pub fn check_for_update() -> Result<crate::updater::UpdateInfo, String> {
+    crate::updater::check(env!("CARGO_PKG_VERSION"))
+}
+
+/// Downloads the installer for an update and verifies its SHA-256 against the
+/// checksum published with the release. Returns the local path; a file whose hash
+/// does not match is refused and never written where it could be run.
+#[tauri::command]
+pub fn download_update(info: crate::updater::UpdateInfo) -> Result<String, String> {
+    let path = crate::updater::download_verified(&info)?;
+    Ok(path.to_string_lossy().into_owned())
+}
+
+/// Runs an installer that `download_update` already verified, then closes the app so
+/// the installer can replace files that would otherwise be locked. Refuses any path
+/// that is not the one we just wrote into our own temp folder.
+#[tauri::command]
+pub fn install_update(app: AppHandle, installer_path: String) -> Result<(), String> {
+    let path = PathBuf::from(&installer_path);
+    let expected_dir = std::env::temp_dir().join("isaac-completion-tracker-update");
+    if path.parent() != Some(expected_dir.as_path()) || !path.is_file() {
+        return Err("Unexpected installer path - refusing to run it.".into());
+    }
+    #[cfg(windows)]
+    {
+        std::process::Command::new(&path)
+            .spawn()
+            .map_err(|e| format!("Could not start the installer: {e}"))?;
+        // Let the installer take over before we release our file locks.
+        std::thread::sleep(std::time::Duration::from_millis(400));
+        app.exit(0);
+        Ok(())
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = app;
+        Err("The bundled installer is Windows-only.".into())
+    }
+}
+
+// -- UI preferences ---------------------------------------------------------
+
+/// Language and theme, stored in the app data folder. The web view's localStorage is
+/// the fast path, but it lives in the WebView2 profile and can be wiped independently
+/// of the app - this file is the authority, so a chosen language really does stay
+/// chosen until the user changes it again.
+#[tauri::command]
+pub fn get_ui_prefs(state: State<AppState>) -> UiPrefs {
+    UiPrefs::load(&state.app_data_dir)
+}
+
+#[tauri::command]
+pub fn set_ui_prefs(state: State<AppState>, prefs: UiPrefs) -> Result<(), String> {
+    prefs.save(&state.app_data_dir)
 }
 
 /// Features A + B: composition plus strengths/weaknesses for a build (a list of item IDs).

@@ -64,8 +64,11 @@ function Sidebar() {
             <button
               key={id}
               onClick={() => setView(id)}
-              className={`relative flex w-full items-center gap-3 overflow-hidden rounded-md px-3 py-2 text-sm transition-colors ${
-                active ? "text-isaac-text" : "text-isaac-muted hover:text-isaac-text"
+              aria-current={active ? "page" : undefined}
+              className={`group relative flex w-full items-center gap-3 overflow-hidden rounded-md px-3 py-2 text-sm transition-all duration-150 ${
+                active
+                  ? "text-isaac-text"
+                  : "text-isaac-muted hover:translate-x-0.5 hover:bg-isaac-surface2/60 hover:text-isaac-text"
               }`}
             >
               {active && (
@@ -79,7 +82,9 @@ function Sidebar() {
                   }}
                 />
               )}
-              <span className="relative flex flex-shrink-0">
+              {/* Hovering a non-active item lights its glyph with the theme accent,
+                  so the pointer always has something reacting under it. */}
+              <span className="relative flex flex-shrink-0 transition-transform duration-150 group-hover:scale-110">
                 <NavGlyph kind={glyph} size={16} />
               </span>
               <span className="relative">{t(tkey)}</span>

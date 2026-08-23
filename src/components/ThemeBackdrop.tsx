@@ -18,6 +18,12 @@ function rng(seed: number): () => number {
   };
 }
 
+/**
+ * The Basement floor: mortared brick, overlaid with the silhouette every Isaac
+ * player recognises instantly — a room with a doorway centred on each of its four
+ * walls, tiled out like a floor map. Plain geometry, so it evokes the game without
+ * using a single pixel of it.
+ */
 function Basement() {
   return (
     <svg width="100%" height="100%" style={{ display: "block" }}>
@@ -26,8 +32,24 @@ function Basement() {
           <path d="M0 0h76M0 19h76M0 38h76" stroke="currentColor" strokeWidth={1} fill="none" />
           <path d="M0 0v19M38 19v19M76 0v19" stroke="currentColor" strokeWidth={1} fill="none" />
         </pattern>
+        <pattern id="bd-room" width="260" height="180" patternUnits="userSpaceOnUse">
+          <g stroke="currentColor" fill="none" strokeLinecap="square">
+            {/* walls, broken in the middle of each side: those gaps are the doors */}
+            <g strokeWidth={2.5}>
+              <path d="M22 18h84M154 18h84" />
+              <path d="M22 162h84M154 162h84" />
+              <path d="M22 18v52M22 110v52" />
+              <path d="M238 18v52M238 110v52" />
+            </g>
+            {/* the thresholds themselves, drawn lighter */}
+            <g strokeWidth={1} opacity={0.45}>
+              <path d="M106 18h48M106 162h48M22 70v40M238 70v40" />
+            </g>
+          </g>
+        </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#bd-brick)" />
+      <rect width="100%" height="100%" fill="url(#bd-room)" opacity={0.6} />
     </svg>
   );
 }
@@ -124,7 +146,10 @@ const MAP: Record<ThemeId, () => ReactNode> = {
 
 export function ThemeBackdrop({ theme }: { theme: ThemeId }) {
   const Body = MAP[theme] ?? Basement;
-  const opacity = theme === "cathedral" ? 0.55 : theme === "void" ? 0.14 : theme === "sheol" ? 0.1 : 0.08;
+  // Raised from the near-invisible values it shipped with: the backdrop is meant to
+  // read as a place, not as noise. Still well under the data, and the light Cathedral
+  // theme needs a higher value to register at all against vellum.
+  const opacity = theme === "cathedral" ? 0.62 : theme === "void" ? 0.24 : theme === "sheol" ? 0.2 : 0.17;
   return (
     <div className="pointer-events-none fixed inset-0 text-isaac-accent" style={{ zIndex: 0, opacity }} aria-hidden="true">
       <Body />

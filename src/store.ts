@@ -42,9 +42,21 @@ function readInitialTheme(): ThemeId {
     const t = localStorage.getItem("isaac-theme") as ThemeId | null;
     if (t && THEME_IDS.includes(t)) return t;
   } catch {
-    /* localStorage indisponible */
+    /* localStorage unavailable */
   }
   return "basement";
+}
+
+/**
+ * Mirrors the language and theme to the backend (`ui_prefs.json`). localStorage lives
+ * inside the WebView2 profile, which can be cleared independently of the app — when
+ * that happened the language silently fell back to the system one. The file in the
+ * app data folder is the authority, so a chosen language stays chosen.
+ */
+function persistPrefs(lang: Lang, theme: ThemeId) {
+  api.setUiPrefs({ lang, theme }).catch(() => {
+    /* running outside Tauri (browser dev) - localStorage alone still works */
+  });
 }
 
 function applyTheme(t: ThemeId) {
@@ -90,6 +102,12 @@ interface AppStore {
   // language
   lang: Lang;
   setLang: (l: Lang) => void;
+  /** Pulls language and theme from the backend once at startup (see persistPrefs). */
+  hydratePrefs: () => Promise<void>;
+
+  /** Every collectible id -> name, loaded once; empty until then. */
+  itemNames: Record<string, string>;
+  loadItemNames: () => Promise<void>;
 
   // save selection
   slots: SaveSlot[] | null;
@@ -127,12 +145,50 @@ export const useStore = create<AppStore>((set, get) => ({
   setTheme: (theme) => {
     applyTheme(theme);
     set({ theme });
+    persistPrefs(get().lang, theme);
   },
 
   lang: initialLang,
   setLang: (lang) => {
     applyLang(lang);
     set({ lang });
+    persistPrefs(lang, get().theme);
+  },
+
+  hydratePrefs: async () => {
+    let prefs;
+    try {
+      prefs = await api.getUiPrefs();
+    } catch {
+      return; // outside Tauri, or first run before the file exists
+    }
+    const lang = prefs.lang as Lang | null;
+    const theme = prefs.theme as ThemeId | null;
+    const haveStored = (lang && LANG_CODES.includes(lang)) || (theme && THEME_IDS.includes(theme));
+    if (!haveStored) {
+      // First launch after upgrading: seed the file from whatever is in use now, so
+      // the choice is protected from here on.
+      persistPrefs(get().lang, get().theme);
+      return;
+    }
+    if (lang && LANG_CODES.includes(lang) && lang !== get().lang) {
+      applyLang(lang);
+      set({ lang });
+    }
+    if (theme && THEME_IDS.includes(theme) && theme !== get().theme) {
+      applyTheme(theme);
+      set({ theme });
+    }
+  },
+
+  itemNames: {},
+  loadItemNames: async () => {
+    if (Object.keys(get().itemNames).length > 0) return;
+    try {
+      set({ itemNames: await api.getItemNames() });
+    } catch {
+      /* the KB names still cover the curated items */
+    }
   },
 
   slots: null,

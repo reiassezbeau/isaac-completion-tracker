@@ -39,14 +39,60 @@ pub struct SaveSlot {
     pub filename: String,
     /// "Slot 1/2/3", inferred from the file name.
     pub label: String,
-    /// Provenance lisible : "Steam Cloud", "Documents", "Sauvegarde locale".
+    /// Human-readable provenance, English: "Steam Cloud", "Documents", "Local backup".
     pub source: String,
+    /// Stable provenance code the UI translates (`src.<code>`).
+    pub source_code: String,
     pub edition: Option<Edition>,
     /// Preview: number of unlocked achievements (None when parsing failed).
     pub unlocked: Option<usize>,
     pub total: usize,
     pub marks_reliable: bool,
+    /// English message, kept for logs and the Diagnostic tab.
     pub parse_error: Option<String>,
+    /// Stable error code the UI translates (`perr.<code>`), plus its one technical value.
+    pub error_code: Option<String>,
+    pub error_detail: Option<String>,
+    /// Which game edition wrote this file, derived from its name (see `save_family`).
+    pub family: String,
+    /// True for the files the *currently installed* game actually writes: readable,
+    /// newest edition family present, and not a dated backup. Everything else is an
+    /// older edition's leftover, a backup, or an unreadable file — the picker folds
+    /// those away by default rather than deleting anything (saves are read-only).
+    pub live: bool,
+    /// Last-modified time (ms since the Unix epoch), for "most recently played" order.
+    pub modified_ms: Option<u64>,
+}
+
+/// Which edition wrote a save file, from its name. Isaac never removes the files of
+/// a previous edition, so a long-time player's folder accumulates one family per DLC.
+/// Higher rank = newer edition.
+fn save_family(filename: &str) -> (&'static str, u8) {
+    let f = filename.to_ascii_lowercase();
+    if f.contains("rep_beta_persistentgamedata") {
+        ("repentance_beta", 4)
+    } else if f.contains("rep+persistentgamedata") {
+        ("repentance_plus", 5)
+    } else if f.contains("rep_persistentgamedata") {
+        ("repentance", 3)
+    } else if f.contains("ab+persistentgamedata") {
+        ("afterbirth_plus", 2)
+    } else if f.contains("abpersistentgamedata") {
+        ("afterbirth", 1)
+    } else {
+        ("rebirth", 0)
+    }
+}
+
+fn family_rank(family: &str) -> u8 {
+    match family {
+        "repentance_plus" => 5,
+        "repentance_beta" => 4,
+        "repentance" => 3,
+        "afterbirth_plus" => 2,
+        "afterbirth" => 1,
+        _ => 0,
+    }
 }
 
 /// Candidate folders on the "Documents" side: we start from the REAL game root
@@ -121,33 +167,48 @@ fn is_save_file(filename: &str) -> bool {
     f.ends_with(".dat") && f.contains("persistentgamedata")
 }
 
-fn source_label(dir: &Path) -> String {
+/// (code, English label) for the folder a save was found in.
+fn source_of(dir: &Path) -> (&'static str, &'static str) {
     let s = dir.to_string_lossy().to_ascii_lowercase();
-    if s.contains("userdata") {
-        "Steam Cloud".to_string()
-    } else if s.contains("save_backups") {
-        "Backup local".to_string()
+    if s.contains("save_backups") {
+        ("backup", "Local backup")
+    } else if s.contains("userdata") {
+        ("steam_cloud", "Steam Cloud")
     } else {
-        "Documents".to_string()
+        ("documents", "Documents")
     }
 }
 
+fn modified_ms(path: &Path) -> Option<u64> {
+    let m = std::fs::metadata(path).ok()?.modified().ok()?;
+    let d = m.duration_since(std::time::UNIX_EPOCH).ok()?;
+    Some(d.as_millis() as u64)
+}
+
 /// Builds a slot from a file (parsed for the preview).
-pub fn slot_from_file(path: &Path, source: String) -> SaveSlot {
+pub fn slot_from_file(path: &Path, source_code: &str, source: &str) -> SaveSlot {
     let filename = path
         .file_name()
         .map(|s| s.to_string_lossy().into_owned())
         .unwrap_or_default();
+    let (family, _) = save_family(&filename);
     let mut slot = SaveSlot {
         path: path.to_string_lossy().into_owned(),
         label: slot_label(&filename),
+        modified_ms: modified_ms(path),
         filename,
-        source,
+        source: source.to_string(),
+        source_code: source_code.to_string(),
         edition: None,
         unlocked: None,
         total: save_parser::NUM_ACHIEVEMENTS,
         marks_reliable: false,
         parse_error: None,
+        error_code: None,
+        error_detail: None,
+        family: family.to_string(),
+        // Resolved by `finalize_live` once the whole list is known.
+        live: false,
     };
     match read_file_with_retry(path) {
         Ok(bytes) => match save_parser::parse(&bytes) {
@@ -156,11 +217,37 @@ pub fn slot_from_file(path: &Path, source: String) -> SaveSlot {
                 slot.unlocked = Some(save.unlocked_count());
                 slot.marks_reliable = save.marks_reliable;
             }
-            Err(e) => slot.parse_error = Some(e.to_string()),
+            Err(e) => {
+                slot.parse_error = Some(e.to_string());
+                slot.error_code = Some(e.code().to_string());
+                slot.error_detail = e.detail();
+            }
         },
-        Err(e) => slot.parse_error = Some(format!("cannot read file: {e}")),
+        Err(e) => {
+            slot.parse_error = Some(format!("cannot read file: {e}"));
+            slot.error_code = Some("unreadable".to_string());
+            slot.error_detail = None;
+        }
     }
     slot
+}
+
+/// Marks the slots the installed game actually writes: readable, not a dated backup,
+/// and from the newest edition family among the readable ones. When nothing parses we
+/// mark nothing live, so the picker shows everything rather than an empty list.
+fn finalize_live(slots: &mut [SaveSlot]) {
+    let best = slots
+        .iter()
+        .filter(|s| s.parse_error.is_none() && s.source_code != "backup")
+        .map(|s| family_rank(&s.family))
+        .max();
+    if let Some(best) = best {
+        for s in slots.iter_mut() {
+            s.live = s.parse_error.is_none()
+                && s.source_code != "backup"
+                && family_rank(&s.family) == best;
+        }
+    }
 }
 
 /// Scans a specific folder (also used by the manual "Locate my save..." flow).
@@ -171,10 +258,12 @@ pub fn scan_dir(dir: &Path) -> Vec<SaveSlot> {
             let path = e.path();
             let name = e.file_name().to_string_lossy().into_owned();
             if path.is_file() && is_save_file(&name) {
-                slots.push(slot_from_file(&path, source_label(dir)));
+                let (code, label) = source_of(dir);
+                slots.push(slot_from_file(&path, code, label));
             }
         }
     }
+    finalize_live(&mut slots);
     slots
 }
 
@@ -198,14 +287,84 @@ pub fn list_saves() -> Vec<SaveSlot> {
         }
     }
 
+    finalize_live(&mut slots);
+
+    // Live saves first, then newest edition, then Steam Cloud over Documents over
+    // backups, then most recently played. `filename` only breaks remaining ties.
     slots.sort_by(|a, b| {
         let rank = |s: &SaveSlot| {
-            let cloud = if s.source == "Steam Cloud" { 0 } else if s.source == "Documents" { 1 } else { 2 };
-            let plus = if s.edition == Some(Edition::RepentancePlus) { 0 } else { 1 };
-            (cloud, plus, s.filename.clone())
+            let live = if s.live { 0u8 } else { 1 };
+            let fam = u8::MAX - family_rank(&s.family);
+            let src = match s.source_code.as_str() {
+                "steam_cloud" => 0u8,
+                "documents" => 1,
+                _ => 2,
+            };
+            let readable = if s.parse_error.is_none() { 0u8 } else { 1 };
+            let recent = u64::MAX - s.modified_ms.unwrap_or(0);
+            (live, readable, fam, src, recent, s.filename.clone())
         };
         rank(a).cmp(&rank(b))
     });
 
     slots
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn slot(name: &str, src: &str, ok: bool) -> SaveSlot {
+        let (family, _) = save_family(name);
+        SaveSlot {
+            path: format!("/x/{name}"),
+            filename: name.into(),
+            label: slot_label(name),
+            source: src.into(),
+            source_code: src.into(),
+            edition: None,
+            unlocked: if ok { Some(1) } else { None },
+            total: 641,
+            marks_reliable: ok,
+            parse_error: if ok { None } else { Some("boom".into()) },
+            error_code: if ok { None } else { Some("bad_header".into()) },
+            error_detail: None,
+            family: family.into(),
+            live: false,
+            modified_ms: Some(0),
+        }
+    }
+
+    #[test]
+    fn only_the_newest_readable_family_is_live() {
+        let mut v = vec![
+            slot("rep+persistentgamedata1.dat", "steam_cloud", true),
+            slot("rep_persistentgamedata1.dat", "steam_cloud", true),
+            slot("persistentgamedata1.dat", "steam_cloud", false),
+            slot("20260104.rep+persistentgamedata1.dat", "backup", true),
+        ];
+        finalize_live(&mut v);
+        assert!(v[0].live, "the Repentance+ cloud save is the live one");
+        assert!(!v[1].live, "an older edition's file is not live");
+        assert!(!v[2].live, "an unreadable file is never live");
+        assert!(!v[3].live, "a dated backup is never live");
+    }
+
+    #[test]
+    fn nothing_is_live_when_nothing_parses() {
+        let mut v = vec![slot("rep+persistentgamedata1.dat", "steam_cloud", false)];
+        finalize_live(&mut v);
+        assert!(!v[0].live);
+    }
+
+    #[test]
+    fn families_are_read_from_the_file_name() {
+        assert_eq!(save_family("rep+persistentgamedata1.dat").0, "repentance_plus");
+        assert_eq!(save_family("rep_beta_persistentgamedata1.dat").0, "repentance_beta");
+        assert_eq!(save_family("rep_persistentgamedata2.dat").0, "repentance");
+        assert_eq!(save_family("persistentgamedata3.dat").0, "rebirth");
+        // The beta prefix must not be mistaken for plain Repentance.
+        assert!(family_rank("repentance_plus") > family_rank("repentance_beta"));
+        assert!(family_rank("repentance_beta") > family_rank("repentance"));
+    }
 }

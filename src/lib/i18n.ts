@@ -38,6 +38,7 @@ import { VIEW_STRINGS } from "./i18n-views";
 import { VIEW_STRINGS_2 } from "./i18n-views2";
 import { VIEW_STRINGS_3 } from "./i18n-views3";
 import { VIEW_STRINGS_4 } from "./i18n-views4";
+import { VIEW_STRINGS_5 } from "./i18n-views5";
 
 type Entry = Partial<Record<Lang, string>>;
 
@@ -76,7 +77,7 @@ const T: Record<string, Entry> = {
 
 /** Translates a key for a language (fallback: language -> English -> key). */
 export function translate(key: string, lang: Lang): string {
-  const e = T[key] ?? VIEW_STRINGS[key] ?? VIEW_STRINGS_2[key] ?? VIEW_STRINGS_3[key] ?? VIEW_STRINGS_4[key];
+  const e = T[key] ?? VIEW_STRINGS[key] ?? VIEW_STRINGS_2[key] ?? VIEW_STRINGS_3[key] ?? VIEW_STRINGS_4[key] ?? VIEW_STRINGS_5[key];
   if (!e) return key;
   return e[lang] ?? e.en ?? key;
 }

@@ -888,6 +888,30 @@
       "b": 118,
       "type": "dangerous",
       "text": "Brimstone hides the Tech.5 laser (redundant)."
+    },
+    {
+      "a": 118,
+      "b": 533,
+      "type": "dangerous",
+      "text": "Brimstone takes over: Trisagion's light pillars are not applied."
+    },
+    {
+      "a": 168,
+      "b": 52,
+      "type": "dangerous",
+      "text": "Epic Fetus takes over: it replaces Dr. Fetus entirely."
+    },
+    {
+      "a": 118,
+      "b": 114,
+      "type": "strong",
+      "text": "They merge: the thrown knife gains a Brimstone beam."
+    },
+    {
+      "a": 118,
+      "b": 229,
+      "type": "strong",
+      "text": "They merge: a charged burst of several Brimstone beams."
     }
   ]
 }

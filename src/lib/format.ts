@@ -7,10 +7,12 @@ import type { MarkDifficulty } from "./types";
 type Tr = (k: string) => string;
 
 /** App version shown in the UI. Keep in sync with package.json, Cargo.toml and tauri.conf.json. */
-export const APP_VERSION = "0.2.0";
+export const APP_VERSION = "0.3.0";
 
 export const GITHUB_URL = "https://github.com/reiassezbeau";
 export const GITHUB_HANDLE = "reiassezbeau";
+/** Community server: help, bug reports, and completion talk. */
+export const DISCORD_URL = "https://discord.gg/53NyaVUE73";
 
 export const DLC_LABELS: Record<string, string> = {
   rebirth: "Rebirth",

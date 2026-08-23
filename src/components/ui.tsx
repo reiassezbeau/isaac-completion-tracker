@@ -16,7 +16,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`relative rounded-xl border border-isaac-border bg-isaac-surface p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] ${className}`}
+      className={`relative rounded-xl border border-isaac-border bg-isaac-surface p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] transition-colors duration-200 hover:border-isaac-border-strong ${className}`}
     >
       <div
         className="pointer-events-none absolute inset-0 rounded-xl opacity-[0.05] mix-blend-soft-light"

@@ -5,7 +5,7 @@
 //!
 //! - Feature A: composition (item counts per role).
 //! - Feature B: strengths and weaknesses (archetypes, gaps, redundancies) through
-//!   heuristiques configurables (`build_rules.json`).
+//!   configurable heuristics (`build_rules.json`).
 //! - Feature C: "try synergy" - an estimated stat delta plus synergy notes
 //!   (from the factual KB), a verdict, and a before/after radar (ORIGINAL data viz).
 //!
@@ -13,7 +13,7 @@
 //! (Isaac's damage formula is non-trivial) and is flagged as such whenever an item
 //! is multiplicative, proc-based, or conditional. No ripped assets: facts only.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 
 use serde::{Deserialize, Serialize};
@@ -68,24 +68,53 @@ pub struct ItemKbFile {
     pub synergies: Vec<Synergy>,
 }
 
+#[derive(Debug, Deserialize)]
+struct ItemNamesFile {
+    names: HashMap<String, String>,
+}
+
 #[derive(Debug, Clone)]
 pub struct ItemDb {
     pub items: Vec<ItemKb>,
     pub synergies: Vec<Synergy>,
+    /// Every collectible id -> name (item_names.json, ~719 entries). The knowledge
+    /// base itself only covers the items the assistant can reason about, but a run
+    /// snapshot carries whatever the player was holding, so this index is what stops
+    /// the UI from falling back to a raw "#317".
+    pub names: HashMap<i64, String>,
 }
 
 impl ItemDb {
     pub fn load(resources_dir: &Path) -> Self {
-        match std::fs::read_to_string(resources_dir.join("item_kb.json"))
+        let (items, synergies) = match std::fs::read_to_string(resources_dir.join("item_kb.json"))
             .ok()
             .and_then(|raw| serde_json::from_str::<ItemKbFile>(&raw).ok())
         {
-            Some(f) => ItemDb { items: f.items, synergies: f.synergies },
-            None => ItemDb { items: vec![], synergies: vec![] },
-        }
+            Some(f) => (f.items, f.synergies),
+            None => (vec![], vec![]),
+        };
+        let names = std::fs::read_to_string(resources_dir.join("item_names.json"))
+            .ok()
+            .and_then(|raw| serde_json::from_str::<ItemNamesFile>(&raw).ok())
+            .map(|f| {
+                f.names
+                    .into_iter()
+                    .filter_map(|(k, v)| k.parse::<i64>().ok().map(|id| (id, v)))
+                    .collect()
+            })
+            .unwrap_or_default();
+        ItemDb { items, synergies, names }
     }
     pub fn get(&self, id: i64) -> Option<&ItemKb> {
         self.items.iter().find(|i| i.id == id)
+    }
+    /// Best name available for an id: the knowledge base first, then the full name
+    /// index, and only then the raw id.
+    pub fn display_name(&self, id: i64) -> String {
+        self.get(id)
+            .map(|i| i.name.clone())
+            .or_else(|| self.names.get(&id).cloned())
+            .unwrap_or_else(|| format!("#{id}"))
     }
     fn resolve<'a>(&'a self, ids: &[i64]) -> Vec<&'a ItemKb> {
         ids.iter().filter_map(|&id| self.get(id)).collect()
@@ -132,7 +161,7 @@ impl BuildRules {
 }
 
 // --------------------------------------------------------------------------
-// Sorties
+// Outputs
 // --------------------------------------------------------------------------
 
 #[derive(Debug, Clone, Serialize)]
@@ -153,6 +182,9 @@ pub struct BuildAnalysis {
     pub weaknesses: Vec<String>,
     /// build items unknown to the KB (uncovered IDs).
     pub unknown_ids: Vec<i64>,
+    /// Names for `unknown_ids` when the collectible index knows them, so the UI can
+    /// say WHICH items it could not reason about instead of only how many.
+    pub unknown_names: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -347,7 +379,10 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
         }
     }
 
-    // Tear-replacement conflict (high value, very reliable).
+    // Several tear replacements at once. Deliberately NOT phrased as "only one wins":
+    // in Isaac some of these pairs merge (Brimstone + Mom's Knife) while others really
+    // do override (Brimstone + Trisagion), so the blanket claim would be wrong. The
+    // per-pair outcome comes from the curated synergies, surfaced by `try_synergy`.
     if comp.tears_replacements >= rules.tears_replacement_conflict_threshold {
         let names: Vec<&str> = items
             .iter()
@@ -355,7 +390,7 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
             .map(|it| it.name.as_str())
             .collect();
         weaknesses.push(format!(
-            "Tear-replacement conflict: {} - only one wins out.",
+            "{} replace your tears - they interact, and only one shot type comes out.",
             names.join(", ")
         ));
     }
@@ -380,7 +415,8 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
         strengths.push(format!("{} familiar(s) adding extra DPS.", comp.familiars));
     }
 
-    BuildAnalysis { composition: comp, archetypes, strengths, weaknesses, unknown_ids }
+    let unknown_names = unknown_ids.iter().map(|&id| db.display_name(id)).collect();
+    BuildAnalysis { composition: comp, archetypes, strengths, weaknesses, unknown_ids, unknown_names }
 }
 
 // --------------------------------------------------------------------------
@@ -424,23 +460,32 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         .collect();
     let adds_flight = cand.grants_flight && !build.iter().any(|it| it.grants_flight);
 
-    // Synergy notes: the generic replacement conflict plus curated pairs.
+    // Synergy notes. The curated pairs come first because they say what ACTUALLY
+    // happens for that exact combination; the generic replacement note is only a
+    // fallback for pairs the knowledge base does not document, and it says so
+    // instead of asserting a winner we have not verified.
     let mut notes = Vec::new();
-    let build_has_replacement = build.iter().any(|it| it.is_tears_replacement);
-    if cand.is_tears_replacement && build_has_replacement {
-        let conflicting: Vec<&str> =
-            build.iter().filter(|it| it.is_tears_replacement).map(|it| it.name.as_str()).collect();
-        notes.push(SynergyNote {
-            kind: "dangerous".into(),
-            text: format!(
-                "Replaces your tears, conflicting with {} (only one wins out).",
-                conflicting.join(", ")
-            ),
-        });
-    }
     for it in &build {
         if let Some(s) = db.synergy_between(cand.id, it.id) {
-            notes.push(SynergyNote { kind: s.kind.clone(), text: format!("{} : {}", it.name, s.text) });
+            notes.push(SynergyNote { kind: s.kind.clone(), text: format!("{}: {}", it.name, s.text) });
+        }
+    }
+    if cand.is_tears_replacement {
+        let undocumented: Vec<&str> = build
+            .iter()
+            .filter(|it| it.is_tears_replacement && db.synergy_between(cand.id, it.id).is_none())
+            .map(|it| it.name.as_str())
+            .collect();
+        if !undocumented.is_empty() {
+            notes.push(SynergyNote {
+                kind: "dangerous".into(),
+                text: format!(
+                    "Also replaces your tears, like {}. Isaac resolves this pair itself - \
+                     some combinations merge, others let one item take over - and this one \
+                     is not documented in the knowledge base.",
+                    undocumented.join(", ")
+                ),
+            });
         }
     }
 
@@ -557,7 +602,26 @@ mod tests {
                 kind: "strong".into(),
                 text: "combo".into(),
             }],
+            names: HashMap::from([(999, "An Item Outside The KB".to_string())]),
         }
+    }
+
+    #[test]
+    fn display_name_falls_back_kb_then_index_then_id() {
+        let db = db();
+        assert_eq!(db.display_name(118), "Brimstone", "the KB wins when it knows the item");
+        assert_eq!(db.display_name(999), "An Item Outside The KB", "then the full name index");
+        assert_eq!(db.display_name(4242), "#4242", "and only then the raw id");
+    }
+
+    #[test]
+    fn undocumented_replacement_pair_does_not_claim_a_winner() {
+        let db = db();
+        // 118/114 have no curated entry in this test db, so the note must stay honest.
+        let r = try_synergy(&db, &[118], 114).unwrap();
+        let text = r.synergy_notes.iter().map(|n| n.text.as_str()).collect::<Vec<_>>().join(" ");
+        assert!(text.contains("not documented"), "got: {text}");
+        assert!(!text.contains("wins out"), "must not assert a winner: {text}");
     }
 
     #[test]
@@ -576,7 +640,9 @@ mod tests {
     fn analyze_flags_tears_replacement_conflict() {
         let db = db();
         let a = analyze(&db, &[118, 114], &BuildRules::default());
-        assert!(a.weaknesses.iter().any(|w| w.contains("Tear-replacement conflict")));
+        let w = a.weaknesses.join(" ");
+        assert!(w.contains("replace your tears"), "got: {w}");
+        assert!(w.contains("Brimstone") && w.contains("Mom's Knife"), "both are named: {w}");
     }
 
     #[test]

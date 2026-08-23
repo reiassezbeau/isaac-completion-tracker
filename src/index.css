@@ -175,7 +175,7 @@
   }
 }
 
-/* ── Utilitaires d'animation (respectent prefers-reduced-motion) ── */
+/* ── Animation utilities (all honour prefers-reduced-motion) ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -190,3 +190,95 @@
 .view-enter {
   animation: fadeSlide 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
+
+/* ── Feedback on press ─────────────────────────────────────────────────────
+   Every clickable thing answers the click. The dip is global so no button in
+   any of the 14 views can be forgotten; `.press-in` adds the ink ripple on top
+   for the ones that carry a real action. Add `no-press` to opt a control out
+   (used where a transform would fight an existing animation). */
+button:not(.no-press),
+[role="button"]:not(.no-press) {
+  transition:
+    transform 0.12s cubic-bezier(0.2, 0.8, 0.25, 1),
+    filter 0.12s ease,
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+button:not(.no-press):active:not(:disabled),
+[role="button"]:not(.no-press):active {
+  transform: scale(0.972);
+  filter: brightness(0.94);
+}
+
+/* The ink ripple is drawn from the theme accent, so it reads as blood in Sheol
+   and as gold light in the Cathedral. */
+.press-in {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.12s cubic-bezier(0.2, 0.8, 0.25, 1),
+    filter 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.press-in:active:not(:disabled) {
+  transform: scale(0.972);
+  filter: brightness(0.94);
+}
+.press-in::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgb(var(--i-accent) / 0.34) 0%, transparent 62%);
+  opacity: 0;
+  transform: scale(0.35);
+  pointer-events: none;
+}
+.press-in:active:not(:disabled)::after {
+  animation: inkRipple 0.42s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+@keyframes inkRipple {
+  0% {
+    opacity: 0.75;
+    transform: scale(0.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* ── Feedback on hover ─────────────────────────────────────────────────────
+   `lift` is for cards and rows: a small rise plus a soft shadow, so the
+   pointer always has something under it that reacts. */
+.lift {
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.25, 1),
+    border-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 26px -16px rgb(0 0 0 / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+/* A glow that follows the theme accent - for the active nav item and for
+   anything we want to feel "lit" rather than merely coloured. */
+.accent-glow {
+  box-shadow: 0 0 0 1px rgb(var(--i-accent) / 0.45), 0 0 16px -4px rgb(var(--i-accent) / 0.5);
+}
+
+/* Staggered entrance for lists: each child comes in slightly after the one
+   before, which reads as the page assembling itself instead of snapping in. */
+.stagger > * {
+  animation: fadeSlide 0.34s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.14s; }
+.stagger > *:nth-child(5) { animation-delay: 0.18s; }
+.stagger > *:nth-child(6) { animation-delay: 0.22s; }
+.stagger > *:nth-child(n + 7) { animation-delay: 0.26s; }

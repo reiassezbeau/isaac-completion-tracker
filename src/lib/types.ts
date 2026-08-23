@@ -11,12 +11,43 @@ export interface SaveSlot {
   path: string;
   filename: string;
   label: string;
+  /** English provenance; prefer `source_code` + i18n for display. */
   source: string;
+  /** "steam_cloud" | "documents" | "backup" -> `src.<code>` */
+  source_code: string;
   edition: Edition | null;
   unlocked: number | null;
   total: number;
   marks_reliable: boolean;
+  /** English message, for the Diagnostic tab and logs. */
   parse_error: string | null;
+  /** "too_short" | "bad_header" | "unknown_version" | "out_of_bounds" | "unreadable" */
+  error_code: string | null;
+  error_detail: string | null;
+  /** Edition family the file belongs to, derived from its name. */
+  family: string;
+  /** True for the saves the installed game actually writes (see save_locator.rs). */
+  live: boolean;
+  modified_ms: number | null;
+}
+
+/** Result of the manual "check for updates" call (the app's only network request). */
+export interface UpdateInfo {
+  available: boolean;
+  current_version: string;
+  latest_version: string;
+  notes: string;
+  release_url: string;
+  installer_url: string | null;
+  installer_name: string | null;
+  installer_size: number | null;
+  sha256: string | null;
+}
+
+/** UI preferences persisted by the backend, so they survive a web-view storage reset. */
+export interface UiPrefs {
+  lang: string | null;
+  theme: string | null;
 }
 
 export interface CategoryStat {
@@ -373,6 +404,8 @@ export interface BuildAnalysis {
   strengths: string[];
   weaknesses: string[];
   unknown_ids: number[];
+  /** Names for unknown_ids, so the UI can say which items were skipped. */
+  unknown_names: string[];
 }
 
 export interface StatDelta {

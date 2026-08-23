@@ -17,7 +17,7 @@
  * The shipped binary makes NO network call: only the generated JSON files are bundled.
  * Regenerate with `npm run build:knowledge` (see tools/build-knowledge/README.md).
  *
- * Auteur : reiassezbeau — https://github.com/reiassezbeau
+ * Created by reiassezbeau — https://github.com/reiassezbeau
  */
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";

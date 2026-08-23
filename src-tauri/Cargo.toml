@@ -1,6 +1,6 @@
 [package]
 name = "isaac-completion-tracker"
-version = "0.2.0"
+version = "0.3.0"
 description = "Local, offline completion tracker for The Binding of Isaac: Repentance+"
 authors = ["reiassezbeau <https://github.com/reiassezbeau>"]
 homepage = "https://github.com/reiassezbeau"
@@ -30,6 +30,8 @@ thiserror = "2"
 dirs = "6"
 notify = "8"
 walkdir = "2"
+ureq = { version = "2", default-features = false, features = ["tls"] }
+sha2 = "0.10"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"

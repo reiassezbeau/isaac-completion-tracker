@@ -6,6 +6,7 @@ import { AlertTriangle, Feather, Heart, Plus, Search, Sparkles, Wand2, X } from 
 import { api } from "../lib/api";
 import { roleLabel, statDimLabel, tearFlagLabel, verdictLabel, VERDICT_META } from "../lib/format";
 import { useT } from "../lib/useT";
+import { useItemName } from "../lib/useItemName";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
 import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
 
@@ -191,8 +192,13 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
       </div>
 
       {analysis.unknown_ids.length > 0 && (
-        <p className="mb-3 text-xs text-isaac-muted">
+        <p className="mb-3 text-xs text-isaac-muted" title={analysis.unknown_names.join(", ")}>
           {analysis.unknown_ids.length} {t("bld.unknownItems")}
+          {analysis.unknown_names.length > 0 && (
+            <span className="text-isaac-faint"> — {analysis.unknown_names.slice(0, 4).join(", ")}
+              {analysis.unknown_names.length > 4 ? "…" : ""}
+            </span>
+          )}
         </p>
       )}
 
@@ -238,6 +244,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
 
 export function BuildAssistantView() {
   const t = useT();
+  const itemName = useItemName();
   const [kb, setKb] = useState<ItemKb[] | null>(null);
   const [build, setBuild] = useState<number[]>([]);
   const [candidate, setCandidate] = useState<number | null>(null);
@@ -262,7 +269,6 @@ export function BuildAssistantView() {
     else setSynergy(null);
   }, [build, candidate]);
 
-  const byId = useMemo(() => Object.fromEntries((kb ?? []).map((i) => [i.id, i])), [kb]);
   const filtered = useMemo(() => {
     if (!kb) return [];
     const q = query.trim().toLowerCase();
@@ -390,7 +396,7 @@ export function BuildAssistantView() {
                     key={id}
                     className="inline-flex items-center gap-1 rounded-lg border border-isaac-border bg-isaac-surface2 px-2 py-1 text-sm"
                   >
-                    {byId[id]?.name ?? `#${id}`}
+                    {itemName(id)}
                     <button onClick={() => removeFromBuild(id)} className="text-isaac-muted hover:text-isaac-blood">
                       <X className="h-3 w-3" />
                     </button>

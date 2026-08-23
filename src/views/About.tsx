@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Isaac Completion Tracker — © 2026 reiassezbeau — https://github.com/reiassezbeau
 
-import { Github, Heart } from "lucide-react";
+import { Github, Heart, MessageCircle } from "lucide-react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Card } from "../components/ui";
+import { UpdateCard } from "../components/UpdateCard";
 import { useT } from "../lib/useT";
 import { Emblem } from "../lib/art";
-import { APP_VERSION, GITHUB_URL } from "../lib/format";
+import { APP_VERSION, DISCORD_URL, GITHUB_URL } from "../lib/format";
 
 
 export function AboutView() {
@@ -39,6 +40,22 @@ export function AboutView() {
           </button>
         </div>
       </Card>
+
+      <Card className="text-center">
+        <h2 className="mb-1 text-sm font-semibold uppercase tracking-widest text-isaac-muted">
+          {t("about.community")}
+        </h2>
+        <p className="mb-3 text-sm text-isaac-muted">{t("about.discordBody")}</p>
+        <button
+          onClick={() => openUrl(DISCORD_URL)}
+          className="press-in inline-flex items-center gap-2 rounded-lg border border-[#5865F2]/50 bg-[#5865F2]/10 px-4 py-2 text-sm font-medium text-isaac-text transition-all duration-150 hover:-translate-y-0.5 hover:border-[#5865F2] hover:bg-[#5865F2]/20"
+        >
+          <MessageCircle className="h-4 w-4 text-[#7f88ff]" />
+          {t("about.joinDiscord")}
+        </button>
+      </Card>
+
+      <UpdateCard />
 
       <Card>
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-isaac-muted">

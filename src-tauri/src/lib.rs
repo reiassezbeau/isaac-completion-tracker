@@ -13,6 +13,7 @@ mod save_locator;
 pub mod save_parser;
 mod stats_archive;
 mod stats_reader;
+mod updater;
 mod watcher;
 
 use std::path::PathBuf;
@@ -113,6 +114,12 @@ pub fn run() {
             commands::analyze_build,
             commands::try_synergy,
             commands::save_stat_card,
+            commands::get_item_names,
+            commands::check_for_update,
+            commands::download_update,
+            commands::install_update,
+            commands::get_ui_prefs,
+            commands::set_ui_prefs,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
