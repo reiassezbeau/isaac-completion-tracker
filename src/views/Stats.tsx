@@ -267,7 +267,16 @@ export function StatsView() {
             <StatTile
               label={t("st.correlation")}
               value={ins.hits_win_correlation == null ? "—" : ins.hits_win_correlation.toFixed(2)}
-              hint={ins.hits_win_correlation != null && ins.hits_win_correlation < 0 ? t("st.fewerHits") : t("st.notEnough")}
+              // Three states, not two: the caption used to claim "not enough data"
+              // for any POSITIVE correlation, which is a different thing entirely -
+              // that is real data pointing the unexpected way.
+              hint={
+                ins.hits_win_correlation == null
+                  ? t("st.notEnough")
+                  : ins.hits_win_correlation < 0
+                    ? t("st.fewerHits")
+                    : t("st.noLink")
+              }
             />
             <StatTile label={t("st.analyzed")} value={String(ins.total_runs)} />
           </div>

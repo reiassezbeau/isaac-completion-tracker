@@ -213,8 +213,14 @@ pub fn insights(all: &[Run]) -> Insights {
     cleanest.sort_by(|a, b| a.avg_hits.partial_cmp(&b.avg_hits).unwrap_or(std::cmp::Ordering::Equal));
     let mut bloodiest = cleanest.clone();
     bloodiest.reverse();
-    cleanest.truncate(8);
-    bloodiest.truncate(8);
+    // Each side gets at most half the roster, so a character can never show up in
+    // both. Truncating both to 8 meant that with six characters played, the
+    // "cleanest" and "bloodiest" panels listed the same six names mirrored, which
+    // reads as a bug rather than as an insight. Under two characters neither list
+    // says anything, so both come back empty.
+    let take = (per_char.len() / 2).min(8);
+    cleanest.truncate(take);
+    bloodiest.truncate(take);
 
     // Records: the cleanest runs (fewest hits), completed ones only.
     let mut records: Vec<CleanRecord> = counted
@@ -331,5 +337,27 @@ mod tests {
         // the cleanest run has 0 hits
         assert_eq!(ins.best_clean_runs[0].hits, 0);
         assert_eq!(ins.total_runs, 4);
+    }
+
+    #[test]
+    fn cleanest_and_bloodiest_never_share_a_character() {
+        // The panels used to take the top 8 of the same sorted list and its reverse,
+        // so a roster smaller than 16 appeared in full on both sides.
+        for n in 1..=20usize {
+            let runs: Vec<Run> = (0..n)
+                .map(|i| run(&i.to_string(), &format!("char{i}"), "death", i as u32, 3))
+                .collect();
+            let ins = insights(&runs);
+            let clean: Vec<&str> = ins.cleanest_characters.iter().map(|c| c.character.as_str()).collect();
+            let bloody: Vec<&str> = ins.bloodiest_characters.iter().map(|c| c.character.as_str()).collect();
+            for c in &clean {
+                assert!(!bloody.contains(c), "{c} is in both lists with {n} character(s)");
+            }
+            assert!(clean.len() <= 8 && bloody.len() <= 8);
+        }
+        // A single character is neither the cleanest nor the bloodiest of anything.
+        let ins = insights(&[run("1", "isaac", "death", 5, 3)]);
+        assert!(ins.cleanest_characters.is_empty());
+        assert!(ins.bloodiest_characters.is_empty());
     }
 }
