@@ -220,7 +220,7 @@ export function StatsView() {
 
       {tab === "runs" && (
         <Card>
-          <SectionTitle hint={`${runs.length} ${t("st.recentRuns")}`}>Historique des runs</SectionTitle>
+          <SectionTitle hint={`${runs.length} ${t("st.recentRuns")}`}>{t("st.history")}</SectionTitle>
           {runs.length === 0 ? (
             <p className="text-sm text-isaac-muted">{t("st.noRuns")}</p>
           ) : (
