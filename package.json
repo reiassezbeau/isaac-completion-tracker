@@ -1,7 +1,7 @@
 {
   "name": "isaac-completion-tracker",
   "private": true,
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "module",
   "description": "Local, offline completion tracker for The Binding of Isaac: Repentance+",
   "author": "reiassezbeau (https://github.com/reiassezbeau)",
