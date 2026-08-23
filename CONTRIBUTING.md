@@ -51,6 +51,7 @@ npm run dev             # front end alone (Tauri calls will fail; fine for styli
 Before opening a pull request:
 
 ```bash
+npm run audit                          # static audit (see below)
 npx tsc --noEmit                       # types
 npm run test                           # front-end unit tests
 npm run build                          # production bundle
@@ -58,8 +59,33 @@ cd src-tauri && cargo test --lib       # backend
 cd src-tauri && cargo clippy --all-targets -- -D warnings
 ```
 
-All of these are expected to pass with zero output. `cargo test` includes a test that runs
-against a real save when one is present and skips cleanly when it is not.
+`npm run check` chains the first four. All of them are expected to pass with zero
+output. `cargo test` includes a test that runs against a real save when one is present
+and skips cleanly when it is not.
+
+### The audit
+
+`tools/audit.py` exists because a run of bugs shipped that no test caught and only
+showed up by watching someone use the app: a header hardcoded in French, red text
+at 2.77:1 against its own background, and 136 achievements displaying a literal
+"???" because the wiki redacts hidden unlocks that way and the generator copied it.
+
+Each of those is now a check, so none of them can come back quietly:
+
+- **UI text that bypasses `t()`** - asks the structural question (is this string
+  translated?) instead of guessing whether a string looks foreign.
+- **Catalogue integrity** - keys referenced but never declared render as the raw
+  key to the user; keys declared twice make the winner depend on file order.
+- **Contrast per theme** - every semantic colour, measured on its own surface,
+  against the 3.0:1 floor for bold text.
+- **Bundled data** - placeholder values reaching the UI. Isaac genuinely names
+  things "???" and "Undefined", so the exclusion is driven by the collectible
+  index rather than an allowlist.
+- **Version consistency** - four files declare the version; a mismatch ships an
+  installer whose About screen lies.
+
+When you fix a bug that a person had to *see*, add the check that would have found
+it. That is the whole point of the file.
 
 ### The knowledge bases are generated, not hand-edited
 

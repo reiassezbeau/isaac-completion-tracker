@@ -19,7 +19,7 @@
  *
  * Created by reiassezbeau — https://github.com/reiassezbeau
  */
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
@@ -235,13 +235,35 @@ function category(description: string): string {
   return "misc";
 }
 
+/** Collectible names, so a hidden unlock can still be identified when its
+ *  achievement is named after the item it grants. Optional: the file is produced
+ *  by build-item-names.ts, and this build still works without it. */
+function collectibleNames(): Set<string> {
+  try {
+    const raw = readFileSync(resolve(RES, "item_names.json"), "utf8");
+    const parsed = JSON.parse(raw) as { names: Record<string, string> };
+    return new Set(Object.values(parsed.names).map((n) => n.toLowerCase()));
+  } catch {
+    return new Set();
+  }
+}
+const COLLECTIBLES = collectibleNames();
+
 function reward(name: string, cat: string, description: string): string {
   const label: Record<string, string> = {
     character: "character", item: "item", trinket: "trinket", pill: "pill",
     card: "card/rune", coop_baby: "co-op baby", challenge: "challenge",
   };
   if (label[cat]) return `${name} (${label[cat]})`;
-  return description && !/^unlocked/i.test(description) ? description : "—";
+  // The wiki redacts hidden unlocks as "???" - a redaction, not a description.
+  // Shipping it verbatim put a literal "???" where the reward should be.
+  const hidden = !description || /^\?+$/.test(description.trim());
+  if (hidden) {
+    // Many of those achievements are named after the item they grant, so the
+    // collectible index recovers the answer the wiki withheld.
+    return COLLECTIBLES.has(name.toLowerCase()) ? `${name} (item)` : "";
+  }
+  return /^unlocked/i.test(description) ? "" : description;
 }
 
 // ---------------------------------------------------------------------------
@@ -344,7 +366,11 @@ async function main() {
     return {
       id: a.id,
       name: a.name,
-      description: a.description,
+      // The wiki redacts hidden unlocks as "???" in this column. That is a
+      // redaction, not a description - keeping it only put literal question
+      // marks in front of the player.  (The character actually named "???"
+      // is unaffected: this only touches the description.)
+      description: /^\s*\?{2,}\s*$/.test(a.description) ? "" : a.description,
       category: cat,
       dlc: a.dlc,
       hidden: false, // the Steam "hidden" flag is not exposed by the wiki; the UI reveals the conditions of locked achievements on demand.

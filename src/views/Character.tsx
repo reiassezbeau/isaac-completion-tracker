@@ -206,7 +206,8 @@ export function CharacterView() {
                             <li key={u.id} className="flex items-baseline gap-2">
                               <span className="text-isaac-gold">→</span>
                               <span>
-                                <span className="text-isaac-text">{u.name}</span> — {u.reward}
+                                <span className="text-isaac-text">{u.name}</span>
+                                {u.reward && <> — {u.reward}</>}
                               </span>
                             </li>
                           ))}

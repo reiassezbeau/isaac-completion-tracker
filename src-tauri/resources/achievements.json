@@ -1062,7 +1062,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 67,
@@ -2278,7 +2278,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 143,
@@ -2518,7 +2518,7 @@
         "target": "moms_heart",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 158,
@@ -2534,7 +2534,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 159,
@@ -2550,7 +2550,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 160,
@@ -2566,7 +2566,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 161,
@@ -2582,7 +2582,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 162,
@@ -2598,7 +2598,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 163,
@@ -2614,7 +2614,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 164,
@@ -2646,7 +2646,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 166,
@@ -2662,7 +2662,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 167,
@@ -3750,7 +3750,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 235,
@@ -3782,7 +3782,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 237,
@@ -3798,7 +3798,7 @@
         "target": "satan",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 238,
@@ -3894,7 +3894,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 244,
@@ -3926,7 +3926,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 246,
@@ -3958,7 +3958,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 248,
@@ -3974,7 +3974,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 249,
@@ -4006,7 +4006,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 251,
@@ -4246,7 +4246,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 266,
@@ -4262,7 +4262,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 267,
@@ -4278,7 +4278,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 268,
@@ -4294,7 +4294,7 @@
         "target": "isaac",
         "predictable": true
       },
-      "reward": "—"
+      "reward": "PAY TO PLAY (item)"
     },
     {
       "id": 269,
@@ -4310,7 +4310,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 270,
@@ -4326,7 +4326,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 271,
@@ -4342,7 +4342,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 272,
@@ -4358,7 +4358,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 273,
@@ -4374,7 +4374,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 274,
@@ -4390,7 +4390,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 275,
@@ -4422,7 +4422,7 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 277,
@@ -5126,7 +5126,7 @@
         "target": "hush",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 321,
@@ -5174,7 +5174,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 324,
@@ -5398,7 +5398,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 338,
@@ -5542,7 +5542,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 347,
@@ -5558,7 +5558,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 348,
@@ -5574,7 +5574,7 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 349,
@@ -7579,7 +7579,7 @@
     {
       "id": 474,
       "name": "The Broken",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7590,12 +7590,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 475,
       "name": "The Dauntless",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7606,12 +7606,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 476,
       "name": "The Hoarder",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7622,12 +7622,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 477,
       "name": "The Deceiver",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7638,12 +7638,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 478,
       "name": "The Soiled",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7654,12 +7654,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 479,
       "name": "The Curdled",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7670,12 +7670,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 480,
       "name": "The Savage",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7686,12 +7686,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 481,
       "name": "The Benighted",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7702,12 +7702,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 482,
       "name": "The Enigma",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7718,12 +7718,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 483,
       "name": "The Capricious",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7734,12 +7734,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 484,
       "name": "The Baleful",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7750,12 +7750,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 485,
       "name": "The Harlot",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7766,12 +7766,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 486,
       "name": "The Miser",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7782,12 +7782,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 487,
       "name": "The Empty",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7798,12 +7798,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 488,
       "name": "The Fettered",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7814,12 +7814,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 489,
       "name": "The Zealot",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7830,12 +7830,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 490,
       "name": "The Deserter",
-      "description": "???",
+      "description": "",
       "category": "misc",
       "dlc": "repentance",
       "hidden": false,
@@ -7846,12 +7846,12 @@
         "target": null,
         "predictable": false
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 491,
       "name": "Glitched Crown",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7862,12 +7862,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Glitched Crown (item)"
     },
     {
       "id": 492,
       "name": "Belly Jelly",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7878,12 +7878,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Belly Jelly (item)"
     },
     {
       "id": 493,
       "name": "Blue Key",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7894,12 +7894,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 494,
       "name": "Sanguine Bond",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7910,12 +7910,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Sanguine Bond (item)"
     },
     {
       "id": 495,
       "name": "The Swarm",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7926,12 +7926,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "The Swarm (item)"
     },
     {
       "id": 496,
       "name": "Heartbreak",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7942,12 +7942,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Heartbreak (item)"
     },
     {
       "id": 497,
       "name": "Larynx",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7958,12 +7958,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Larynx (item)"
     },
     {
       "id": 498,
       "name": "Azazel's Rage",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7974,12 +7974,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Azazel's Rage (item)"
     },
     {
       "id": 499,
       "name": "Salvation",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -7990,12 +7990,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Salvation (item)"
     },
     {
       "id": 500,
       "name": "TMTRAINER",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8006,12 +8006,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "TMTRAINER (item)"
     },
     {
       "id": 501,
       "name": "Sacred Orb",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8022,12 +8022,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Sacred Orb (item)"
     },
     {
       "id": 502,
       "name": "Twisted Pair",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8038,12 +8038,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Twisted Pair (item)"
     },
     {
       "id": 503,
       "name": "Strawman",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8054,12 +8054,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Strawman (item)"
     },
     {
       "id": 504,
       "name": "Echo Chamber",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8070,12 +8070,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Echo Chamber (item)"
     },
     {
       "id": 505,
       "name": "Isaac's Tomb",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8086,12 +8086,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Isaac's Tomb (item)"
     },
     {
       "id": 506,
       "name": "Vengeful Spirit",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8102,12 +8102,12 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Vengeful Spirit (item)"
     },
     {
       "id": 507,
       "name": "Esau Jr.",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8118,7 +8118,7 @@
         "target": "beast",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Esau Jr. (item)"
     },
     {
       "id": 508,
@@ -8379,7 +8379,7 @@
     {
       "id": 524,
       "name": "The Fool",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8390,7 +8390,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 525,
@@ -8411,7 +8411,7 @@
     {
       "id": 526,
       "name": "The High Priestess",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8422,12 +8422,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 527,
       "name": "The Empress",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8438,12 +8438,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 528,
       "name": "The Emperor",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8454,12 +8454,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 529,
       "name": "The Hierophant",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8470,12 +8470,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 530,
       "name": "The Lovers",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8486,7 +8486,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 531,
@@ -8539,7 +8539,7 @@
     {
       "id": 534,
       "name": "Wheel of Fortune",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8550,12 +8550,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 535,
       "name": "Strength",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8566,12 +8566,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 536,
       "name": "The Hanged Man",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8582,12 +8582,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 537,
       "name": "Death",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8598,12 +8598,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 538,
       "name": "Temperance",
-      "description": "???",
+      "description": "",
       "category": "challenge",
       "dlc": "repentance",
       "hidden": false,
@@ -8619,7 +8619,7 @@
     {
       "id": 539,
       "name": "The Devil",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8630,12 +8630,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 540,
       "name": "The Tower",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8646,12 +8646,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 541,
       "name": "The Stars",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8662,12 +8662,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 542,
       "name": "The Sun and the Moon",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8678,12 +8678,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 543,
       "name": "Judgement",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8694,12 +8694,12 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 544,
       "name": "The World",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8710,7 +8710,7 @@
         "target": "greed",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 545,
@@ -8763,7 +8763,7 @@
     {
       "id": 548,
       "name": "Mom's Lock",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8774,12 +8774,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 549,
       "name": "Dice Bag",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8790,12 +8790,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 550,
       "name": "Holy Crown",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8806,12 +8806,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 551,
       "name": "Mother's Kiss",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8822,12 +8822,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 552,
       "name": "Gilded Key",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8838,12 +8838,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 553,
       "name": "Lucky Sack",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8854,12 +8854,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 554,
       "name": "Your Soul",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8870,12 +8870,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 555,
       "name": "Number Magnet",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8886,12 +8886,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 556,
       "name": "Dingle Berry",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8902,12 +8902,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 557,
       "name": "Ring Cap",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8918,12 +8918,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 558,
       "name": "Strange Key",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8934,12 +8934,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 559,
       "name": "Lil Clot",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8950,12 +8950,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 560,
       "name": "Temporary Tattoo",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8966,12 +8966,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 561,
       "name": "Swallowed M80",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8982,12 +8982,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 562,
       "name": "Wicked Crown",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -8998,12 +8998,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 563,
       "name": "Azazel's Stump",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9014,12 +9014,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 564,
       "name": "Torn Pocket",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9030,12 +9030,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 565,
       "name": "Torn Card",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9046,12 +9046,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 566,
       "name": "Nuh Uh!",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9062,12 +9062,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 567,
       "name": "Modeling Clay",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9078,12 +9078,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 568,
       "name": "Kid's Drawing",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9094,12 +9094,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 569,
       "name": "Crystal Key",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9110,12 +9110,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 570,
       "name": "The Twins",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9126,12 +9126,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 571,
       "name": "Adoption Papers",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9142,12 +9142,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 572,
       "name": "Keeper's Bargain",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9158,12 +9158,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 573,
       "name": "Cursed Penny",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9174,12 +9174,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 574,
       "name": "Cricket Leg",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9190,12 +9190,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 575,
       "name": "Apollyon's Best Friend",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9206,12 +9206,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 576,
       "name": "Polished Bone",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9222,12 +9222,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 577,
       "name": "Hollow Heart",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9238,12 +9238,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 578,
       "name": "Expansion Pack",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9254,12 +9254,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 579,
       "name": "Beth's Essence",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9270,12 +9270,12 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 580,
       "name": "RC Remote",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9286,12 +9286,12 @@
         "target": "lamb",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 581,
       "name": "Found Soul",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9302,7 +9302,7 @@
         "target": "mother",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 582,
@@ -9339,7 +9339,7 @@
     {
       "id": 584,
       "name": "Spindown Dice",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9350,12 +9350,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Spindown Dice (item)"
     },
     {
       "id": 585,
       "name": "Hypercoagulation",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9366,12 +9366,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Hypercoagulation (item)"
     },
     {
       "id": 586,
       "name": "Bag of Crafting",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9382,12 +9382,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Bag of Crafting (item)"
     },
     {
       "id": 587,
       "name": "Dark Arts",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9398,12 +9398,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Dark Arts (item)"
     },
     {
       "id": 588,
       "name": "IBS",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9414,12 +9414,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "IBS (item)"
     },
     {
       "id": 589,
       "name": "Sumptorium",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9430,12 +9430,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Sumptorium (item)"
     },
     {
       "id": 590,
       "name": "Berserk!",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9446,12 +9446,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Berserk! (item)"
     },
     {
       "id": 591,
       "name": "Hemoptysis",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9462,12 +9462,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Hemoptysis (item)"
     },
     {
       "id": 592,
       "name": "Flip",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9478,12 +9478,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Flip (item)"
     },
     {
       "id": 593,
       "name": "Corrupted Data",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9494,12 +9494,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 594,
       "name": "Ghost Bombs",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9510,12 +9510,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Ghost Bombs (item)"
     },
     {
       "id": 595,
       "name": "Gello",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9526,12 +9526,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Gello (item)"
     },
     {
       "id": 596,
       "name": "Keeper's Kin",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9542,12 +9542,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Keeper's Kin (item)"
     },
     {
       "id": 597,
       "name": "Abyss",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9558,12 +9558,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Abyss (item)"
     },
     {
       "id": 598,
       "name": "Decap Attack",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9574,12 +9574,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Decap Attack (item)"
     },
     {
       "id": 599,
       "name": "Lemegeton",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9590,12 +9590,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Lemegeton (item)"
     },
     {
       "id": 600,
       "name": "Anima Sola",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9606,12 +9606,12 @@
         "target": "delirium",
         "predictable": true
       },
-      "reward": "???"
+      "reward": "Anima Sola (item)"
     },
     {
       "id": 601,
       "name": "Mega Chest",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9622,12 +9622,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 602,
       "name": "Queen of Hearts",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9638,12 +9638,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 603,
       "name": "Gold Pill",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9654,12 +9654,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 604,
       "name": "Black Sack",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9670,12 +9670,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 605,
       "name": "Charming Poop",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9686,12 +9686,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 606,
       "name": "Horse Pill",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9702,12 +9702,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 607,
       "name": "Crane Game",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9718,12 +9718,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 608,
       "name": "Hell Game",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9734,12 +9734,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 609,
       "name": "Wooden Chest",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9750,12 +9750,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 610,
       "name": "Wild Card",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9766,12 +9766,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 611,
       "name": "Haunted Chest",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9782,12 +9782,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 612,
       "name": "Fool's Gold",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9798,12 +9798,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 613,
       "name": "Golden Penny",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9814,12 +9814,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 614,
       "name": "Rotten Beggar",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9830,12 +9830,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 615,
       "name": "Golden Battery",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9846,12 +9846,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 616,
       "name": "Confessional",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9862,12 +9862,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 617,
       "name": "Golden Trinket",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9878,12 +9878,12 @@
         "target": "mega_satan",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 618,
       "name": "Soul of Isaac",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9894,12 +9894,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 619,
       "name": "Soul of Magdalene",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9910,12 +9910,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 620,
       "name": "Soul of Cain",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9926,12 +9926,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 621,
       "name": "Soul of Judas",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9942,12 +9942,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 622,
       "name": "Soul of ???",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9958,12 +9958,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 623,
       "name": "Soul of Eve",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9974,12 +9974,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 624,
       "name": "Soul of Samson",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -9990,12 +9990,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 625,
       "name": "Soul of Azazel",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10006,12 +10006,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 626,
       "name": "Soul of Lazarus",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10022,12 +10022,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 627,
       "name": "Soul of Eden",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10038,12 +10038,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 628,
       "name": "Soul of the Lost",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10054,12 +10054,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 629,
       "name": "Soul of Lilith",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10070,12 +10070,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 630,
       "name": "Soul of the Keeper",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10086,12 +10086,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 631,
       "name": "Soul of Apollyon",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10102,12 +10102,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 632,
       "name": "Soul of the Forgotten",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10118,12 +10118,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 633,
       "name": "Soul of Bethany",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10134,12 +10134,12 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 634,
       "name": "Soul of Jacob and Esau",
-      "description": "???",
+      "description": "",
       "category": "completion_mark",
       "dlc": "repentance",
       "hidden": false,
@@ -10150,7 +10150,7 @@
         "target": "boss_rush",
         "predictable": true
       },
-      "reward": "???"
+      "reward": ""
     },
     {
       "id": 635,
@@ -10198,7 +10198,7 @@
         "target": null,
         "predictable": false
       },
-      "reward": "—"
+      "reward": ""
     },
     {
       "id": 638,
