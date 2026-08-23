@@ -139,13 +139,14 @@ const PORTRAITS: Record<string, Shape> = {
       "M18.6 11.2c.5 4.4.2 7.6-.9 9.8",
     ],
   },
-  // Mane and a hard brow.
+  // The mane, as one jagged crown - it is the whole silhouette, and at 22px a
+  // single bold shape reads where four thin strokes turned to mush.
   samson: {
-    c: [[12, 12.4, 7]],
-    d: [[9.5, 11.6, 1.5], [14.5, 11.6, 1.5]],
+    c: [[12, 13.4, 6.6]],
+    d: [[9.6, 12.6, 1.5], [14.4, 12.6, 1.5]],
     p: [
-      "M7.4 9.2 10.6 10.2", "M16.6 9.2 13.4 10.2",
-      "M5.2 12c-1.6-4.2.4-8.2 3.4-9.2", "M18.8 12c1.6-4.2-.4-8.2-3.4-9.2",
+      "M4.4 12.4 6.1 6.9 7.5 9.4 9.2 3.9 10.8 8.4 12 2.6 13.2 8.4 14.8 3.9 16.5 9.4 17.9 6.9 19.6 12.4",
+      "M10.2 17c1.2.9 2.4.9 3.6 0",
     ],
   },
   // Horns, no eyes, and the beam he is known for.
@@ -167,15 +168,14 @@ const PORTRAITS: Record<string, Shape> = {
       "M9 3.6 8.2 10.4", "M15 3.6l.8 6.8",
     ],
   },
-  // Mismatched eyes and a crown of petals - nothing about Eden is fixed.
+  // Nothing about Eden is fixed, so the asymmetry lives in the eyes: one filled,
+  // one hollow, different sizes. Plus a spark, because every run is a reroll.
   eden: {
-    c: [[12, 12.6, 6.8], [14.6, 11.6, 1.5]],
-    d: [[9.4, 11.6, 1.5]],
+    c: [[12, 13, 7], [14.9, 11.8, 2]],
+    d: [[9.2, 12, 1.45]],
     p: [
-      "M12 5.8c-1.6-1-1.6-3.4 0-4.4 1.6 1 1.6 3.4 0 4.4Z",
-      "M8 7.2C6.2 7 5 5 5.8 3.4 7.6 3.9 8.5 5.7 8 7.2Z",
-      "M16 7.2c1.8-.2 3-2.2 2.2-3.8-1.8.5-2.7 2.3-2.2 3.8Z",
-      "M10.4 16.2c1.1.9 2.3.9 3.4 0",
+      "M10 17c1.3.8 2.5.3 3.5-.7",
+      "M12 1.4v3.4", "M10.3 3.1h3.4",
     ],
   },
   // A shade: the outline is there, the substance is not.
@@ -200,11 +200,14 @@ const PORTRAITS: Record<string, Shape> = {
     d: [[10, 11, 1.3], [14, 11, 1.3]],
     p: ["M6.6 6.6 17.4 17.4", "M9.4 15.4h5.2"],
   },
-  // The hood, and the hole where a face should be.
+  // The void that eats items, drawn as the spiral it is - and a hood that sits
+  // wider and lower than Judas's so the two never read as the same figure.
   apollyon: {
-    p: ["M4.6 21.2C4.6 12.4 7.9 6.8 12 6.8s7.4 5.6 7.4 14.4Z"],
-    cd: [[12, 13.4, 3.4, "2.2 2"]],
-    d: [[12, 13.4, 1.5]],
+    p: [
+      "M3.8 21.4C3.8 13 7.4 7.2 12 7.2s8.2 5.8 8.2 14.2Z",
+      "M15.3 14.2a3.3 3.3 0 10-3.3 3.3c1.4 0 2.1-1 2.1-1.9s-.8-1.6-1.6-1.6-1.3.6-1.3 1.2",
+    ],
+    d: [[12, 14.2, 0.9]],
   },
   // Bone: sockets and a jaw.
   the_forgotten: {
