@@ -7,7 +7,7 @@ import { api } from "../lib/api";
 import { markClasses, markLabel, pct } from "../lib/format";
 import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
-import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { Glyph, Portrait, basePortraitId } from "../lib/art";
 import type { CharacterDetail, CharacterListItem, CharacterStats } from "../lib/types";
 
 function CharGrid({
@@ -43,7 +43,7 @@ function CharGrid({
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Sigil id={baseSigilId(c.id)} size={22} tainted={c.kind === "tainted"} />
+                  <Portrait id={basePortraitId(c.id)} size={22} tainted={c.kind === "tainted"} />
                   <span className="truncate font-medium">{c.name}</span>
                   {!c.unlocked && <Lock className="ml-auto h-3 w-3 flex-shrink-0 text-isaac-faint" />}
                 </div>
@@ -106,7 +106,7 @@ export function CharacterView() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="flex items-center gap-3 font-display text-3xl text-isaac-text">
-                  <Sigil id={baseSigilId(detail.id)} size={38} tainted={detail.kind === "tainted"} />
+                  <Portrait id={basePortraitId(detail.id)} size={38} tainted={detail.kind === "tainted"} />
                   {detail.name}
                 </h1>
                 <div className="mt-1 flex items-center gap-2">

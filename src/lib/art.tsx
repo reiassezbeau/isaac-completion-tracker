@@ -83,34 +83,161 @@ export function Glyph({ id, size = 18, sw = 1.7, filter = "wob1" }: { id: string
   return <Drawn shape={shape} size={size} sw={sw} filter={filter} prefix={`e_${id}`} />;
 }
 
-// ── The 17 base sigils (head + attribute, 3 strokes max) ───────────────────
-const SIGILS: Record<string, Shape> = {
-  isaac: { p: ["M12 13.4a5 5 0 100-10 5 5 0 000 10Z"], e: [[12, 4.2, 6.3, 2.1]], t: [[13.4, 15.8]] },
-  magdalene: { p: ["M12 21a5.4 5.4 0 100-10.8A5.4 5.4 0 0012 21Z", "M12 8.4C9.1 6 7.9 4.6 7.9 3.4 7.9 2.2 8.8 1.4 9.9 1.4c.9 0 1.7.5 2.1 1.3.4-.8 1.2-1.3 2.1-1.3 1.1 0 2 .8 2 2 0 1.2-1.2 2.6-4.1 5Z"] },
-  cain: { p: ["M12 19.4a6 6 0 100-12 6 6 0 000 12Z", "M5.4 8.4 18.4 14.2"] },
-  judas: { p: ["M12 11.6a4.6 4.6 0 100-9.2 4.6 4.6 0 000 9.2Z", "M12 12.4v9.2", "M8.4 18.6h7.2"] },
-  blue_baby: { p: ["M5.8 20.8V10.6a6.2 6.2 0 0112.4 0v10.2l-2.1-1.7-2.1 1.7-2.1-1.7-2 1.7-2.1-1.7Z"], r: [[9, 10.4, 2.2, 3, 0.6], [12.8, 10.4, 2.2, 3, 0.6]] },
-  eve: { p: ["M12 20.4a5.6 5.6 0 100-11.2 5.6 5.6 0 000 11.2Z", "M11 8.2C8.4 6.8 6.6 4.4 6.4 2 8.8 3 10.6 5.2 11 8.2Z", "M13 8.2c2.6-1.4 4.4-3.8 4.6-6.2-2.4 1-4.2 3.2-4.6 6.2Z"] },
-  samson: { p: ["M12 19.8a5.8 5.8 0 100-11.6 5.8 5.8 0 000 11.6Z", "M8 7.2C6 5.6 6.4 2.6 8.8 3.4", "M16 7.2c2-1.6 1.6-4.6-.8-3.8"] },
-  azazel: { p: ["M12 18.8a4.6 4.6 0 100-9.2 4.6 4.6 0 000 9.2Z", "M7.6 12C4.4 11 2.2 8.2 1.8 4.8 4.8 6 7 8.6 7.6 12Z", "M16.4 12c3.2-1 5.4-3.8 5.8-7.2-3 1.2-5.2 3.8-5.8 7.2Z"] },
-  lazarus: { p: ["M12 19.6a6 6 0 100-12 6 6 0 000 12Z", "M6.6 10.4 17.2 15.6", "M7.4 15.8 16.6 10.2"] },
-  eden: { p: ["M12 19.6a6.2 6.2 0 100-12.4 6.2 6.2 0 000 12.4Z"], d: [[9.6, 11, 1.15], [14.4, 11, 1.15], [9.6, 15.8, 1.15], [14.4, 15.8, 1.15], [12, 13.4, 1.15]] },
-  the_lost: { p: ["M6.4 20.8V11a5.6 5.6 0 0111.2 0v9.8l-1.9-1.6-1.9 1.6-1.8-1.6-1.9 1.6-1.8-1.6Z"], dash: "2.6 2.4", e: [[12, 3.4, 5.4, 1.8]] },
-  lilith: { p: ["M12 12.6a4.8 4.8 0 100-9.6 4.8 4.8 0 000 9.6Z", "M6.4 13.6C7.8 18 9.6 20.6 12 21.6c2.4-1 4.2-3.6 5.6-8Z"] },
-  keeper: { p: ["M12 20.4a8.2 8.2 0 100-16.4 8.2 8.2 0 000 16.4Z"], r: [[8.6, 10.6, 2, 2.6, 0.5], [13.4, 10.6, 2, 2.6, 0.5]], c: [[12, 12.2, 5.2]] },
-  apollyon: { p: ["M12 20.4a8.2 8.2 0 100-16.4 8.2 8.2 0 000 16.4Z", "M16.4 12.2a4.4 4.4 0 11-4.4-4.4c2.4 0 3.2 1.8 3.2 3s-1.2 2.2-2.6 2"] },
-  the_forgotten: { p: ["M7.2 14.6a4.8 4.8 0 019.6 0v2.2H7.2Z", "M8.4 17.4v3.4", "M12 17.4v3.4", "M15.6 17.4v3.4"], d: [[9.9, 13.4, 1.3], [14.1, 13.4, 1.3]] },
-  bethany: { p: ["M12 20.6a5.4 5.4 0 100-10.8 5.4 5.4 0 000 10.8Z", "M12 8.6c1.9-1.6 2.8-3.1 2.8-4.4C14.8 2.7 13.5 1.4 12 1.4c-1.5 0-2.8 1.3-2.8 2.8 0 1.3.9 2.8 2.8 4.4Z"] },
-  jacob_esau: { p: ["M8.6 18.8a5 5 0 100-10 5 5 0 000 10Z", "M15.4 18.8a5 5 0 100-10 5 5 0 000 10Z"] },
+// -- The 17 character portraits ---------------------------------------------
+// Faces, not monograms. Isaac's visual DNA is a big bald head with oversized eyes
+// and a tiny mouth, so that is the base every character is built from, and each
+// one keeps exactly the trait a player identifies them by: Cain's patch, Judas's
+// cowl, Azazel's horns, Keeper's coin. Drawn from primitives in a 24x24 box - not
+// one pixel comes from the game, which is what lets this ship under GPL-3.0.
+//
+// `d` = filled circle (pupils), `r` = filled rect, `t` = filled teardrop,
+// `p`/`c`/`e` = stroked. Every colour comes from `currentColor`.
+const PORTRAITS: Record<string, Shape> = {
+  // The face everything else is a variation of: bald head, wide eyes, one tear.
+  isaac: {
+    c: [[12, 11.6, 7.5]],
+    d: [[9.3, 10.4, 1.6], [14.7, 10.4, 1.6]],
+    p: ["M10.1 15.5c1.2 1 2.6 1 3.8 0"],
+    t: [[8.4, 13.2]],
+  },
+  // A bow above the brow.
+  magdalene: {
+    c: [[12, 12.4, 7.2]],
+    d: [[9.4, 11.4, 1.55], [14.6, 11.4, 1.55]],
+    p: [
+      "M9.6 5.1C7.3 3.4 8.4 1 10.7 2.3L12 4l1.3-1.7c2.3-1.3 3.4 1.1 1.1 2.8",
+      "M10.3 16.4c1.1.9 2.3.9 3.4 0",
+    ],
+  },
+  // One eye, and the patch strap crossing the other.
+  cain: {
+    c: [[12, 11.8, 7.5]],
+    d: [[14.7, 10.6, 1.6]],
+    r: [[6.4, 8.8, 4.2, 3.4, 0.8]],
+    p: ["M4.8 8.2 19.2 12.4", "M10.2 15.8c1.2.9 2.5.9 3.7 0"],
+  },
+  // Under the cowl, only the eyes.
+  judas: {
+    p: [
+      "M4.6 21.2C4.6 12.4 7.9 6.8 12 6.8s7.4 5.6 7.4 14.4Z",
+      "M12 6.8V3.4",
+    ],
+    d: [[9.6, 13.6, 1.5], [14.4, 13.6, 1.5]],
+  },
+  // ???: the dripping silhouette and blank square eyes.
+  blue_baby: {
+    p: ["M5.6 21V10.6a6.4 6.4 0 0112.8 0V21l-2.1-1.8-2.1 1.8-2.2-1.8-2.1 1.8-2.2-1.8Z"],
+    r: [[8.7, 10.2, 2.3, 3.1, 0.5], [13, 10.2, 2.3, 3.1, 0.5]],
+  },
+  // Long hair down both sides.
+  eve: {
+    c: [[12, 12, 7]],
+    d: [[9.5, 11, 1.5], [14.5, 11, 1.5]],
+    p: [
+      "M5.3 10.4C4.6 6 7.6 2.6 12 2.6s7.4 3.4 6.7 7.8",
+      "M5.4 11.2c-.5 4.4-.2 7.6.9 9.8",
+      "M18.6 11.2c.5 4.4.2 7.6-.9 9.8",
+    ],
+  },
+  // Mane and a hard brow.
+  samson: {
+    c: [[12, 12.4, 7]],
+    d: [[9.5, 11.6, 1.5], [14.5, 11.6, 1.5]],
+    p: [
+      "M7.4 9.2 10.6 10.2", "M16.6 9.2 13.4 10.2",
+      "M5.2 12c-1.6-4.2.4-8.2 3.4-9.2", "M18.8 12c1.6-4.2-.4-8.2-3.4-9.2",
+    ],
+  },
+  // Horns, no eyes, and the beam he is known for.
+  azazel: {
+    c: [[12, 12.6, 6.8]],
+    p: [
+      "M7 8C4.2 6.6 2.6 4 2.4 1.4 5.2 2.4 7 5 7 8Z",
+      "M17 8c2.8-1.4 4.4-4 4.6-6.6C18.8 2.4 17 5 17 8Z",
+      "M8.6 14.4h6.8",
+    ],
+    r: [[9.4, 15.6, 5.2, 2, 1]],
+  },
+  // Eyes shut, hair falling forward.
+  lazarus: {
+    c: [[12, 12.2, 7.2]],
+    p: [
+      "M8.4 11.2c.9-.8 1.9-.8 2.8 0", "M12.8 11.2c.9-.8 1.9-.8 2.8 0",
+      "M5.6 11c-.6-4.6 2.2-8 6.4-8s7 3.4 6.4 8",
+      "M9 3.6 8.2 10.4", "M15 3.6l.8 6.8",
+    ],
+  },
+  // Mismatched eyes and a crown of petals - nothing about Eden is fixed.
+  eden: {
+    c: [[12, 12.6, 6.8], [14.6, 11.6, 1.5]],
+    d: [[9.4, 11.6, 1.5]],
+    p: [
+      "M12 5.8c-1.6-1-1.6-3.4 0-4.4 1.6 1 1.6 3.4 0 4.4Z",
+      "M8 7.2C6.2 7 5 5 5.8 3.4 7.6 3.9 8.5 5.7 8 7.2Z",
+      "M16 7.2c1.8-.2 3-2.2 2.2-3.8-1.8.5-2.7 2.3-2.2 3.8Z",
+      "M10.4 16.2c1.1.9 2.3.9 3.4 0",
+    ],
+  },
+  // A shade: the outline is there, the substance is not.
+  the_lost: {
+    p: ["M6.2 21V10.8a5.8 5.8 0 0111.6 0V21l-2-1.7-1.9 1.7-1.9-1.7-1.9 1.7Z"],
+    dash: "2.4 2.2",
+    d: [[9.9, 11, 1.35], [14.1, 11, 1.35]],
+  },
+  // Horns and the blindfold.
+  lilith: {
+    c: [[12, 12.4, 7]],
+    r: [[5.4, 10.4, 13.2, 2.8, 1]],
+    p: [
+      "M7.2 6.6C5.6 4.8 5.4 2.6 6.4 1.6 8 2.6 8.8 4.6 8.6 6.8",
+      "M16.8 6.6c1.6-1.8 1.8-4 .8-5-1.6 1-2.4 3-2.2 5.2",
+      "M10.4 16.6c1.1.9 2.3.9 3.4 0",
+    ],
+  },
+  // A coin for a head, held together with a plaster.
+  keeper: {
+    c: [[12, 12, 8], [12, 12, 5.6]],
+    d: [[10, 11, 1.3], [14, 11, 1.3]],
+    p: ["M6.6 6.6 17.4 17.4", "M9.4 15.4h5.2"],
+  },
+  // The hood, and the hole where a face should be.
+  apollyon: {
+    p: ["M4.6 21.2C4.6 12.4 7.9 6.8 12 6.8s7.4 5.6 7.4 14.4Z"],
+    cd: [[12, 13.4, 3.4, "2.2 2"]],
+    d: [[12, 13.4, 1.5]],
+  },
+  // Bone: sockets and a jaw.
+  the_forgotten: {
+    p: [
+      "M6.4 13.8a5.6 5.6 0 1111.2 0v2.8H6.4Z",
+      "M8 17.4v3.4", "M12 17.4v3.4", "M16 17.4v3.4",
+      "M6.4 16.6h11.2",
+    ],
+    d: [[9.5, 12.6, 1.6], [14.5, 12.6, 1.6]],
+  },
+  // The halo.
+  bethany: {
+    c: [[12, 13, 6.8]],
+    d: [[9.6, 12, 1.5], [14.4, 12, 1.5]],
+    e: [[12, 4.4, 4.6, 1.6]],
+    p: ["M10.4 16.8c1.1.9 2.3.9 3.4 0"],
+  },
+  // Two of them, always.
+  jacob_esau: {
+    c: [[8.2, 13, 5], [15.8, 13, 5]],
+    d: [[6.7, 12, 1.15], [9.7, 12, 1.15], [14.3, 12, 1.15], [17.3, 12, 1.15]],
+    p: ["M7 15.6c.8.6 1.6.6 2.4 0", "M14.6 15.6c.8.6 1.6.6 2.4 0"],
+  },
 };
+
 
 /**
  * Character sigil on a plaque: regular = bone on engraved stone; Tainted =
  * the same sigil inked in blood + a slash. `id` = character id (Tainted and
  * alternate forms fall back to their base through `baseSigilId`).
  */
-export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: number; tainted?: boolean }) {
-  const shape = SIGILS[baseSigilId(id)] ?? SIGILS.isaac;
+export function Portrait({ id, size = 22, tainted = false }: { id: string; size?: number; tainted?: boolean }) {
+  const shape = PORTRAITS[basePortraitId(id)] ?? PORTRAITS.isaac;
   const inner = Math.round(size * 0.74);
   const radius = Math.round(size * 0.28);
   return (
@@ -131,7 +258,7 @@ export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: n
       }}
     >
       <div style={{ display: "flex", position: "relative", color: tainted ? "#c4565c" : "#cfc3ad" }}>
-        <Drawn shape={shape} size={inner} sw={1.7} filter={tainted ? "wob2" : "wob1"} prefix={`sig_${id}`} />
+        <Drawn shape={shape} size={inner} sw={1.7} filter={tainted ? "wob2" : "wob1"} prefix={`por_${id}`} />
       </div>
       {tainted && (
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
@@ -145,7 +272,7 @@ export function Sigil({ id, size = 22, tainted = false }: { id: string; size?: n
 }
 
 /** Maps a character id (form/alt/Tainted) back to its base sigil. */
-export function baseSigilId(id: string): string {
+export function basePortraitId(id: string): string {
   let base = id.startsWith("tainted_") ? id.slice("tainted_".length) : id;
   const alias: Record<string, string> = {
     forgotten: "the_forgotten",
@@ -154,7 +281,7 @@ export function baseSigilId(id: string): string {
     esau: "jacob_esau",
   };
   base = alias[base] ?? base;
-  return SIGILS[base] ? base : "isaac";
+  return PORTRAITS[base] ? base : "isaac";
 }
 
 // ── Emblem (cross + heart + tear) ─────────────────────────────────────────

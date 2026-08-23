@@ -8,7 +8,7 @@ import { useStore } from "../store";
 import { markLabel } from "../lib/format";
 import { Card, Pill, SectionTitle } from "../components/ui";
 import { Modal, ModalButton } from "../components/Modal";
-import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { Glyph, Portrait, basePortraitId } from "../lib/art";
 import { useT } from "../lib/useT";
 import type { AchievementView, Character, Ending, MarkDifficulty, Overrides } from "../lib/types";
 
@@ -128,7 +128,7 @@ export function SettingsView() {
       <Card>
         <SectionTitle>{t("set.fixMarks")}</SectionTitle>
         <div className="mb-3 flex items-center gap-2">
-          <Sigil id={baseSigilId(charId)} size={28} tainted={charId.startsWith("tainted_")} />
+          <Portrait id={basePortraitId(charId)} size={28} tainted={charId.startsWith("tainted_")} />
           <select
             value={charId}
             onChange={(e) => setCharId(e.target.value)}

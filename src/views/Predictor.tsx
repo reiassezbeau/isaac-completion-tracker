@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle2, Info, Skull, XCircle } from "lucide-react";
 import { api } from "../lib/api";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
 import { useT } from "../lib/useT";
-import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { Glyph, Portrait, basePortraitId } from "../lib/art";
 import type { Character, Ending, Prediction, TargetSuggestion } from "../lib/types";
 
 export function PredictorView() {
@@ -33,7 +33,7 @@ export function PredictorView() {
       <Card>
         <SectionTitle>{t("nav.predictor")}</SectionTitle>
         <div className="flex flex-wrap items-center gap-3">
-          <Sigil id={baseSigilId(charId)} size={30} tainted={charId.startsWith("tainted_")} />
+          <Portrait id={basePortraitId(charId)} size={30} tainted={charId.startsWith("tainted_")} />
           <select
             value={charId}
             onChange={(e) => setCharId(e.target.value)}
@@ -138,7 +138,7 @@ export function PredictorView() {
                 className="flex w-full items-center justify-between gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2 text-left text-sm transition-colors hover:border-isaac-dried/50"
               >
                 <span className="flex items-center gap-2.5">
-                  <Sigil id={baseSigilId(sg.character_id)} size={24} tainted={sg.character_id.startsWith("tainted_")} />
+                  <Portrait id={basePortraitId(sg.character_id)} size={24} tainted={sg.character_id.startsWith("tainted_")} />
                   <span>
                     <strong>{sg.character_name}</strong> → {sg.target_name}
                   </span>

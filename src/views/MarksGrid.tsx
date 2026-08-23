@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { api } from "../lib/api";
 import { Card } from "../components/ui";
-import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { Glyph, Portrait, basePortraitId } from "../lib/art";
 import { markLabel } from "../lib/format";
 import { useT } from "../lib/useT";
 import type { MarkDifficulty, MarksMatrix, MatrixChar, MatrixEnding } from "../lib/types";
@@ -91,7 +91,7 @@ function MatrixRow({ char, statuses, endings }: { char: MatrixChar; statuses: Ma
   return (
     <>
       <div className="flex min-w-0 items-center gap-2 pr-2">
-        <Sigil id={baseSigilId(char.id)} size={20} tainted={char.kind === "tainted"} />
+        <Portrait id={basePortraitId(char.id)} size={20} tainted={char.kind === "tainted"} />
         <span className={`truncate text-xs ${full ? "text-isaac-gold" : char.unlocked ? "text-isaac-muted" : "text-isaac-faint/70"}`}>{char.name}</span>
       </div>
       {statuses.map((s, j) => (

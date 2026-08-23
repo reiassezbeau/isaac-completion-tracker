@@ -8,7 +8,7 @@ import { Card, ProgressBar, SectionTitle, Pill } from "../components/ui";
 import { ModStatusCard } from "../components/ModStatus";
 import { categoryLabel } from "../lib/format";
 import { useT } from "../lib/useT";
-import { DeadGodGauge, Glyph, Icon, Sigil, baseSigilId } from "../lib/art";
+import { DeadGodGauge, Glyph, Icon, Portrait, basePortraitId } from "../lib/art";
 
 const CATEGORY_ICON: Record<string, string> = {
   item: "pedestal",
@@ -162,7 +162,7 @@ export function DashboardView() {
                   onClick={() => setView("predictor")}
                   className="flex w-full items-center gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/60 px-3 py-2.5 text-left text-sm transition-colors hover:border-isaac-dried/50"
                 >
-                  <Sigil id={baseSigilId(tg.character_id)} size={28} tainted={tg.character_id.startsWith("tainted_")} />
+                  <Portrait id={basePortraitId(tg.character_id)} size={28} tainted={tg.character_id.startsWith("tainted_")} />
                   <span className="min-w-0 flex-1 leading-tight">
                     <span className="font-semibold text-isaac-text">{tg.character_name}</span>
                     <br />

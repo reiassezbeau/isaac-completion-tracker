@@ -7,7 +7,7 @@ import { api } from "../lib/api";
 import { pct } from "../lib/format";
 import { useT } from "../lib/useT";
 import { Card, EmptyState, Pill, ProgressBar, SectionTitle } from "../components/ui";
-import { Glyph, Sigil, baseSigilId } from "../lib/art";
+import { Glyph, Portrait, basePortraitId } from "../lib/art";
 import type { AlmostThere, Bottleneck, DeadGodEta, EvAction, OptimizerReport } from "../lib/types";
 
 /** Probability color: red (hard) -> gold -> green (safe). */
@@ -68,7 +68,7 @@ function ActionRow({ action, rank, maxEv }: { action: EvAction; rank: number; ma
     <div className="rounded-lg border border-isaac-border bg-isaac-surface2/40 p-3">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
-          <Sigil id={baseSigilId(action.character_id)} size={30} tainted={action.character_id.startsWith("tainted_")} />
+          <Portrait id={basePortraitId(action.character_id)} size={30} tainted={action.character_id.startsWith("tainted_")} />
           <span className="text-sm font-bold text-isaac-gold">#{rank}</span>
           <div className="min-w-0">
             <div className="truncate font-semibold">{action.character_name}</div>
@@ -163,7 +163,7 @@ function AlmostList({ items }: { items: AlmostThere[] }) {
           className="flex items-center justify-between gap-3 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-3 py-2"
         >
           <div className="flex min-w-0 items-center gap-2.5">
-            <Sigil id={baseSigilId(a.character_id)} size={26} tainted={a.character_id.startsWith("tainted_")} />
+            <Portrait id={basePortraitId(a.character_id)} size={26} tainted={a.character_id.startsWith("tainted_")} />
             <div className="min-w-0">
               <div className="truncate text-sm font-medium">{a.character_name}</div>
               <div className="truncate text-xs text-isaac-muted">{a.missing_names.join(", ")}</div>
