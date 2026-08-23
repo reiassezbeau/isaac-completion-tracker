@@ -64,8 +64,6 @@ const T: Record<string, Entry> = {
   "common.loading": { en: "Opening the grimoire…", fr: "Ouverture du grimoire…", es: "Abriendo el grimorio…", pt: "Abrindo o grimório…", de: "Das Grimoire öffnet sich…", ru: "Открываем гримуар…", pl: "Otwieranie grimuaru…", zh: "正在打开魔典…", ja: "魔導書を開いています…", hi: "ग्रिमोयर खुल रहा है…", ar: "يُفتح الكتاب…", bn: "গ্রিমোয়ার খুলছে…", ur: "گریموار کھل رہا ہے…" },
   "common.cancel": { en: "Cancel", fr: "Annuler", es: "Cancelar", pt: "Cancelar", de: "Abbrechen", ru: "Отмена", pl: "Anuluj", zh: "取消", ja: "キャンセル", hi: "रद्द करें", ar: "إلغاء", bn: "বাতিল", ur: "منسوخ" },
   "common.gotIt": { en: "Got it", fr: "Compris", es: "Entendido", pt: "Entendi", de: "Verstanden", ru: "Понятно", pl: "Rozumiem", zh: "知道了", ja: "了解", hi: "समझ गया", ar: "فهمت", bn: "বুঝেছি", ur: "سمجھ گیا" },
-  "common.later": { en: "Later", fr: "Plus tard", es: "Más tarde", pt: "Mais tarde", de: "Später", ru: "Позже", pl: "Później", zh: "以后", ja: "後で", hi: "बाद में", ar: "لاحقًا", bn: "পরে", ur: "بعد میں" },
-  "common.search": { en: "Search…", fr: "Rechercher…", es: "Buscar…", pt: "Pesquisar…", de: "Suchen…", ru: "Поиск…", pl: "Szukaj…", zh: "搜索…", ja: "検索…", hi: "खोजें…", ar: "بحث…", bn: "খুঁজুন…", ur: "تلاش…" },
 
   // ── Welcome screen / chrome ──────────────────────────────────────────────
   // The game's proper name: identical in every language.

@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest something the app should do
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Describe the situation, not the solution - it often has a simpler answer.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you have in mind
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Compatible with the project's constraints
+      description: See CONTRIBUTING.md. These three are not negotiable.
+      options:
+        - label: It does not require writing to, moving, or deleting the player's save
+        - label: It does not require game sprites, screenshots, or copied wiki prose
+        - label: It does not require the app to reach the network on its own

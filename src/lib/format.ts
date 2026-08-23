@@ -147,13 +147,6 @@ export function verdictLabel(verdict: string, t?: Tr): string {
   return tr(t, `verdict.${verdict}`, meta.label);
 }
 
-export function complexityLabel(c: string): string {
-  if (c === "flat") return "reliable delta";
-  if (c === "proc") return "on proc";
-  if (c === "conditional") return "conditional";
-  return c;
-}
-
 export const VERDICT_META: Record<string, { label: string; tone: "done" | "gold" | "blood" | "muted" }> = {
   strong_pickup: { label: "Strong pick", tone: "done" },
   fills_gap: { label: "Fills a gap", tone: "gold" },

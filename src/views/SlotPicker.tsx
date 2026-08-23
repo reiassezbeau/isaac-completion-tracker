@@ -15,6 +15,7 @@ import { Emblem } from "../lib/art";
 import { LanguagePicker } from "../components/LanguagePicker";
 import { useT } from "../lib/useT";
 import type { SaveSlot } from "../lib/types";
+import { groupSlots } from "./slotGrouping";
 
 /** Translated provenance, falling back to the backend's English label. */
 function sourceLabel(slot: SaveSlot, t: (k: string) => string): string {
@@ -82,11 +83,7 @@ export function SlotPicker() {
   // family per DLC plus dated backups. Only the files the installed game actually
   // writes are shown; the rest stay one click away instead of being deleted, because
   // the app's whole promise is that it never touches your saves.
-  const { live, old } = useMemo(() => {
-    const all = slots ?? [];
-    const live = all.filter((s) => s.live);
-    return { live: live.length > 0 ? live : all, old: live.length > 0 ? all.filter((s) => !s.live) : [] };
-  }, [slots]);
+  const { live, old } = useMemo(() => groupSlots(slots), [slots]);
 
   async function locateManually() {
     const dir = await open({ directory: true, title: t("slot.dialogTitle") });

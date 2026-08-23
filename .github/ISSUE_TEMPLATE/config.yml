@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discord
+    url: https://discord.gg/53NyaVUE73
+    about: Questions, help finding your save, or comparing Dead God runs.
+  - name: Translation fix
+    url: https://github.com/reiassezbeau/isaac-completion-tracker/blob/main/CONTRIBUTING.md#translations
+    about: The non-Latin translations were generated - corrections are very welcome.
