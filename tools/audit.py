@@ -421,6 +421,28 @@ def audit_backend_prose():
     else:
         ok("every view holding mod data re-reads it on Refresh")
 
+    # -- 4. the mod must not touch the player on a room change ---------------
+    # v0.2.2 snapshotted the build in MC_POST_NEW_ROOM. Entering the Mineshaft
+    # Lobby, Isaac.GetPlayer(0) returns a player mid-rebuild and GetCollectibleNum
+    # faults inside the engine - the game died and the player lost the floor.
+    # pcall does not catch a native fault, so the guard that looked safe was not.
+    lua = read("isaac-tracker-mod/main.lua")
+    body, inside = [], False
+    for line in lua.split(chr(10)):
+        if line.startswith("local function onNewRoom"):
+            inside = True
+        elif inside and line.startswith("end"):
+            break
+        elif inside and not line.strip().startswith("--"):
+            body.append(line)
+    touches = [l.strip() for l in body if "Isaac.GetPlayer" in l or "snapshotBuild" in l]
+    if touches:
+        for t in touches:
+            fail(f"isaac-tracker-mod onNewRoom touches the player - this crashes the "
+                 f"game on special room transitions: {t}")
+    else:
+        ok("the mod never touches the player from a room-change callback")
+
 
 for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data,
            audit_versions, audit_rtl, audit_backend_prose):

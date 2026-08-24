@@ -17,6 +17,21 @@ you a round trip.
    the user is pressing the button. If you add a second network call, it needs the same
    deal: explicit, documented in the README, and never carrying user data.
 
+## The mod may never touch the player on a room change
+
+`pcall` guards every callback in the companion mod, and that guard is weaker than
+it looks: it catches Lua errors, **not native faults**. Calling a method on an
+entity the engine is rebuilding takes the whole process down, pcall or no pcall.
+
+v0.2.2 snapshotted the build in `MC_POST_NEW_ROOM`. Entering the Mineshaft Lobby,
+`Isaac.GetPlayer(0)` returned a player mid-rebuild, `GetCollectibleNum` faulted,
+and the game crashed - the player lost the floor. The build is captured on new
+floor and at run end instead, which has run for months without incident.
+
+`npm run audit` fails if `onNewRoom` references the player again. If you need
+mid-floor accuracy, defer the work to `MC_POST_UPDATE`, on a normal frame with the
+room fully loaded.
+
 ## Reporting a bug
 
 Open an issue with the **Bug report** template. The single most useful thing you can

@@ -2,7 +2,7 @@
 <metadata>
   <name>Isaac Tracker Stats</name>
   <directory>isaac-tracker-mod</directory>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
   <visibility>Private</visibility>
   <description>Companion stats tracker (observer only) for Isaac Completion Tracker. By reiassezbeau - github.com/reiassezbeau</description>
   <tag id="Lua"/>
