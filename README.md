@@ -1,6 +1,6 @@
 # Isaac Completion Tracker
 
-[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.5/Isaac-Completion-Tracker_0.4.5_x64-setup.exe)
+[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.7/Isaac-Completion-Tracker_0.4.7_x64-setup.exe)
 [![Release](https://img.shields.io/github/v/release/reiassezbeau/isaac-completion-tracker?style=for-the-badge&color=d4af37)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest)
 [![License](https://img.shields.io/badge/license-GPL--3.0-8c1a1a?style=for-the-badge)](LICENSE)
 
@@ -66,7 +66,7 @@ is found, a **"Locate my save…"** button lets you point to the folder manually
 
 ## Installation (users)
 
-**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.5/Isaac-Completion-Tracker_0.4.5_x64-setup.exe)** — run it, done.
+**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.7/Isaac-Completion-Tracker_0.4.7_x64-setup.exe)** — run it, done.
 
 All versions: [Releases page](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest).
 An `.msi` and `SHA256SUMS.txt` checksums are provided as well.

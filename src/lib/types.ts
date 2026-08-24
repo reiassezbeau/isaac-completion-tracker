@@ -11,6 +11,8 @@ export interface SaveSlot {
   path: string;
   filename: string;
   label: string;
+  /** Slot digit alone, so the UI can localize "Slot N". Null if unrecognisable. */
+  slot_number: number | null;
   /** English provenance; prefer `source_code` + i18n for display. */
   source: string;
   /** "steam_cloud" | "documents" | "backup" -> `src.<code>` */
@@ -389,20 +391,37 @@ export interface ItemKb {
   note: string;
 }
 
+/**
+ * One line of analysis as a code plus its values. The backend deliberately does
+ * NOT build the sentence: prose written in Rust reached the screen untranslated
+ * in all 13 languages. Render with `noteText()`.
+ */
+export interface Note {
+  code: string;
+  params: Record<string, string>;
+}
+
 export interface Composition {
   total: number;
   by_role: [string, number][];
   familiars: number;
   tears_replacements: number;
+  /** Modifiers on YOUR tears - never a familiar's. */
   tear_flags: [string, number][];
+  /** Modifiers carried by familiars only. */
+  familiar_tear_flags: [string, number][];
   has_flight: boolean;
+  /** Flight comes from the character, not from an item. */
+  flight_from_character: boolean;
+  /** Character unknown or randomised: do not claim the build has no flight. */
+  flight_unknown: boolean;
 }
 
 export interface BuildAnalysis {
   composition: Composition;
-  archetypes: string[];
-  strengths: string[];
-  weaknesses: string[];
+  archetypes: Note[];
+  strengths: Note[];
+  weaknesses: Note[];
   unknown_ids: number[];
   /** Names for unknown_ids, so the UI can say which items were skipped. */
   unknown_names: string[];
@@ -417,7 +436,10 @@ export interface StatDelta {
 
 export interface SynergyNote {
   kind: "strong" | "weak" | "dangerous";
+  /** Curated knowledge-base wording (a fact, English like the item names). */
   text: string;
+  /** Set when generated rather than curated - translate this instead of `text`. */
+  code: Note | null;
 }
 
 export interface SynergyResult {
@@ -432,7 +454,7 @@ export interface SynergyResult {
   estimate_approximate: boolean;
   synergy_notes: SynergyNote[];
   verdict: "fills_gap" | "redundant_or_conflict" | "strong_pickup" | "situational";
-  verdict_text: string;
+  verdict_text: Note;
 }
 
 export interface HealthReport {
@@ -448,6 +470,10 @@ export interface HealthReport {
   checksum_ok: boolean | null;
   marks_reliable: boolean | null;
   mod_installed: boolean;
+  mod_version_installed: string | null;
+  mod_version_bundled: string | null;
+  /** The mod Isaac loads is not the one this app ships - reinstall and restart. */
+  mod_outdated: boolean;
   mod_dir: string | null;
   mod_data_file: string | null;
   mom_beaten: boolean | null;

@@ -18,6 +18,8 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
+use crate::knowledge::Innate;
+
 // --------------------------------------------------------------------------
 // Knowledge base (mirrors item_kb.json, generated at dev time)
 // --------------------------------------------------------------------------
@@ -51,6 +53,7 @@ pub struct ItemKb {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+// i18n-exempt: compiled from the knowledge JSON - a fact, like an item name.
 pub struct Synergy {
     pub a: i64,
     pub b: i64,
@@ -164,22 +167,57 @@ impl BuildRules {
 // Outputs
 // --------------------------------------------------------------------------
 
+/// One line of analysis, as a code plus its values rather than a finished sentence.
+///
+/// The UI owns the wording. Building English prose here made the whole
+/// strengths/weaknesses panel untranslatable: it stayed English in all 13
+/// languages because the front end rendered the string as-is. Same contract as
+/// `ParseError::code()`.
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+pub struct Note {
+    pub code: String,
+    #[serde(default)]
+    pub params: BTreeMap<String, String>,
+}
+
+impl Note {
+    fn new(code: &str) -> Self {
+        Note { code: code.into(), params: BTreeMap::new() }
+    }
+    fn with(code: &str, kv: &[(&str, String)]) -> Self {
+        Note {
+            code: code.into(),
+            params: kv.iter().map(|(k, v)| ((*k).to_string(), v.clone())).collect(),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct Composition {
     pub total: usize,
     pub by_role: Vec<(String, usize)>,
     pub familiars: usize,
     pub tears_replacements: usize,
+    /// Modifiers that apply to YOUR tears. A familiar that fires homing tears
+    /// homes on the familiar's behalf, not yours, so it is counted separately
+    /// below - claiming "you have homing" for Little Steven is simply wrong.
     pub tear_flags: Vec<(String, usize)>,
+    /// Modifiers carried by familiars only.
+    pub familiar_tear_flags: Vec<(String, usize)>,
     pub has_flight: bool,
+    /// Flight comes from the character rather than from an item.
+    pub flight_from_character: bool,
+    /// Nothing in the build grants flight AND the character is unknown or
+    /// randomised (Eden), so the analysis must not claim there is none.
+    pub flight_unknown: bool,
 }
 
 #[derive(Debug, Clone, Serialize)]
 pub struct BuildAnalysis {
     pub composition: Composition,
-    pub archetypes: Vec<String>,
-    pub strengths: Vec<String>,
-    pub weaknesses: Vec<String>,
+    pub archetypes: Vec<Note>,
+    pub strengths: Vec<Note>,
+    pub weaknesses: Vec<Note>,
     /// build items unknown to the KB (uncovered IDs).
     pub unknown_ids: Vec<i64>,
     /// Names for `unknown_ids` when the collectible index knows them, so the UI can
@@ -198,7 +236,14 @@ pub struct StatDelta {
 #[derive(Debug, Clone, Serialize)]
 pub struct SynergyNote {
     pub kind: String, // strong | weak | dangerous
+    // i18n-exempt: curated knowledge-base wording, see below.
+    /// Curated wording from the knowledge base - a fact, left in English like the
+    /// item names it quotes.
     pub text: String,
+    /// Set when this note was generated rather than curated, so the UI can
+    /// translate it instead of showing `text`.
+    #[serde(default)]
+    pub code: Option<Note>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -214,7 +259,7 @@ pub struct SynergyResult {
     pub estimate_approximate: bool,
     pub synergy_notes: Vec<SynergyNote>,
     pub verdict: String, // fills_gap | redundant_or_conflict | strong_pickup | situational
-    pub verdict_text: String,
+    pub verdict_text: Note,
 }
 
 // --------------------------------------------------------------------------
@@ -280,18 +325,21 @@ fn radar(profile: &BTreeMap<String, f32>) -> Vec<(String, f32)> {
 // Feature A — composition
 // --------------------------------------------------------------------------
 
-pub fn composition(items: &[&ItemKb]) -> Composition {
+pub fn composition(items: &[&ItemKb], innate: Option<&Innate>) -> Composition {
     let mut by_role: BTreeMap<String, usize> = BTreeMap::new();
     let mut tear_flags: BTreeMap<String, usize> = BTreeMap::new();
+    let mut familiar_flags: BTreeMap<String, usize> = BTreeMap::new();
     let mut familiars = 0;
     let mut replacements = 0;
-    let mut has_flight = false;
+    let mut item_flight = false;
     for it in items {
         for r in &it.roles {
             *by_role.entry(r.clone()).or_default() += 1;
         }
+        // A familiar's tear modifiers belong to the familiar, not to the player.
+        let bucket = if it.is_familiar { &mut familiar_flags } else { &mut tear_flags };
         for f in &it.grants_tear_flags {
-            *tear_flags.entry(f.clone()).or_default() += 1;
+            *bucket.entry(f.clone()).or_default() += 1;
         }
         if it.is_familiar {
             familiars += 1;
@@ -300,22 +348,50 @@ pub fn composition(items: &[&ItemKb]) -> Composition {
             replacements += 1;
         }
         if it.grants_flight {
-            has_flight = true;
+            item_flight = true;
         }
     }
+    // The character brings its own tears and its own wings.
+    for f in innate.map(|i| i.tear_flags.as_slice()).unwrap_or(&[]) {
+        *tear_flags.entry(f.clone()).or_default() += 1;
+    }
+    let innate_flight = innate.is_some_and(|i| i.flight);
+
     let mut by_role: Vec<(String, usize)> = by_role.into_iter().collect();
     by_role.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
-    let mut tear_flags: Vec<(String, usize)> = tear_flags.into_iter().collect();
-    tear_flags.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
+    let sorted = |m: BTreeMap<String, usize>| {
+        let mut v: Vec<(String, usize)> = m.into_iter().collect();
+        v.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
+        v
+    };
 
     Composition {
         total: items.len(),
         by_role,
         familiars,
         tears_replacements: replacements,
-        tear_flags,
-        has_flight,
+        tear_flags: sorted(tear_flags),
+        familiar_tear_flags: sorted(familiar_flags),
+        has_flight: item_flight || innate_flight,
+        flight_from_character: innate_flight && !item_flight,
+        // Eden's kit is randomised and an unselected character tells us nothing:
+        // in both cases silence beats a false "no flight".
+        flight_unknown: !item_flight
+            && !innate_flight
+            && innate.map(|i| i.random).unwrap_or(true),
     }
+}
+
+/// Player-facing tear modifiers: items you carry plus your character, never familiars.
+fn player_tear_flag_count(items: &[&ItemKb], innate: Option<&Innate>, flag: &str) -> usize {
+    let from_items = items
+        .iter()
+        .filter(|it| !it.is_familiar && it.grants_tear_flags.iter().any(|f| f == flag))
+        .count();
+    let from_char = innate
+        .map(|i| i.tear_flags.iter().filter(|f| *f == flag).count())
+        .unwrap_or(0);
+    from_items + from_char
 }
 
 // --------------------------------------------------------------------------
@@ -343,10 +419,15 @@ fn has_fire_rate_penalty(items: &[&ItemKb]) -> bool {
     })
 }
 
-pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
+pub fn analyze(
+    db: &ItemDb,
+    ids: &[i64],
+    rules: &BuildRules,
+    innate: Option<&Innate>,
+) -> BuildAnalysis {
     let items = db.resolve(ids);
     let unknown_ids: Vec<i64> = ids.iter().copied().filter(|id| db.get(*id).is_none()).collect();
-    let comp = composition(&items);
+    let comp = composition(&items, innate);
 
     let mut archetypes = Vec::new();
     let mut strengths = Vec::new();
@@ -356,26 +437,33 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
     let big_dmg = has_big_damage_mult(&items, rules.damage_mult_glass_cannon);
     let fr_penalty = has_fire_rate_penalty(&items);
     if big_dmg && fr_penalty {
-        archetypes.push("Glass cannon: big damage but low fire rate.".into());
+        archetypes.push(Note::new("glass_cannon"));
     }
     if big_dmg {
-        strengths.push("Very high damage per shot.".into());
+        strengths.push(Note::new("big_damage"));
     }
 
-    // Tear flags — forces.
-    let flag_labels: &[(&str, &str)] = &[
-        ("homing", "homing"),
-        ("piercing", "piercing tears"),
-        ("spectral", "spectral tears"),
-        ("explosive", "explosive tears"),
-    ];
-    for (flag, label) in flag_labels {
-        let n = tear_flag_count(&items, flag);
+    // Tear modifiers - yours, then your familiars'.
+    const FLAGS: [&str; 4] = ["homing", "piercing", "spectral", "explosive"];
+    for flag in FLAGS {
+        let n = player_tear_flag_count(&items, innate, flag);
         if n >= 1 {
-            strengths.push(format!("You have {label}."));
+            strengths.push(Note::with("have_flag", &[("flag", flag.to_string())]));
         }
         if n >= rules.tear_flag_redundancy_threshold {
-            weaknesses.push(format!("Redundant: {n} sources of {label} (diminishing returns)."));
+            weaknesses.push(Note::with(
+                "redundant_flag",
+                &[("flag", flag.to_string()), ("n", n.to_string())],
+            ));
+        }
+        // Kept as its own line so the information is not lost, but never merged
+        // into the player's own tears.
+        let f = comp.familiar_tear_flags.iter().find(|(x, _)| x == flag).map(|(_, c)| *c);
+        if let Some(c) = f {
+            strengths.push(Note::with(
+                "familiar_flag",
+                &[("flag", flag.to_string()), ("n", c.to_string())],
+            ));
         }
     }
 
@@ -389,30 +477,38 @@ pub fn analyze(db: &ItemDb, ids: &[i64], rules: &BuildRules) -> BuildAnalysis {
             .filter(|it| it.is_tears_replacement)
             .map(|it| it.name.as_str())
             .collect();
-        weaknesses.push(format!(
-            "{} replace your tears - they interact, and only one shot type comes out.",
-            names.join(", ")
-        ));
+        weaknesses.push(Note::with("tears_replacement", &[("items", names.join(", "))]));
     }
 
-    // Vol.
+    // Flight. The character can bring it, and Eden may or may not - say nothing
+    // rather than something false.
     if comp.has_flight {
-        strengths.push("You have flight.".into());
+        strengths.push(Note::new(if comp.flight_from_character {
+            "have_flight_character"
+        } else {
+            "have_flight"
+        }));
     } else if rules.warn_no_flight && !items.is_empty() {
-        weaknesses.push("No flight (mobility gap).".into());
+        weaknesses.push(Note::new(if comp.flight_unknown {
+            "no_flight_items"
+        } else {
+            "no_flight"
+        }));
     }
 
-    // Crowd control: at least one piercing/homing/explosive flag OR an offensive familiar.
-    let crowd = tear_flag_count(&items, "piercing") > 0
-        || tear_flag_count(&items, "homing") > 0
-        || tear_flag_count(&items, "explosive") > 0
+    // Crowd control: a homing familiar genuinely helps here even though its tears
+    // are not yours, so familiars count for this one.
+    let crowd = FLAGS
+        .iter()
+        .filter(|f| **f != "spectral")
+        .any(|f| tear_flag_count(&items, f) > 0 || player_tear_flag_count(&items, innate, f) > 0)
         || items.iter().any(|it| it.is_familiar && it.roles.iter().any(|r| r == "offensive"));
     if !crowd && rules.warn_no_crowd_control && !items.is_empty() {
-        weaknesses.push("No crowd control (no piercing/homing/explosive tears, no offensive familiar).".into());
+        weaknesses.push(Note::new("no_crowd_control"));
     }
 
     if comp.familiars >= 1 {
-        strengths.push(format!("{} familiar(s) adding extra DPS.", comp.familiars));
+        strengths.push(Note::with("familiars_dps", &[("n", comp.familiars.to_string())]));
     }
 
     let unknown_names = unknown_ids.iter().map(|&id| db.display_name(id)).collect();
@@ -467,7 +563,11 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
     let mut notes = Vec::new();
     for it in &build {
         if let Some(s) = db.synergy_between(cand.id, it.id) {
-            notes.push(SynergyNote { kind: s.kind.clone(), text: format!("{}: {}", it.name, s.text) });
+            notes.push(SynergyNote {
+                kind: s.kind.clone(),
+                text: format!("{}: {}", it.name, s.text),
+                code: None,
+            });
         }
     }
     if cand.is_tears_replacement {
@@ -485,6 +585,10 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
                      is not documented in the knowledge base.",
                     undocumented.join(", ")
                 ),
+                code: Some(Note::with(
+                    "undocumented_replacement",
+                    &[("items", undocumented.join(", "))],
+                )),
             });
         }
     }
@@ -504,28 +608,20 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
             && adds_tear_flags.iter().any(|f| f == "homing" || f == "piercing" || f == "explosive"));
 
     let (verdict, verdict_text) = if has_dangerous {
-        (
-            "redundant_or_conflict",
-            "Conflicts with your current build - think twice before taking it.".to_string(),
-        )
+        ("redundant_or_conflict", Note::new("v_conflict"))
     } else if has_strong {
-        (
-            "strong_pickup",
-            "Strong synergy with what you already have - good pick.".to_string(),
-        )
+        ("strong_pickup", Note::new("v_strong"))
     } else if fills_gap {
-        let what = if adds_flight { "flight".to_string() } else { adds_tear_flags.join(", ") };
-        ("fills_gap", format!("Fills a gap: adds {what}."))
+        let note = if adds_flight {
+            Note::new("v_fills_gap_flight")
+        } else {
+            Note::with("v_fills_gap", &[("flags", adds_tear_flags.join(", "))])
+        };
+        ("fills_gap", note)
     } else if redundant_flags {
-        (
-            "redundant_or_conflict",
-            "Redundant: you already have these tear modifiers.".to_string(),
-        )
+        ("redundant_or_conflict", Note::new("v_redundant"))
     } else {
-        (
-            "situational",
-            "Situational pick: stat gains, but no strong named synergy.".to_string(),
-        )
+        ("situational", Note::new("v_situational"))
     };
 
     Some(SynergyResult {
@@ -578,6 +674,17 @@ mod tests {
         it.grants_flight = true;
         it
     }
+    fn fam(mut it: ItemKb) -> ItemKb {
+        it.is_familiar = true;
+        it
+    }
+    /// Tests assert on codes now: the wording lives in the UI catalogue.
+    fn codes(notes: &[Note]) -> Vec<&str> {
+        notes.iter().map(|n| n.code.as_str()).collect()
+    }
+    fn lost() -> Innate {
+        Innate { flight: true, tear_flags: vec!["spectral".into()], random: false }
+    }
     fn dmg_mult(mut it: ItemKb, v: f32) -> ItemKb {
         it.stat_effects.insert("damage".into(), StatEffect { op: "mult".into(), value: v });
         it.complexity = "conditional".into();
@@ -628,7 +735,7 @@ mod tests {
     fn composition_counts_roles_and_flags() {
         let db = db();
         let items = db.resolve(&[3, 115, 118]);
-        let c = composition(&items);
+        let c = composition(&items, None);
         assert_eq!(c.total, 3);
         assert_eq!(c.tears_replacements, 1);
         // homing and spectral are both present.
@@ -639,20 +746,22 @@ mod tests {
     #[test]
     fn analyze_flags_tears_replacement_conflict() {
         let db = db();
-        let a = analyze(&db, &[118, 114], &BuildRules::default());
-        let w = a.weaknesses.join(" ");
-        assert!(w.contains("replace your tears"), "got: {w}");
-        assert!(w.contains("Brimstone") && w.contains("Mom's Knife"), "both are named: {w}");
+        let a = analyze(&db, &[118, 114], &BuildRules::default(), None);
+        let n = a.weaknesses.iter().find(|n| n.code == "tears_replacement").expect("flagged");
+        let items = &n.params["items"];
+        assert!(items.contains("Brimstone") && items.contains("Mom's Knife"), "both named: {items}");
     }
 
     #[test]
     fn analyze_warns_no_flight_and_credits_flight() {
         let db = db();
-        let no_fly = analyze(&db, &[1], &BuildRules::default());
-        assert!(no_fly.weaknesses.iter().any(|w| w.contains("No flight")));
-        let with_fly = analyze(&db, &[179], &BuildRules::default());
-        assert!(with_fly.strengths.iter().any(|s| s.contains("flight")));
-        assert!(!with_fly.weaknesses.iter().any(|w| w.contains("No flight")));
+        // A known character with no innate flight and no flight item: a real gap.
+        let none = Innate::default();
+        let no_fly = analyze(&db, &[1], &BuildRules::default(), Some(&none));
+        assert!(codes(&no_fly.weaknesses).contains(&"no_flight"));
+        let with_fly = analyze(&db, &[179], &BuildRules::default(), Some(&none));
+        assert!(codes(&with_fly.strengths).contains(&"have_flight"));
+        assert!(!codes(&with_fly.weaknesses).contains(&"no_flight"));
     }
 
     #[test]
@@ -661,8 +770,11 @@ mod tests {
         // 3 homing sources (default threshold is 3): Spoon Bender, Lord of the Pit, and
         // a third from the KB? Here we only have 2, so no redundancy; let us test the threshold.
         let rules = BuildRules { tear_flag_redundancy_threshold: 2, ..Default::default() };
-        let a = analyze(&db, &[3, 82], &rules);
-        assert!(a.weaknesses.iter().any(|w| w.contains("Redundant") && w.contains("homing")));
+        let a = analyze(&db, &[3, 82], &rules, None);
+        assert!(a
+            .weaknesses
+            .iter()
+            .any(|w| w.code == "redundant_flag" && w.params["flag"] == "homing"));
     }
 
     #[test]
@@ -674,8 +786,57 @@ mod tests {
         let mut slow = item(999, "Slow", &["offensive"]);
         slow.stat_effects.insert("fire_rate".into(), StatEffect { op: "flat".into(), value: -1.0 });
         db2.items.push(slow);
-        let a = analyze(&db2, &[169, 999], &BuildRules::default());
-        assert!(a.archetypes.iter().any(|x| x.contains("Glass cannon")));
+        let a = analyze(&db2, &[169, 999], &BuildRules::default(), None);
+        assert!(codes(&a.archetypes).contains(&"glass_cannon"));
+    }
+
+    #[test]
+    fn a_familiars_homing_tears_are_not_your_homing_tears() {
+        // Little Steven fires homing tears; YOU do not. Reported from the UI, which
+        // said "You have homing." for a build whose only homing was the familiar.
+        let mut db2 = db();
+        db2.items.push(fam(flag(item(100, "Little Steven", &["familiar", "offensive"]), "homing")));
+        let a = analyze(&db2, &[100], &BuildRules::default(), None);
+        assert!(
+            !codes(&a.strengths).contains(&"have_flag"),
+            "the player has no tear modifier: {:?}",
+            codes(&a.strengths)
+        );
+        // The information is kept, on its own line.
+        let n = a.strengths.iter().find(|n| n.code == "familiar_flag").expect("kept");
+        assert_eq!(n.params["flag"], "homing");
+        // ...and it still counts as crowd control, which it genuinely provides.
+        assert!(!codes(&a.weaknesses).contains(&"no_crowd_control"));
+    }
+
+    #[test]
+    fn the_lost_flies_with_no_item_at_all() {
+        let db = db();
+        let a = analyze(&db, &[1], &BuildRules::default(), Some(&lost()));
+        assert!(codes(&a.strengths).contains(&"have_flight_character"));
+        assert!(!codes(&a.weaknesses).contains(&"no_flight"));
+        // Spectral is innate too, so it is a real strength of the build.
+        assert!(a
+            .strengths
+            .iter()
+            .any(|n| n.code == "have_flag" && n.params["flag"] == "spectral"));
+    }
+
+    #[test]
+    fn an_unknown_character_never_claims_the_build_has_no_flight() {
+        let db = db();
+        let a = analyze(&db, &[1], &BuildRules::default(), None);
+        let w = codes(&a.weaknesses);
+        assert!(!w.contains(&"no_flight"), "cannot know: {w:?}");
+        assert!(w.contains(&"no_flight_items"), "but may speak about the items: {w:?}");
+    }
+
+    #[test]
+    fn eden_is_never_told_it_has_no_flight() {
+        let db = db();
+        let eden = Innate { random: true, ..Default::default() };
+        let a = analyze(&db, &[1], &BuildRules::default(), Some(&eden));
+        assert!(!codes(&a.weaknesses).contains(&"no_flight"), "Eden's kit is randomised");
     }
 
     #[test]

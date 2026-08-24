@@ -66,12 +66,16 @@ export function ProgressBar({
 export function Pill({
   children,
   className = "",
+  title,
 }: {
   children: ReactNode;
   className?: string;
+  /** Hover text, for pills whose label is necessarily terse. */
+  title?: string;
 }) {
   return (
     <span
+      title={title}
       className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${className}`}
     >
       {children}

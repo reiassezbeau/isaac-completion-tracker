@@ -206,6 +206,7 @@ pub struct AchievementRef {
     pub id: u32,
     pub name: String,
     pub reward: String,
+    // i18n-exempt: compiled from the knowledge JSON - a fact, like an item name.
     pub unlock_text: String,
 }
 
@@ -709,8 +710,8 @@ mod tests {
     fn knowledge() -> Knowledge {
         Knowledge {
             characters: vec![
-                Character { id: "isaac".into(), name: "Isaac".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 0 },
-                Character { id: "bethany".into(), name: "Bethany".into(), kind: "regular".into(), dlc: "repentance".into(), save_index: 15 },
+                Character { id: "isaac".into(), name: "Isaac".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 0, innate: Default::default() },
+                Character { id: "bethany".into(), name: "Bethany".into(), kind: "regular".into(), dlc: "repentance".into(), save_index: 15, innate: Default::default() },
             ],
             endings: vec![
                 Ending { id: "hush".into(), name: "Hush".into(), mark_index: 8, hard_matters: true },

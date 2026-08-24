@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 use std::path::Path;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+// i18n-exempt: compiled from the knowledge JSON - a fact, like an item name.
 pub struct Unlock {
     pub text: String,
     #[serde(rename = "type")]
@@ -30,6 +31,22 @@ pub struct Achievement {
     pub reward: String,
 }
 
+/// What a character brings on its own, before a single item is picked up.
+///
+/// Only recorded where it is certain and unconditional, because the build
+/// analysis speaks in absolutes ("no flight") and a guess there is worse than
+/// silence. `random` marks Eden, whose starting kit is randomised: the analysis
+/// must then decline to claim anything rather than assume the worst.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Innate {
+    #[serde(default)]
+    pub flight: bool,
+    #[serde(default)]
+    pub tear_flags: Vec<String>,
+    #[serde(default)]
+    pub random: bool,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Character {
     pub id: String,
@@ -38,6 +55,9 @@ pub struct Character {
     pub kind: String,
     pub dlc: String,
     pub save_index: usize,
+    /// Absent for every character with nothing unconditional to declare.
+    #[serde(default)]
+    pub innate: Innate,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -52,6 +72,7 @@ pub struct Ending {
 pub struct RoutingTip {
     pub id: String,
     pub applies_to: Vec<String>,
+    // i18n-exempt: compiled from the knowledge JSON - a fact, like an item name.
     pub title: String,
     pub text: String,
 }

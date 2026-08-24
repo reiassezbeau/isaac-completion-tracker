@@ -59,7 +59,8 @@ export const api = {
   getOptimizer: (limit: number) => invoke<OptimizerReport>("get_optimizer", { limit }),
 
   getItemKb: () => invoke<ItemKb[]>("get_item_kb"),
-  analyzeBuild: (itemIds: number[]) => invoke<BuildAnalysis>("analyze_build", { itemIds }),
+  analyzeBuild: (itemIds: number[], character: string | null = null) =>
+    invoke<BuildAnalysis>("analyze_build", { itemIds, character }),
   trySynergy: (buildIds: number[], candidateId: number) =>
     invoke<SynergyResult>("try_synergy", { buildIds, candidateId }),
 

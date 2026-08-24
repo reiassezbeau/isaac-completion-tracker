@@ -1,6 +1,6 @@
 [package]
 name = "isaac-completion-tracker"
-version = "0.4.5"
+version = "0.4.7"
 description = "Local, offline completion tracker for The Binding of Isaac: Repentance+"
 authors = ["reiassezbeau <https://github.com/reiassezbeau>"]
 homepage = "https://github.com/reiassezbeau"

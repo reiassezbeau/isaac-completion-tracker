@@ -245,6 +245,7 @@ export function StatCardView() {
   const dashboard = useStore((s) => s.dashboard);
   const toast = useStore((s) => s.toast);
   const theme = useStore((s) => s.theme);
+  const dataVersion = useStore((s) => s.dataVersion);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [template, setTemplate] = useState<Template>("profile");
@@ -267,7 +268,7 @@ export function StatCardView() {
     api.getInsights().then(setIns).catch(() => setIns(null));
     api.getRunHistory(40).then(setRuns).catch(() => setRuns([]));
     api.getOptimizer(1).then((r) => setAttempts(r.eta.estimated_attempts)).catch(() => setAttempts(null));
-  }, []);
+  }, [dataVersion]);
 
   const name = useCallback((id: string) => names[id] ?? id, [names]);
 

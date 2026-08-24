@@ -37,8 +37,13 @@ pub fn read_file_with_retry(path: &Path) -> std::io::Result<Vec<u8>> {
 pub struct SaveSlot {
     pub path: String,
     pub filename: String,
+    // i18n-exempt: English fallback for `slot_number`, same deal as `source` below.
     /// "Slot 1/2/3", inferred from the file name.
     pub label: String,
+    /// The slot digit on its own, so the UI can say "Slot N" in its own language.
+    /// `None` when the file name carries no recognisable slot.
+    pub slot_number: Option<u8>,
+    // i18n-exempt: English fallback for `source_code`, which the UI translates.
     /// Human-readable provenance, English: "Steam Cloud", "Documents", "Local backup".
     pub source: String,
     /// Stable provenance code the UI translates (`src.<code>`).
@@ -154,12 +159,14 @@ fn steam_remote_dirs() -> Vec<PathBuf> {
 }
 
 fn slot_label(filename: &str) -> String {
-    for n in ['1', '2', '3'] {
-        if filename.contains(&format!("persistentgamedata{n}")) {
-            return format!("Slot {n}");
-        }
+    match slot_number(filename) {
+        Some(n) => format!("Slot {n}"),
+        None => "Slot ?".to_string(),
     }
-    "Slot ?".to_string()
+}
+
+fn slot_number(filename: &str) -> Option<u8> {
+    (1u8..=3).find(|n| filename.contains(&format!("persistentgamedata{n}")))
 }
 
 fn is_save_file(filename: &str) -> bool {
@@ -195,6 +202,7 @@ pub fn slot_from_file(path: &Path, source_code: &str, source: &str) -> SaveSlot 
     let mut slot = SaveSlot {
         path: path.to_string_lossy().into_owned(),
         label: slot_label(&filename),
+        slot_number: slot_number(&filename),
         modified_ms: modified_ms(path),
         filename,
         source: source.to_string(),
@@ -314,12 +322,30 @@ pub fn list_saves() -> Vec<SaveSlot> {
 mod tests {
     use super::*;
 
+    #[test]
+    fn slot_number_is_the_digit_the_label_shows() {
+        // The UI localizes "Slot N" from the digit, so the two must never disagree.
+        for (name, want) in [
+            ("rep+persistentgamedata1.dat", Some(1)),
+            ("rep_persistentgamedata2.dat", Some(2)),
+            ("persistentgamedata3.dat", Some(3)),
+            ("something_else.dat", None),
+        ] {
+            assert_eq!(slot_number(name), want, "{name}");
+            match want {
+                Some(n) => assert_eq!(slot_label(name), format!("Slot {n}")),
+                None => assert_eq!(slot_label(name), "Slot ?"),
+            }
+        }
+    }
+
     fn slot(name: &str, src: &str, ok: bool) -> SaveSlot {
         let (family, _) = save_family(name);
         SaveSlot {
             path: format!("/x/{name}"),
             filename: name.into(),
             label: slot_label(name),
+            slot_number: slot_number(name),
             source: src.into(),
             source_code: src.into(),
             edition: None,

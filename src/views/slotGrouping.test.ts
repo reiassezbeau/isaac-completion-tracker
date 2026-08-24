@@ -10,6 +10,7 @@ function slot(filename: string, live: boolean, readable = true): SaveSlot {
     path: `/x/${filename}`,
     filename,
     label: "Slot 1",
+    slot_number: 1,
     source: "Steam Cloud",
     source_code: "steam_cloud",
     edition: readable ? "repentanceplus" : null,

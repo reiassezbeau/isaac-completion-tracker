@@ -24,7 +24,7 @@ local json = require("json")
 local SCHEMA = 1
 -- Mod version. MUST stay in sync with <version> in metadata.xml (the value the
 -- game shows in its Mods menu); this one is what ends up in log.txt.
-local MOD_VERSION = "0.2.1"
+local MOD_VERSION = "0.2.2"
 -- Sliding buffer on the mod side: small (the app keeps the full permanent history).
 -- Small => cheap json.encode + disk write => no in-game hitch.
 local MAX_HISTORY = 40
@@ -408,6 +408,13 @@ local function onNewRoom(_)
   roomAwardCounted = false
   bossKilledInRoom = {}
   if data.current_run ~= nil then
+    -- Snapshot here too, not only per floor: an item picked up mid-floor was
+    -- missing from the build the app loaded, and had to be re-added by hand.
+    -- A room change is cheap and bounds the lag to a single room.
+    local okB, build = pcall(function() return snapshotBuild(Isaac.GetPlayer(0)) end)
+    if okB and type(build) == "table" then
+      data.current_run.final_build = build
+    end
     save()
   end
 end
@@ -431,4 +438,4 @@ mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, safe("new_level", onNewLevel))
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, safe("new_room", onNewRoom))
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, safe("pre_game_exit", onPreGameExit))
 
-log("loaded (v" .. MOD_VERSION .. ") -- observer + wide fields + hardened run resume")
+log("loaded (v" .. MOD_VERSION .. ") -- observer + wide fields + per-room build snapshot")

@@ -7,7 +7,7 @@ import type { MarkDifficulty } from "./types";
 type Tr = (k: string) => string;
 
 /** App version shown in the UI. Keep in sync with package.json, Cargo.toml and tauri.conf.json. */
-export const APP_VERSION = "0.4.5";
+export const APP_VERSION = "0.4.7";
 
 export const GITHUB_URL = "https://github.com/reiassezbeau";
 export const GITHUB_HANDLE = "reiassezbeau";
@@ -140,6 +140,29 @@ export function tearFlagLabel(f: string, t?: Tr): string {
 }
 export function statDimLabel(d: string, t?: Tr): string {
   return tr(t, `stat.${d}`, STAT_DIM_LABELS[d] ?? d);
+}
+
+/**
+ * Render a backend `Note` into a sentence in the user's language.
+ *
+ * The analysis used to arrive from Rust as finished English prose, which the view
+ * printed as-is - so the strengths/weaknesses panel stayed English in all 13
+ * languages. The backend now sends a code plus its values and the wording lives in
+ * the catalogue; this puts the two back together.
+ *
+ * `flag` / `flags` carry raw tear-flag ids and are translated on the way in, so
+ * "homing" becomes the localized word rather than leaking the id.
+ */
+export function noteText(note: { code: string; params?: Record<string, string> }, t: Tr): string {
+  let s = t(`bldn.${note.code}`);
+  for (const [k, raw] of Object.entries(note.params ?? {})) {
+    const v =
+      k === "flag" || k === "flags"
+        ? raw.split(", ").map((f) => tearFlagLabel(f, t)).join(", ")
+        : raw;
+    s = s.split(`{${k}}`).join(v);
+  }
+  return s;
 }
 
 export function verdictLabel(verdict: string, t?: Tr): string {

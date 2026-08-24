@@ -526,8 +526,8 @@ mod tests {
     fn kn() -> Knowledge {
         Knowledge {
             characters: vec![
-                Character { id: "isaac".into(), name: "Isaac".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 0 },
-                Character { id: "cain".into(), name: "Cain".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 2 },
+                Character { id: "isaac".into(), name: "Isaac".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 0, innate: Default::default() },
+                Character { id: "cain".into(), name: "Cain".into(), kind: "regular".into(), dlc: "rebirth".into(), save_index: 2, innate: Default::default() },
             ],
             endings: vec![
                 Ending { id: "mother".into(), name: "Mother".into(), mark_index: 10, hard_matters: true },

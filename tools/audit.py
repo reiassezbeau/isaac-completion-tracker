@@ -27,6 +27,7 @@ LANGS = ["en", "fr", "es", "pt", "de", "ru", "pl", "zh", "ja", "hi", "ar", "bn",
 CATALOGS = [
     "src/lib/i18n.ts", "src/lib/i18n-views.ts", "src/lib/i18n-views2.ts",
     "src/lib/i18n-views3.ts", "src/lib/i18n-views4.ts", "src/lib/i18n-views5.ts",
+    "src/lib/i18n-views6.ts",
 ]
 
 failures: list[str] = []
@@ -319,7 +320,95 @@ def audit_rtl():
         ok("no placement utility that would break Arabic or Urdu")
 
 
-for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data, audit_versions, audit_rtl):
+def audit_backend_prose():
+    """Prose written in Rust reaches the screen untranslated.
+
+    The build assistant shipped its whole strengths/weaknesses panel in English in
+    all 13 languages, because the backend built finished sentences and the view
+    printed them as-is. Two rules keep that from coming back:
+
+    1. A struct that crosses the Tauri boundary (`Serialize`) must not carry a
+       free-form prose field. It sends a code and the catalogue owns the wording.
+    2. Every `Note` code emitted by Rust must exist in the catalogue, or the user
+       reads a raw key. These are built by template so the generic reference check
+       cannot see them.
+    """
+    check("Backend prose and note codes")
+
+    rust = []
+    for root, _, files in os.walk("src-tauri/src"):
+        for fn_ in files:
+            if fn_.endswith(".rs"):
+                rust.append(os.path.join(root, fn_).replace(os.sep, "/"))
+
+    # -- 1. prose-shaped fields on serialized structs ------------------------
+    PROSE = re.compile(
+        r"pub (?:text|message|label|reason|summary|\w*_text|\w*_message)"
+        r"\s*:\s*(?:String|Vec<String>)"
+    )
+    offenders = []
+    for p_ in rust:
+        lines = read(p_).split(chr(10))
+        for i, line in enumerate(lines):
+            if not PROSE.search(line):
+                continue
+            # An explicit, documented exemption on the lines just above.
+            window = chr(10).join(lines[max(0, i - 6):i])
+            if "i18n-exempt" in window:
+                continue
+            offenders.append((p_, i + 1, line.strip()))
+    if offenders:
+        for p_, i, line in offenders:
+            fail(f"{p_}:{i} prose field crosses to the UI untranslated: {line}")
+    else:
+        ok("no serialized struct carries free-form prose")
+
+    # -- 2. every emitted note code is declared -----------------------------
+    emitted = set()
+    for p_ in rust:
+        # The code is not always the first token: `Note::new(if x { "a" } else { "b" })`
+        # is a legitimate call site, so scan the whole argument span.
+        for span in re.findall(r"Note::(?:new|with)\((.*?)\)", read(p_), re.S):
+            # Everything before the params array is the code - and there can be
+            # more than one, since `Note::new(if x { "a" } else { "b" })` is a
+            # legitimate call site. Param NAMES live inside `&[..]` and are not codes.
+            emitted |= set(re.findall(r'"([a-z][a-z0-9_]*)"', span.split("&[")[0]))
+    declared = set()
+    for f in CATALOGS:
+        declared |= set(re.findall(r'"bldn\.([a-z0-9_]+)"\s*:', read(f)))
+    missing = sorted(emitted - declared)
+    orphan = sorted(declared - emitted)
+    if missing:
+        fail("note code(s) with no catalogue entry (renders as a raw key): "
+             + ", ".join(f"bldn.{c}" for c in missing))
+    else:
+        ok(f"all {len(emitted)} note codes are declared")
+    if orphan:
+        fail("catalogue entr(ies) no backend code emits: "
+             + ", ".join(f"bldn.{c}" for c in orphan))
+    else:
+        ok("no orphan note strings")
+
+    # -- 3. views holding mod data must follow Refresh -----------------------
+    # The header Refresh re-read the save but not the mod's run file, and the views
+    # that had already fetched their runs kept showing the old ones. Pressing the
+    # button did visibly nothing; only restarting the app helped.
+    MOD_READS = ("getRunHistory", "getStatsOverview")
+    stale = []
+    for p_ in source_files((".tsx",)):
+        src = read(p_)
+        if any(f"api.{c}(" in src for c in MOD_READS) and "dataVersion" not in src:
+            stale.append(p_)
+    if stale:
+        for p_ in stale:
+            fail(f"{p_} caches mod data but does not depend on dataVersion - "
+                 "Refresh will not update it")
+    else:
+        ok("every view holding mod data re-reads it on Refresh")
+
+
+for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data,
+           audit_versions, audit_rtl, audit_backend_prose):
     fn()
 
 print()

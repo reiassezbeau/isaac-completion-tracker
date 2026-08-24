@@ -4,11 +4,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Feather, Heart, Plus, Search, Sparkles, Wand2, X } from "lucide-react";
 import { api } from "../lib/api";
-import { roleLabel, statDimLabel, tearFlagLabel, verdictLabel, VERDICT_META } from "../lib/format";
+import { noteText, roleLabel, statDimLabel, tearFlagLabel, verdictLabel, VERDICT_META } from "../lib/format";
 import { useT } from "../lib/useT";
+import { useStore } from "../store";
 import { useItemName } from "../lib/useItemName";
 import { Card, EmptyState, Pill, SectionTitle } from "../components/ui";
-import type { BuildAnalysis, ItemKb, Run, SynergyResult } from "../lib/types";
+import type { BuildAnalysis, Character, ItemKb, Run, SynergyResult } from "../lib/types";
 
 const DIMS = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"] as const;
 
@@ -102,7 +103,7 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
         <Pill className={toneClass(meta.tone)}>{verdictLabel(result.verdict, t)}</Pill>
       </div>
 
-      <p className="mb-3 text-sm text-isaac-text">{result.verdict_text}</p>
+      <p className="mb-3 text-sm text-isaac-text">{noteText(result.verdict_text, t)}</p>
 
       <div className="grid gap-4 md:grid-cols-[240px_1fr]">
         <div>
@@ -153,7 +154,9 @@ function SynergyPanel({ result }: { result: SynergyResult }) {
             <div className="space-y-1.5">
               {result.synergy_notes.map((n, i) => (
                 <div key={i} className={`rounded-lg border px-3 py-1.5 text-sm ${noteToneClass(n.kind)}`}>
-                  {n.text}
+                  {/* Curated pairs keep the knowledge base's own wording (a fact, like
+                      the item names); the ones we generate are translated. */}
+                  {n.code ? noteText(n.code, t) : n.text}
                 </div>
               ))}
             </div>
@@ -199,6 +202,16 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
             {tearFlagLabel(f, t)} ×{n}
           </Pill>
         ))}
+        {/* Hollow, and labelled: these belong to a familiar, not to your tears. */}
+        {c.familiar_tear_flags.map(([f, n]) => (
+          <Pill
+            key={`fam-${f}`}
+            className="border-isaac-border bg-transparent text-isaac-muted"
+            title={t("bld.familiarFlagTitle")}
+          >
+            {tearFlagLabel(f, t)} ×{n} · {t("bld.familiarShort")}
+          </Pill>
+        ))}
       </div>
 
       {analysis.unknown_ids.length > 0 && (
@@ -213,8 +226,8 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
       )}
 
       {analysis.archetypes.map((a) => (
-        <div key={a} className="mb-2 rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-3 py-1.5 text-sm text-isaac-text">
-          {a}
+        <div key={a.code} className="mb-2 rounded-lg border border-isaac-gold/40 bg-isaac-gold/10 px-3 py-1.5 text-sm text-isaac-text">
+          {noteText(a, t)}
         </div>
       ))}
 
@@ -227,7 +240,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
             <ul className="space-y-1 text-sm">
               {analysis.strengths.map((s, i) => (
                 <li key={i} className="flex items-baseline gap-1.5">
-                  <span className="text-isaac-done">✓</span> {s}
+                  <span className="text-isaac-done">✓</span> {noteText(s, t)}
                 </li>
               ))}
             </ul>
@@ -241,7 +254,7 @@ function AnalysisPanel({ analysis }: { analysis: BuildAnalysis }) {
             <ul className="space-y-1 text-sm">
               {analysis.weaknesses.map((w, i) => (
                 <li key={i} className="flex items-baseline gap-1.5">
-                  <span className="text-isaac-blood-light">•</span> {w}
+                  <span className="text-isaac-blood-light">•</span> {noteText(w, t)}
                 </li>
               ))}
             </ul>
@@ -262,17 +275,27 @@ export function BuildAssistantView() {
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null);
   const [synergy, setSynergy] = useState<SynergyResult | null>(null);
   const [runs, setRuns] = useState<Run[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  // Innate flight and innate tears are real: The Lost needs no item to fly, so
+  // without this the analysis would call that a mobility gap.
+  const [character, setCharacter] = useState<string>("");
+  const dataVersion = useStore((s) => s.dataVersion);
 
   useEffect(() => {
     api.getItemKb().then(setKb);
-    // Recent runs that carry a build snapshot (§7) -> loadable into the simulator.
-    api.getRunHistory(40).then((rs) => setRuns(rs.filter((r) => r.final_build.length > 0))).catch(() => setRuns([]));
+    api.getCharactersStatic().then(setCharacters).catch(() => setCharacters([]));
   }, []);
 
   useEffect(() => {
-    if (build.length > 0) api.analyzeBuild(build).then(setAnalysis);
+    // Recent runs that carry a build snapshot (§7) -> loadable into the simulator.
+    // Re-read on refresh: a run that ended after this view mounted was missing.
+    api.getRunHistory(40).then((rs) => setRuns(rs.filter((r) => r.final_build.length > 0))).catch(() => setRuns([]));
+  }, [dataVersion]);
+
+  useEffect(() => {
+    if (build.length > 0) api.analyzeBuild(build, character || null).then(setAnalysis);
     else setAnalysis(null);
-  }, [build]);
+  }, [build, character]);
 
   useEffect(() => {
     if (candidate != null) api.trySynergy(build, candidate).then(setSynergy).catch(() => setSynergy(null));
@@ -355,12 +378,27 @@ export function BuildAssistantView() {
           </Card>
         </div>
 
-        {/* Build courant + analyses */}
+        {/* Current build + analysis */}
         <div className="space-y-5">
           <Card>
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-isaac-muted">{t("bld.yourBuild")}</h2>
               <div className="flex items-center gap-2">
+                {/* Always available: the build assistant is usable before any save
+                    is loaded, and the character changes what may be claimed. */}
+                <select
+                  value={character}
+                  onChange={(e) => setCharacter(e.target.value)}
+                  className="rounded-lg border border-isaac-border bg-isaac-surface2 px-2.5 py-1 text-xs text-isaac-text outline-none focus:border-isaac-gold/60"
+                  title={t("bld.characterHint")}
+                >
+                  <option value="">{t("bld.noCharacter")}</option>
+                  {characters.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
                 {runs.length > 0 && (
                   <select
                     value=""
@@ -368,6 +406,8 @@ export function BuildAssistantView() {
                       const r = runs[Number(e.target.value)];
                       if (r) {
                         setBuild(r.final_build);
+                        // The run knows who was playing - do not make them say it twice.
+                        setCharacter(r.character);
                         setCandidate(null);
                       }
                     }}
@@ -377,7 +417,8 @@ export function BuildAssistantView() {
                     <option value="">{t("bld.loadRun")}</option>
                     {runs.map((r, i) => (
                       <option key={r.run_id} value={i}>
-                        {r.character} · {r.final_build.length} items · {r.outcome ?? "en cours"}
+                        {r.character} · {r.final_build.length} items ·{" "}
+                        {r.outcome ?? t("bld.runInProgress")}
                       </option>
                     ))}
                   </select>

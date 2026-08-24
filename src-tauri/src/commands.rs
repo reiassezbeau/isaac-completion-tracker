@@ -155,6 +155,10 @@ pub fn refresh(state: State<AppState>) -> Result<engine::Dashboard, String> {
         .map_err(|e| format!("Cannot read file: {e}"))?;
     let save = save_parser::parse(&bytes).map_err(|e| e.to_string())?;
     *state.current.lock().unwrap() = Some((save, path));
+    // The mod's run history lives in its own file, NOT in the save. Refreshing only
+    // the save meant a run that had just ended stayed invisible until the app was
+    // restarted - the button looked like it did nothing at all.
+    state.refresh_stats_forced();
     dashboard(state)
 }
 
@@ -370,13 +374,21 @@ pub struct HealthReport {
     pub mod_installed: bool,
     pub mod_dir: Option<String>,
     pub mod_data_file: Option<String>,
+    /// Version of the mod actually sitting in the game's mods folder.
+    pub mod_version_installed: Option<String>,
+    /// Version this build of the app ships.
+    pub mod_version_bundled: Option<String>,
+    /// The two disagree: the copy Isaac loads is not the one this app expects.
+    /// Checking only that main.lua EXISTS reported "installed" forever, so a mod
+    /// fix silently never reached anyone who had already installed it once.
+    pub mod_outdated: bool,
     /// Whether Mom has been beaten on the loaded slot (proxy: secret 4, "The Womb") - see caveat §2.
     pub mom_beaten: Option<bool>,
     pub warnings: Vec<String>,
 }
 
 #[tauri::command]
-pub fn get_health(state: State<AppState>) -> HealthReport {
+pub fn get_health(app: AppHandle, state: State<AppState>) -> HealthReport {
     let game_root = paths::resolve_game_root();
     let mut warnings = Vec::new();
 
@@ -404,6 +416,18 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
     let data_dir = paths::data_dir();
     let tracker_dir = paths::tracker_mod_dir();
     let mod_installed = tracker_dir.as_ref().map(|d| d.join("main.lua").exists()).unwrap_or(false);
+    let mod_version_installed = tracker_dir.as_ref().and_then(|d| lua_mod_version(&d.join("main.lua")));
+    let mod_version_bundled = mod_source_dir(&app).and_then(|d| lua_mod_version(&d.join("main.lua")));
+    let mod_outdated = mod_installed
+        && match (&mod_version_installed, &mod_version_bundled) {
+            (Some(i), Some(b)) => i != b,
+            // main.lua exists but declares no version: it predates MOD_VERSION
+            // entirely, which makes it the most stale copy there is. Treating the
+            // missing marker as "fine" is how a years-old mod keeps running.
+            (None, Some(_)) => true,
+            // We ship nothing to compare against: say nothing.
+            _ => false,
+        };
     let mod_data_file = paths::find_mod_data_file();
 
     let slots = save_locator::list_saves();
@@ -438,6 +462,9 @@ pub fn get_health(state: State<AppState>) -> HealthReport {
         checksum_ok,
         marks_reliable,
         mod_installed,
+        mod_version_installed,
+        mod_version_bundled,
+        mod_outdated,
         mod_dir: tracker_dir.map(|d| d.to_string_lossy().into_owned()),
         mod_data_file: mod_data_file.map(|d| d.to_string_lossy().into_owned()),
         mom_beaten,
@@ -462,6 +489,46 @@ fn mod_source_dir(app: &AppHandle) -> Option<PathBuf> {
     None
 }
 
+/// Reads `MOD_VERSION = "x.y.z"` out of a mod's main.lua.
+///
+/// The Lua file is the single source of truth (metadata.xml must match it, which
+/// the mod header states), so there is nothing else to parse.
+fn lua_mod_version(main_lua: &std::path::Path) -> Option<String> {
+    let src = std::fs::read_to_string(main_lua).ok()?;
+    let after = src.split("MOD_VERSION").nth(1)?;
+    let start = after.find('"')? + 1;
+    let rest = &after[start..];
+    let end = rest.find('"')?;
+    Some(rest[..end].to_string())
+}
+
+#[cfg(test)]
+mod mod_version_tests {
+    use super::*;
+
+    #[test]
+    fn reads_the_version_out_of_a_lua_header() {
+        let dir = std::env::temp_dir().join("isaac_modver_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let f = dir.join("main.lua");
+
+        std::fs::write(&f, "-- header
+local MOD_VERSION = \"0.2.2\"
+local x = 1
+").unwrap();
+        assert_eq!(lua_mod_version(&f).as_deref(), Some("0.2.2"));
+
+        // The build that shipped before MOD_VERSION existed: no marker at all.
+        std::fs::write(&f, "-- old mod, no version constant
+local mod = 1
+").unwrap();
+        assert_eq!(lua_mod_version(&f), None);
+
+        assert_eq!(lua_mod_version(&dir.join("absent.lua")), None);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+}
+
 #[tauri::command]
 pub fn is_tracker_mod_installed() -> bool {
     paths::tracker_mod_dir().map(|d| d.join("main.lua").exists()).unwrap_or(false)
@@ -474,7 +541,7 @@ pub fn install_tracker_mod(app: AppHandle) -> Result<String, String> {
         .ok_or("Game folder not found. Launch the game at least once, then try again.")?;
     std::fs::create_dir_all(&dest).map_err(|e| e.to_string())?;
     for f in ["metadata.xml", "main.lua"] {
-        std::fs::copy(src.join(f), dest.join(f)).map_err(|e| format!("copie {f} : {e}"))?;
+        std::fs::copy(src.join(f), dest.join(f)).map_err(|e| format!("copying {f}: {e}"))?;
     }
     // The generated item KB ships alongside the mod when present; not a blocker otherwise.
     let kb = src.join("item_kb.lua");
@@ -672,9 +739,21 @@ pub fn set_ui_prefs(state: State<AppState>, prefs: UiPrefs) -> Result<(), String
 }
 
 /// Features A + B: composition plus strengths/weaknesses for a build (a list of item IDs).
+///
+/// `character` is optional: without it the analysis cannot know about innate
+/// flight or tears (The Lost flies with no item at all), so it says less rather
+/// than something false.
 #[tauri::command]
-pub fn analyze_build(state: State<AppState>, item_ids: Vec<i64>) -> build_assistant::BuildAnalysis {
-    build_assistant::analyze(&state.item_db, &item_ids, &state.build_rules)
+pub fn analyze_build(
+    state: State<AppState>,
+    item_ids: Vec<i64>,
+    character: Option<String>,
+) -> build_assistant::BuildAnalysis {
+    let innate = character
+        .as_deref()
+        .and_then(|id| state.knowledge.character(id))
+        .map(|c| &c.innate);
+    build_assistant::analyze(&state.item_db, &item_ids, &state.build_rules, innate)
 }
 
 /// Feature C: "try synergy" - delta, notes, verdict, and the before/after radar.
@@ -685,5 +764,5 @@ pub fn try_synergy(
     candidate_id: i64,
 ) -> Result<build_assistant::SynergyResult, String> {
     build_assistant::try_synergy(&state.item_db, &build_ids, candidate_id)
-        .ok_or_else(|| format!("Item candidat inconnu : {candidate_id}"))
+        .ok_or_else(|| format!("Unknown candidate item: {candidate_id}"))
 }

@@ -95,13 +95,14 @@ export function StatsView() {
   const [ins, setIns] = useState<Insights | null>(null);
   const [runs, setRuns] = useState<Run[]>([]);
   const setView = useStore((s) => s.setView);
+  const dataVersion = useStore((s) => s.dataVersion);
   const name = useCharNames();
 
   useEffect(() => {
     api.getStatsOverview().then(setOv);
     api.getInsights().then(setIns);
     api.getRunHistory(60).then(setRuns);
-  }, []);
+  }, [dataVersion]);
 
   const heatMax = useMemo(() => Math.max(1, ...(ov?.hits_heatmap.map(([, n]) => n) ?? [])), [ov]);
   const trendMax = useMemo(() => Math.max(1, ...(ov?.hits_trend ?? [])), [ov]);

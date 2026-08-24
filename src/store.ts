@@ -124,6 +124,10 @@ interface AppStore {
   toast: (message: string) => void;
   dismissToast: (id: number) => void;
 
+  /** Bumped by every refresh. Views that cache mod-sourced data depend on it so
+   *  pressing Refresh actually re-reads the run history, not just the save. */
+  dataVersion: number;
+
   loadSlots: () => Promise<void>;
   selectSlot: (slot: SaveSlot) => Promise<void>;
   refresh: (silent?: boolean) => Promise<void>;
@@ -138,6 +142,8 @@ const initialLang = readInitialLang();
 applyLang(initialLang);
 
 export const useStore = create<AppStore>((set, get) => ({
+  dataVersion: 0,
+
   view: "dashboard",
   setView: (view) => set({ view }),
 
@@ -238,7 +244,7 @@ export const useStore = create<AppStore>((set, get) => ({
     if (!get().currentPath) return;
     try {
       const dashboard = await api.refresh();
-      set({ dashboard, parseError: null });
+      set({ dashboard, parseError: null, dataVersion: get().dataVersion + 1 });
       const t = (k: string) => translate(k, get().lang);
       get().toast(t(silent ? "common.progressUpdatedLive" : "common.progressUpdated"));
     } catch (e) {

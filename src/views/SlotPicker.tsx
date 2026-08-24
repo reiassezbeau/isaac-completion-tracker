@@ -47,7 +47,10 @@ function SlotRow({ slot, onPick }: { slot: SaveSlot; onPick: (s: SaveSlot) => vo
     >
       <div className="min-w-0">
         <div className="font-semibold">
-          {slot.label} <span className="text-isaac-muted">· {sourceLabel(slot, t)}</span>
+          {slot.slot_number == null
+            ? slot.label
+            : t("slot.n").split("{n}").join(String(slot.slot_number))}{" "}
+          <span className="text-isaac-muted">· {sourceLabel(slot, t)}</span>
         </div>
         <div className="mt-0.5 truncate text-xs text-isaac-muted">{slot.filename}</div>
         {!ok && <div className="mt-1 text-xs text-isaac-blood">⚠ {errorLabel(slot, t)}</div>}

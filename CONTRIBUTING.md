@@ -83,6 +83,18 @@ Each of those is now a check, so none of them can come back quietly:
   index rather than an allowlist.
 - **Version consistency** - four files declare the version; a mismatch ships an
   installer whose About screen lies.
+- **Backend prose** - a `Serialize` struct must not carry a free-form prose field.
+  The build assistant built English sentences in Rust and the view printed them
+  as-is, so its whole strengths/weaknesses panel stayed English in all 13
+  languages. Send a `Note { code, params }` and let the catalogue own the wording;
+  a field that genuinely carries generated-JSON facts (an item name, a wiki unlock
+  condition) is exempted with an `// i18n-exempt:` comment saying why.
+- **Note codes** - every code Rust emits has a `bldn.*` entry. They are built by
+  template in the view, so the generic reference check cannot see them.
+- **Views that cache mod data** - the mod's run history lives in its own file, not
+  in the save. Refresh re-read only the save, so a run that had just ended stayed
+  invisible and the button looked broken. Any view calling `getRunHistory` or
+  `getStatsOverview` must depend on `dataVersion`.
 
 When you fix a bug that a person had to *see*, add the check that would have found
 it. That is the whole point of the file.

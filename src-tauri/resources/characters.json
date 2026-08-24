@@ -53,7 +53,10 @@
     "name": "Azazel",
     "type": "regular",
     "dlc": "rebirth",
-    "save_index": 7
+    "save_index": 7,
+    "innate": {
+      "flight": true
+    }
   },
   {
     "id": "lazarus",
@@ -67,14 +70,23 @@
     "name": "Eden",
     "type": "regular",
     "dlc": "rebirth",
-    "save_index": 9
+    "save_index": 9,
+    "innate": {
+      "random": true
+    }
   },
   {
     "id": "the_lost",
     "name": "The Lost",
     "type": "regular",
     "dlc": "rebirth",
-    "save_index": 10
+    "save_index": 10,
+    "innate": {
+      "flight": true,
+      "tear_flags": [
+        "spectral"
+      ]
+    }
   },
   {
     "id": "lilith",
@@ -172,7 +184,10 @@
     "name": "Tainted Azazel",
     "type": "tainted",
     "dlc": "repentance",
-    "save_index": 24
+    "save_index": 24,
+    "innate": {
+      "flight": true
+    }
   },
   {
     "id": "tainted_lazarus",
@@ -186,14 +201,23 @@
     "name": "Tainted Eden",
     "type": "tainted",
     "dlc": "repentance",
-    "save_index": 26
+    "save_index": 26,
+    "innate": {
+      "random": true
+    }
   },
   {
     "id": "tainted_lost",
     "name": "Tainted Lost",
     "type": "tainted",
     "dlc": "repentance",
-    "save_index": 27
+    "save_index": 27,
+    "innate": {
+      "flight": true,
+      "tear_flags": [
+        "spectral"
+      ]
+    }
   },
   {
     "id": "tainted_lilith",
