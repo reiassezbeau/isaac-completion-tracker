@@ -20,8 +20,9 @@
  *
  * Created by reiassezbeau — https://github.com/reiassezbeau
  */
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { fetchWikiRows, deriveItem } from "./derive-items.js";
+import { deriveSynergies } from "./derive-synergies.js";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
@@ -64,11 +65,17 @@ export interface Item {
   curated?: boolean;
 }
 
+/**
+ * `strong` / `weak` / `dangerous` are hand-verified verdicts and carry our own
+ * wording. `synergy` / `interaction` are derived: they only report which section
+ * the wiki filed the pair under, carry no text, and never drive a verdict.
+ */
 interface Synergy {
   a: number;
   b: number;
-  type: "strong" | "weak" | "dangerous";
-  text: string;
+  type: "strong" | "weak" | "dangerous" | "synergy" | "interaction";
+  text?: string;
+  curated?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -266,12 +273,60 @@ for (const it of ITEMS) {
 for (const s of SYNERGIES) {
   if (!ids.has(s.a) || !ids.has(s.b)) fail(`synergy references a missing id: ${s.a}/${s.b}`);
   if (!["strong", "weak", "dangerous"].includes(s.type)) fail(`unknown synergy type "${s.type}"`);
+  if (!s.text) fail(`curated synergy ${s.a}/${s.b} has no text`);
+}
+
+// ---------------------------------------------------------------------------
+// Derived pairs: which items the wiki documents as interacting.
+// ---------------------------------------------------------------------------
+// 16 hand-written synergies for 719 items meant the assistant answered "no strong
+// named synergy" for essentially everything anyone tested. These fill the gap
+// WITHOUT judging the pair: see the header of derive-synergies.ts for why a
+// keyword classifier was built, measured against the verified set, and thrown away.
+console.log("-> Deriving documented pairs from the wiki...");
+const nameIndex = new Map<number, string>(
+  Object.entries(
+    (JSON.parse(readFileSync(resolve(RES, "item_names.json"), "utf8")) as {
+      names: Record<string, string>;
+    }).names,
+  ).map(([id, n]) => [Number(id), n]),
+);
+const { pairs: derivedPairs, unresolved } = await deriveSynergies(nameIndex);
+if (derivedPairs.length < 2000) {
+  fail(`only ${derivedPairs.length} documented pairs - the wiki layout changed`);
+}
+
+const curatedPair = new Set(SYNERGIES.map((s) => `${Math.min(s.a, s.b)}-${Math.max(s.a, s.b)}`));
+const contradictions = derivedPairs.filter((p) => {
+  const c = SYNERGIES.find(
+    (s) => Math.min(s.a, s.b) === Math.min(p.a, p.b) && Math.max(s.a, s.b) === Math.max(p.a, p.b),
+  );
+  return c !== undefined && c.type === "dangerous" && p.kind === "synergy";
+});
+
+const ALL_SYNERGIES: Synergy[] = [
+  ...SYNERGIES.map((s) => ({ ...s, curated: true })),
+  // The verified verdict always wins: the wiki files Ipecac + Dr. Fetus under
+  // Synergies (it works) while we call it dangerous (it also kills you).
+  ...derivedPairs
+    .filter((p) => !curatedPair.has(`${Math.min(p.a, p.b)}-${Math.max(p.a, p.b)}`))
+    .filter((p) => ids.has(p.a) && ids.has(p.b))
+    .map((p) => ({ a: p.a, b: p.b, type: p.kind, curated: false })),
+];
+
+console.log(`   ${derivedPairs.length} documented pairs, ${contradictions.length} overruled by a verified entry`);
+for (const c of contradictions) {
+  console.log(`     kept as verified: ${c.a}/${c.b} (wiki files it under Synergies)`);
+}
+const topUnresolved = [...unresolved].sort((x, y) => y[1] - x[1]).slice(0, 5);
+if (topUnresolved.length > 0) {
+  console.log(`   unresolved wiki links (not collectibles): ${topUnresolved.map(([n, c]) => `${n} x${c}`).join(", ")}`);
 }
 
 // ---------------------------------------------------------------------------
 // JSON output (app).
 // ---------------------------------------------------------------------------
-const kb = { schema: 1, items: ITEMS, synergies: SYNERGIES };
+const kb = { schema: 1, items: ITEMS, synergies: ALL_SYNERGIES };
 mkdirSync(RES, { recursive: true });
 writeFileSync(resolve(RES, "item_kb.json"), JSON.stringify(kb, null, 2) + "\n", "utf8");
 
@@ -314,7 +369,7 @@ writeFileSync(resolve(MOD, "item_kb.lua"), luaHeader + luaBody, "utf8");
 const byRole: Record<string, number> = {};
 for (const it of ITEMS) for (const r of it.roles) byRole[r] = (byRole[r] ?? 0) + 1;
 const replacements = ITEMS.filter((i) => i.is_tears_replacement).length;
-console.log(`✅ item_kb: ${ITEMS.length} items, ${SYNERGIES.length} curated synergies.`);
+console.log(`✅ item_kb: ${ITEMS.length} items, ${ALL_SYNERGIES.length} pairs (${SYNERGIES.length} verified).`);
 console.log(`   tear replacements: ${replacements} · by role: ${JSON.stringify(byRole)}`);
 console.log(`   → ${resolve(RES, "item_kb.json")}`);
 console.log(`   → ${resolve(MOD, "item_kb.lua")}`);

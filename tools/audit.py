@@ -160,6 +160,100 @@ def audit_i18n():
 
 
 # ---------------------------------------------------------------------------
+def audit_translation_quality():
+    """Checks the CONTENT of the translations, not just that they exist.
+
+    The six non-Latin languages were machine-generated and nobody here can read
+    them. Judging their prose is out of reach; these four defects are not, and
+    each one is visible damage rather than a matter of taste.
+    """
+    check("Translation content")
+
+    entries: dict[str, dict[str, str]] = {}
+    for f in CATALOGS:
+        for m in re.finditer(r'^\s*"([a-zA-Z0-9_.]+)":\s*\{(.*)\},\s*$', read(f), re.M):
+            entries[m.group(1)] = dict(
+                re.findall(r'(?:^|[\s{])([a-z]{2}):\s*"(.*?)(?<!\\)"', m.group(2))
+            )
+
+    # -- 1. placeholders ----------------------------------------------------
+    # A dropped {n} renders a sentence with a hole in it, and a placeholder the
+    # code never fills prints the braces raw.
+    bad = []
+    for key, vals in entries.items():
+        en = vals.get("en")
+        if en is None:
+            continue
+        want = set(re.findall(r"\{(\w+)\}", en))
+        for lang, v in vals.items():
+            if lang == "en":
+                continue
+            got = set(re.findall(r"\{(\w+)\}", v))
+            if got != want:
+                miss = ", ".join(sorted(want - got)) or "-"
+                extra = ", ".join(sorted(got - want)) or "-"
+                bad.append(f"{key} [{lang}] missing: {miss} / unexpected: {extra}")
+    if bad:
+        for b in bad:
+            fail(f"placeholder mismatch: {b}")
+    else:
+        ok("every placeholder survives all 13 translations")
+
+    # -- 2. empty values ----------------------------------------------------
+    empty = [f"{k} [{l}]" for k, v in entries.items() for l, x in v.items() if not x.strip()]
+    if empty:
+        fail(f"empty translation(s): {', '.join(empty[:8])}")
+    else:
+        ok("no empty translation")
+
+    # -- 3. English left in a non-English slot ------------------------------
+    # Only for real sentences: single words are legitimately identical across
+    # languages far too often for a match to mean anything.
+    IDENTICAL_ON_PURPOSE = {"app.tagline"}
+    leftovers = []
+    for key, vals in entries.items():
+        en = vals.get("en", "")
+        if key in IDENTICAL_ON_PURPOSE or len(en.split()) < 4:
+            continue
+        for lang, v in vals.items():
+            if lang != "en" and v == en:
+                leftovers.append(f"{key} [{lang}]")
+    if leftovers:
+        for l in leftovers:
+            fail(f"untranslated - identical to English: {l}")
+    else:
+        ok("no sentence left in English in another language")
+
+    # -- 4. in-game proper nouns survive ------------------------------------
+    # Players use these in English in every language (CONTRIBUTING says so), and
+    # a generated translation is exactly where "Dead God" quietly becomes a
+    # literal translation nobody searching the wiki would recognise.
+    TERMS = ["Dead God", "Boss Rush", "Repentance", "Tainted", "Isaac", "Discord",
+             "Steam", "GitHub", "Mom's Heart", "Delirium", "Hush"]
+    # German glues them into compounds - "kein Dead-God-Fortschritt" is correct
+    # German and must not be reported, so hyphens count as spaces on both sides.
+    def flat(s):
+        return s.replace("-", " ")
+
+    mangled = []
+    for key, vals in entries.items():
+        en = vals.get("en", "")
+        for term in TERMS:
+            if term not in en:
+                continue
+            for lang, v in vals.items():
+                if lang != "en" and flat(term) not in flat(v):
+                    mangled.append(f"{key} [{lang}] lost \"{term}\"")
+    if mangled:
+        for m in mangled[:12]:
+            fail(f"in-game term not preserved: {m}")
+        if len(mangled) > 12:
+            notes.append(f"{len(mangled) - 12} more in-game term(s) not preserved")
+    else:
+        ok(f"all {len(TERMS)} in-game proper nouns survive every translation")
+
+
+# ---------------------------------------------------------------------------
 # 3. Contrast of the semantic colours, per theme.
 #    Caught: the blood-tinted pills sat at 2.77:1 in the DEFAULT theme, under the
 #    3.0:1 floor for bold text - invisible to review, obvious once measured.
@@ -387,7 +481,11 @@ def audit_backend_prose():
             # Everything before the params array is the code - and there can be
             # more than one, since `Note::new(if x { "a" } else { "b" })` is a
             # legitimate call site. Param NAMES live inside `&[..]` and are not codes.
-            emitted |= set(re.findall(r'"([a-z][a-z0-9_]*)"', span.split("&[")[0]))
+            # A comparison inside the call is not a code: `Note::with(if k == "synergy"
+            # { "syn_documented" } else { .. })` was reporting "synergy" as a missing
+            # catalogue entry. Drop the right-hand side of any == / != first.
+            head = re.sub(r'[=!]=\s*"[^"]*"', "", span.split("&[")[0])
+            emitted |= set(re.findall(r'"([a-z][a-z0-9_]*)"', head))
     declared = set()
     for f in CATALOGS:
         declared |= set(re.findall(r'"bldn\.([a-z0-9_]+)"\s*:', read(f)))
@@ -444,7 +542,8 @@ def audit_backend_prose():
         ok("the mod never touches the player from a room-change callback")
 
 
-for fn in (audit_untranslated_literals, audit_i18n, audit_contrast, audit_data,
+for fn in (audit_untranslated_literals, audit_i18n, audit_translation_quality,
+           audit_contrast, audit_data,
            audit_versions, audit_rtl, audit_backend_prose):
     fn()
 

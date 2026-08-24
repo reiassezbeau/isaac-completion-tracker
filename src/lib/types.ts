@@ -439,7 +439,9 @@ export interface StatDelta {
 }
 
 export interface SynergyNote {
-  kind: "strong" | "weak" | "dangerous";
+  /** strong/weak/dangerous are verified verdicts; synergy/interaction only say
+   *  which wiki section documents the pair. */
+  kind: "strong" | "weak" | "dangerous" | "synergy" | "interaction";
   /** Curated knowledge-base wording (a fact, English like the item names). */
   text: string;
   /** Set when generated rather than curated - translate this instead of `text`. */

@@ -66,9 +66,18 @@ pub struct ItemKb {
 pub struct Synergy {
     pub a: i64,
     pub b: i64,
+    /// Hand-verified verdicts: "strong" | "weak" | "dangerous".
+    /// Derived filings: "synergy" | "interaction" - these say which section of the
+    /// wiki documents the pair. That is attribution, not a judgement, so they
+    /// deliberately never reach the verdict.
     #[serde(rename = "type")]
-    pub kind: String, // "strong" | "weak" | "dangerous"
+    pub kind: String,
+    // i18n-exempt: our own curated wording, empty on derived pairs.
+    /// Empty on derived pairs: we do not copy the wiki's prose.
+    #[serde(default)]
     pub text: String,
+    #[serde(default)]
+    pub curated: bool,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -572,10 +581,23 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
     let mut notes = Vec::new();
     for it in &build {
         if let Some(s) = db.synergy_between(cand.id, it.id) {
-            notes.push(SynergyNote {
-                kind: s.kind.clone(),
-                text: format!("{}: {}", it.name, s.text),
-                code: None,
+            // A verified pair carries our own sentence; a derived one only reports
+            // that the wiki documents it, translated into the user's language.
+            notes.push(if s.curated {
+                SynergyNote {
+                    kind: s.kind.clone(),
+                    text: format!("{}: {}", it.name, s.text),
+                    code: None,
+                }
+            } else {
+                SynergyNote {
+                    kind: s.kind.clone(),
+                    text: String::new(),
+                    code: Some(Note::with(
+                        if s.kind == "synergy" { "syn_documented" } else { "syn_interaction" },
+                        &[("item", it.name.clone())],
+                    )),
+                }
             });
         }
     }
@@ -615,6 +637,11 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
         || has_big_damage_mult(&with_cand, 1.0);
 
     // Verdict (in priority order).
+    //
+    // Only the hand-verified kinds count here. A derived pair means the wiki
+    // documents the combination, which is not the same as saying it is good: the
+    // wiki files Ipecac + Dr. Fetus under Synergies, and it will still kill you.
+    // Letting those drive the verdict would put a judgement behind an attribution.
     let has_dangerous = notes.iter().any(|n| n.kind == "dangerous");
     let has_strong = notes.iter().any(|n| n.kind == "strong");
     let fills_gap = adds_flight
@@ -719,12 +746,23 @@ mod tests {
                 dmg_mult(item(169, "Polyphemus", &["offensive"]), 2.0),
                 item(1, "Sad Onion", &["offensive"]),
             ],
-            synergies: vec![Synergy {
-                a: 118,
-                b: 233,
-                kind: "strong".into(),
-                text: "combo".into(),
-            }],
+            synergies: vec![
+                Synergy {
+                    a: 118,
+                    b: 233,
+                    kind: "strong".into(),
+                    text: "combo".into(),
+                    curated: true,
+                },
+                // A pair the wiki files under Synergies but nobody verified.
+                Synergy {
+                    a: 1,
+                    b: 115,
+                    kind: "synergy".into(),
+                    text: String::new(),
+                    curated: false,
+                },
+            ],
             names: HashMap::from([(999, "An Item Outside The KB".to_string())]),
         }
     }
@@ -853,6 +891,19 @@ mod tests {
         let eden = Innate { random: true, ..Default::default() };
         let a = analyze(&db, &[1], &BuildRules::default(), Some(&eden));
         assert!(!codes(&a.weaknesses).contains(&"no_flight"), "Eden's kit is randomised");
+    }
+
+    #[test]
+    fn a_documented_pair_is_reported_but_never_becomes_a_verdict() {
+        // The wiki files Ipecac + Dr. Fetus under "Synergies"; it works, and it
+        // also kills you. Reporting where a pair is documented is attribution;
+        // turning that into "strong pick" would be a judgement we cannot back.
+        let db = db();
+        let r = try_synergy(&db, &[1], 115).unwrap();
+        let n = r.synergy_notes.iter().find(|n| n.kind == "synergy").expect("reported");
+        assert!(n.text.is_empty(), "we never copy the wiki's prose");
+        assert_eq!(n.code.as_ref().map(|c| c.code.as_str()), Some("syn_documented"));
+        assert_ne!(r.verdict, "strong_pickup", "attribution must not become a verdict");
     }
 
     #[test]

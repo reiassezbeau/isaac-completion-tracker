@@ -85,6 +85,11 @@ function toneClass(tone: "done" | "gold" | "blood" | "muted"): string {
 function noteToneClass(kind: string): string {
   if (kind === "strong") return "border-isaac-done/40 bg-isaac-done/10 text-isaac-done";
   if (kind === "dangerous") return "border-isaac-blood/40 bg-isaac-blood/10 text-isaac-blood-light";
+  // Derived pairs are neutral on purpose. Colouring "synergy" green would turn an
+  // attribution ("the wiki documents this") into a recommendation nobody verified.
+  if (kind === "synergy" || kind === "interaction") {
+    return "border-isaac-border bg-isaac-surface2/50 text-isaac-muted";
+  }
   return "border-isaac-gold/40 bg-isaac-gold/10 text-isaac-gold";
 }
 

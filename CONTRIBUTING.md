@@ -141,6 +141,28 @@ knows, add the id to `EXPECTED_DISAGREEMENT` with a comment saying why.
 Derived entries carry `curated: false`, and the app degrades gracefully: a stat
 delta involving one is flagged approximate, because nobody checked that number.
 
+### Synergies: 16 verified verdicts, ~4300 attributions
+
+The base carried 16 hand-written synergies for 719 items, so the assistant answered
+"no strong named synergy" for essentially every pair anyone tested. It now also
+carries the pairs the wiki documents - but they are a different kind of fact, and
+the code keeps them apart on purpose.
+
+A first attempt classified each wiki bullet with keywords: "overrides", "replaced
+by", "loses" meaning a conflict. Measured against the verified set it agreed 6 times
+out of 16, and it called **Brimstone + Mom's Knife dangerous** - two items that merge
+into one of the best weapons in the game. The sentence that fooled it was the one
+describing the merge. An app that tells you to skip that is worse than an app that
+says nothing.
+
+So the classifier was deleted. The only signal kept is which section the wiki's own
+editors filed the bullet under, and it is reported as attribution rather than
+endorsement: *"the wiki documents a synergy with X"*. Derived pairs are neutral in
+colour, carry no copied prose, and **never reach the verdict** - only the verified
+entries do. The wiki files Ipecac + Dr. Fetus under Synergies; it works, and it will
+still kill you. `a_documented_pair_is_reported_but_never_becomes_a_verdict` locks
+that down.
+
 ### The knowledge bases are generated, not hand-edited
 
 Three files under `src-tauri/resources/` are compiled at dev time (internet allowed) and
