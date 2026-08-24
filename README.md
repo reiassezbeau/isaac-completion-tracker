@@ -1,6 +1,6 @@
 # Isaac Completion Tracker
 
-[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.7/Isaac-Completion-Tracker_0.4.7_x64-setup.exe)
+[![Download](https://img.shields.io/badge/Download-.exe%20Windows-c1272d?style=for-the-badge&logo=windows)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.5.0/Isaac-Completion-Tracker_0.5.0_x64-setup.exe)
 [![Release](https://img.shields.io/github/v/release/reiassezbeau/isaac-completion-tracker?style=for-the-badge&color=d4af37)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest)
 [![License](https://img.shields.io/badge/license-GPL--3.0-8c1a1a?style=for-the-badge)](LICENSE)
 
@@ -26,7 +26,9 @@
 - **Optimizer** — ranks your next actions by **expected value** (value × probability of success):
   ETA to Dead God, bottlenecks, characters closest to 100%.
 - **Build Assistant** — simulator: compose your build, test a candidate item, and see the stat
-  delta, a **before/after radar**, tear-replacement conflicts, and a verdict.
+  delta, a **before/after radar**, tear-replacement conflicts, and a verdict. Covers **all 719
+  collectibles**; 59 are hand-verified and the rest derived from the wiki's own table, and the
+  app flags any figure that has not been checked by a person.
 - **Game stats** (with the mod) — winrate, hits per floor, trends, records, insights.
 - **Shareable card** — generate a PNG image of your progress or a notable run.
 - **641-achievement browser** — search, filters (category / DLC / status), reveal the unlock
@@ -66,7 +68,7 @@ is found, a **"Locate my save…"** button lets you point to the folder manually
 
 ## Installation (users)
 
-**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.4.7/Isaac-Completion-Tracker_0.4.7_x64-setup.exe)** — run it, done.
+**[⬇️ Download the Windows installer (.exe)](https://github.com/reiassezbeau/isaac-completion-tracker/releases/download/v0.5.0/Isaac-Completion-Tracker_0.5.0_x64-setup.exe)** — run it, done.
 
 All versions: [Releases page](https://github.com/reiassezbeau/isaac-completion-tracker/releases/latest).
 An `.msi` and `SHA256SUMS.txt` checksums are provided as well.
@@ -136,7 +138,8 @@ They are compiled at **dev time** (internet allowed), then committed:
 
 ```bash
 npm run build:knowledge   # the 641 achievements
-npm run build:item-kb     # the item knowledge base (2 formats: app + mod)
+npm run build:item-kb     # the item knowledge base (719 items; cross-checked against
+                          # the hand-verified subset, and fails on disagreement)
 ```
 
 Details and sources in [`tools/build-knowledge/README.md`](tools/build-knowledge/README.md).

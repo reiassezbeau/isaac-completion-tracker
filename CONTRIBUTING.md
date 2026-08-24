@@ -99,6 +99,33 @@ Each of those is now a check, so none of them can come back quietly:
 When you fix a bug that a person had to *see*, add the check that would have found
 it. That is the whole point of the file.
 
+### The item knowledge base: 59 verified, 660 derived
+
+`build-item-kb.ts` holds hand-verified entries and derives the rest from the wiki's
+Items table. Both halves are needed: curating 719 items by hand is not realistic,
+and a curated-only base covered 5.3% of the items picked up across 25 real runs -
+the assistant spent its time answering "30 items not in the knowledge base".
+
+Two rules keep the derived half honest:
+
+- **Anything ambiguous yields nothing.** A magnitude is recorded only when the
+  description states it with a sign and a unit; "increases damage" sets the role
+  and stops there. An invented number is worse than an absent one.
+- **The curated entries are the derivation's test set.** The build cross-checks
+  flight, tear replacement, familiar and tear flags against all 53 comparable
+  hand-verified items and *fails* on any disagreement. That caught the scraper
+  returning Transcendence's flavour quote instead of its description - it silently
+  lost its flight, and nothing else would have noticed.
+
+The comparison cuts both ways: it also found four wrong *curated* entries (Lord of
+the Pit's homing, Dead Dove's piercing, Immaculate Heart's homing, Tiny Planet's
+missing spectral), each verified against the item's own wiki page before fixing.
+When the wiki's one-line description genuinely cannot carry what a curated entry
+knows, add the id to `EXPECTED_DISAGREEMENT` with a comment saying why.
+
+Derived entries carry `curated: false`, and the app degrades gracefully: a stat
+delta involving one is flagged approximate, because nobody checked that number.
+
 ### The knowledge bases are generated, not hand-edited
 
 Three files under `src-tauri/resources/` are compiled at dev time (internet allowed) and

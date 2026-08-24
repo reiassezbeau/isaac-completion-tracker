@@ -50,6 +50,15 @@ pub struct ItemKb {
     pub complexity: String, // "flat" | "proc" | "conditional"
     #[serde(default)]
     pub note: String,
+    /// Item quality 0-4 as the wiki states it; absent where it states none.
+    #[serde(default)]
+    pub quality: Option<u8>,
+    /// True for the hand-verified entries. The other 660 are derived from the
+    /// wiki's own table, which is what took the assistant from analysing 5% of a
+    /// real build to all of it - but a derived value has not been checked by a
+    /// person, and the UI says so rather than passing it off as verified.
+    #[serde(default)]
+    pub curated: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -596,8 +605,13 @@ pub fn try_synergy(db: &ItemDb, build_ids: &[i64], candidate_id: i64) -> Option<
     // Redundancy: the candidate only brings flags that are already present in numbers.
     let redundant_flags = !cand.grants_tear_flags.is_empty() && adds_tear_flags.is_empty();
 
+    // Also approximate when any item involved is derived rather than hand-verified:
+    // the classification is sound but nobody checked the numbers, and the radar
+    // should not look more precise than the data behind it.
     let estimate_approximate = cand.complexity != "flat"
         || build.iter().any(|it| it.complexity != "flat")
+        || !cand.curated
+        || build.iter().any(|it| !it.curated)
         || has_big_damage_mult(&with_cand, 1.0);
 
     // Verdict (in priority order).
@@ -659,6 +673,8 @@ mod tests {
             is_familiar: false,
             hearts: 0,
             complexity: "flat".into(),
+            quality: None,
+            curated: true,
             note: String::new(),
         }
     }

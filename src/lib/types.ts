@@ -388,6 +388,10 @@ export interface ItemKb {
   is_familiar: boolean;
   hearts: number;
   complexity: "flat" | "proc" | "conditional";
+  /** Item quality 0-4 as the wiki states it. */
+  quality?: number;
+  /** Hand-verified (59) vs derived from the wiki table (660). */
+  curated: boolean;
   note: string;
 }
 

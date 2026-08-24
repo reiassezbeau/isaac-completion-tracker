@@ -21,6 +21,7 @@
  * Created by reiassezbeau — https://github.com/reiassezbeau
  */
 import { writeFileSync, mkdirSync } from "node:fs";
+import { fetchWikiRows, deriveItem } from "./derive-items.js";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
@@ -36,13 +37,13 @@ const DIMS = ["damage", "fire_rate", "range", "shot_speed", "speed", "luck"] as 
 const TEAR_FLAGS = ["homing", "piercing", "spectral", "explosive"] as const;
 const COMPLEXITY = ["flat", "proc", "conditional"] as const;
 
-type Role = (typeof ROLES)[number];
-type Dim = (typeof DIMS)[number];
-type TearFlag = (typeof TEAR_FLAGS)[number];
-type Complexity = (typeof COMPLEXITY)[number];
-type StatEffect = { op: "flat" | "mult"; value: number };
+export type Role = (typeof ROLES)[number];
+export type Dim = (typeof DIMS)[number];
+export type TearFlag = (typeof TEAR_FLAGS)[number];
+export type Complexity = (typeof COMPLEXITY)[number];
+export type StatEffect = { op: "flat" | "mult"; value: number };
 
-interface Item {
+export interface Item {
   id: number;
   name: string;
   roles: Role[];
@@ -56,6 +57,11 @@ interface Item {
   complexity: Complexity;
   /** short factual note, written by us (never EID prose). */
   note?: string;
+  /** Item quality 0-4 as the wiki states it. */
+  quality?: number;
+  /** True for the hand-checked entries below; false for anything derived. The app
+   *  says which, so a number nobody verified never passes for one that was. */
+  curated?: boolean;
 }
 
 interface Synergy {
@@ -68,7 +74,7 @@ interface Synergy {
 // ---------------------------------------------------------------------------
 // FACTUAL SOURCE (curated). ids = CollectibleType enum (verified).
 // ---------------------------------------------------------------------------
-const ITEMS: Item[] = [
+const CURATED: Item[] = [
   { id: 1, name: "Sad Onion", roles: ["offensive"], stat_effects: { fire_rate: { op: "flat", value: 0.7 } }, complexity: "flat" },
   { id: 2, name: "The Inner Eye", roles: ["offensive", "tear_mod"], stat_effects: { fire_rate: { op: "mult", value: 0.51 } }, complexity: "flat", note: "Triple shot, heavily reduced fire rate." },
   { id: 3, name: "Spoon Bender", roles: ["tear_mod"], grants_tear_flags: ["homing"], complexity: "flat", note: "Grants homing tears." },
@@ -87,7 +93,7 @@ const ITEMS: Item[] = [
   { id: 68, name: "Technology", roles: ["offensive", "tear_mod"], is_tears_replacement: true, grants_tear_flags: ["piercing"], complexity: "conditional", note: "Replaces tears with a continuous laser." },
   { id: 69, name: "Chocolate Milk", roles: ["offensive", "tear_mod"], complexity: "conditional", note: "Chargeable shot; damage scales with charge (NOT a tear replacement)." },
   { id: 81, name: "Dead Cat", roles: ["utility", "defensive"], complexity: "conditional", note: "9 lives, sets max health to 1 heart." },
-  { id: 82, name: "Lord of the Pit", roles: ["mobility", "tear_mod"], grants_flight: true, grants_tear_flags: ["homing"], complexity: "flat", note: "Flight + homing." },
+  { id: 82, name: "Lord of the Pit", roles: ["mobility"], grants_flight: true, stat_effects: { speed: { op: "flat", value: 0.3 } }, complexity: "flat", note: "Flight and a small speed boost. Does NOT grant homing." },
   { id: 87, name: "Loki's Horns", roles: ["offensive"], complexity: "proc", note: "Chance to fire in a cross (4 directions)." },
   { id: 95, name: "Robo-Baby", roles: ["familiar", "offensive"], is_familiar: true, complexity: "flat", note: "Familiar that fires a laser." },
   { id: 100, name: "Little Steven", roles: ["familiar", "offensive"], is_familiar: true, grants_tear_flags: ["homing"], complexity: "flat", note: "Familiar with homing tears." },
@@ -108,12 +114,12 @@ const ITEMS: Item[] = [
   { id: 169, name: "Polyphemus", roles: ["offensive"], stat_effects: { damage: { op: "mult", value: 2.0 }, fire_rate: { op: "flat", value: -1.0 } }, complexity: "conditional", note: "Huge tears; pierces on kill. Multiplicative damage (approximate)." },
   { id: 179, name: "Fate", roles: ["mobility"], grants_flight: true, complexity: "flat", note: "Flight + eternal heart." },
   { id: 182, name: "Sacred Heart", roles: ["offensive", "tear_mod"], grants_tear_flags: ["homing"], stat_effects: { damage: { op: "mult", value: 2.3 }, fire_rate: { op: "flat", value: -0.6 } }, complexity: "conditional", note: "Big damage + homing, reduced fire rate." },
-  { id: 185, name: "Dead Dove", roles: ["mobility", "tear_mod"], grants_flight: true, grants_tear_flags: ["spectral", "piercing"], complexity: "flat", note: "Flight + spectral and piercing tears." },
+  { id: 185, name: "Dead Dove", roles: ["mobility", "tear_mod"], grants_flight: true, grants_tear_flags: ["spectral"], complexity: "flat", note: "Flight + spectral tears." },
   { id: 210, name: "Gnawed Leaf", roles: ["defensive", "utility"], complexity: "conditional", note: "Invincible while standing still." },
   { id: 222, name: "Anti-Gravity", roles: ["tear_mod", "offensive"], stat_effects: { fire_rate: { op: "flat", value: 1.0 } }, complexity: "conditional", note: "Tears float, then fire on release." },
   { id: 224, name: "Cricket's Body", roles: ["offensive", "tear_mod"], stat_effects: { range: { op: "flat", value: -1.0 } }, complexity: "conditional", note: "Tears split into 4 on landing." },
   { id: 229, name: "Monstro's Lung", roles: ["offensive", "tear_mod"], is_tears_replacement: true, complexity: "conditional", note: "Charged shotgun-style burst." },
-  { id: 233, name: "Tiny Planet", roles: ["tear_mod"], stat_effects: { range: { op: "flat", value: 2.0 } }, complexity: "conditional", note: "Tears orbit around Isaac." },
+  { id: 233, name: "Tiny Planet", roles: ["tear_mod"], grants_tear_flags: ["spectral"], stat_effects: { range: { op: "flat", value: 6.5 } }, complexity: "conditional", note: "Spectral tears that orbit Isaac at a fixed distance." },
   { id: 244, name: "Tech.5", roles: ["offensive", "tear_mod"], grants_tear_flags: ["piercing"], complexity: "proc", note: "Adds a tech laser (on top of tears)." },
   { id: 245, name: "20/20", roles: ["offensive", "tear_mod"], complexity: "flat", note: "Double shot." },
   { id: 261, name: "Proptosis", roles: ["offensive"], stat_effects: { damage: { op: "mult", value: 3.0 } }, complexity: "conditional", note: "Triple damage at point-blank range, falling off with distance (approximate)." },
@@ -126,7 +132,7 @@ const ITEMS: Item[] = [
   { id: 409, name: "Empty Vessel", roles: ["defensive"], complexity: "conditional", note: "Flight + invincibility at 0 red hearts (conditional)." },
   { id: 462, name: "Eye of Belial", roles: ["tear_mod", "offensive"], grants_tear_flags: ["homing", "piercing"], complexity: "conditional", note: "After taking a hit: piercing and homing tears." },
   { id: 533, name: "Trisagion", roles: ["offensive", "tear_mod"], is_tears_replacement: true, grants_tear_flags: ["piercing"], complexity: "conditional", note: "Replaces tears with piercing pillars of light." },
-  { id: 573, name: "Immaculate Heart", roles: ["offensive", "tear_mod"], grants_tear_flags: ["homing"], stat_effects: { damage: { op: "flat", value: 0.5 } }, complexity: "proc", note: "Chance of an extra homing tear + soul heart." },
+  { id: 573, name: "Immaculate Heart", roles: ["offensive", "tear_mod"], grants_tear_flags: ["spectral"], stat_effects: { damage: { op: "mult", value: 1.2 } }, hearts: 1, complexity: "proc", note: "Extra spectral tears that orbit Isaac, x1.2 damage, +1 heart container." },
   { id: 698, name: "Twisted Pair", roles: ["familiar", "offensive"], is_familiar: true, complexity: "flat", note: "Two familiars that copy your shots." },
 ];
 
@@ -163,6 +169,86 @@ const SYNERGIES: Synergy[] = [
 function fail(msg: string): never {
   console.error(`\n❌ build-item-kb: ${msg}\n`);
   process.exit(1);
+}
+
+/**
+ * The curated entries are hand-verified and always win; everything else is derived
+ * from the wiki so that no item is missing entirely.
+ *
+ * Why this matters: measured against 25 real runs, the curated-only base could
+ * analyse 5.3% of the items actually picked up. The assistant spent most of its
+ * time answering "30 items not in the knowledge base" instead of answering.
+ *
+ * Derived entries are marked `curated: false` - the app never presents a scraped
+ * value as a hand-verified one.
+ */
+console.log("-> Deriving the remaining items from the wiki...");
+const derived = (await fetchWikiRows()).map(deriveItem);
+if (derived.length < 600) fail(`only ${derived.length} rows scraped - the table layout changed`);
+
+const curatedIds = new Set(CURATED.map((i) => i.id));
+const ITEMS: Item[] = [
+  ...CURATED.map((i) => ({ ...i, curated: true })),
+  ...derived.filter((i) => !curatedIds.has(i.id)),
+].sort((a, b) => a.id - b.id);
+
+// Quality is factual and the curated list predates it, so take the wiki's value
+// wherever the hand-written entry does not state one.
+const qualityOf = new Map(derived.map((i) => [i.id, i.quality]));
+for (const it of ITEMS) {
+  if (it.quality === undefined) {
+    const q = qualityOf.get(it.id);
+    if (q !== undefined) it.quality = q;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The curated entries are the derivation's test set.
+// ---------------------------------------------------------------------------
+// 59 hand-verified items the scraper also sees: if it disagrees with them, either
+// the wiki's table layout moved or a pattern broke. This is what caught the parser
+// returning Transcendence's flavour quote instead of its description - the item
+// silently lost its flight and nothing else would have noticed.
+//
+// It cuts both ways: the same comparison found four WRONG curated entries (Lord of
+// the Pit's homing, Dead Dove's piercing, Immaculate Heart's homing, Tiny Planet's
+// missing spectral), each then checked against the item's own wiki page and fixed.
+{
+  const byId = new Map(derived.map((i) => [i.id, i]));
+  const FACTS = ["grants_flight", "is_tears_replacement", "is_familiar"] as const;
+  // Items whose curated value is a deliberate judgement the wiki text cannot carry
+  // (a thin description, or a mechanic we classify differently on purpose).
+  // 50 Steven, 52 Dr. Fetus, 149 Ipecac, 151 Mulligan, 168 Epic Fetus: the table's
+  //   one-line description cannot carry what the curated entry knows.
+  // 573 Immaculate Heart: the table says "extra tears", the item's own page says
+  //   "extra SPECTRAL tears". The curated value comes from the fuller page.
+  const EXPECTED_DISAGREEMENT = new Set([50, 52, 149, 151, 168, 573]);
+  let agree = 0;
+  const off: string[] = [];
+  for (const c of CURATED) {
+    if (EXPECTED_DISAGREEMENT.has(c.id)) continue;
+    const d = byId.get(c.id);
+    if (d === undefined) {
+      off.push(`#${c.id} ${c.name}: absent from the wiki table`);
+      continue;
+    }
+    const bad = FACTS.filter((f) => Boolean(c[f]) !== Boolean(d[f])).map(
+      (f) => `${f} curated=${Boolean(c[f])} derived=${Boolean(d[f])}`,
+    );
+    const cf = [...(c.grants_tear_flags ?? [])].sort().join(",");
+    const df = [...(d.grants_tear_flags ?? [])].sort().join(",");
+    if (cf !== df) bad.push(`tear flags curated=[${cf}] derived=[${df}]`);
+    if (bad.length === 0) agree++;
+    else off.push(`#${c.id} ${c.name}: ${bad.join("; ")}`);
+  }
+  const tested = CURATED.length - EXPECTED_DISAGREEMENT.size;
+  if (off.length > 0) {
+    console.error(`
+  derivation disagrees with ${off.length}/${tested} verified items:`);
+    for (const o of off) console.error(`    ${o}`);
+    fail("the derivation no longer matches the hand-verified set");
+  }
+  console.log(`   cross-check: ${agree}/${tested} verified items reproduced from the wiki`);
 }
 
 const ids = new Set<number>();
@@ -218,7 +304,7 @@ const luaHeader = `-- SPDX-License-Identifier: GPL-3.0-only
 -- GENERATED by tools/build-knowledge/build-item-kb.ts - DO NOT EDIT BY HAND.
 -- Item knowledge base (facts only, no ripped asset).
 `;
-const luaBody = `return ${luaVal(kb)}\n`;
+const luaBody = `return ${luaVal({ schema: 1, items: ITEMS.filter((i) => i.curated), synergies: SYNERGIES })}\n`;
 mkdirSync(MOD, { recursive: true });
 writeFileSync(resolve(MOD, "item_kb.lua"), luaHeader + luaBody, "utf8");
 

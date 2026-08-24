@@ -268,6 +268,21 @@ def audit_data():
     else:
         ok(f"all {len(kb_items)} knowledge-base items exist in the name index")
 
+    # The reverse direction, which is the one that actually bit: the base held 59
+    # items out of 719, so across 25 real runs the build assistant could analyse
+    # 5.3% of what was picked up and spent its time saying "not in the knowledge
+    # base". Coverage is now the invariant, not an aspiration.
+    kb_ids = {str(i["id"]) for i in kb_items}
+    absent = [n for n in items["names"] if n not in kb_ids]
+    if absent:
+        fail(f"{len(absent)} collectible(s) missing from the knowledge base "
+             f"(the assistant would drop them from any build): {absent[:5]}")
+    else:
+        ok(f"every one of the {len(items['names'])} collectibles is in the knowledge base")
+
+    curated = sum(1 for i in kb_items if i.get("curated"))
+    notes.append(f"knowledge base: {curated} hand-verified, {len(kb_items) - curated} derived from the wiki")
+
 
 # ---------------------------------------------------------------------------
 # 5. Version consistency. A mismatch ships an installer whose About screen lies.

@@ -13,7 +13,9 @@
           "value": 0.7
         }
       },
-      "complexity": "flat"
+      "complexity": "flat",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 2,
@@ -29,7 +31,8 @@
         }
       },
       "complexity": "flat",
-      "note": "Triple shot, heavily reduced fire rate."
+      "note": "Triple shot, heavily reduced fire rate.",
+      "curated": true
     },
     {
       "id": 3,
@@ -41,7 +44,9 @@
         "homing"
       ],
       "complexity": "flat",
-      "note": "Grants homing tears."
+      "note": "Grants homing tears.",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 4,
@@ -56,7 +61,33 @@
         }
       },
       "complexity": "flat",
-      "note": "Damage multiplier (approximate)."
+      "note": "Damage multiplier (approximate).",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 5,
+      "name": "My Reflection",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "range": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "luck": {
+          "op": "flat",
+          "value": -1
+        }
+      },
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 6,
@@ -74,7 +105,25 @@
           "value": -1.5
         }
       },
-      "complexity": "flat"
+      "complexity": "flat",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 7,
+      "name": "Blood of the Martyr",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 8,
@@ -85,7 +134,39 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familiar that shoots tears."
+      "note": "Familiar that shoots tears.",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 9,
+      "name": "Skatole",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 10,
+      "name": "Halo of Flies",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 11,
+      "name": "1up!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 12,
@@ -114,7 +195,91 @@
       },
       "hearts": 1,
       "complexity": "conditional",
-      "note": "All-around boost (multiplicative damage, approximate)."
+      "note": "All-around boost (multiplicative damage, approximate).",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 13,
+      "name": "The Virus",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 14,
+      "name": "Roid Rage",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.6
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 15,
+      "name": "Less Than Three",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 16,
+      "name": "Raw Liver",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 2,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 17,
+      "name": "Skeleton Key",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 18,
+      "name": "A Dollar",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 19,
+      "name": "Boom!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 20,
@@ -124,7 +289,50 @@
       ],
       "grants_flight": true,
       "complexity": "flat",
-      "note": "Grants flight."
+      "note": "Grants flight.",
+      "curated": true
+    },
+    {
+      "id": 21,
+      "name": "The Compass",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 22,
+      "name": "Lunch",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 23,
+      "name": "Dinner",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 24,
+      "name": "Dessert",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 25,
@@ -134,7 +342,167 @@
       ],
       "hearts": 1,
       "complexity": "flat",
-      "note": "+1 heart container."
+      "note": "+1 heart container.",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 26,
+      "name": "Rotten Meat",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 27,
+      "name": "Wooden Spoon",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 28,
+      "name": "The Belt",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 29,
+      "name": "Mom's Underwear",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 30,
+      "name": "Mom's Heels",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 31,
+      "name": "Mom's Lipstick",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 32,
+      "name": "Wire Coat Hanger",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 33,
+      "name": "The Bible",
+      "roles": [
+        "mobility"
+      ],
+      "grants_flight": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 34,
+      "name": "The Book of Belial",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 35,
+      "name": "The Necronomicon",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 36,
+      "name": "The Poop",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 37,
+      "name": "Mr. Boom",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 38,
@@ -144,7 +512,87 @@
         "utility"
       ],
       "complexity": "proc",
-      "note": "Active: ring burst of tears."
+      "note": "Active: ring burst of tears.",
+      "curated": true
+    },
+    {
+      "id": 39,
+      "name": "Mom's Bra",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 40,
+      "name": "Kamikaze!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 41,
+      "name": "Mom's Pad",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 42,
+      "name": "Bob's Rotten Head",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 44,
+      "name": "Teleport!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 45,
+      "name": "Yum Heart",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 46,
+      "name": "Lucky Foot",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 47,
+      "name": "Doctor's Remote",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 48,
@@ -156,7 +604,18 @@
         "piercing"
       ],
       "complexity": "flat",
-      "note": "Piercing tears."
+      "note": "Piercing tears.",
+      "curated": true
+    },
+    {
+      "id": 49,
+      "name": "Shoop da Whoop!",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 50,
@@ -172,7 +631,19 @@
           "value": 0.3
         }
       },
-      "complexity": "flat"
+      "complexity": "flat",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 51,
+      "name": "Pentagram",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 52,
@@ -186,7 +657,28 @@
         "explosive"
       ],
       "complexity": "conditional",
-      "note": "Replaces tears with bombs."
+      "note": "Replaces tears with bombs.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 53,
+      "name": "Magneto",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 54,
+      "name": "Treasure Map",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 55,
@@ -195,7 +687,96 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Chance to fire an extra tear backward."
+      "note": "Chance to fire an extra tear backward.",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 56,
+      "name": "Lemon Mishap",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 57,
+      "name": "Distant Admiration",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 58,
+      "name": "Book of Shadows",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 60,
+      "name": "The Ladder",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 62,
+      "name": "Charm of the Vampire",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 63,
+      "name": "The Battery",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 64,
+      "name": "Steam Sale",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 65,
+      "name": "Anarchist Cookbook",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 66,
+      "name": "The Hourglass",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 67,
@@ -206,7 +787,9 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familiar that shoots tears."
+      "note": "Familiar that shoots tears.",
+      "curated": true,
+      "quality": 1
     },
     {
       "id": 68,
@@ -220,7 +803,9 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Replaces tears with a continuous laser."
+      "note": "Replaces tears with a continuous laser.",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 69,
@@ -230,7 +815,172 @@
         "tear_mod"
       ],
       "complexity": "conditional",
-      "note": "Chargeable shot; damage scales with charge (NOT a tear replacement)."
+      "note": "Chargeable shot; damage scales with charge (NOT a tear replacement).",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 70,
+      "name": "Growth Hormones",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.4
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 71,
+      "name": "Mini Mush",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": -4.25
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 72,
+      "name": "Rosary",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 73,
+      "name": "Cube of Meat",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 74,
+      "name": "A Quarter",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 75,
+      "name": "PHD",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 76,
+      "name": "X-Ray Vision",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 77,
+      "name": "My Little Unicorn",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.28
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 78,
+      "name": "Book of Revelations",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 79,
+      "name": "The Mark",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 80,
+      "name": "The Pact",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 81,
@@ -240,21 +990,78 @@
         "defensive"
       ],
       "complexity": "conditional",
-      "note": "9 lives, sets max health to 1 heart."
+      "note": "9 lives, sets max health to 1 heart.",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 82,
       "name": "Lord of the Pit",
       "roles": [
-        "mobility",
-        "tear_mod"
+        "mobility"
       ],
       "grants_flight": true,
-      "grants_tear_flags": [
-        "homing"
-      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
       "complexity": "flat",
-      "note": "Flight + homing."
+      "note": "Flight and a small speed boost. Does NOT grant homing.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 83,
+      "name": "The Nail",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.7
+        },
+        "speed": {
+          "op": "flat",
+          "value": -0.18
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 84,
+      "name": "We Need To Go Deeper!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 85,
+      "name": "Deck of Cards",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 86,
+      "name": "Monstro's Tooth",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 87,
@@ -263,7 +1070,98 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Chance to fire in a cross (4 directions)."
+      "note": "Chance to fire in a cross (4 directions).",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 88,
+      "name": "Little Chubby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 89,
+      "name": "Spider Bite",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 90,
+      "name": "The Small Rock",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.2
+        },
+        "speed": {
+          "op": "flat",
+          "value": -0.2
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 91,
+      "name": "Spelunker Hat",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 92,
+      "name": "Super Bandage",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 93,
+      "name": "The Gamekid",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 94,
+      "name": "Sack of Pennies",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 95,
@@ -274,7 +1172,53 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familiar that fires a laser."
+      "note": "Familiar that fires a laser.",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 96,
+      "name": "Little C.H.A.D.",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 97,
+      "name": "The Book of Sin",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 98,
+      "name": "The Relic",
+      "roles": [
+        "defensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 99,
+      "name": "Little Gish",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 100,
@@ -288,7 +1232,9 @@
         "homing"
       ],
       "complexity": "flat",
-      "note": "Familiar with homing tears."
+      "note": "Familiar with homing tears.",
+      "curated": true,
+      "quality": 2
     },
     {
       "id": 101,
@@ -317,7 +1263,71 @@
       },
       "hearts": 1,
       "complexity": "flat",
-      "note": "Small boost to every stat."
+      "note": "Small boost to every stat.",
+      "curated": true
+    },
+    {
+      "id": 102,
+      "name": "Mom's Bottle of Pills",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 103,
+      "name": "The Common Cold",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 104,
+      "name": "The Parasite",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 105,
+      "name": "The D6",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 106,
+      "name": "Mr. Mega",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 107,
+      "name": "The Pinking Shears",
+      "roles": [
+        "mobility",
+        "familiar"
+      ],
+      "grants_flight": true,
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 108,
@@ -326,7 +1336,51 @@
         "defensive"
       ],
       "complexity": "flat",
-      "note": "Incoming damage capped at half a heart."
+      "note": "Incoming damage capped at half a heart.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 109,
+      "name": "Money = Power",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 110,
+      "name": "Mom's Contacts",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 111,
+      "name": "The Bean",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 112,
+      "name": "Guardian Angel",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 113,
@@ -337,7 +1391,8 @@
       ],
       "is_familiar": true,
       "complexity": "proc",
-      "note": "Familiar that shoots at nearby enemies."
+      "note": "Familiar that shoots at nearby enemies.",
+      "curated": true
     },
     {
       "id": 114,
@@ -351,7 +1406,9 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Replaces tears with a thrown knife."
+      "note": "Replaces tears with a thrown knife.",
+      "curated": true,
+      "quality": 4
     },
     {
       "id": 115,
@@ -363,7 +1420,30 @@
         "spectral"
       ],
       "complexity": "flat",
-      "note": "Spectral tears (pass through obstacles)."
+      "note": "Spectral tears (pass through obstacles).",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 116,
+      "name": "9 Volt",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 117,
+      "name": "Dead Bird",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 118,
@@ -377,7 +1457,219 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Replaces tears with a charged blood beam."
+      "note": "Replaces tears with a charged blood beam.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 119,
+      "name": "Blood Bag",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 120,
+      "name": "Odd Mushroom (Thin)",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 1.7
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 121,
+      "name": "Odd Mushroom (Large)",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.3
+        },
+        "range": {
+          "op": "flat",
+          "value": 0.25
+        },
+        "speed": {
+          "op": "flat",
+          "value": -0.1
+        }
+      },
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 122,
+      "name": "Whore of Babylon",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 123,
+      "name": "Monster Manual",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 124,
+      "name": "Dead Sea Scrolls",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 125,
+      "name": "Bobby-Bomb",
+      "roles": [
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 126,
+      "name": "Razor Blade",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.2
+        }
+      },
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 127,
+      "name": "Forget Me Now",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 128,
+      "name": "Forever alone",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 129,
+      "name": "Bucket of Lard",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": -0.2
+        }
+      },
+      "hearts": 2,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 130,
+      "name": "A Pony",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "grants_flight": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 131,
+      "name": "Bomb Bag",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 132,
+      "name": "A Lump of Coal",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 133,
+      "name": "Guppy's Paw",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 134,
@@ -386,7 +1678,125 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Changes chest and door odds."
+      "note": "Changes chest and door odds.",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 135,
+      "name": "IV Bag",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 136,
+      "name": "Best Friend",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 137,
+      "name": "Remote Detonator",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 138,
+      "name": "Stigmata",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 139,
+      "name": "Mom's Purse",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 140,
+      "name": "Bob's Curse",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 141,
+      "name": "Pageant Boy",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 142,
+      "name": "Scapular",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 143,
+      "name": "Speed Ball",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.2
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 144,
+      "name": "Bum Friend",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 145,
@@ -396,7 +1806,39 @@
         "offensive"
       ],
       "complexity": "proc",
-      "note": "Active: summons a swarm of flies."
+      "note": "Active: summons a swarm of flies.",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 146,
+      "name": "Prayer Card",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 147,
+      "name": "Notched Axe",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 148,
+      "name": "Infestation",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 149,
@@ -419,7 +1861,19 @@
         }
       },
       "complexity": "conditional",
-      "note": "Explosive poison tears with an arcing trajectory - self-damage risk."
+      "note": "Explosive poison tears with an arcing trajectory - self-damage risk.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 150,
+      "name": "Tough Love",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 151,
@@ -429,7 +1883,9 @@
       ],
       "is_familiar": true,
       "complexity": "proc",
-      "note": "Chance to spawn a fly when firing."
+      "note": "Chance to spawn a fly when firing.",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 152,
@@ -443,7 +1899,9 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Continuous laser from one eye (tears stay on the other)."
+      "note": "Continuous laser from one eye (tears stay on the other).",
+      "curated": true,
+      "quality": 2
     },
     {
       "id": 153,
@@ -459,7 +1917,61 @@
         }
       },
       "complexity": "flat",
-      "note": "Quadruple shot."
+      "note": "Quadruple shot.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 154,
+      "name": "Chemical Peel",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 155,
+      "name": "The Peeper",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 156,
+      "name": "Habit",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 157,
+      "name": "Bloody Lust",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 158,
+      "name": "Crystal Ball",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 159,
@@ -473,7 +1985,107 @@
         "spectral"
       ],
       "complexity": "flat",
-      "note": "Flight + spectral tears."
+      "note": "Flight + spectral tears.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 160,
+      "name": "Crack the Sky",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 161,
+      "name": "Ankh",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 162,
+      "name": "Celtic Cross",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 163,
+      "name": "Ghost Baby",
+      "roles": [
+        "offensive",
+        "tear_mod",
+        "familiar"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 164,
+      "name": "The Candle",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 165,
+      "name": "Cat-o-nine-tails",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.23
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 166,
+      "name": "D20",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 167,
+      "name": "Harlequin Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 168,
@@ -487,7 +2099,9 @@
         "explosive"
       ],
       "complexity": "conditional",
-      "note": "Replaces the shot with targeted missile strikes."
+      "note": "Replaces the shot with targeted missile strikes.",
+      "curated": true,
+      "quality": 4
     },
     {
       "id": 169,
@@ -506,7 +2120,114 @@
         }
       },
       "complexity": "conditional",
-      "note": "Huge tears; pierces on kill. Multiplicative damage (approximate)."
+      "note": "Huge tears; pierces on kill. Multiplicative damage (approximate).",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 170,
+      "name": "Daddy Longlegs",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 171,
+      "name": "Spider Butt",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 172,
+      "name": "Sacrificial Dagger",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 173,
+      "name": "Mitre",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 174,
+      "name": "Rainbow Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 175,
+      "name": "Dad's Key",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 176,
+      "name": "Stem Cells",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.16
+        }
+      },
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 177,
+      "name": "Portable Slot",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 178,
+      "name": "Holy Water",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 179,
@@ -516,7 +2237,29 @@
       ],
       "grants_flight": true,
       "complexity": "flat",
-      "note": "Flight + eternal heart."
+      "note": "Flight + eternal heart.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 180,
+      "name": "The Black Bean",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 181,
+      "name": "White Pony",
+      "roles": [
+        "mobility"
+      ],
+      "grants_flight": true,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 182,
@@ -539,7 +2282,43 @@
         }
       },
       "complexity": "conditional",
-      "note": "Big damage + homing, reduced fire rate."
+      "note": "Big damage + homing, reduced fire rate.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 183,
+      "name": "Tooth Picks",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.16
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 184,
+      "name": "Holy Grail",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "grants_flight": true,
+      "hearts": 1,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 185,
@@ -550,11 +2329,317 @@
       ],
       "grants_flight": true,
       "grants_tear_flags": [
-        "spectral",
-        "piercing"
+        "spectral"
       ],
       "complexity": "flat",
-      "note": "Flight + spectral and piercing tears."
+      "note": "Flight + spectral tears.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 186,
+      "name": "Blood Rights",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 187,
+      "name": "Guppy's Hairball",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 188,
+      "name": "Abel",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 189,
+      "name": "SMB Super Fan",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.3
+        },
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.2
+        },
+        "range": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "hearts": 1,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 190,
+      "name": "Pyro",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 191,
+      "name": "3 Dollar Bill",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 192,
+      "name": "Telepathy For Dummies",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 3
+        }
+      },
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 193,
+      "name": "MEAT!",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 194,
+      "name": "Magic 8 Ball",
+      "roles": [
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 195,
+      "name": "Mom's Coin Purse",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 196,
+      "name": "Squeezy",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.4
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 197,
+      "name": "Jesus Juice",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "range": {
+          "op": "flat",
+          "value": 0.25
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 198,
+      "name": "Box",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 199,
+      "name": "Mom's Key",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 200,
+      "name": "Mom's Eyeshadow",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 201,
+      "name": "Iron Bar",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 202,
+      "name": "Midas' Touch",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 203,
+      "name": "Humbleing Bundle",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 204,
+      "name": "Fanny Pack",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 205,
+      "name": "Sharp Plug",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 206,
+      "name": "Guillotine",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 207,
+      "name": "Ball of Bandages",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 208,
+      "name": "Champion Belt",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 209,
+      "name": "Butt Bombs",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 210,
@@ -564,7 +2649,141 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Invincible while standing still."
+      "note": "Invincible while standing still.",
+      "curated": true,
+      "quality": 1
+    },
+    {
+      "id": 211,
+      "name": "Spiderbaby",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 212,
+      "name": "Guppy's Collar",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 213,
+      "name": "Lost Contact",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "shot_speed": {
+          "op": "flat",
+          "value": -0.15
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 214,
+      "name": "Anemic",
+      "roles": [
+        "utility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5
+        }
+      },
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 215,
+      "name": "Goat Head",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 216,
+      "name": "Ceremonial Robes",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 217,
+      "name": "Mom's Wig",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 218,
+      "name": "Placenta",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 219,
+      "name": "Old Bandage",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 220,
+      "name": "Sad Bombs",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 221,
+      "name": "Rubber Cement",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 222,
@@ -580,7 +2799,18 @@
         }
       },
       "complexity": "conditional",
-      "note": "Tears float, then fire on release."
+      "note": "Tears float, then fire on release.",
+      "curated": true
+    },
+    {
+      "id": 223,
+      "name": "Pyromaniac",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 224,
@@ -596,7 +2826,51 @@
         }
       },
       "complexity": "conditional",
-      "note": "Tears split into 4 on landing."
+      "note": "Tears split into 4 on landing.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 225,
+      "name": "Gimpy",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 226,
+      "name": "Black Lotus",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 227,
+      "name": "Piggy Bank",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 228,
+      "name": "Mom's Perfume",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 229,
@@ -607,7 +2881,43 @@
       ],
       "is_tears_replacement": true,
       "complexity": "conditional",
-      "note": "Charged shotgun-style burst."
+      "note": "Charged shotgun-style burst.",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 230,
+      "name": "Abaddon",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 231,
+      "name": "Ball of Tar",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 232,
+      "name": "Stop Watch",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 233,
@@ -615,14 +2925,122 @@
       "roles": [
         "tear_mod"
       ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
       "stat_effects": {
         "range": {
           "op": "flat",
-          "value": 2
+          "value": 6.5
         }
       },
       "complexity": "conditional",
-      "note": "Tears orbit around Isaac."
+      "note": "Spectral tears that orbit Isaac at a fixed distance.",
+      "curated": true,
+      "quality": 0
+    },
+    {
+      "id": 234,
+      "name": "Infestation 2",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 236,
+      "name": "E. Coli",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 237,
+      "name": "Death's Touch",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "fire_rate": {
+          "op": "flat",
+          "value": -0.3
+        }
+      },
+      "grants_tear_flags": [
+        "piercing"
+      ],
+      "is_tears_replacement": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 238,
+      "name": "Key Piece 1",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 239,
+      "name": "Key Piece 2",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 240,
+      "name": "Experimental Treatment",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 241,
+      "name": "Contract From Below",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 242,
+      "name": "Infamy",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 243,
+      "name": "Trinity Shield",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 244,
@@ -635,7 +3053,9 @@
         "piercing"
       ],
       "complexity": "proc",
-      "note": "Adds a tech laser (on top of tears)."
+      "note": "Adds a tech laser (on top of tears).",
+      "curated": true,
+      "quality": 3
     },
     {
       "id": 245,
@@ -645,7 +3065,185 @@
         "tear_mod"
       ],
       "complexity": "flat",
-      "note": "Double shot."
+      "note": "Double shot.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 246,
+      "name": "Blue Map",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 247,
+      "name": "BFFS!",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 248,
+      "name": "Hive Mind",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 249,
+      "name": "There's Options",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 250,
+      "name": "BOGO Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 251,
+      "name": "Starter Deck",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 252,
+      "name": "Little Baggy",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 253,
+      "name": "Magic Scab",
+      "roles": [
+        "defensive"
+      ],
+      "stat_effects": {
+        "luck": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 254,
+      "name": "Blood Clot",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 255,
+      "name": "Screw",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 256,
+      "name": "Hot Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 257,
+      "name": "Fire Mind",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 258,
+      "name": "Missing No.",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 259,
+      "name": "Dark Matter",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 260,
+      "name": "Black Candle",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 261,
@@ -660,7 +3258,541 @@
         }
       },
       "complexity": "conditional",
-      "note": "Triple damage at point-blank range, falling off with distance (approximate)."
+      "note": "Triple damage at point-blank range, falling off with distance (approximate).",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 262,
+      "name": "Missing Page 2",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 263,
+      "name": "Clear Rune",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 264,
+      "name": "Smart Fly",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 265,
+      "name": "Dry Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 266,
+      "name": "Juicy Sack",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 267,
+      "name": "Robo-Baby 2.0",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 268,
+      "name": "Rotten Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 269,
+      "name": "Headless Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 270,
+      "name": "Leech",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 271,
+      "name": "Mystery Sack",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 272,
+      "name": "BBF",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 273,
+      "name": "Bob's Brain",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 274,
+      "name": "Best Bud",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 275,
+      "name": "Lil Brimstone",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 276,
+      "name": "Isaac's Heart",
+      "roles": [
+        "offensive",
+        "defensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 277,
+      "name": "Lil Haunt",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 278,
+      "name": "Dark Bum",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 279,
+      "name": "Big Fan",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 280,
+      "name": "Sissy Longlegs",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 281,
+      "name": "Punching Bag",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 282,
+      "name": "How to Jump",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 283,
+      "name": "D100",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 284,
+      "name": "D4",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 285,
+      "name": "D10",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 286,
+      "name": "Blank Card",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 287,
+      "name": "Book of Secrets",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 288,
+      "name": "Box of Spiders",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 289,
+      "name": "Red Candle",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 290,
+      "name": "The Jar",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 291,
+      "name": "Flush!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 292,
+      "name": "Satanic Bible",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 293,
+      "name": "Head of Krampus",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 294,
+      "name": "Butter Bean",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 295,
+      "name": "Magic Fingers",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 296,
+      "name": "Converter",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 297,
+      "name": "Pandora's Box",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 298,
+      "name": "Unicorn Stump",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 299,
+      "name": "Taurus",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": -0.3
+        }
+      },
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 300,
+      "name": "Aries",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.25
+        }
+      },
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 301,
+      "name": "Cancer",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 302,
+      "name": "Leo",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 303,
+      "name": "Virgo",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 304,
+      "name": "Libra",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 305,
+      "name": "Scorpio",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 306,
+      "name": "Sagittarius",
+      "roles": [
+        "offensive",
+        "mobility",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "piercing"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 307,
+      "name": "Capricorn",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "range": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.1
+        }
+      },
+      "hearts": 1,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 308,
+      "name": "Aquarius",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 309,
+      "name": "Pisces",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 310,
@@ -680,7 +3812,209 @@
         }
       },
       "complexity": "flat",
-      "note": "2x damage, reduced fire rate and range."
+      "note": "2x damage, reduced fire rate and range.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 311,
+      "name": "Judas' Shadow",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 312,
+      "name": "Maggy's Bow",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 313,
+      "name": "Holy Mantle",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 314,
+      "name": "Thunder Thighs",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 315,
+      "name": "Strange Attractor",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 316,
+      "name": "Cursed Eye",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 317,
+      "name": "Mysterious Liquid",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 318,
+      "name": "Gemini (Item)",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 319,
+      "name": "Cain's Other Eye",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 320,
+      "name": "???'s Only Friend",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 321,
+      "name": "Samson's Chains",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 322,
+      "name": "Mongo Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 323,
+      "name": "Isaac's Tears",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 324,
+      "name": "Undefined",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 325,
+      "name": "Scissors",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 326,
+      "name": "Breath of Life",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 327,
+      "name": "The Polaroid",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 328,
+      "name": "The Negative",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 329,
@@ -691,7 +4025,8 @@
       ],
       "is_tears_replacement": true,
       "complexity": "conditional",
-      "note": "A single controllable floating tear."
+      "note": "A single controllable floating tear.",
+      "curated": true
     },
     {
       "id": 330,
@@ -711,7 +4046,426 @@
         }
       },
       "complexity": "flat",
-      "note": "Extreme fire rate, tiny damage."
+      "note": "Extreme fire rate, tiny damage.",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 331,
+      "name": "Godhead",
+      "roles": [
+        "offensive",
+        "mobility",
+        "tear_mod"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "fire_rate": {
+          "op": "flat",
+          "value": -0.3
+        },
+        "range": {
+          "op": "flat",
+          "value": 1.2
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": -0.3
+        }
+      },
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 332,
+      "name": "Lazarus' Rags",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.5
+        }
+      },
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 333,
+      "name": "The Mind",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 334,
+      "name": "The Body",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 3,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 335,
+      "name": "The Soul",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 336,
+      "name": "Dead Onion",
+      "roles": [
+        "offensive",
+        "mobility",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "piercing",
+        "spectral"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 337,
+      "name": "Broken Watch",
+      "roles": [
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 338,
+      "name": "The Boomerang",
+      "roles": [
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "piercing"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 339,
+      "name": "Safety Pin",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.16
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 340,
+      "name": "Caffeine Pill",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 341,
+      "name": "Torn Photo",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.16
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 342,
+      "name": "Blue Cap",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": -0.16
+        }
+      },
+      "hearts": 1,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 343,
+      "name": "Latch Key",
+      "roles": [
+        "defensive"
+      ],
+      "stat_effects": {
+        "luck": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 344,
+      "name": "Match Book",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 345,
+      "name": "Synthoil",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 346,
+      "name": "A Snack",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 347,
+      "name": "Diplopia",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 348,
+      "name": "Placebo",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 349,
+      "name": "Wooden Nickel",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 350,
+      "name": "Toxic Shock",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 351,
+      "name": "Mega Bean",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 352,
+      "name": "Glass Cannon",
+      "roles": [
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "piercing",
+        "spectral"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 353,
+      "name": "Bomber Boy",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 354,
+      "name": "Crack Jacks",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 355,
+      "name": "Mom's Pearls",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 1.25
+        },
+        "luck": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 356,
+      "name": "Car Battery",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 357,
+      "name": "Box of Friends",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 358,
+      "name": "The Wiz",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 359,
+      "name": "8 Inch Nails",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.5
+        }
+      },
+      "is_tears_replacement": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 360,
@@ -722,7 +4476,387 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Familiar that copies your shots (stats included)."
+      "note": "Familiar that copies your shots (stats included).",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 361,
+      "name": "Fate's Reward",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 362,
+      "name": "Lil Chest",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 363,
+      "name": "Sworn Protector",
+      "roles": [
+        "offensive",
+        "defensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 364,
+      "name": "Friend Zone",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 365,
+      "name": "Lost Fly",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 366,
+      "name": "Scatter Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 367,
+      "name": "Sticky Bombs",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 368,
+      "name": "Epiphora",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 369,
+      "name": "Continuum",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 370,
+      "name": "Mr. Dolly",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        },
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        }
+      },
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 371,
+      "name": "Curse of the Tower",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 372,
+      "name": "Charged Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 373,
+      "name": "Dead Eye",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 374,
+      "name": "Holy Light",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 375,
+      "name": "Host Hat",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 376,
+      "name": "Restock",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 377,
+      "name": "Bursting Sack",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 378,
+      "name": "Number Two",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 379,
+      "name": "Pupula Duplex",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 380,
+      "name": "Pay To Play",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 381,
+      "name": "Eden's Blessing",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 382,
+      "name": "Friendly Ball",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 383,
+      "name": "Tear Detonator",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 384,
+      "name": "Lil Gurdy",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 385,
+      "name": "Bumbo",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 386,
+      "name": "D12",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 387,
+      "name": "Censer",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 388,
+      "name": "Key Bum",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 389,
+      "name": "Rune Bag",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 390,
+      "name": "Seraphim",
+      "roles": [
+        "offensive",
+        "mobility",
+        "tear_mod",
+        "familiar"
+      ],
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 391,
+      "name": "Betrayal",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 392,
+      "name": "Zodiac",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 393,
+      "name": "Serpent's Kiss",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 394,
@@ -732,7 +4866,8 @@
         "utility"
       ],
       "complexity": "conditional",
-      "note": "Auto-fires toward a marker on the ground."
+      "note": "Auto-fires toward a marker on the ground.",
+      "curated": true
     },
     {
       "id": 395,
@@ -746,7 +4881,164 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Charged, piercing laser ring."
+      "note": "Charged, piercing laser ring.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 396,
+      "name": "Ventricle Razor",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 397,
+      "name": "Tractor Beam",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "range": {
+          "op": "flat",
+          "value": 5.25
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.16
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 398,
+      "name": "God's Flesh",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 399,
+      "name": "Maw Of The Void",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 400,
+      "name": "Spear Of Destiny",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 401,
+      "name": "Explosivo",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 402,
+      "name": "Chaos",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 403,
+      "name": "Spider Mod",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 404,
+      "name": "Farting Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 405,
+      "name": "GB Bug",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 406,
+      "name": "D8",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 407,
+      "name": "Purity",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 408,
+      "name": "Athame",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 409,
@@ -755,7 +5047,605 @@
         "defensive"
       ],
       "complexity": "conditional",
-      "note": "Flight + invincibility at 0 red hearts (conditional)."
+      "note": "Flight + invincibility at 0 red hearts (conditional).",
+      "curated": true,
+      "quality": 2
+    },
+    {
+      "id": 410,
+      "name": "Evil Eye",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 411,
+      "name": "Lusty Blood",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 412,
+      "name": "Cambion Conception",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 413,
+      "name": "Immaculate Conception",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 414,
+      "name": "More Options",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 415,
+      "name": "Crown Of Light",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "shot_speed": {
+          "op": "flat",
+          "value": -0.3
+        }
+      },
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 416,
+      "name": "Deep Pockets",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 417,
+      "name": "Succubus",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 418,
+      "name": "Fruit Cake",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 419,
+      "name": "Teleport 2.0",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 420,
+      "name": "Black Powder",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 421,
+      "name": "Kidney Bean",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 422,
+      "name": "Glowing Hourglass",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 423,
+      "name": "Circle of Protection",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 424,
+      "name": "Sack Head",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 425,
+      "name": "Night Light",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 426,
+      "name": "Obsessed Fan",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 427,
+      "name": "Mine Crafter",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 428,
+      "name": "PJs",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 429,
+      "name": "Head of the Keeper",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 430,
+      "name": "Papa Fly",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 431,
+      "name": "Multidimensional Baby",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 432,
+      "name": "Glitter Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 433,
+      "name": "My Shadow",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 434,
+      "name": "Jar of Flies",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 435,
+      "name": "Lil Loki",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 436,
+      "name": "Milk!",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 437,
+      "name": "D7",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 438,
+      "name": "Binky",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.75
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 439,
+      "name": "Mom's Box",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 440,
+      "name": "Kidney Stone",
+      "roles": [
+        "offensive",
+        "mobility",
+        "tear_mod"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": -0.2
+        }
+      },
+      "grants_tear_flags": [
+        "piercing",
+        "spectral"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 441,
+      "name": "Mega Blast",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 442,
+      "name": "Dark Prince's Crown",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.75
+        },
+        "range": {
+          "op": "flat",
+          "value": 1.5
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 443,
+      "name": "Apple!",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 444,
+      "name": "Lead Pencil",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 445,
+      "name": "Dog Tooth",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.3
+        },
+        "speed": {
+          "op": "flat",
+          "value": 0.1
+        }
+      },
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 446,
+      "name": "Dead Tooth",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 447,
+      "name": "Linger Bean",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 448,
+      "name": "Shard of Glass",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 449,
+      "name": "Metal Plate",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 450,
+      "name": "Eye of Greed",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 451,
+      "name": "Tarot Cloth",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 452,
+      "name": "Varicose Veins",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 453,
+      "name": "Compound Fracture",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 454,
+      "name": "Polydactyly",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 455,
+      "name": "Dad's Lost Coin",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 1.5
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 456,
+      "name": "Midnight Snack",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 457,
+      "name": "Cone Head",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 458,
+      "name": "Belly Button",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 459,
+      "name": "Sinus Infection",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 460,
+      "name": "Glaucoma",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 461,
+      "name": "Parasitoid",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
     },
     {
       "id": 462,
@@ -769,7 +5659,750 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "After taking a hit: piercing and homing tears."
+      "note": "After taking a hit: piercing and homing tears.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 463,
+      "name": "Sulfuric Acid",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 464,
+      "name": "Glyph of Balance",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 465,
+      "name": "Analog Stick",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.35
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 466,
+      "name": "Contagion",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 467,
+      "name": "Finger!",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 468,
+      "name": "Shade",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 469,
+      "name": "Depression",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 470,
+      "name": "Hushy",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 471,
+      "name": "Lil Monstro",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 472,
+      "name": "King Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 473,
+      "name": "Big Chubby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 474,
+      "name": "Broken Glass Cannon",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 475,
+      "name": "Plan C",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 476,
+      "name": "D1",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 477,
+      "name": "Void",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 478,
+      "name": "Pause",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 479,
+      "name": "Smelter",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 480,
+      "name": "Compost",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 481,
+      "name": "Dataminer",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 482,
+      "name": "Clicker",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 483,
+      "name": "Mama Mega!",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 484,
+      "name": "Wait What?",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 485,
+      "name": "Crooked Penny",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 486,
+      "name": "Dull Razor",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 487,
+      "name": "Potato Peeler",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 488,
+      "name": "Metronome",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 489,
+      "name": "D infinity",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 490,
+      "name": "Eden's Soul",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 491,
+      "name": "Acid Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 492,
+      "name": "YO LISTEN!",
+      "roles": [
+        "familiar"
+      ],
+      "stat_effects": {
+        "luck": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 493,
+      "name": "Adrenaline",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 494,
+      "name": "Jacob's Ladder",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 495,
+      "name": "Ghost Pepper",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 496,
+      "name": "Euthanasia",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 497,
+      "name": "Camo Undies",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.5
+        }
+      },
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 498,
+      "name": "Duality",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 499,
+      "name": "Eucharist",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 500,
+      "name": "Sack of Sacks",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 501,
+      "name": "Greed's Gullet",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 502,
+      "name": "Large Zit",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 503,
+      "name": "Little Horn (Item)",
+      "roles": [
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "piercing"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 504,
+      "name": "Brown Nugget",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 505,
+      "name": "Poke Go",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 506,
+      "name": "Backstabber",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 507,
+      "name": "Sharp Straw",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 508,
+      "name": "Mom's Razor",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 509,
+      "name": "Bloodshot Eye",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 510,
+      "name": "Delirious",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 511,
+      "name": "Angry Fly",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 512,
+      "name": "Black Hole",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 513,
+      "name": "Bozo",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 514,
+      "name": "Broken Modem",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 515,
+      "name": "Mystery Gift",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 516,
+      "name": "Sprinkler",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 517,
+      "name": "Fast Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 518,
+      "name": "Buddy in a Box",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 519,
+      "name": "Lil Delirium",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 520,
+      "name": "Jumper Cables",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 521,
+      "name": "Coupon",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 522,
+      "name": "Telekinesis",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 523,
+      "name": "Moving Box",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 524,
+      "name": "Technology Zero",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 525,
+      "name": "Leprosy",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 526,
+      "name": "7 Seals",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 527,
+      "name": "Mr. ME!",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 528,
+      "name": "Angelic Prism",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 529,
+      "name": "Pop!",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "is_tears_replacement": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 530,
+      "name": "Death's List",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 531,
+      "name": "Haemolacria",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 532,
+      "name": "Lachryphagy",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 533,
@@ -783,7 +6416,465 @@
         "piercing"
       ],
       "complexity": "conditional",
-      "note": "Replaces tears with piercing pillars of light."
+      "note": "Replaces tears with piercing pillars of light.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 534,
+      "name": "Schoolbag",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 535,
+      "name": "Blanket",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 536,
+      "name": "Sacrificial Altar",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 537,
+      "name": "Lil Spewer",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 538,
+      "name": "Marbles",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 539,
+      "name": "Mystery Egg",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 540,
+      "name": "Flat Stone",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 541,
+      "name": "Marrow",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 542,
+      "name": "Slipped Rib",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 543,
+      "name": "Hallowed Ground",
+      "roles": [
+        "offensive",
+        "tear_mod",
+        "familiar"
+      ],
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 544,
+      "name": "Pointy Rib",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 545,
+      "name": "Book of the Dead",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 546,
+      "name": "Dad's Ring",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 547,
+      "name": "Divorce Papers",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 548,
+      "name": "Jaw Bone",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 549,
+      "name": "Brittle Bones",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 550,
+      "name": "Broken Shovel",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 551,
+      "name": "Broken Shovel",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 552,
+      "name": "Mom's Shovel",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 553,
+      "name": "Mucormycosis",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 554,
+      "name": "2Spooky",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 555,
+      "name": "Golden Razor",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1.2
+        }
+      },
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 556,
+      "name": "Sulfur",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 557,
+      "name": "Fortune Cookie",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 558,
+      "name": "Eye Sore",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 559,
+      "name": "120 Volt",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 560,
+      "name": "It Hurts",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 561,
+      "name": "Almond Milk",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 562,
+      "name": "Rock Bottom",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 563,
+      "name": "Nancy Bombs",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 564,
+      "name": "A Bar of Soap",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.5
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 565,
+      "name": "Blood Puppy",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 566,
+      "name": "Dream Catcher",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 567,
+      "name": "Paschal Candle",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 568,
+      "name": "Divine Intervention",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 569,
+      "name": "Blood Oath",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 570,
+      "name": "Playdough Cookie",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 571,
+      "name": "Orphan Socks",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.3
+        }
+      },
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 572,
+      "name": "Eye of the Occult",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        },
+        "range": {
+          "op": "flat",
+          "value": 2
+        },
+        "shot_speed": {
+          "op": "flat",
+          "value": -0.16
+        }
+      },
+      "grants_flight": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
     },
     {
       "id": 573,
@@ -793,16 +6884,1281 @@
         "tear_mod"
       ],
       "grants_tear_flags": [
-        "homing"
+        "spectral"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "mult",
+          "value": 1.2
+        }
+      },
+      "hearts": 1,
+      "complexity": "proc",
+      "note": "Extra spectral tears that orbit Isaac, x1.2 damage, +1 heart container.",
+      "curated": true,
+      "quality": 3
+    },
+    {
+      "id": 574,
+      "name": "Monstrance",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 575,
+      "name": "The Intruder",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 576,
+      "name": "Dirty Mind",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 577,
+      "name": "Damocles",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 578,
+      "name": "Free Lemonade",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 579,
+      "name": "Spirit Sword",
+      "roles": [
+        "offensive",
+        "defensive",
+        "tear_mod"
+      ],
+      "is_tears_replacement": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 580,
+      "name": "Red Key",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 581,
+      "name": "Psy Fly",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 582,
+      "name": "Wavy Cap",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 583,
+      "name": "Rocket in a Jar",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 584,
+      "name": "Book of Virtues",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 585,
+      "name": "Alabaster Box",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 586,
+      "name": "The Stairway",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 588,
+      "name": "Sol",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 589,
+      "name": "Luna",
+      "roles": [
+        "defensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 590,
+      "name": "Mercurius",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.4
+        }
+      },
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 591,
+      "name": "Venus",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 592,
+      "name": "Terra",
+      "roles": [
+        "offensive",
+        "tear_mod"
       ],
       "stat_effects": {
         "damage": {
           "op": "flat",
+          "value": 1
+        }
+      },
+      "is_tears_replacement": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 593,
+      "name": "Mars",
+      "roles": [
+        "mobility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 594,
+      "name": "Jupiter",
+      "roles": [
+        "defensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": -0.3
+        }
+      },
+      "hearts": 2,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 595,
+      "name": "Saturnus",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 596,
+      "name": "Uranus",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 597,
+      "name": "Neptunus",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 598,
+      "name": "Pluto",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "fire_rate": {
+          "op": "flat",
+          "value": 0.7
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 599,
+      "name": "Voodoo Head",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 600,
+      "name": "Eye Drops",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 601,
+      "name": "Act of Contrition",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 602,
+      "name": "Member Card",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 603,
+      "name": "Battery Pack",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 604,
+      "name": "Mom's Bracelet",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 605,
+      "name": "The Scooper",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 606,
+      "name": "Ocular Rift",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 607,
+      "name": "Boiled Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 608,
+      "name": "Freezer Baby",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 609,
+      "name": "Eternal D6",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 610,
+      "name": "Bird Cage",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 611,
+      "name": "Larynx",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 612,
+      "name": "Lost Soul",
+      "roles": [
+        "defensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 614,
+      "name": "Blood Bombs",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 615,
+      "name": "Lil Dumpy",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 616,
+      "name": "Bird's Eye",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 617,
+      "name": "Lodestone",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 618,
+      "name": "Rotten Tomato",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 619,
+      "name": "Birthright",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 621,
+      "name": "Red Stew",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 622,
+      "name": "Genesis",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 623,
+      "name": "Sharp Key",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 624,
+      "name": "Booster Pack (Item)",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 625,
+      "name": "Mega Mush",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 626,
+      "name": "Knife Piece 1",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 627,
+      "name": "Knife Piece 2",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 628,
+      "name": "Death Certificate",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 629,
+      "name": "Bot Fly",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 631,
+      "name": "Meat Cleaver",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 632,
+      "name": "Evil Charm",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "luck": {
+          "op": "flat",
+          "value": 2
+        }
+      },
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 633,
+      "name": "Dogma (Item)",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 2
+        }
+      },
+      "grants_flight": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 634,
+      "name": "Purgatory",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 635,
+      "name": "Stitches",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 636,
+      "name": "R Key",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 637,
+      "name": "Knockout Drops",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 638,
+      "name": "Eraser",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 639,
+      "name": "Yuck Heart",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 640,
+      "name": "Urn of Souls",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 641,
+      "name": "Akeldama",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 642,
+      "name": "Magic Skin",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 643,
+      "name": "Revelation",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "grants_flight": true,
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 644,
+      "name": "Consolation Prize",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 645,
+      "name": "Tinytoma",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 646,
+      "name": "Brimstone Bombs",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 647,
+      "name": "4.5 Volt",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 649,
+      "name": "Fruity Plum",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 650,
+      "name": "Plum Flute",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 651,
+      "name": "Star of Bethlehem",
+      "roles": [
+        "offensive",
+        "tear_mod",
+        "familiar"
+      ],
+      "grants_tear_flags": [
+        "homing"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 652,
+      "name": "Cube Baby",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 653,
+      "name": "Vade Retro",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 654,
+      "name": "False PHD",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 655,
+      "name": "Spin to Win",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
           "value": 0.5
         }
       },
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 657,
+      "name": "Vasculitis",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 658,
+      "name": "Giant Cell",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 659,
+      "name": "Tropicamide",
+      "roles": [
+        "utility"
+      ],
+      "stat_effects": {
+        "range": {
+          "op": "flat",
+          "value": 2.5
+        }
+      },
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 660,
+      "name": "Card Reading",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 661,
+      "name": "Quints",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 663,
+      "name": "Tooth and Nail",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 664,
+      "name": "Binge Eater",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 3.6
+        }
+      },
+      "hearts": 1,
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 665,
+      "name": "Guppy's Eye",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 667,
+      "name": "Strawman",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 668,
+      "name": "Dad's Note",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 669,
+      "name": "Sausage",
+      "roles": [
+        "offensive",
+        "defensive",
+        "mobility"
+      ],
+      "hearts": 1,
+      "quality": 3,
       "complexity": "proc",
-      "note": "Chance of an extra homing tear + soul heart."
+      "curated": false
+    },
+    {
+      "id": 670,
+      "name": "Options?",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 671,
+      "name": "Candy Heart",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 672,
+      "name": "A Pound of Flesh",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 673,
+      "name": "Redemption",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 674,
+      "name": "Spirit Shackles",
+      "roles": [
+        "offensive",
+        "defensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 675,
+      "name": "Cracked Orb",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 676,
+      "name": "Empty Heart",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 677,
+      "name": "Astral Projection",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 678,
+      "name": "C Section",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "is_tears_replacement": true,
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 679,
+      "name": "Lil Abaddon",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 680,
+      "name": "Montezuma's Revenge",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 681,
+      "name": "Lil Portal",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 682,
+      "name": "Worm Friend",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 683,
+      "name": "Bone Spurs",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 684,
+      "name": "Hungry Soul",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 2,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 685,
+      "name": "Jar of Wisps",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 686,
+      "name": "Soul Locket",
+      "roles": [
+        "defensive"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 687,
+      "name": "Friend Finder",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 688,
+      "name": "Inner Child",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 0.2
+        }
+      },
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 689,
+      "name": "Glitched Crown",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 690,
+      "name": "Belly Jelly",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 691,
+      "name": "Sacred Orb",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 692,
+      "name": "Sanguine Bond",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "proc",
+      "curated": false
+    },
+    {
+      "id": 693,
+      "name": "The Swarm",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 694,
+      "name": "Heartbreak",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 695,
+      "name": "Bloody Gust",
+      "roles": [
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 696,
+      "name": "Salvation",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 697,
+      "name": "Vanishing Twin",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "conditional",
+      "curated": false
     },
     {
       "id": 698,
@@ -813,7 +8169,374 @@
       ],
       "is_familiar": true,
       "complexity": "flat",
-      "note": "Two familiars that copy your shots."
+      "note": "Two familiars that copy your shots.",
+      "curated": true,
+      "quality": 4
+    },
+    {
+      "id": 699,
+      "name": "Azazel's Rage",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 700,
+      "name": "Echo Chamber",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 701,
+      "name": "Isaac's Tomb",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 702,
+      "name": "Vengeful Spirit",
+      "roles": [
+        "offensive"
+      ],
+      "quality": 1,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 703,
+      "name": "Esau Jr.",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "grants_flight": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 704,
+      "name": "Berserk!",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 705,
+      "name": "Dark Arts",
+      "roles": [
+        "mobility"
+      ],
+      "stat_effects": {
+        "speed": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 706,
+      "name": "Abyss",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 707,
+      "name": "Supper",
+      "roles": [
+        "defensive"
+      ],
+      "hearts": 1,
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 708,
+      "name": "Stapler",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 709,
+      "name": "Suplex!",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 710,
+      "name": "Bag of Crafting",
+      "roles": [
+        "utility"
+      ],
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 711,
+      "name": "Flip",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 712,
+      "name": "Lemegeton",
+      "roles": [
+        "offensive",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 713,
+      "name": "Sumptorium",
+      "roles": [
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 714,
+      "name": "Recall",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 715,
+      "name": "Hold",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 716,
+      "name": "Keeper's Sack",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 717,
+      "name": "Keeper's Kin",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 719,
+      "name": "Keeper's Box",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 720,
+      "name": "Everything Jar",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 721,
+      "name": "TMTRAINER",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 722,
+      "name": "Anima Sola",
+      "roles": [
+        "utility"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 723,
+      "name": "Spindown Dice",
+      "roles": [
+        "utility"
+      ],
+      "quality": 4,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 724,
+      "name": "Hypercoagulation",
+      "roles": [
+        "utility"
+      ],
+      "quality": 2,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 725,
+      "name": "IBS",
+      "roles": [
+        "utility"
+      ],
+      "quality": 0,
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 726,
+      "name": "Hemoptysis",
+      "roles": [
+        "utility"
+      ],
+      "quality": 1,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 727,
+      "name": "Ghost Bombs",
+      "roles": [
+        "offensive",
+        "tear_mod"
+      ],
+      "grants_tear_flags": [
+        "spectral"
+      ],
+      "complexity": "conditional",
+      "curated": false
+    },
+    {
+      "id": 728,
+      "name": "Gello",
+      "roles": [
+        "offensive",
+        "mobility",
+        "familiar"
+      ],
+      "is_familiar": true,
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 729,
+      "name": "Decap Attack",
+      "roles": [
+        "offensive"
+      ],
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 730,
+      "name": "Glass Eye",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 0.75
+        },
+        "luck": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 731,
+      "name": "Stye",
+      "roles": [
+        "offensive",
+        "mobility"
+      ],
+      "quality": 2,
+      "complexity": "flat",
+      "curated": false
+    },
+    {
+      "id": 732,
+      "name": "Mom's Ring",
+      "roles": [
+        "offensive"
+      ],
+      "stat_effects": {
+        "damage": {
+          "op": "flat",
+          "value": 1
+        }
+      },
+      "quality": 3,
+      "complexity": "conditional",
+      "curated": false
     }
   ],
   "synergies": [

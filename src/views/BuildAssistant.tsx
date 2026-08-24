@@ -349,9 +349,25 @@ export function BuildAssistantView() {
                     key={it.id}
                     className="flex items-center justify-between gap-2 rounded-lg border border-isaac-border bg-isaac-surface2/40 px-2.5 py-1.5"
                   >
-                    <span className="min-w-0 truncate text-sm" title={it.note || it.name}>
-                      {it.name}
-                      {it.is_tears_replacement && <span className="ml-1 text-isaac-blood/80" title={t("bld.tearReplacement")}>⟳</span>}
+                    <span className="flex min-w-0 items-center gap-1.5 text-sm" title={it.note || it.name}>
+                      {/* Quality is the community's own 0-4 rating; it is the first
+                          thing a completionist looks at on a pedestal. */}
+                      {it.quality !== undefined && (
+                        <span
+                          className={`flex-shrink-0 rounded px-1 text-[0.65rem] tabular-nums ${
+                            it.quality >= 3
+                              ? "bg-isaac-gold/15 text-isaac-gold"
+                              : it.quality === 0
+                                ? "bg-isaac-surface2 text-isaac-faint"
+                                : "bg-isaac-surface2 text-isaac-muted"
+                          }`}
+                          title={t("bld.quality")}
+                        >
+                          {it.quality}
+                        </span>
+                      )}
+                      <span className="truncate">{it.name}</span>
+                      {it.is_tears_replacement && <span className="text-isaac-blood/80" title={t("bld.tearReplacement")}>⟳</span>}
                     </span>
                     <span className="flex flex-shrink-0 gap-1">
                       <button
