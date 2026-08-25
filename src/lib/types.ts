@@ -465,6 +465,8 @@ export interface SynergyResult {
 
 export interface HealthReport {
   game_root: PathStatus;
+  /** Isaac's own log — where a GAME crash records its cause. */
+  game_log: PathStatus;
   mods_dir: PathStatus;
   data_dir: PathStatus;
   steam_save_found: boolean;

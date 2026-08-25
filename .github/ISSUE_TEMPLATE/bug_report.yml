@@ -13,7 +13,7 @@ body:
     attributes:
       label: App version
       description: Shown at the bottom of the sidebar and in the About tab.
-      placeholder: "0.3.0"
+      placeholder: "0.6.0"
     validations:
       required: true
 
@@ -34,6 +34,40 @@ body:
         the resolved paths, which save is loaded, whether the mod is installed, and
         whether the completion marks decoded reliably.
       placeholder: Drag a screenshot here.
+
+  - type: dropdown
+    id: crash
+    attributes:
+      label: Did the GAME itself crash?
+      description: |
+        Not the app - Isaac. The companion mod runs inside the game, so a mod bug can
+        take the game down and cost you a floor. If that is what happened, the next
+        field is the single most useful thing you can send.
+      options:
+        - "No, the game was fine"
+        - "Yes, Isaac crashed to desktop"
+        - "Yes, and it happens every time at the same spot"
+    validations:
+      required: true
+
+  - type: textarea
+    id: gamelog
+    attributes:
+      label: Isaac's log file (only if the game crashed)
+      description: |
+        Attach `log.txt`, or paste its **last 40 lines**. Its path is shown in the app's
+        **Diagnostic** tab; by default it is
+        `Documents\My Games\Binding of Isaac Repentance+\log.txt`.
+
+        It records the room you were entering and the Lua stack trace that ended the
+        process. That is usually the entire answer: a crash in the Mineshaft Lobby was
+        traced to one line of the mod from those few lines alone.
+      placeholder: |
+        [INFO] - Room 1.10017(Mineshaft Lobby)
+        [INFO] - Lua stack trace:
+        ...
+        [INFO] - Caught exception, writing minidump...
+      render: text
 
   - type: input
     id: savefile

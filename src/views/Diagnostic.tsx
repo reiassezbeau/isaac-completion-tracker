@@ -145,6 +145,12 @@ export function DiagnosticView() {
           <PathLine p={health.data_dir} />
           {!health.data_dir.exists && ` — ${t("diag.createdFirstRun")}`}
         </StatusRow>
+        {/* The one file that turns "it crashed in the Mines" into an exact cause.
+            Nothing pointed at it before, so nobody would have thought to send it. */}
+        <StatusRow ok={health.game_log.exists} label={t("diag.gameLog")}>
+          <PathLine p={health.game_log} />
+          <div className="mt-0.5 text-xs text-isaac-muted">{t("diag.gameLogHint")}</div>
+        </StatusRow>
       </Card>
 
       <Card>

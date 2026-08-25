@@ -7,7 +7,7 @@ import type { MarkDifficulty } from "./types";
 type Tr = (k: string) => string;
 
 /** App version shown in the UI. Keep in sync with package.json, Cargo.toml and tauri.conf.json. */
-export const APP_VERSION = "0.6.0";
+export const APP_VERSION = "0.6.1";
 
 export const GITHUB_URL = "https://github.com/reiassezbeau";
 export const GITHUB_HANDLE = "reiassezbeau";

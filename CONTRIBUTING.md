@@ -42,6 +42,12 @@ screenshot of it answers most questions before they are asked.
 If the bug is about a save that will not load, the exact **file name** matters
 (`rep+persistentgamedata1.dat` and `rep_persistentgamedata1.dat` are different editions).
 
+**If the GAME crashed**, Isaac's own `log.txt` is the first thing to read and the first
+thing to ask for - its path is in the Diagnostic tab. Its last lines name the room being
+entered and the Lua stack trace that ended the process, which is normally the entire
+diagnosis. The Mineshaft Lobby crash was traced to one line of the mod from nothing but
+those few lines.
+
 ## Translations
 
 The catalogs live in `src/lib/i18n.ts` and `src/lib/i18n-views{,2,3,4,5}.ts`. Every key

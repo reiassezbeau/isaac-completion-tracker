@@ -361,6 +361,11 @@ fn path_status(p: Option<PathBuf>) -> PathStatus {
 pub struct HealthReport {
     /// The REAL resolved game root (handles the OneDrive pitfall).
     pub game_root: PathStatus,
+    /// Isaac's own log. It records the Lua stack trace and "Caught exception" line
+    /// when the GAME crashes, which is the one artifact that turns "it crashed in
+    /// the Mines" into an exact cause. Nothing pointed at it before, so nobody
+    /// reporting a crash would ever have thought to send it.
+    pub game_log: PathStatus,
     pub mods_dir: PathStatus,
     pub data_dir: PathStatus,
     pub steam_save_found: bool,
@@ -450,6 +455,7 @@ pub fn get_health(app: AppHandle, state: State<AppState>) -> HealthReport {
         };
 
     HealthReport {
+        game_log: path_status(game_root.as_ref().map(|r| r.join("log.txt"))),
         game_root: path_status(game_root),
         mods_dir: path_status(mods_dir),
         data_dir: path_status(data_dir),
